@@ -81,7 +81,7 @@ module.exports = class VideoStream extends EventEmitter {
             "pipe:1"
         ])
         this.proc.stderr.on("data", (line) => {
-            this.emit("error", "ffmpeg: ${line.toString()}`)
+            this.emit("error", `ffmpeg: ${line.toString()}`)
         })
         this.mp4box = MP4Box.createFile()
         this.mp4box.onReady = (info) => {

@@ -141,7 +141,7 @@ module.exports = {
             this.state = "started"
 
             /*   create a fresh <video> stream element  */
-            let ve = document.createElement("video")
+            const ve = document.createElement("video")
             this.we.appendChild(ve)
             ve.autoplay = true
             ve.addEventListener("loadeddata", () => {

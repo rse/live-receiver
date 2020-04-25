@@ -577,7 +577,7 @@ module.exports = {
         })
         const interval = 2
         setInterval(() => {
-            let kbps = Math.ceil((this.bandwidthBytes * 8) / 1024 / interval)
+            const kbps = Math.ceil((this.bandwidthBytes * 8) / 1024 / interval)
             this.bandwidthText = kbps
             this.bandwidthBytes = 0
         }, interval * 1000)
