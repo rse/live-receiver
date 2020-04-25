@@ -81,7 +81,7 @@ const electron = require("electron")
         /*  defer until SVGs (see below) are loaded  */
         setTimeout(() => {
             /*  start DOM rendering with the outmost <win> component  */
-            ui.root = new Vue({ el: "#ui", name: "ui", components: { "win": "url:app-ui-1-win.vue" } })
+            ui.root = new Vue({ el: "#ui", name: "ui", components: { "win": "url:app-ui-1-window.vue" } })
 
             /*  hook into the UI events
                 (needs to be deferred for a small time until Vue renders the window)  */
@@ -139,11 +139,11 @@ const electron = require("electron")
 
     /*  load avatar images  */
     ui.avatar = {}
-    ui.avatar.man   = await ui.ipc.invoke("imageEncodeFromFile", "app-ui-2-portrait-avatar-man.svg")
-    ui.avatar.woman = await ui.ipc.invoke("imageEncodeFromFile", "app-ui-2-portrait-avatar-woman.svg")
+    ui.avatar.man   = await ui.ipc.invoke("imageEncodeFromFile", "app-res-avatar-man.svg")
+    ui.avatar.woman = await ui.ipc.invoke("imageEncodeFromFile", "app-res-avatar-woman.svg")
 
     /*  load logo images  */
-    ui.logo = await ui.ipc.invoke("imageEncodeFromFile", "app-logo-white.svg")
+    ui.logo = await ui.ipc.invoke("imageEncodeFromFile", "app-res-logo-white.svg")
 })().catch((err) => {
     console.log(`** live-receiver: ui: ERROR: ${err}`)
 })

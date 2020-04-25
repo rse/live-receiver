@@ -300,7 +300,7 @@ module.exports = {
         style: ui.vueprop2cssvar()
     },
     components: {
-        "portrait": "url:app-ui-2-portrait.vue"
+        "portrait": "url:app-ui-3-widget-portrait.vue"
     },
     methods: {
         login () {

@@ -433,8 +433,8 @@ module.exports = {
         liveStreamBuffer: function (v) { ui.settings("live-stream-buffer", v) }
     },
     components: {
-        "login":       "url:app-ui-2-login.vue",
-        "videostream": "url:app-ui-3-videostream.vue"
+        "login":       "url:app-ui-2-widget-login.vue",
+        "videostream": "url:app-ui-4-widget-videostream.vue"
     },
     methods: {
         sendMessage () {
