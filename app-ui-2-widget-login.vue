@@ -95,7 +95,8 @@
                         intPersonPortrait  === '' ||
                         intPersonName      === '' ||
                         intLiveRelayServer === '' ||
-                        intLiveAccessToken === ''   "
+                        intLiveAccessToken === '' ||
+                        !allowConnect"
                     ref="login"
                     type="submit"
                     value="Connect"
@@ -281,6 +282,7 @@ module.exports = {
             intPersonName:      this.personName,
             intLiveRelayServer: this.liveRelayServer,
             intLiveAccessToken: this.liveAccessToken,
+            allowConnect:       true,
             logo:               ui.logo,
             version:            ui.pkg.version,
             error:              ""
@@ -304,6 +306,10 @@ module.exports = {
     },
     methods: {
         login () {
+            this.allowConnect = false
+            setTimeout(() => {
+                this.allowConnect = true
+            }, 2 * 1000)
             this.$emit("login")
         }
     },
