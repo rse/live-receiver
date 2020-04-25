@@ -139,6 +139,7 @@
                 <i class="icon fa fa-share"></i>
                 <span class="title">Send Message</span>
             </div>
+            <!--
             <div class="box button resize"
                 v-on:mousedown="resizeBegin"
                 v-on:mousemove="resizeMove"
@@ -147,6 +148,7 @@
                 <i class="icon fa fa-expand-alt"></i>
                 <span class="title">Re-Size</span>
             </div>
+            -->
         </div>
     </div>
 </template>
