@@ -145,32 +145,33 @@ module.exports = {
             this.we.appendChild(ve)
             ve.autoplay = true
             ve.addEventListener("loadeddata", () => {
-                console.log("loadeddata")
+                console.log("videoelement: loadeddata")
             })
             ve.addEventListener("canplay", () => {
-                console.log("canplay")
+                console.log("videoelement: canplay")
             })
             ve.addEventListener("progress", () => {
-                console.log("progress")
+                console.log("videoelement: progress")
             })
             ve.addEventListener("playing", () => {
-                console.log("playing")
+                console.log("videoelement: playing")
                 this.state = "playing"
             })
             ve.addEventListener("stalled", () => {
-                console.log("stalled")
+                console.log("videoelement: stalled")
                 this.state = "stalled"
             })
             ve.addEventListener("waiting", () => {
-                console.log("waiting")
+                console.log("videoelement: waiting")
                 this.state = "stalled"
             })
             ve.addEventListener("ended", () => {
-                console.log("ended")
+                console.log("videoelement: ended")
                 this.state = "stopped"
             })
             ve.addEventListener("error", (ev, err) => {
                 this.$emit("error", `HTMLMediaElement: ${ev}: ${err}`)
+                console.log("videoelement: error", err)
                 this.state = "stalled"
             })
             this.ve = ve
@@ -179,16 +180,17 @@ module.exports = {
             const ms = new MediaSource()
             ve.src = window.URL.createObjectURL(ms)
             ms.addEventListener("sourceopen", (ev) => {
-                console.log("ms:sourceopen", ms.readyState)
+                console.log("mediasource: sourceopen")
             })
             ms.addEventListener("sourceended", (ev) => {
-                console.log("ms:sourceended", ms.readyState)
+                console.log("mediasource: sourceended")
             })
             ms.addEventListener("sourceclose", (ev) => {
-                console.log("ms:sourceclose", ms.readyState)
+                console.log("mediasource: sourceclose")
             })
             ms.addEventListener("error", (ev) => {
-                console.log("ms:error", ev, ms.readyState)
+                this.$emit("error", `MediaSource: ${ev}`)
+                console.log("mediasource: error", ev)
             })
             this.ms = ms
         }

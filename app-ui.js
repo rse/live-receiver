@@ -143,8 +143,7 @@ const electron = require("electron")
 
     /*  load logo images  */
     ui.logo = await ui.ipc.invoke("imageEncodeFromFile", "app-logo-white.svg")
-    console.log(ui.logo)
 })().catch((err) => {
-    console.log(`ERROR: ${err}`)
+    console.log(`** live-receiver: ui: ERROR: ${err}`)
 })
 

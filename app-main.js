@@ -177,7 +177,7 @@ const EventStream  = require("./app-relay-eventstream")
             buffering:  app.liveStreamBuffering
         }
         const liveAuth = async () => {
-            console.log("++ LiVE Relay: authenticate")
+            console.log("++ LiVE-Relay: authenticate")
 
             /*  connect to LiVE Relay EventStream  */
             const es = new EventStream(credentials)
@@ -194,7 +194,7 @@ const EventStream  = require("./app-relay-eventstream")
             return { success: true }
         }
         const liveConnect = async () => {
-            console.log("++ LiVE Relay: connect")
+            console.log("++ LiVE-Relay: connect")
 
             /*  connect to LiVE Relay EventStream  */
             const es = new EventStream(credentials)
@@ -210,13 +210,13 @@ const EventStream  = require("./app-relay-eventstream")
             vs.on("segment", (num, id, user, buffer) => {
                 if (!app.connected)
                     return
-                // console.log(`-- LiVE Relay: RTMPS segment #${num}: ${id} @ ${user.mimeCodec} (${buffer.byteLength} bytes)`)
+                // console.log(`-- LiVE-Relay: RTMPS segment #${num}: ${id} @ ${user.mimeCodec} (${buffer.byteLength} bytes)`)
                 app.win.webContents.send("stream-data", { id, user, buffer })
             })
             vs.on("error", (err) => {
                 if (!app.connected)
                     return
-                console.log(`** LiVE Relay: RTMPS error: ${err}`)
+                console.log(`** LiVE-Relay: RTMPS: ERROR: ${err}`)
                 app.win.webContents.send("stream-end")
             })
             app.win.webContents.send("stream-begin")
@@ -346,5 +346,5 @@ const EventStream  = require("./app-relay-eventstream")
         })
     })
 })().catch((err) => {
-    console.log(`** LiVE-Receiver: ERROR: ${err}`)
+    console.log(`** live-receiver: main: ERROR: ${err}`)
 })
