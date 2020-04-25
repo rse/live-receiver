@@ -56,6 +56,10 @@ const zip   = require("cross-zip")
             "--ignore", "(?:" + ignore.join("|") + ")",
             "--overwrite"
         ])
+
+        console.log("++ packing App into ZIP archive")
+        shell.rm("-f", "LiVE-Receiver-win32-x64/LICENSE*")
+        shell.rm("-f", "LiVE-Receiver-win32-x64/version")
         zip.zipSync(
             path.join(__dirname, "LiVE-Receiver-win32-x64"),
             path.join(__dirname, "LiVE-Receiver-win32-x64.zip")
@@ -71,6 +75,8 @@ const zip   = require("cross-zip")
             "--ignore", "(?:" + ignore.join("|") + ")",
             "--overwrite"
         ])
+
+        console.log("++ packing App into ZIP archive")
         shell.rm("-f", "LiVE-Receiver-darwin-x64/LICENSE*")
         shell.rm("-f", "LiVE-Receiver-darwin-x64/version")
         zip.zipSync(
