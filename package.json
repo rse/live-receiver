@@ -2,7 +2,7 @@
     "name":                   "LiVE-Receiver",
     "version":                "0.9.0",
     "description":            "Live Video Experience (LiVE) Receiver",
-    "keywords":               [ "live", "video", "experience", "reciever" ],
+    "keywords":               [ "live", "video", "experience", "receiver" ],
     "author": {
         "name":               "Dr. Ralf S. Engelschall",
         "url":                "http://engelschall.com/"
