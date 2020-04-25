@@ -204,6 +204,10 @@ const EventStream  = require("./app-main-relay-eventstream")
         const liveConnect = async () => {
             console.log("++ LiVE-Relay: connect")
 
+            /*  give UI some time to start stream processing  */
+            app.win.webContents.send("stream-begin")
+            await new Promise((resolve) => setTimeout(resolve, 1 * 1000))
+
             /*  connect to LiVE Relay EventStream  */
             const es = new EventStream(credentials)
             let result = await es.start().then(() => ({ success: true })).catch((err) => {
@@ -227,7 +231,6 @@ const EventStream  = require("./app-main-relay-eventstream")
                 console.log(`** LiVE-Relay: RTMPS: ERROR: ${err}`)
                 app.win.webContents.send("stream-end")
             })
-            app.win.webContents.send("stream-begin")
             result = await vs.start().then(() => ({ success: true })).catch((err) => {
                 return { error: `VideoStream: RTMPS: start: ${err}` }
             })
@@ -261,9 +264,12 @@ const EventStream  = require("./app-main-relay-eventstream")
                 })
                 if (result.error)
                     return result
-                app.win.webContents.send("stream-end")
                 app.vs = null
             }
+
+            /*  give UI some time to stop stream processing  */
+            app.win.webContents.send("stream-end")
+            await new Promise((resolve) => setTimeout(resolve, 1 * 1000))
 
             /*  indicate success  */
             return { success: true }

@@ -43,6 +43,8 @@ else
 module.exports = class VideoStream extends EventEmitter {
     constructor (options = {}) {
         super()
+
+        /*  determine default option values  */
         const id = (new UUID(1)).format("std")
         this.options = Object.assign({}, {
             ffmpeg:     ffmpeg,
@@ -55,18 +57,28 @@ module.exports = class VideoStream extends EventEmitter {
             resolution: "1080p",
             buffering:  2000
         }, options)
-        this.proc = null
+
+        /*  initialize state  */
         this.initial = false
+        this.timer   = null
+        this.proc    = null
     }
     async start () {
+        /*  cleanup if necessary  */
         if (this.proc !== null)
             await this.stop()
+
+        /*  reset state  */
         this.initial = true
-        this.timer = null
+        this.timer   = null
+
+        /*  determine RTMPS URL  */
         let url = `rtmps://${this.options.server}/stream/${this.options.channel}`
         if (this.options.resolution !== "1080p")
             url += `-${this.options.resolution}`
         url += `?key=${this.options.token1}-${this.options.token2}`
+
+        /*  start ffmpeg(1) sub-process  */
         this.proc = execa(this.options.ffmpeg, [
             "-loglevel",    "0",
             "-i",           url,
@@ -80,9 +92,9 @@ module.exports = class VideoStream extends EventEmitter {
             "-y",
             "pipe:1"
         ])
-        this.proc.stderr.on("data", (line) => {
-            this.emit("error", `ffmpeg: ${line.toString()}`)
-        })
+
+        /*  establish segmentation of the bytestream into MP4 boxes
+            (reason: the <video> element later accepts only valid and complete MP4 segments)  */
         this.mp4box = MP4Box.createFile()
         this.mp4box.onReady = (info) => {
             let segment = 0
@@ -119,6 +131,8 @@ module.exports = class VideoStream extends EventEmitter {
         this.mp4box.onError = (err) => {
             this.emit("error", `mp4box: ${err}`)
         }
+
+        /*  process output of ffmpeg(1) subprocess  */
         let offset = 0
         this.proc.stdout.on("data", (chunk) => {
             const ab = chunk.buffer
@@ -129,6 +143,10 @@ module.exports = class VideoStream extends EventEmitter {
         this.proc.stdout.on("end", () => {
             this.emit("end")
         })
+        this.proc.stderr.on("data", (line) => {
+            this.emit("error", `ffmpeg: ${line.toString()}`)
+        })
+
         return Promise.resolve(true)
     }
     async stop () {
