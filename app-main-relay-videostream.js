@@ -146,7 +146,6 @@ module.exports = class VideoStream extends EventEmitter {
         this.proc.stderr.on("data", (line) => {
             this.emit("error", `ffmpeg: ${line.toString()}`)
         })
-
         return Promise.resolve(true)
     }
     async stop () {
@@ -156,7 +155,7 @@ module.exports = class VideoStream extends EventEmitter {
                 await this.proc
             }
             catch (err) {
-                /*  no-op  */
+                this.proc.kill("SIGKILL")
             }
             this.proc = null
         }
