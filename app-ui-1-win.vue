@@ -118,6 +118,9 @@
             </div>
         </div>
         <div ref="footer" class="footer">
+            <div class="box logo">
+                <img v-bind:src="logo" alt="LiVE"/>
+            </div>
             <div class="box message-icon" v-bind:class="{ disabled: inLogin }">
                 <i class="icon fa fa-comment-dots"></i>
             </div>
@@ -324,6 +327,15 @@
         flex-direction: row;
         justify-content: flex-start;
         overflow: hidden;
+        .logo {
+            position: relative;
+            img {
+                position: absolute;
+                top: 10px;
+                left: 12px;
+                width: 60%;
+            }
+        }
         .message-icon {
             .icon {
                 top: 7px;
@@ -384,6 +396,7 @@ module.exports = {
         personName:      "",
         liveRelayServer: "",
         liveAccessToken: "",
+        logo:            ui.logo,
         buffer:          2000,
         message:         "",
         resizing:        false,

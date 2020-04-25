@@ -112,6 +112,8 @@
         </div>
         <div class="login-row notice">
             <div class="login-col label">
+                <img v-bind:src="logo" class="logo" alt="LiVE"/>
+                <div class="version">Receiver {{ version }}</div>
             </div>
             <div class="login-col notice">
                 <span class="footnote">
@@ -252,6 +254,15 @@
         font-size: 8pt;
         color: var(--color-std-fg-1);
     }
+    .login-row.notice > .login-col.label {
+        display: block;
+        .logo {
+            width: 140px;
+        }
+        .version {
+            padding-left: 20px;
+        }
+    }
 }
 </style>
 
@@ -270,6 +281,8 @@ module.exports = {
             intPersonName:      this.personName,
             intLiveRelayServer: this.liveRelayServer,
             intLiveAccessToken: this.liveAccessToken,
+            logo:               ui.logo,
+            version:            ui.pkg.version,
             error:              ""
         }
     },

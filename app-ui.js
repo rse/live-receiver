@@ -40,10 +40,11 @@ const electron = require("electron")
     ui.remote  = require("electron").remote
 
     /*  external requirements  */
-    ui.sprintf  = require("sprintfjs")
-    ui.throttle = require("throttle-debounce").throttle
-    ui.debounce = require("throttle-debounce").debounce
+    ui.sprintf      = require("sprintfjs")
+    ui.throttle     = require("throttle-debounce").throttle
+    ui.debounce     = require("throttle-debounce").debounce
     ui.imageDataURI = require("image-data-uri")
+    ui.pkg          = require("./package.json")
 
     /*  initialize sound effects  */
     const sfx = new SoundFX({ basedir: "node_modules/@rse/soundfx" })
@@ -78,7 +79,9 @@ const electron = require("electron")
         Vue.config.devtools = true
 
         /*  start DOM rendering with the outmost <win> component  */
-        ui.root = new Vue({ el: "#ui", name: "ui", components: { "win": "url:app-ui-1-win.vue" } })
+        setTimeout(() => {
+            ui.root = new Vue({ el: "#ui", name: "ui", components: { "win": "url:app-ui-1-win.vue" } })
+        }, 200)
 
         /*  hook into the UI events
             (needs to be deferred for a small time until Vue renders the window)  */
@@ -119,7 +122,7 @@ const electron = require("electron")
             ui.root.$refs.win.$on("message", (message) => {
                 ui.ipc.invoke("message", message)
             })
-        }, 200)
+        }, 300)
 
         /*  hook into the main process events  */
         ui.ipc.on("stream-begin", (event) => {
@@ -137,6 +140,10 @@ const electron = require("electron")
     ui.avatar = {}
     ui.avatar.man   = await ui.ipc.invoke("imageEncodeFromFile", "app-ui-2-portrait-avatar-man.svg")
     ui.avatar.woman = await ui.ipc.invoke("imageEncodeFromFile", "app-ui-2-portrait-avatar-woman.svg")
+
+    /*  load logo images  */
+    ui.logo = await ui.ipc.invoke("imageEncodeFromFile", "app-logo-white.svg")
+    console.log(ui.logo)
 })().catch((err) => {
     console.log(`ERROR: ${err}`)
 })
