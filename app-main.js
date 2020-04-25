@@ -1,5 +1,5 @@
 /*
-**  Live -- Live Video-Streaming Frontend
+**  Live Video Experience (LiVE)
 **  Copyright (c) 2020 Dr. Ralf S. Engelschall <rse@engelschall.com>
 **
 **  Permission is hereby granted, free of charge, to any person obtaining
