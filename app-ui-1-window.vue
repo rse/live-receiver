@@ -27,7 +27,7 @@
 <template>
     <div v-bind:style="style" class="win" v-on:mousemove="resizeMove" v-on:mouseup="resizeEnd">
         <div ref="header" class="header">
-            <div class="box button logout" v-on:click="logout" v-bind:class="{ disabled: inLogin }">
+            <div class="box button logout" v-on:click="logout" v-bind:class="{ disabled: inLogin || !allowDisconnect }">
                 <i class="icon fa fa-arrow-alt-circle-left"></i>
                 <span class="title">Disconnect</span>
             </div>
@@ -67,13 +67,17 @@
                 <span class="word">{{ bandwidthText }}</span>
                 <span class="title">kbps</span>
             </div>
+            <div class="box logo">
+                <img v-bind:src="logo" alt="LiVE"/>
+                <span class="title">Receiver</span>
+            </div>
             <div class="box move">
                 <span class="grab grab-1"></span>
                 <span class="grab grab-2"></span>
                 <span class="grab grab-3"></span>
                 <span class="grab grab-4"></span>
                 <span class="grab grab-5"></span>
-                <span class="name">LiVE Receiver</span>
+                <!-- <span class="name">Receiver</span> -->
                 <span class="title">Move Window</span>
             </div>
             <div class="box button fit" v-on:click="sourceSize" v-bind:class="{ disabled: inLogin || fullscreened }">
@@ -118,9 +122,6 @@
             </div>
         </div>
         <div ref="footer" class="footer">
-            <div class="box logo">
-                <img v-bind:src="logo" alt="LiVE"/>
-            </div>
             <div class="box message-icon" v-bind:class="{ disabled: inLogin }">
                 <i class="icon fa fa-comment-dots"></i>
             </div>
@@ -313,6 +314,15 @@
                 cursor: grab;
             }
         }
+        .logo {
+            position: relative;
+            img {
+                position: absolute;
+                top: 6px;
+                left: 14px;
+                width: 55%;
+            }
+        }
     }
     .content {
         flex-grow: 1;
@@ -329,15 +339,6 @@
         flex-direction: row;
         justify-content: flex-start;
         overflow: hidden;
-        .logo {
-            position: relative;
-            img {
-                position: absolute;
-                top: 10px;
-                left: 12px;
-                width: 60%;
-            }
-        }
         .message-icon {
             .icon {
                 top: 7px;
@@ -394,6 +395,7 @@ module.exports = {
     name: "win",
     data: () => ({
         inLogin:         true,
+        allowDisconnect: true,
         personPortrait:  "",
         personName:      "",
         liveRelayServer: "",
@@ -463,6 +465,9 @@ module.exports = {
         logout () {
             if (this.inLogin)
                 return
+            if (!this.allowDisconnect)
+                return
+            this.allowDisconnect = true
             this.$emit("logout")
         },
         resizeBegin (event) {
@@ -572,7 +577,13 @@ module.exports = {
 
         this.$on("stream-begin", () => {
             this.$refs.videostream.$emit("stream-begin")
+            this.allowDisconnect = false
         })
+        setTimeout(() => {
+            this.$refs.videostream.$on("stream-begin:done", () => {
+                this.allowDisconnect = true
+            })
+        }, 400)
         this.$on("stream-data", (data) => {
             this.bandwidthBytes += data.buffer.byteLength
             this.$refs.videostream.$emit("stream-data", data)
@@ -584,6 +595,7 @@ module.exports = {
             this.bandwidthBytes = 0
         }, interval * 1000)
         this.$on("stream-end", () => {
+            this.allowDisconnect = false
             this.$refs.videostream.$emit("stream-end")
         })
 
@@ -591,6 +603,7 @@ module.exports = {
         this.$nextTick(() => {
             this.handleResize()
         })
+
     },
     beforeDestroy () {
         window.removeEventListener("resize", () => this.handleResize())
