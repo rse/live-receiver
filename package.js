@@ -52,7 +52,7 @@ const zip   = require("cross-zip")
             ".",
             "LiVE-Receiver",
             "--platform=win32",
-            "--arch=ia32,x64",
+            "--arch=x64",
             "--ignore", "(?:" + ignore.join("|") + ")",
             "--overwrite"
         ])
