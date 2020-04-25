@@ -32,9 +32,9 @@ const throttle     = require("throttle-debounce").throttle
 const UUID         = require("pure-uuid")
 
 /*  internal requirements  */
-const Settings     = require("./app-settings")
-const VideoStream  = require("./app-relay-videostream")
-const EventStream  = require("./app-relay-eventstream")
+const Settings     = require("./app-main-settings")
+const VideoStream  = require("./app-main-relay-videostream")
+const EventStream  = require("./app-main-relay-eventstream")
 
 /*  enter an asynchronous environment in main process  */
 ;(async () => {
