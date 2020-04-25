@@ -1,0 +1,69 @@
+/*
+**  Live -- Live Video-Streaming Frontend
+**  Copyright (c) 2020 Dr. Ralf S. Engelschall <rse@engelschall.com>
+**
+**  Permission is hereby granted, free of charge, to any person obtaining
+**  a copy of this software and associated documentation files (the
+**  "Software"), to deal in the Software without restriction, including
+**  without limitation the rights to use, copy, modify, merge, publish,
+**  distribute, sublicense, and/or sell copies of the Software, and to
+**  permit persons to whom the Software is furnished to do so, subject to
+**  the following conditions:
+**
+**  The above copyright notice and this permission notice shall be included
+**  in all copies or substantial portions of the Software.
+**
+**  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+**  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+**  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+**  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+**  CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+**  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+**  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+:root {
+    --color-std-bg-1: #000000;
+    --color-std-bg-2: #111111;
+    --color-std-bg-3: #222222;
+    --color-std-bg-4: #333333;
+    --color-std-bg-5: #444444;
+
+    --color-std-fg-1: #808080;
+    --color-std-fg-2: #a0a0a0;
+    --color-std-fg-3: #c0c0c0;
+    --color-std-fg-4: #e0e0e0;
+    --color-std-fg-5: #ffffff;
+
+    --color-acc-bg-1: #114477;
+    --color-acc-bg-2: #225588;
+    --color-acc-bg-3: #336699;
+    --color-acc-bg-4: #4477aa;
+    --color-acc-bg-5: #5588bb;
+
+    --color-acc-fg-1: #80b0e0;
+    --color-acc-fg-2: #88b8e8;
+    --color-acc-fg-3: #90c0f0;
+    --color-acc-fg-4: #98c8f8;
+    --color-acc-fg-5: #a0d0ff;
+
+    --color-sig-bg-1: #904800;
+    --color-sig-bg-2: #a05810;
+    --color-sig-bg-3: #b06820;
+    --color-sig-bg-4: #c07830;
+    --color-sig-bg-5: #d08840;
+
+    --color-sig-fg-1: #e0d0b0;
+    --color-sig-fg-2: #e8d8b8;
+    --color-sig-fg-3: #f0e0c0;
+    --color-sig-fg-4: #f8e8c8;
+    --color-sig-fg-5: #fff0d0;
+}
+
+html, body {
+    margin:           0;
+    padding:          0;
+    height:           100vh;
+    width:            100vw;
+    background-color: transparent;
+}
