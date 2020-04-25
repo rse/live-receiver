@@ -154,8 +154,10 @@ const EventStream  = require("./app-main-relay-eventstream")
             else
                 app.win.maximize()
         })
+        let fullscreened = false
         app.ipc.handle("fullscreen", (event) => {
-            app.win.setFullScreen(!app.win.isFullScreen())
+            fullscreened = !fullscreened
+            app.win.setFullScreen(fullscreened)
         })
         app.ipc.handle("resize", (event, diff) => {
             app.w += diff.x
