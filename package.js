@@ -57,7 +57,7 @@ const zip   = require("cross-zip")
             "--overwrite"
         ])
         zip.zipSync(
-            "LiVE-Receiver-win32-x64/LiVE-Receiver.exe",
+            path.join(__dirname, "LiVE-Receiver-win32-x64"),
             path.join(__dirname, "LiVE-Receiver-win32-x64.zip")
         )
     }
@@ -74,7 +74,7 @@ const zip   = require("cross-zip")
         shell.rm("-f", "LiVE-Receiver-darwin-x64/LICENSE*")
         shell.rm("-f", "LiVE-Receiver-darwin-x64/version")
         zip.zipSync(
-            "LiVE-Receiver-darwin-x64/LiVE-Receiver.app",
+            path.joun(__dirname, "LiVE-Receiver-darwin-x64"),
             path.join(__dirname, "LiVE-Receiver-darwin-x64.zip")
         )
     }
