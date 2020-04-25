@@ -116,6 +116,7 @@ const EventStream  = require("./app-main-relay-eventstream")
 
         /*  react on explicit window close  */
         app.ipc.handle("quit", (event) => {
+            settings.save()
             app.quit()
         })
 

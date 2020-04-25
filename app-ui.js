@@ -119,6 +119,9 @@ const electron = require("electron")
                 ui.root.$refs.win.$on("set-size", (size) => {
                     ui.ipc.invoke("set-size", size)
                 })
+                ui.root.$refs.win.$on("quit", () => {
+                    ui.ipc.invoke("quit")
+                })
                 ui.root.$refs.win.$on("message", (message) => {
                     ui.ipc.invoke("message", message)
                 })
