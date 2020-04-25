@@ -78,50 +78,51 @@ const electron = require("electron")
         /*  allow Vue DevTools integration  */
         Vue.config.devtools = true
 
-        /*  start DOM rendering with the outmost <win> component  */
+        /*  defer until SVGs (see below) are loaded  */
         setTimeout(() => {
+            /*  start DOM rendering with the outmost <win> component  */
             ui.root = new Vue({ el: "#ui", name: "ui", components: { "win": "url:app-ui-1-win.vue" } })
-        }, 200)
 
-        /*  hook into the UI events
-            (needs to be deferred for a small time until Vue renders the window)  */
-        setTimeout(() => {
-            ui.root.$refs.win.$on("login", async (info) => {
-                const result = await ui.ipc.invoke("login", info)
-                if (result.error)
-                    ui.root.$refs.win.$emit("login-error", result.error)
-                else
-                    ui.root.$refs.win.$emit("state", "video")
-            })
-            ui.root.$refs.win.$on("logout", async () => {
-                const result = await ui.ipc.invoke("logout")
-                if (!result.error)
-                    ui.root.$refs.win.$emit("state", "login")
-            })
-            ui.root.$refs.win.$on("stream-buffering", async (buffer) => {
-                ui.ipc.invoke("stream-buffering", buffer)
-            })
-            ui.root.$refs.win.$on("video-resolution", async (resolution) => {
-                ui.ipc.invoke("video-resolution", resolution)
-            })
-            ui.root.$refs.win.$on("minimize", () => {
-                ui.ipc.invoke("minimize")
-            })
-            ui.root.$refs.win.$on("maximize", () => {
-                ui.ipc.invoke("maximize")
-            })
-            ui.root.$refs.win.$on("fullscreen", () => {
-                ui.ipc.invoke("fullscreen")
-            })
-            ui.root.$refs.win.$on("resize", (diff) => {
-                ui.ipc.invoke("resize", diff)
-            })
-            ui.root.$refs.win.$on("set-size", (size) => {
-                ui.ipc.invoke("set-size", size)
-            })
-            ui.root.$refs.win.$on("message", (message) => {
-                ui.ipc.invoke("message", message)
-            })
+            /*  hook into the UI events
+                (needs to be deferred for a small time until Vue renders the window)  */
+            setTimeout(() => {
+                ui.root.$refs.win.$on("login", async (info) => {
+                    const result = await ui.ipc.invoke("login", info)
+                    if (result.error)
+                        ui.root.$refs.win.$emit("login-error", result.error)
+                    else
+                        ui.root.$refs.win.$emit("state", "video")
+                })
+                ui.root.$refs.win.$on("logout", async () => {
+                    const result = await ui.ipc.invoke("logout")
+                    if (!result.error)
+                        ui.root.$refs.win.$emit("state", "login")
+                })
+                ui.root.$refs.win.$on("stream-buffering", async (buffer) => {
+                    ui.ipc.invoke("stream-buffering", buffer)
+                })
+                ui.root.$refs.win.$on("video-resolution", async (resolution) => {
+                    ui.ipc.invoke("video-resolution", resolution)
+                })
+                ui.root.$refs.win.$on("minimize", () => {
+                    ui.ipc.invoke("minimize")
+                })
+                ui.root.$refs.win.$on("maximize", () => {
+                    ui.ipc.invoke("maximize")
+                })
+                ui.root.$refs.win.$on("fullscreen", () => {
+                    ui.ipc.invoke("fullscreen")
+                })
+                ui.root.$refs.win.$on("resize", (diff) => {
+                    ui.ipc.invoke("resize", diff)
+                })
+                ui.root.$refs.win.$on("set-size", (size) => {
+                    ui.ipc.invoke("set-size", size)
+                })
+                ui.root.$refs.win.$on("message", (message) => {
+                    ui.ipc.invoke("message", message)
+                })
+            }, 300)
         }, 300)
 
         /*  hook into the main process events  */
