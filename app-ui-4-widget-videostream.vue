@@ -137,7 +137,7 @@ module.exports = {
         const updating = {}
 
         /*  start a new stream  */
-        const streamBegin = () => {
+        const streamBegin = async () => {
             this.state = "started"
 
             /*   create a fresh <video> stream element  */
@@ -171,7 +171,7 @@ module.exports = {
             })
             ve.addEventListener("error", (ev, err) => {
                 this.$emit("error", `HTMLMediaElement: ${ev}: ${err}`)
-                console.log("videoelement: error", err)
+                console.log("videoelement: error", ev, err)
                 this.state = "stalled"
             })
             this.ve = ve
@@ -193,10 +193,14 @@ module.exports = {
                 console.log("mediasource: error", ev)
             })
             this.ms = ms
+
+            /*  ensure that the MediaSource is really ready to receive data  */
+            while (this.ms.readyState !== "open")
+                await new Promise((resolve) => setTimeout(resolve, 100))
         }
 
         /*  receive stream data  */
-        const streamData = (data) => {
+        const streamData = async (data) => {
             /*  transfer a stream data chunk into the <video> stream element  */
             const transfer = () => {
                 /*  remove a still pending timer  */
@@ -258,7 +262,7 @@ module.exports = {
         }
 
         /*  end a stream  */
-        const streamEnd = () => {
+        const streamEnd = async () => {
             if (this.ms !== null) {
                 this.ms.endOfStream()
                 for (const id of Object.keys(this.sb)) {
@@ -275,20 +279,20 @@ module.exports = {
         }
 
         /*  provide event entry hooks  */
-        this.$on("stream-begin", () => {
-            streamBegin()
+        this.$on("stream-begin", async () => {
+            await streamBegin()
             this.streaming = true
         })
-        this.$on("stream-data", (data) => {
+        this.$on("stream-data", async (data) => {
             if (!this.streaming)
                 return
             streamData(data)
         })
-        this.$on("stream-end", () => {
+        this.$on("stream-end", async () => {
             if (!this.streaming)
                 return
-            streamEnd()
             this.streaming = false
+            await streamEnd()
         })
     }
 }
