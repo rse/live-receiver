@@ -21,6 +21,7 @@
         "eslint-plugin-import":            "2.20.2",
         "eslint-plugin-node":              "11.1.0",
         "eslint-plugin-vue":               "6.2.2",
+        "cross-env":                       "7.0.2",
         "cross-zip":                       "3.0.0"
     },
     "dependencies": {
@@ -60,7 +61,7 @@
         "setup":             "npm install --only-production --global-style",
         "lint":              "eslint --config eslint.yaml --ext js,vue *.js *.vue",
         "start":             "electron app-main.js",
-        "start-dev":         "DEBUG=1 nodemon --exec \"npm start\" --watch . --ext html,css,js,vue",
+        "start-dev":         "cross-env DEBUG=1 nodemon --exec \"npm start\" --watch . --ext html,css,js,vue",
         "package":           "node package.js"
     }
 }
