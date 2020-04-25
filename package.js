@@ -37,12 +37,15 @@ const zip   = require("cross-zip")
     shell.rm("-rf", "LiVE-Receiver-darwin-x64")
 
     console.log("++ packaging App as an Electron distribution")
-    let ignore = glob.sync("node_modules/typopro-web/web/TypoPRO-*")
+    let remove = glob.sync("node_modules/typopro-web/web/TypoPRO-*")
         .filter((path) => !path.match(/\/TypoPRO-(SourceSansPro|DejaVu)$/))
+    for (const file of remove)
+        shell.rm("-rf", file)
+    let ignore = []
     ignore.push("node_modules/electron-prebuilt")
     ignore.push("node_modules/electron-packager")
     ignore = ignore.concat(glob.sync("*.ai"))
-    if (os.platform() === "windows") {
+    if (os.platform() === "win32") {
         ignore.push("ffmpeg/ffmpeg-mac-x64")
         ignore.push("ffmpeg/ffmpeg-mac-x64.sh")
         execa.sync(electronpackager, [
@@ -53,7 +56,10 @@ const zip   = require("cross-zip")
             "--ignore", "(?:" + ignore.join("|") + ")",
             "--overwrite"
         ])
-        zip.zipSync("LiVE-Receiver-win32-x64/LiVE-Receiver.exe", "LiVE-Receiver-win32-x64.zip")
+        zip.zipSync(
+            "LiVE-Receiver-win32-x64/LiVE-Receiver.exe",
+            path.join(__dirname, "LiVE-Receiver-win32-x64.zip")
+        )
     }
     else if (os.platform() === "darwin") {
         ignore.push("ffmpeg/ffmpeg-win-x64.exe")
