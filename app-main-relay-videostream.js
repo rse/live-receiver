@@ -149,6 +149,10 @@ module.exports = class VideoStream extends EventEmitter {
         return Promise.resolve(true)
     }
     async stop () {
+        if (this.timer !== null) {
+            clearTimeout(this.timer)
+            this.timer = null
+        }
         if (this.proc !== null) {
             this.proc.kill("SIGTERM", { forceKillAfterTimeout: 2 * 1000 })
             try {
