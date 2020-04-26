@@ -39,7 +39,7 @@ module.exports = class EventStream extends EventEmitter {
             channel: "",
             token1:  "",
             token2:  "",
-            timeout: 20 * 1000 // FIXME: still unused
+            timeout: 20 * 1000 // FIXME: hardcoded
         }, options)
         this.broker = null
     }
