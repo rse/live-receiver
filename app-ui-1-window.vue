@@ -468,7 +468,7 @@ module.exports = {
                 return
             if (!this.allowDisconnect)
                 return
-            this.allowDisconnect = true
+            this.allowDisconnect = false
             this.$emit("logout")
         },
         resizeBegin (event) {
