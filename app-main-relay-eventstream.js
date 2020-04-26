@@ -34,21 +34,34 @@ module.exports = class EventStream extends EventEmitter {
         super()
         const id = (new UUID(1)).format("std")
         this.options = Object.assign({}, {
-            client:  id,
-            server:  "",
-            channel: "",
-            token1:  "",
-            token2:  "",
-            timeout: 20 * 1000 // FIXME: hardcoded
+            client:   id,
+            server:   "",
+            channel: " ",
+            token1:   "",
+            token2:   "",
+            interval: 30 * 1000 // FIXME: hardcoded
         }, options)
         this.broker = null
+        this.timer  = null
     }
     async start () {
         const url = `mqtts://${this.options.token1}:${this.options.token2}@${this.options.server}`
         return new Promise((resolve, reject) => {
             this.broker = MQTTjs.connect(url, {
-                clientId: `${this.options.client}`,
-                rejectUnauthorized: false
+                clientId: this.options.client,
+                rejectUnauthorized: false,
+                will: {
+                    qos: 2,
+                    topic: `stream/${this.options.channel}/sender`,
+                    payload: JSON.stringify({
+                        id:    "training",
+                        event: "attendance",
+                        data: {
+                            client: this.options.client,
+                            event:  "end"
+                        }
+                    })
+                }
             })
             this.broker.on("connect", () => {
                 this.broker.subscribe(`stream/${this.options.channel}/receiver/${this.options.client}`, (err) => {
@@ -57,7 +70,25 @@ module.exports = class EventStream extends EventEmitter {
                     else
                         resolve()
                 })
+                this.send(JSON.stringify({
+                    id:    "training",
+                    event: "attendance",
+                    data: {
+                        client: this.options.client,
+                        event:  "begin"
+                    }
+                }))
             })
+            this.timer = setInterval(() => {
+                this.send(JSON.stringify({
+                    id:    "training",
+                    event: "attendance",
+                    data: {
+                        client: this.options.client,
+                        event:  "refresh"
+                    }
+                }))
+            }, this.options.interval)
             this.broker.on("message", (topic, message) => {
                 this.emit("message", topic, message)
             })
@@ -68,8 +99,21 @@ module.exports = class EventStream extends EventEmitter {
         })
     }
     async stop () {
-        if (this.broker !== null)
+        if (this.timer !== null) {
+            clearTimeout(this.timer)
+            this.timer = null
+        }
+        if (this.broker !== null) {
+            this.send(JSON.stringify({
+                id:    "training",
+                event: "attendance",
+                data: {
+                    client: this.options.client,
+                    event:  "end"
+                }
+            }))
             this.broker.end()
+        }
     }
     send (message) {
         if (this.broker === null)
