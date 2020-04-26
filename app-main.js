@@ -123,7 +123,6 @@ const EventStream  = require("./app-main-relay-eventstream")
 
         /*  react on implicit window close  */
         app.win.on("closed", () => {
-            app.win = null
         })
 
         /*  react on explicit window close  */
