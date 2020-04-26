@@ -1,8 +1,8 @@
 
 <img src="https://raw.githubusercontent.com/rse/live-receiver/master/app-res-logo-black.svg" width="300" align="right" alt=""/>
 
-Live Video Experience (LiVE)
-============================
+**Live Video Experience (LiVE)**
+================================
 
 This is **LiVE Receiver**, the trainee client-side desktop application
 (for Windows and macOS) for receiving a live video-stream and event-stream of a training
