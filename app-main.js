@@ -215,7 +215,11 @@ const EventStream  = require("./app-main-relay-eventstream")
             return { success: true }
         }
         const liveConnect = async () => {
-            console.log("++ LiVE-Relay: connect")
+            if (app.connected) {
+                console.log("++ LiVE-Relay: connect (ALREADY CONNECTED)")
+                return { error: "invalid use -- already connected" }
+            }
+            console.log("++ LiVE-Relay: connect (begin)")
 
             /*  give UI some time to start stream processing  */
             app.win.webContents.send("stream-begin")
@@ -253,11 +257,15 @@ const EventStream  = require("./app-main-relay-eventstream")
 
             /*  indicate success  */
             app.connected = true
+            console.log("++ LiVE-Relay: connect (end)")
             return { success: true }
         }
         const liveDisconnect = async () => {
-            console.log("++ LiVE Relay: disconnect")
-            app.connected = false
+            if (!app.connected) {
+                console.log("++ LiVE-Relay: disconnect (STILL NOT CONNECTED)")
+                return { error: "invalid use -- still not connected" }
+            }
+            console.log("++ LiVE Relay: disconnect (begin)")
 
             /*  disconnect from LiVE Relay EventStream  */
             let result
@@ -285,6 +293,8 @@ const EventStream  = require("./app-main-relay-eventstream")
             await new Promise((resolve) => setTimeout(resolve, 1 * 1000))
 
             /*  indicate success  */
+            app.connected = false
+            console.log("++ LiVE Relay: disconnect (end)")
             return { success: true }
         }
         app.ipc.handle("login", async (event, { personPortrait, personName, liveRelayServer, liveAccessToken }) => {
