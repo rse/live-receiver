@@ -1,5 +1,5 @@
 
-![LiVE](app-res-logo-black.svg)
+<img src="https://rawgit.com/rse/live-receiver/master/app-res-logo-black.svg" width="300" align="right" alt=""/>
 
 Live Video Experience (LiVE)
 ============================
