@@ -30,6 +30,18 @@ const electron = require("electron")
     /*  the global UI object  */
     ui = {}
 
+    /*  flag the readyness of the DOM
+        (we have to call this very early to not miss the event,
+        although we will wait for this event later on)  */
+    ui.domReady = false
+    document.addEventListener("DOMContentLoaded", (event) => {
+        ui.domReady = true
+    })
+
+    /*  delay processing a certain amount of time  */
+    ui.delay = (delay) =>
+        new Promise((resolve) => setTimeout(resolve, delay))
+
     /*  persistent configuration settings  */
     ui.ipc = electron.ipcRenderer
     ui.settings = async (...args) => {
@@ -65,81 +77,6 @@ const electron = require("electron")
         }
     }
 
-    /*  initialize user interface  */
-    document.addEventListener("DOMContentLoaded", (event) => {
-        /*  support on-the-fly loading and compiling of Vue single-file components  */
-        httpVueLoader.langProcessor.less = (lessText) =>
-            less.render(lessText, {}).then((result) => result.css)
-        Vue.use(httpVueLoader)
-
-        /*  allow Vue modal windows  */
-        window["vue-js-modal"].default.install(Vue, { dynamic: true, injectModalsContainer: true })
-
-        /*  allow Vue DevTools integration  */
-        Vue.config.devtools = true
-
-        /*  defer until SVGs (see below) are loaded  */
-        setTimeout(() => {
-            /*  start DOM rendering with the outmost <win> component  */
-            ui.root = new Vue({ el: "#ui", name: "ui", components: { "win": "url:app-ui-1-window.vue" } })
-
-            /*  hook into the UI events
-                (needs to be deferred for a small time until Vue renders the window)  */
-            setTimeout(() => {
-                ui.root.$refs.win.$on("login", async (info) => {
-                    const result = await ui.ipc.invoke("login", info)
-                    if (result.error)
-                        ui.root.$refs.win.$emit("login-error", result.error)
-                    else
-                        ui.root.$refs.win.$emit("state", "video")
-                })
-                ui.root.$refs.win.$on("logout", async () => {
-                    const result = await ui.ipc.invoke("logout")
-                    if (!result.error)
-                        ui.root.$refs.win.$emit("state", "login")
-                })
-                ui.root.$refs.win.$on("stream-buffering", async (buffer) => {
-                    ui.ipc.invoke("stream-buffering", buffer)
-                })
-                ui.root.$refs.win.$on("video-resolution", async (resolution) => {
-                    ui.ipc.invoke("video-resolution", resolution)
-                })
-                ui.root.$refs.win.$on("minimize", () => {
-                    ui.ipc.invoke("minimize")
-                })
-                ui.root.$refs.win.$on("maximize", () => {
-                    ui.ipc.invoke("maximize")
-                })
-                ui.root.$refs.win.$on("fullscreen", () => {
-                    ui.ipc.invoke("fullscreen")
-                })
-                ui.root.$refs.win.$on("resize", (diff) => {
-                    ui.ipc.invoke("resize", diff)
-                })
-                ui.root.$refs.win.$on("set-size", (size) => {
-                    ui.ipc.invoke("set-size", size)
-                })
-                ui.root.$refs.win.$on("quit", () => {
-                    ui.ipc.invoke("quit")
-                })
-                ui.root.$refs.win.$on("message", (message) => {
-                    ui.ipc.invoke("message", message)
-                })
-            }, 300)
-        }, 300)
-
-        /*  hook into the main process events  */
-        ui.ipc.on("stream-begin", (event) => {
-            ui.root.$refs.win.$emit("stream-begin")
-        })
-        ui.ipc.on("stream-data", (event, data) => {
-            ui.root.$refs.win.$emit("stream-data", data)
-        })
-        ui.ipc.on("stream-end", (event) => {
-            ui.root.$refs.win.$emit("stream-end")
-        })
-    })
-
     /*  load avatar images  */
     ui.avatar = {}
     ui.avatar.man   = await ui.ipc.invoke("imageEncodeFromFile", "app-res-avatar-man.svg")
@@ -147,6 +84,80 @@ const electron = require("electron")
 
     /*  load logo images  */
     ui.logo = await ui.ipc.invoke("imageEncodeFromFile", "app-res-logo-white.svg")
+
+    /*  ensure the DOM is now finally available  */
+    while (!ui.domReady || !document.getElementById("ui"))
+        await ui.delay(50)
+
+    /*  support on-the-fly loading and compiling of Vue single-file components  */
+    httpVueLoader.langProcessor.less = (lessText) =>
+        less.render(lessText, {}).then((result) => result.css)
+    Vue.use(httpVueLoader)
+
+    /*  allow Vue modal windows  */
+    window["vue-js-modal"].default.install(Vue, { dynamic: true, injectModalsContainer: true })
+
+    /*  allow Vue DevTools integration  */
+    Vue.config.devtools = true
+
+    /*  start DOM rendering with the outmost <win> component  */
+    ui.root = new Vue({ el: "#ui", name: "ui", components: { "win": "url:app-ui-1-window.vue" } })
+
+    /*  ensure the <win> element is available  */
+    while (!(typeof ui.root.$refs === "object" && ui.root.$refs.win !== undefined))
+        await ui.delay(50)
+
+    /*  hook into the UI events  */
+    ui.root.$refs.win.$on("login", async (info) => {
+        const result = await ui.ipc.invoke("login", info)
+        if (result.error)
+            ui.root.$refs.win.$emit("login-error", result.error)
+        else
+            ui.root.$refs.win.$emit("state", "video")
+    })
+    ui.root.$refs.win.$on("logout", async () => {
+        const result = await ui.ipc.invoke("logout")
+        if (!result.error)
+            ui.root.$refs.win.$emit("state", "login")
+    })
+    ui.root.$refs.win.$on("stream-buffering", async (buffer) => {
+        ui.ipc.invoke("stream-buffering", buffer)
+    })
+    ui.root.$refs.win.$on("video-resolution", async (resolution) => {
+        ui.ipc.invoke("video-resolution", resolution)
+    })
+    ui.root.$refs.win.$on("minimize", () => {
+        ui.ipc.invoke("minimize")
+    })
+    ui.root.$refs.win.$on("maximize", () => {
+        ui.ipc.invoke("maximize")
+    })
+    ui.root.$refs.win.$on("fullscreen", () => {
+        ui.ipc.invoke("fullscreen")
+    })
+    ui.root.$refs.win.$on("resize", (diff) => {
+        ui.ipc.invoke("resize", diff)
+    })
+    ui.root.$refs.win.$on("set-size", (size) => {
+        ui.ipc.invoke("set-size", size)
+    })
+    ui.root.$refs.win.$on("quit", () => {
+        ui.ipc.invoke("quit")
+    })
+    ui.root.$refs.win.$on("message", (message) => {
+        ui.ipc.invoke("message", message)
+    })
+
+    /*  hook into the main process events  */
+    ui.ipc.on("stream-begin", (event) => {
+        ui.root.$refs.win.$emit("stream-begin")
+    })
+    ui.ipc.on("stream-data", (event, data) => {
+        ui.root.$refs.win.$emit("stream-data", data)
+    })
+    ui.ipc.on("stream-end", (event) => {
+        ui.root.$refs.win.$emit("stream-end")
+    })
 })().catch((err) => {
     console.log(`** live-receiver: ui: ERROR: ${err}`)
 })
