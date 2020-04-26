@@ -47,7 +47,7 @@ const zip   = require("cross-zip")
     ignore = ignore.concat(glob.sync("*.ai"))
     if (os.platform() === "win32") {
         ignore.push("ffmpeg/ffmpeg-mac-x64")
-        ignore.push("ffmpeg/ffmpeg-mac-x64.sh")
+        ignore.push("ffmpeg/ffmpeg-mac-x64\\.sh")
         execa.sync(electronpackager, [
             ".",
             "LiVE-Receiver",
@@ -66,7 +66,7 @@ const zip   = require("cross-zip")
         )
     }
     else if (os.platform() === "darwin") {
-        ignore.push("ffmpeg/ffmpeg-win-x64.exe")
+        ignore.push("ffmpeg/ffmpeg-win-x64\\.exe")
         execa.sync(electronpackager, [
             ".",
             "LiVE-Receiver",
