@@ -63,7 +63,7 @@
                 <span class="title">Audio Volume</span>
             </div>
             -->
-            <div class="box bandwidth" v-bind:class="{ disabled: inLogin }">
+            <div class="box bandwidth" v-bind:class="{ disabled: inLogin, active: !inLogin }">
                 <span class="word">{{ bandwidthText }}</span>
                 <span class="title">kbps</span>
             </div>
@@ -220,6 +220,16 @@
             bottom: 2px;
             color: var(--color-std-fg-1);
         }
+        &.active {
+            background-color:        var(--color-acc-bg-3);
+            border-top:    1px solid var(--color-acc-bg-5);
+            border-left:   1px solid var(--color-acc-bg-5);
+            border-right:  1px solid var(--color-acc-bg-1);
+            border-bottom: 1px solid var(--color-acc-bg-1);
+            .icon  { color:          var(--color-acc-fg-3); }
+            .word  { color:          var(--color-acc-fg-3); }
+            .title { color:          var(--color-acc-fg-1); }
+        }
     }
     .button {
         &:hover {
@@ -231,16 +241,6 @@
             .icon  { color:          var(--color-sig-fg-3); }
             .word  { color:          var(--color-sig-fg-3); }
             .title { color:          var(--color-sig-fg-1); }
-        }
-        &.active {
-            background-color:        var(--color-acc-bg-3);
-            border-top:    1px solid var(--color-acc-bg-5);
-            border-left:   1px solid var(--color-acc-bg-5);
-            border-right:  1px solid var(--color-acc-bg-1);
-            border-bottom: 1px solid var(--color-acc-bg-1);
-            .icon  { color:          var(--color-acc-fg-3); }
-            .word  { color:          var(--color-acc-fg-3); }
-            .title { color:          var(--color-acc-fg-1); }
         }
         &.disabled {
             background-color:        var(--color-std-bg-3);
