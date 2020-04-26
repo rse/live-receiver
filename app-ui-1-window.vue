@@ -54,7 +54,6 @@
                 <span class="grab grab-3"></span>
                 <span class="grab grab-4"></span>
                 <span class="grab grab-5"></span>
-                <!-- <span class="name">Receiver</span> -->
                 <span class="title">Move Window</span>
             </div>
             <div class="box button fit" v-on:click="sourceSize" v-bind:class="{ disabled: inLogin || fullscreened }">
@@ -94,6 +93,8 @@
                     v-bind:person-name.sync="personName"
                     v-bind:live-relay-server.sync="liveRelayServer"
                     v-bind:live-access-token.sync="liveAccessToken"
+                    v-bind:live-stream-resolution.sync="liveStreamResolution"
+                    v-bind:live-stream-buffering.sync="liveStreamBuffering"
                     v-on:login="login"
                 />
             </div>
@@ -371,48 +372,38 @@
 module.exports = {
     name: "win",
     data: () => ({
-        loaded:          false,
-        inLogin:         true,
-        allowDisconnect: true,
-        personPortrait:  "",
-        personName:      "",
-        liveRelayServer: "",
-        liveAccessToken: "",
-        logo:            ui.logo,
-        buffer:          2000,
-        message:         "",
-        resizing:        false,
-        resizingPos:     { x: 0, y: 0 },
-        fullscreened:    false,
-        volume:          100,
-        bandwidthBytes:  0,
-        bandwidthText:   "",
-        videoSize:       { w: 0, h: 0 },
-        resolutionId:    "1080p",
-        resolutions: {
-            "480p":  { w:  854, h:  480 },
-            "720p":  { w: 1280, h:  720 },
-            "1080p": { w: 1920, h: 1080 }
-        }
+        loaded:               false,
+        inLogin:              true,
+        allowDisconnect:      true,
+        personPortrait:       "",
+        personName:           "",
+        liveRelayServer:      "",
+        liveAccessToken:      "",
+        liveStreamResolution: "",
+        liveStreamBuffering:  "",
+        logo:                 ui.logo,
+        message:              "",
+        resizing:             false,
+        resizingPos:          { x: 0, y: 0 },
+        fullscreened:         false,
+        volume:               100,
+        bandwidthBytes:       0,
+        bandwidthText:        "",
+        videoSize:            { w: 0, h: 0 }
     }),
     computed: {
         style: ui.vueprop2cssvar()
     },
     watch: {
-        buffer: ui.debounce(1000, false, function (v) {
-            this.$emit("stream-buffering", v)
-        }),
-        resolutionId: ui.debounce(1000, false, function (v) {
-            this.$emit("video-resolution", v)
-        }),
         volume: function (v) {
             this.$refs.videostream.$emit("volume", v)
         },
-        personPortrait:   function (v) { ui.settings("person-portrait", v) },
-        personName:       function (v) { ui.settings("person-name", v) },
-        liveRelayServer:  function (v) { ui.settings("live-relay-server", v) },
-        liveAccessToken:  function (v) { ui.settings("live-access-token", v) },
-        liveStreamBuffer: function (v) { ui.settings("live-stream-buffer", v) }
+        personPortrait:       function (v) { ui.settings("person-portrait", v) },
+        personName:           function (v) { ui.settings("person-name", v) },
+        liveRelayServer:      function (v) { ui.settings("live-relay-server", v) },
+        liveAccessToken:      function (v) { ui.settings("live-access-token", v) },
+        liveStreamResolution: function (v) { ui.settings("live-stream-resolution", v) },
+        liveStreamBuffering:  function (v) { ui.settings("live-stream-buffering", v) }
     },
     components: {
         "login":       "url:app-ui-2-widget-login.vue",
@@ -434,10 +425,12 @@ module.exports = {
             if (!this.inLogin)
                 return
             this.$emit("login", {
-                personPortrait:  this.personPortrait,
-                personName:      this.personName,
-                liveRelayServer: this.liveRelayServer,
-                liveAccessToken: this.liveAccessToken
+                personPortrait:       this.personPortrait,
+                personName:           this.personName,
+                liveRelayServer:      this.liveRelayServer,
+                liveAccessToken:      this.liveAccessToken,
+                liveStreamResolution: this.liveStreamResolution,
+                liveStreamBuffering:  this.liveStreamBuffering
             })
         },
         logout () {
@@ -505,8 +498,7 @@ module.exports = {
             const vw = this.$refs.content.clientWidth  - 2 * 10
             const vh = this.$refs.content.clientHeight - 2 * 10
             const vr = vw / vh
-            const r = this.resolutions[this.resolutionId]
-            const dr = r.w / r.h
+            const dr = 1920 / 1080
             let dw, dh
             if (vr > dr) {
                 dh = vh
@@ -527,11 +519,12 @@ module.exports = {
         }
     },
     async created () {
-        this.personPortrait   = await ui.settings("person-portrait")
-        this.personName       = await ui.settings("person-name")
-        this.liveRelayServer  = await ui.settings("live-relay-server")
-        this.liveAccessToken  = await ui.settings("live-access-token")
-        this.liveStreamBuffer = await ui.settings("live-stream-buffer")
+        this.personPortrait       = await ui.settings("person-portrait")
+        this.personName           = await ui.settings("person-name")
+        this.liveRelayServer      = await ui.settings("live-relay-server")
+        this.liveAccessToken      = await ui.settings("live-access-token")
+        this.liveStreamResolution = await ui.settings("live-stream-resolution")
+        this.liveStreamBuffering  = await ui.settings("live-stream-buffering")
         this.loaded = true
     },
     mounted () {

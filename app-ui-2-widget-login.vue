@@ -57,7 +57,7 @@
         <div class="login-row server">
             <div class="login-col label">
                 <i class="icon fa fa-globe"></i>
-                LiVE Relay Server:
+                LiVE Relay Server (FQDN):
             </div>
             <div class="login-col input">
                 <input
@@ -84,6 +84,71 @@
                     v-on:keyup.escape="intLiveAccessToken = ''"
                     v-on:keyup.enter="$refs.login.focus()"
                 />
+            </div>
+        </div>
+        <div class="login-row resolution">
+            <div class="login-col label">
+                <i class="icon fa fa-key"></i>
+                LiVE Stream Resolution:
+            </div>
+            <div class="login-col input">
+                <div class="selbox-container">
+                    <div class="selbox"
+                        v-bind:class="{ active: intLiveStreamResolution === '480p' }"
+                        v-on:click="intLiveStreamResolution = '480p'">
+                        480p
+                    </div>
+                    <div class="selbox"
+                        v-bind:class="{ active: intLiveStreamResolution === '720p' }"
+                        v-on:click="intLiveStreamResolution = '720p'">
+                        720p
+                    </div>
+                    <div class="selbox"
+                        v-bind:class="{ active: intLiveStreamResolution === '1080p' }"
+                        v-on:click="intLiveStreamResolution = '1080p'">
+                        1080p
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="login-row buffering">
+            <div class="login-col label">
+                <i class="icon fa fa-key"></i>
+                LiVE Stream Buffering (ms):
+            </div>
+            <div class="login-col input">
+                <div class="selbox-container">
+                    <div class="selbox"
+                        v-bind:class="{ active: intLiveStreamBuffering === 500 }"
+                        v-on:click="intLiveStreamBuffering = 500">
+                        500
+                    </div>
+                    <div class="selbox"
+                        v-bind:class="{ active: intLiveStreamBuffering === 1000 }"
+                        v-on:click="intLiveStreamBuffering = 1000">
+                        1000
+                    </div>
+                    <div class="selbox"
+                        v-bind:class="{ active: intLiveStreamBuffering === 1500 }"
+                        v-on:click="intLiveStreamBuffering = 1500">
+                        1500
+                    </div>
+                    <div class="selbox"
+                        v-bind:class="{ active: intLiveStreamBuffering === 2000 }"
+                        v-on:click="intLiveStreamBuffering = 2000">
+                        2000
+                    </div>
+                    <div class="selbox"
+                        v-bind:class="{ active: intLiveStreamBuffering === 2500 }"
+                        v-on:click="intLiveStreamBuffering = 2500">
+                        2500
+                    </div>
+                    <div class="selbox"
+                        v-bind:class="{ active: intLiveStreamBuffering === 3000 }"
+                        v-on:click="intLiveStreamBuffering = 3000">
+                        3000
+                    </div>
+                </div>
             </div>
         </div>
         <div class="login-row submit">
@@ -156,7 +221,7 @@
             &.label {
                 display: flex;
                 flex-direction: row;
-                width: 180px;
+                width: 220px;
                 .icon {
                     color: var(--color-std-fg-1);
                     margin-right: 10px;
@@ -258,10 +323,47 @@
     .login-row.notice > .login-col.label {
         display: block;
         .logo {
-            width: 140px;
+            padding-left: 20px;
+            width: 100px;
         }
         .version {
             padding-left: 20px;
+        }
+    }
+    .selbox-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        .selbox {
+            margin-right: 4px;
+            &:last-child {
+                margin-right: 0;
+            }
+            width: 100%;
+            color:                   var(--color-std-fg-3);
+            background-color:        var(--color-std-bg-4);
+            border-top:    1px solid var(--color-std-bg-5);
+            border-left:   1px solid var(--color-std-bg-5);
+            border-right:  1px solid var(--color-std-bg-1);
+            border-bottom: 1px solid var(--color-std-bg-1);
+            text-align: center;
+            border-radius: 5px;
+            &:hover {
+                color:                   var(--color-sig-fg-3);
+                background-color:        var(--color-sig-bg-3);
+                border-top:    1px solid var(--color-sig-bg-5);
+                border-left:   1px solid var(--color-sig-bg-5);
+                border-right:  1px solid var(--color-sig-bg-1);
+                border-bottom: 1px solid var(--color-sig-bg-1);
+            }
+            &.active {
+                color:                   var(--color-acc-fg-3);
+                background-color:        var(--color-acc-bg-3);
+                border-top:    1px solid var(--color-acc-bg-5);
+                border-left:   1px solid var(--color-acc-bg-5);
+                border-right:  1px solid var(--color-acc-bg-1);
+                border-bottom: 1px solid var(--color-acc-bg-1);
+            }
         }
     }
 }
@@ -271,32 +373,34 @@
 module.exports = {
     name: "login",
     props: {
-        personPortrait:  "",
-        personName:      "",
-        liveRelayServer: "",
-        liveAccessToken: ""
+        personPortrait:       { type: String, default: "" },
+        personName:           { type: String, default: "" },
+        liveRelayServer:      { type: String, default: "" },
+        liveAccessToken:      { type: String, default: "" },
+        liveStreamResolution: { type: String, default: "1080p" },
+        liveStreamBuffering:  { type: Number, default: 2000 }
     },
     data: function () {
         return {
-            intPersonPortrait:  this.personPortrait,
-            intPersonName:      this.personName,
-            intLiveRelayServer: this.liveRelayServer,
-            intLiveAccessToken: this.liveAccessToken,
-            allowConnect:       true,
-            logo:               ui.logo,
-            version:            ui.pkg.version,
-            error:              ""
+            intPersonPortrait:       this.personPortrait,
+            intPersonName:           this.personName,
+            intLiveRelayServer:      this.liveRelayServer,
+            intLiveAccessToken:      this.liveAccessToken,
+            intLiveStreamResolution: this.liveStreamResolution,
+            intLiveStreamBuffering:  this.liveStreamBuffering,
+            allowConnect:            true,
+            logo:                    ui.logo,
+            version:                 ui.pkg.version,
+            error:                   ""
         }
     },
     watch: {
-        personPortrait:     function (v) { this.intPersonPortrait = v },
-        personName:         function (v) { this.intPersonName = v },
-        liveRelayServer:    function (v) { this.intLiveRelayServer = v },
-        liveAccessToken:    function (v) { this.intLiveAccessToken = v },
-        intPersonPortrait:  function (v) { this.$emit("update:person-portrait", v) },
-        intPersonName:      function (v) { this.$emit("update:person-name", v) },
-        intLiveRelayServer: function (v) { this.$emit("update:live-relay-server", v) },
-        intLiveAccessToken: function (v) { this.$emit("update:live-access-token", v) }
+        intPersonPortrait:       function (v) { this.$emit("update:person-portrait", v) },
+        intPersonName:           function (v) { this.$emit("update:person-name", v) },
+        intLiveRelayServer:      function (v) { this.$emit("update:live-relay-server", v) },
+        intLiveAccessToken:      function (v) { this.$emit("update:live-access-token", v) },
+        intLiveStreamResolution: function (v) { this.$emit("update:live-stream-resolution", v) },
+        intLiveStreamBuffering:  function (v) { this.$emit("update:live-stream-buffering", v) }
     },
     computed: {
         style: ui.vueprop2cssvar()

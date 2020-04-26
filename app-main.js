@@ -45,30 +45,30 @@ const EventStream  = require("./app-main-relay-eventstream")
         const clientId   = (new UUID(1)).format("std")
         const settings = new Settings({ appId: "LiVE-Receiver", flushAfter: 1 * 1000 })
         settings.load()
-        app.clientId            = settings.get("client-id",             clientId)
-        app.x                   = settings.get("window-x",              100)
-        app.y                   = settings.get("window-y",              100)
-        app.w                   = settings.get("window-width",          1280 + 40)
-        app.h                   = settings.get("window-height",         720  + 40)
-        app.personPortrait      = settings.get("person-portrait",       "")
-        app.personName          = settings.get("person-name",           "")
-        app.liveRelayServer     = settings.get("live-relay-server",     "")
-        app.liveAccessToken     = settings.get("live-access-token",     "")
-        app.liveVideoResolution = settings.get("live-video-resolution", "1080p")
-        app.liveStreamBuffering = settings.get("live-stream-buffering", 2000)
+        app.clientId             = settings.get("client-id",              clientId)
+        app.x                    = settings.get("window-x",               100)
+        app.y                    = settings.get("window-y",               100)
+        app.w                    = settings.get("window-width",           1280 + 40)
+        app.h                    = settings.get("window-height",          720  + 40)
+        app.personPortrait       = settings.get("person-portrait",        "")
+        app.personName           = settings.get("person-name",            "")
+        app.liveRelayServer      = settings.get("live-relay-server",      "")
+        app.liveAccessToken      = settings.get("live-access-token",      "")
+        app.liveStreamResolution = settings.get("live-stream-resolution", "1080p")
+        app.liveStreamBuffering  = settings.get("live-stream-buffering",  2000)
 
         /*  save back the settings once at startup  */
-        settings.set("client-id",             app.clientId)
-        settings.set("window-x",              app.x)
-        settings.set("window-y",              app.y)
-        settings.set("window-width",          app.w)
-        settings.set("window-height",         app.h)
-        settings.set("person-portrait",       app.personPortrait)
-        settings.set("person-name",           app.personName)
-        settings.set("live-relay-server",     app.liveRelayServer)
-        settings.set("live-access-token",     app.liveAccessToken)
-        settings.set("live-video-resolution", app.liveVideoResolution)
-        settings.set("live-stream-buffering", app.liveStreamBuffering)
+        settings.set("client-id",              app.clientId)
+        settings.set("window-x",               app.x)
+        settings.set("window-y",               app.y)
+        settings.set("window-width",           app.w)
+        settings.set("window-height",          app.h)
+        settings.set("person-portrait",        app.personPortrait)
+        settings.set("person-name",            app.personName)
+        settings.set("live-relay-server",      app.liveRelayServer)
+        settings.set("live-access-token",      app.liveAccessToken)
+        settings.set("live-stream-resolution", app.liveStreamResolution)
+        settings.set("live-stream-buffering",  app.liveStreamBuffering)
         settings.save()
 
         /*  initialize global information  */
@@ -101,8 +101,8 @@ const EventStream  = require("./app-main-relay-eventstream")
             y:              app.y,
             width:          app.w,
             height:         app.h,
-            minWidth:       900,
-            minHeight:      600,
+            minWidth:       950,
+            minHeight:      650,
             resizable:      true,
             webPreferences: {
                 nodeIntegration:    true,
@@ -192,9 +192,6 @@ const EventStream  = require("./app-main-relay-eventstream")
         app.vs = null
         const credentials = {
             client:     app.clientId,
-            server:     app.liveRelayServer,
-            resolution: app.liveVideoResolution,
-            buffering:  app.liveStreamBuffering
         }
         const liveAuth = async () => {
             console.log("++ LiVE-Relay: authenticate")
@@ -296,16 +293,22 @@ const EventStream  = require("./app-main-relay-eventstream")
             console.log("++ LiVE Relay: disconnect (end)")
             return { success: true }
         }
-        app.ipc.handle("login", async (event, { personPortrait, personName, liveRelayServer, liveAccessToken }) => {
+        app.ipc.handle("login", async (event, {
+            personPortrait, personName, liveRelayServer,
+            liveAccessToken, liveStreamResolution, liveStreamBuffering }) => {
             /*  take login parameters  */
-            app.personPortrait  = personPortrait
-            app.personName      = personName
-            app.liveRelayServer = liveRelayServer
-            app.liveAccessToken = liveAccessToken
-            settings.set("person-portrait",   app.personPortrait)
-            settings.set("person-name",       app.personName)
-            settings.set("live-relay-server", app.liveRelayServer)
-            settings.set("live-access-token", app.liveAccessToken)
+            app.personPortrait       = personPortrait
+            app.personName           = personName
+            app.liveRelayServer      = liveRelayServer
+            app.liveAccessToken      = liveAccessToken
+            app.liveStreamResolution = liveStreamResolution
+            app.liveStreamBuffering  = liveStreamBuffering
+            settings.set("person-portrait",        app.personPortrait)
+            settings.set("person-name",            app.personName)
+            settings.set("live-relay-server",      app.liveRelayServer)
+            settings.set("live-access-token",      app.liveAccessToken)
+            settings.set("live-stream-resolution", app.liveStreamResolution)
+            settings.set("live-stream-buffering",  app.liveStreamBuffering)
 
             /*  parse access token  */
             const m = app.liveAccessToken.match(/^(.+?)-([^-]+)-([^-]+)$/)
@@ -314,9 +317,12 @@ const EventStream  = require("./app-main-relay-eventstream")
             const [ , channel, token1, token2 ] = m
 
             /*  update LiVE Relay communication credentials  */
-            credentials.channel = channel
-            credentials.token1  = token1
-            credentials.token2  = token2
+            credentials.server     = app.liveRelayServer
+            credentials.channel    = channel
+            credentials.token1     = token1
+            credentials.token2     = token2
+            credentials.resolution = app.liveStreamResolution
+            credentials.buffering  = app.liveStreamBuffering
 
             /*  establish communication  */
             let result = await liveAuth()
@@ -329,38 +335,6 @@ const EventStream  = require("./app-main-relay-eventstream")
         })
         app.ipc.handle("logout", async (event) => {
             const result = await liveDisconnect()
-            if (result.error)
-                return result
-            return { success: true }
-        })
-
-        /*  the LiVE Relay VideoStream related communication  */
-        app.ipc.handle("video-resolution", async (event, resolution) => {
-            /*  change resolution information  */
-            app.liveVideoResolution = resolution
-            settings.set("live-video-resolution", app.liveVideoResolution)
-            credentials.resolution = app.liveVideoResolution
-
-            /*  re-connect again  */
-            let result = await liveDisconnect()
-            if (result.error)
-                return result
-            result = await liveConnect()
-            if (result.error)
-                return result
-            return { success: true }
-        })
-        app.ipc.handle("stream-buffering", async (event, buffering) => {
-            /*  change buffering information  */
-            app.liveStreamBuffering = buffering
-            settings.set("live-stream-buffering", app.liveStreamBuffering)
-            credentials.buffering = app.liveStreamBuffering
-
-            /*  re-connect again  */
-            let result = await liveDisconnect()
-            if (result.error)
-                return result
-            result = await liveConnect()
             if (result.error)
                 return result
             return { success: true }

@@ -120,11 +120,11 @@ const electron = require("electron")
         if (!result.error)
             ui.root.$refs.win.$emit("state", "login")
     })
+    ui.root.$refs.win.$on("stream-resolution", async (resolution) => {
+        ui.ipc.invoke("stream-resolution", resolution)
+    })
     ui.root.$refs.win.$on("stream-buffering", async (buffer) => {
         ui.ipc.invoke("stream-buffering", buffer)
-    })
-    ui.root.$refs.win.$on("video-resolution", async (resolution) => {
-        ui.ipc.invoke("video-resolution", resolution)
     })
     ui.root.$refs.win.$on("minimize", () => {
         ui.ipc.invoke("minimize")
