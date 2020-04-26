@@ -37,7 +37,7 @@ const zip   = require("cross-zip")
     shell.rm("-rf", "LiVE-Receiver-darwin-x64")
 
     console.log("++ packaging App as an Electron distribution")
-    let remove = glob.sync("node_modules/typopro-web/web/TypoPRO-*")
+    const remove = glob.sync("node_modules/typopro-web/web/TypoPRO-*")
         .filter((path) => !path.match(/\/TypoPRO-(SourceSansPro|DejaVu)$/))
     for (const file of remove)
         shell.rm("-rf", file)
