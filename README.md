@@ -16,21 +16,23 @@ consisting of three particular components:
   This component is run at the trainer-side of a LiVE session,
   sends the live video-stream via RTMPS to the LiVE Relay
   and receives the live event-stream via MQTTS from the LiVE Relay.
-  It is primarily based on [Open Broadcaster Software (OBS) Studio](https://obsproject.com/)
-  and the [Head-Up-Display Server (HUDS)](https://github.com/rse/huds)
-  and its [Training HUD](https://github.com/rse/huds-hud-training/).
+  It is primarily based on the Open Source software components
+  [Open Broadcaster Software (OBS) Studio](https://obsproject.com/),
+  the [Head-Up-Display Server (HUDS)](https://github.com/rse/huds), and
+  its [Training HUD](https://github.com/rse/huds-hud-training/).
 
 - [**LiVE Relay**](https://github.com/rse/live-relay):
   This component is run at the server-side of a LiVE session
   and relays the RTMPS video-stream and MQTTS event-stream betweeen the
   trainer and the trainees. It is primarily based
-  on the [SRS](https://ossrs.net/srs.release/releases/) RTMP-based streaming
-  server and the [Mosquitto](https://mosquitto.org/) MQTT-based message broker.
+  on the Open Source software components
+  [SRS](https://ossrs.net/srs.release/releases/) for RTMPS
+  and [Mosquitto](https://mosquitto.org/) for MQTTS.
 
 - [**LiVE Receiver**](https://github.com/rse/live-receiver):
   This component is run at the trainee-side of a LiVE session,
   receives the live video-stream via RTMPS from the LiVE Relay
   and sends the live event-stream via MQTTS to the LiVE Relay.
-  It is primarily based on [Electron](https://www.electronjs.org/)
-  and [FFMpeg](https://ffmpeg.org/).
+  It is primarily based on the Open Source software components
+  [Electron](https://www.electronjs.org/) and [FFMpeg](https://ffmpeg.org/).
 
