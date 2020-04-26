@@ -1,5 +1,5 @@
 
-<img src="https://raw.githubusercontent.com/rse/live-receiver/master/app-res-logo-black.svg" width="300" align="right" alt=""/>
+<img src="https://raw.githubusercontent.com/rse/live-receiver/master/app-res-logo-black.svg" width="200" align="right" alt=""/>
 
 Live Video Experience (LiVE)
 ============================
