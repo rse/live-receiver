@@ -172,6 +172,7 @@ module.exports = class VideoStream extends EventEmitter {
                 await this.proc
             }
             catch (err) {
+                /*  no-op  */
             }
             this.proc = null
         }
