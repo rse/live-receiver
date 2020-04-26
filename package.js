@@ -80,7 +80,7 @@ const zip   = require("cross-zip")
         shell.rm("-f", "LiVE-Receiver-darwin-x64/LICENSE*")
         shell.rm("-f", "LiVE-Receiver-darwin-x64/version")
         zip.zipSync(
-            path.joun(__dirname, "LiVE-Receiver-darwin-x64"),
+            path.join(__dirname, "LiVE-Receiver-darwin-x64"),
             path.join(__dirname, "LiVE-Receiver-darwin-x64.zip")
         )
     }
