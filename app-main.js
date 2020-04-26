@@ -27,7 +27,6 @@ const electron     = require("electron")
 const path         = require("path")
 const EventEmitter = require("eventemitter2")
 const imageDataURI = require("image-data-uri")
-const fullname     = require("fullname")
 const throttle     = require("throttle-debounce").throttle
 const UUID         = require("pure-uuid")
 
