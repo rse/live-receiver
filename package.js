@@ -35,6 +35,8 @@ const zip   = require("cross-zip")
     console.log("++ cleanup")
     shell.rm("-rf", "LiVE-Receiver-win32-x64")
     shell.rm("-rf", "LiVE-Receiver-darwin-x64")
+    shell.rm("-f", "LiVE-Receiver-win32-x64.zip")
+    shell.rm("-f", "LiVE-Receiver-darwin-x64.zip")
 
     console.log("++ packaging App as an Electron distribution")
     const remove = glob.sync("node_modules/typopro-web/web/TypoPRO-*")
