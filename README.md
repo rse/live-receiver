@@ -4,25 +4,33 @@
 Live Video Experience (LiVE)
 ============================
 
-This is the **LiVE Receiver**, the trainee client-side desktop application
-(for Windows and macOS) for receiving a live video stream of a training
-via a [LiVE Relay](https://github.com/rse/live-relay) service from a
+This is **LiVE Receiver**, the trainee client-side desktop application
+(for Windows and macOS) for receiving a live video-stream and event-stream of a training
+via a central [LiVE Relay](https://github.com/rse/live-relay) service from a
 trainer running the [LiVE Sender](https://github.com/rse/live-sender) side.
 
-Live Video Experience (LiVE) is a setup consisting of three components:
+*Live Video Experience (LiVE)* is a training broadcasting setup,
+consisting of three particular components:
 
-- [LiVE Sender](https://github.com/rse/live-sender):
+- [**LiVE Sender**](https://github.com/rse/live-sender):
   This component is run at the trainer-side of a LiVE session,
   sends the live video-stream via RTMPS to the LiVE Relay
   and receives the live event-stream via MQTTS from the LiVE Relay.
+  It is primarily based on [Open Broadcaster Software (OBS) Studio](https://obsproject.com/)
+  and the [Head-Up-Display Server (HUDS)](https://github.com/rse/huds)
+  and its [Training HUD](https://github.com/rse/huds-hud-training/).
 
-- [LiVE Relay](https://github.com/rse/live-relay)
+- [**LiVE Relay**](https://github.com/rse/live-relay):
   This component is run at the server-side of a LiVE session
-  and relays the RTMPS video-stream and MQTTS event-stream betweeen the trainer
-  and the trainees.
+  and relays the RTMPS video-stream and MQTTS event-stream betweeen the
+  trainer and the trainees. It is primarily based
+  on the [SRS](https://ossrs.net/srs.release/releases/) RTMP-based streaming
+  server and the [Mosquitto](https://mosquitto.org/) MQTT-based message broker.
 
-- [LiVE Receiver](https://github.com/rse/live-receiver)
+- [**LiVE Receiver**](https://github.com/rse/live-receiver):
   This component is run at the trainee-side of a LiVE session,
   receives the live video-stream via RTMPS from the LiVE Relay
   and sends the live event-stream via MQTTS to the LiVE Relay.
+  It is primarily based on [Electron](https://www.electronjs.org/)
+  and [FFMpeg](https://ffmpeg.org/).
 
