@@ -481,7 +481,7 @@ module.exports = {
         sourceSize () {
             if (this.fullscreened || this.inLogin)
                 return
-            const res = this.resolutions[this.resolutionId]
+            const res = { w: 1920, h: 1080 } // hardcoded
             let w = res.w
             let h = res.h
             h += this.$refs.header.clientHeight
