@@ -86,9 +86,10 @@
                 />
             </div>
         </div>
+        <!--
         <div class="login-row resolution">
             <div class="login-col label">
-                <i class="icon fa fa-key"></i>
+                <i class="icon fa fa-expand-alt"></i>
                 LiVE Stream Resolution:
             </div>
             <div class="login-col input">
@@ -111,9 +112,10 @@
                 </div>
             </div>
         </div>
+        -->
         <div class="login-row buffering">
             <div class="login-col label">
-                <i class="icon fa fa-key"></i>
+                <i class="icon fa fa-clock"></i>
                 LiVE Stream Buffering (ms):
             </div>
             <div class="login-col input">
