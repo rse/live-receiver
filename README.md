@@ -9,7 +9,8 @@ This is **LiVE Receiver**, the trainee client-side desktop application
 via a central [LiVE Relay](https://github.com/rse/live-relay) service from a
 trainer running the [LiVE Sender](https://github.com/rse/live-sender) side.
 
-*Live Video Experience (LiVE)* is a training broadcasting setup,
+*Live Video Experience (LiVE)* is a training broadcasting setup
+developed by <i>Dr. Ralf S. Engelschall</i> and
 consisting of three particular components:
 
 - [**LiVE Sender**](https://github.com/rse/live-sender):
