@@ -74,7 +74,13 @@ module.exports = class EventStream extends EventEmitter {
     send (message) {
         if (this.broker === null)
             throw new Error("not connected")
-        this.broker.publish(`stream/${this.options.channel}/sender`, message)
+        this.emit("sent", message)
+        this.broker.publish(`stream/${this.options.channel}/sender`, message, { qos: 2 }, (err) => {
+            if (err)
+                this.emit("send:error", err)
+            else
+                this.emit("send:success", message)
+        })
     }
     register (method, callback) {
         return this.rpc.register(method, callback)

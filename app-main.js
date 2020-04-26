@@ -341,7 +341,7 @@ const EventStream  = require("./app-main-relay-eventstream")
         })
 
         /*  the LiVE Relay EventStream related communication  */
-        app.ipc.handle("message", async (event, message) => {
+        app.ipc.handle("message", (event, message) => {
             if (app.es !== null) {
                 app.es.send(JSON.stringify({
                     id:    "training",
