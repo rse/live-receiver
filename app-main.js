@@ -57,6 +57,19 @@ const EventStream  = require("./app-main-relay-eventstream")
         app.liveAccessToken     = settings.get("live-access-token",     "")
         app.liveVideoResolution = settings.get("live-video-resolution", "1080p")
         app.liveStreamBuffering = settings.get("live-stream-buffering", 2000)
+
+        /*  save back the settings once at startup  */
+        settings.set("client-id",             app.clientId)
+        settings.set("window-x",              app.x)
+        settings.set("window-y",              app.y)
+        settings.set("window-width",          app.w)
+        settings.set("window-height",         app.h)
+        settings.set("person-portrait",       app.personPortrait)
+        settings.set("person-name",           app.personName)
+        settings.set("live-relay-server",     app.liveRelayServer)
+        settings.set("live-access-token",     app.liveAccessToken)
+        settings.set("live-video-resolution", app.liveVideoResolution)
+        settings.set("live-stream-buffering", app.liveStreamBuffering)
         settings.save()
 
         /*  initialize global information  */
@@ -129,14 +142,14 @@ const EventStream  = require("./app-main-relay-eventstream")
         /*  track application window changes  */
         const updateBounds = () => {
             const bounds = app.win.getBounds()
-            app.x      = bounds.x
-            app.y      = bounds.y
-            app.width  = bounds.width
-            app.height = bounds.height
+            app.x = bounds.x
+            app.y = bounds.y
+            app.w = bounds.width
+            app.h = bounds.height
             settings.set("window-x",      app.x)
             settings.set("window-y",      app.y)
-            settings.set("window-width",  app.width)
-            settings.set("window-height", app.height)
+            settings.set("window-width",  app.w)
+            settings.set("window-height", app.h)
         }
         app.win.on("resize", throttle(1000, updateBounds))
         app.win.on("move",   throttle(1000, updateBounds))

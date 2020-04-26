@@ -216,7 +216,7 @@ module.exports = {
         /*  select a standard avatar (and fixate it)  */
         chooseAvatar (name) {
             this.imageData = ui.avatar[name]
-            this.fixateImage()
+            this.$emit("input", this.imageData)
         },
 
         /*  choose a custom portrait image  */

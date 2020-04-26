@@ -25,7 +25,7 @@
 -->
 
 <template>
-    <div v-bind:style="style" class="win" v-on:mousemove="resizeMove" v-on:mouseup="resizeEnd">
+    <div v-if="loaded" v-bind:style="style" class="win" v-on:mousemove="resizeMove" v-on:mouseup="resizeEnd">
         <div ref="header" class="header">
             <div class="box button logout" v-on:click="logout" v-bind:class="{ disabled: inLogin || !allowDisconnect }">
                 <i class="icon fa fa-arrow-alt-circle-left"></i>
@@ -394,6 +394,7 @@
 module.exports = {
     name: "win",
     data: () => ({
+        loaded:          false,
         inLogin:         true,
         allowDisconnect: true,
         personPortrait:  "",
@@ -520,6 +521,10 @@ module.exports = {
             this.$emit("set-size", { w, h })
         },
         handleResize () {
+            if (this.$refs.content === undefined) {
+                setTimeout(this.handleResize, 10)
+                return
+            }
             const vw = this.$refs.content.clientWidth  - 2 * 10
             const vh = this.$refs.content.clientHeight - 2 * 10
             const vr = vw / vh
@@ -544,27 +549,15 @@ module.exports = {
             this.$emit("quit")
         }
     },
+    async created () {
+        this.personPortrait   = await ui.settings("person-portrait"),
+        this.personName       = await ui.settings("person-name"),
+        this.liveRelayServer  = await ui.settings("live-relay-server"),
+        this.liveAccessToken  = await ui.settings("live-access-token"),
+        this.liveStreamBuffer = await ui.settings("live-stream-buffer")
+        this.loaded = true
+    },
     mounted () {
-        Promise.all([
-            ui.settings("person-portrait"),
-            ui.settings("person-name"),
-            ui.settings("live-relay-server"),
-            ui.settings("live-access-token"),
-            ui.settings("live-stream-buffer")
-        ]).then(([
-            personPortrait,
-            personName,
-            liveRelayServer,
-            liveAccessToken,
-            liveStreamBuffer
-        ]) => {
-            this.personPortrait   = personPortrait
-            this.personName       = personName
-            this.liveRelayServer  = liveRelayServer
-            this.liveAccessToken  = liveAccessToken
-            this.liveStreamBuffer = liveStreamBuffer
-        })
-
         this.$on("login-error", (error) => {
             this.$refs.login.$emit("error", error)
         })
