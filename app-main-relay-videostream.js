@@ -53,17 +53,19 @@ module.exports = class VideoStream extends EventEmitter {
             channel:    "",
             token1:     "",
             token2:     "",
-            timeout:    30 * 1000,
+            timeout:    20 * 1000,
             resolution: "1080p",
             buffering:  2000
         }, options)
 
         /*  initialize state  */
-        this.initial = false
-        this.timer   = null
-        this.proc    = null
+        this.initial    = false
+        this.timer      = null
+        this.proc       = null
+        this.processing = false
     }
     async start () {
+        this.processing = true
         /*  cleanup if necessary  */
         if (this.proc !== null)
             await this.stop()
@@ -99,14 +101,18 @@ module.exports = class VideoStream extends EventEmitter {
         this.mp4box.onReady = (info) => {
             let segment = 0
             const onTimeout = async () => {
+                console.log(`++ LiVE-Relay: data receiving timeout (${this.options.timeout / 1000}s) ` +
+                    "-- restarting FFMpeg subprocess")
                 await this.stop()
                 this.start()
             }
-            this.timer = setTimeout(onTimeout, this.options.timeout)
+            if (!this.processing)
+                this.timer = setTimeout(onTimeout, this.options.timeout)
             this.mp4box.onSegment = (id, user, buffer) => {
                 if (this.timer !== null)
                     clearTimeout(this.timer)
-                this.timer = setTimeout(onTimeout, this.options.timeout)
+                if (!this.processing)
+                    this.timer = setTimeout(onTimeout, this.options.timeout)
                 this.emit("segment", segment++, id, user, buffer)
             }
             for (const track of info.tracks) {
@@ -146,25 +152,32 @@ module.exports = class VideoStream extends EventEmitter {
         this.proc.stderr.on("data", (line) => {
             this.emit("error", `ffmpeg: ${line.toString()}`)
         })
+
+        this.processing = false
         return Promise.resolve(true)
     }
     async stop () {
+        this.processing = true
+
+        /*  clear a still running timer  */
         if (this.timer !== null) {
             clearTimeout(this.timer)
             this.timer = null
         }
+
+        /*  kill ffmpeg(1) subprocess  */
         if (this.proc !== null) {
             this.proc.kill("SIGTERM", { forceKillAfterTimeout: 2 * 1000 })
             try {
                 await this.proc
             }
             catch (err) {
-                this.proc.kill("SIGKILL")
             }
             this.proc = null
         }
-        else
-            return Promise.resolve(true)
+
+        this.processing = false
+        return Promise.resolve(true)
     }
 }
 
