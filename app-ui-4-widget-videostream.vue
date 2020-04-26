@@ -97,19 +97,20 @@ module.exports = {
     props: {
         volume: 100
     },
-    data: () => ({
-        state:     "stalled",
-        intVolume: this.volume
-    }),
+    data: function () {
+        return {
+            state:     "stalled",
+            intVolume: this.volume ? this.volume : 100
+        }
+    },
     computed: {
         style: ui.vueprop2cssvar()
     },
     watch: {
         intVolume: function (v) {
-            this.$refs.stream.volume = v
+            if (this.ve !== null)
+                this.ve.volume = v / 100
         }
-    },
-    methods: {
     },
     mounted () {
         /*  allow volume to be adjusted  */
@@ -152,6 +153,7 @@ module.exports = {
             const ve = document.createElement("video")
             this.we.appendChild(ve)
             ve.autoplay = true
+            ve.volume = this.intVolume / 100
             ve.addEventListener("loadeddata", () => {
                 console.log("videoelement: loadeddata")
             })
@@ -238,7 +240,7 @@ module.exports = {
                             }
                             catch (err) {
                                 console.log("sourcebuffer: appendBuffer: exception:", err)
-                                this.$emit("error", "SourceBuffer: ${err}")
+                                this.$emit("error", `SourceBuffer: ${err}`)
                             }
                         }
                     }
@@ -274,7 +276,7 @@ module.exports = {
                     }
                     catch (err) {
                         console.log("sourcebuffer: addSourceBuffer: exception:", err)
-                        this.$emit("error", "SourceBuffer: ${err}")
+                        this.$emit("error", `SourceBuffer: ${err}`)
                     }
                 }
             }
@@ -309,7 +311,7 @@ module.exports = {
         this.$on("stream-begin", async () => {
             console.log("stream-begin: begin")
             if (!this.streaming) {
-                await streamBegin().catch((err) => true)
+                await streamBegin().catch(() => true)
                 this.streaming = true
             }
             this.$emit("stream-begin:done")
@@ -323,7 +325,7 @@ module.exports = {
             console.log("stream-end: begin")
             if (this.streaming) {
                 this.streaming = false
-                await streamEnd().catch((err) => true)
+                await streamEnd().catch(() => true)
             }
             this.$emit("stream-end:done")
             console.log("stream-end: end")

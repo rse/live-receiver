@@ -31,27 +31,13 @@
                 <i class="icon fa fa-arrow-alt-circle-left"></i>
                 <span class="title">Disconnect</span>
             </div>
-            <!--
-            <div class="box button small" v-on:click="resolution('480p')" v-bind:class="{ active: resolutionId === '480p', disabled: inLogin }">
-                <span class="word">480p</span>
-                <span class="title">Small-Res</span>
+            <div class="box logo">
+                <img v-bind:src="logo" alt="LiVE"/>
+                <span class="title">Receiver</span>
             </div>
-            <div class="box button medium" v-on:click="resolution('720p')" v-bind:class="{ active: resolutionId === '720p', disabled: inLogin }">
-                <span class="word">720p</span>
-                <span class="title">Medium-Res</span>
-            </div>
-            <div class="box button large" v-on:click="resolution('1080p')" v-bind:class="{ active: resolutionId === '1080p', disabled: inLogin }">
-                <span class="word">1080p</span>
-                <span class="title">Large-Res</span>
-            </div>
-            <div class="box slider buffer" v-bind:class="{ disabled: inLogin }">
-                <input ref="buffer"
-                    v-bind:disabled="inLogin"
-                    class="buffer"
-                    type="range"
-                    min="500" max="2500" step="500"
-                    v-model="buffer"/>
-                <span class="title">Stream Buffer</span>
+            <div class="box bandwidth" v-bind:class="{ disabled: inLogin, active: !inLogin }">
+                <span class="word">{{ inLogin ? "---" : bandwidthText }}</span>
+                <span class="title">kbps</span>
             </div>
             <div class="box slider volume" v-bind:class="{ disabled: inLogin }">
                 <input ref="volume"
@@ -61,15 +47,6 @@
                     min="0" max="100"
                     v-model="volume"/>
                 <span class="title">Audio Volume</span>
-            </div>
-            -->
-            <div class="box bandwidth" v-bind:class="{ disabled: inLogin, active: !inLogin }">
-                <span class="word">{{ bandwidthText }}</span>
-                <span class="title">kbps</span>
-            </div>
-            <div class="box logo">
-                <img v-bind:src="logo" alt="LiVE"/>
-                <span class="title">Receiver</span>
             </div>
             <div class="box move">
                 <span class="grab grab-1"></span>
@@ -429,7 +406,7 @@ module.exports = {
             this.$emit("video-resolution", v)
         }),
         volume: function (v) {
-            this.$refs.videostream.$emit("volume", v / 100)
+            this.$refs.videostream.$emit("volume", v)
         },
         personPortrait:   function (v) { ui.settings("person-portrait", v) },
         personName:       function (v) { ui.settings("person-name", v) },
@@ -550,10 +527,10 @@ module.exports = {
         }
     },
     async created () {
-        this.personPortrait   = await ui.settings("person-portrait"),
-        this.personName       = await ui.settings("person-name"),
-        this.liveRelayServer  = await ui.settings("live-relay-server"),
-        this.liveAccessToken  = await ui.settings("live-access-token"),
+        this.personPortrait   = await ui.settings("person-portrait")
+        this.personName       = await ui.settings("person-name")
+        this.liveRelayServer  = await ui.settings("live-relay-server")
+        this.liveAccessToken  = await ui.settings("live-access-token")
         this.liveStreamBuffer = await ui.settings("live-stream-buffer")
         this.loaded = true
     },
@@ -596,7 +573,6 @@ module.exports = {
         this.$nextTick(() => {
             this.handleResize()
         })
-
     },
     beforeDestroy () {
         window.removeEventListener("resize", () => this.handleResize())
