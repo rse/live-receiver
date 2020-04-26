@@ -48,7 +48,6 @@
         "mp4box":                          "0.3.20",
         "pure-uuid":                       "1.6.0",
         "image-data-uri":                  "2.0.1",
-        "fullname":                        "4.0.1",
         "mqtt":                            "3.0.0",
         "mqtt-json-rpc":                   "1.1.1"
     },

@@ -43,7 +43,6 @@ const EventStream  = require("./app-main-relay-eventstream")
     app.allowRendererProcessReuse = true
     app.on("ready", async () => {
         /*  establish settings and their default values  */
-        const personName = await fullname()
         const clientId   = (new UUID(1)).format("std")
         const settings = new Settings({ appId: "LiVE-Receiver", flushAfter: 1 * 1000 })
         settings.load()
@@ -53,11 +52,12 @@ const EventStream  = require("./app-main-relay-eventstream")
         app.w                   = settings.get("window-width",          1280 + 40)
         app.h                   = settings.get("window-height",         720  + 40)
         app.personPortrait      = settings.get("person-portrait",       "")
-        app.personName          = settings.get("person-name",           personName)
+        app.personName          = settings.get("person-name",           "")
         app.liveRelayServer     = settings.get("live-relay-server",     "")
         app.liveAccessToken     = settings.get("live-access-token",     "")
         app.liveVideoResolution = settings.get("live-video-resolution", "1080p")
         app.liveStreamBuffering = settings.get("live-stream-buffering", 2000)
+        settings.save()
 
         /*  initialize global information  */
         app.win       = null
