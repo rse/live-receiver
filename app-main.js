@@ -195,14 +195,14 @@ const EventStream  = require("./app-main-relay-eventstream")
         app.es = null
         app.vs = null
         const credentials = {
-            client:     app.clientId,
+            client: app.clientId
         }
         const liveAuth = async () => {
             console.log("++ LiVE-Relay: authenticate")
 
             /*  connect to LiVE Relay EventStream  */
             const es = new EventStream(credentials)
-            let result = await (es.preauth().then(() => ({ success: true })).catch((err) => {
+            const result = await (es.preauth().then(() => ({ success: true })).catch((err) => {
                 return { error: `Failed to authenticate at LiVE Relay service: ${err.message}` }
             }))
             if (result.error)
@@ -294,7 +294,8 @@ const EventStream  = require("./app-main-relay-eventstream")
         }
         app.ipc.handle("login", async (event, {
             personPortrait, personName, liveRelayServer,
-            liveAccessToken, liveStreamResolution, liveStreamBuffering }) => {
+            liveAccessToken, liveStreamResolution, liveStreamBuffering
+        }) => {
             /*  take login parameters  */
             app.personPortrait       = personPortrait
             app.personName           = personName
