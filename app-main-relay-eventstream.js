@@ -43,14 +43,48 @@ module.exports = class EventStream extends EventEmitter {
         }, options)
         this.broker = null
         this.timer  = null
+        this.url    = `mqtts://${this.options.token1}:${this.options.token2}@${this.options.server}`
     }
-    async start () {
-        const url = `mqtts://${this.options.token1}:${this.options.token2}@${this.options.server}`
+
+    /*  pre-authenticate at the LiVE relay service
+        (to detect initial connection problems and without having
+        to provide "last will", avoiding any auto-reconnects, etc)  */
+    async preauth () {
         return new Promise((resolve, reject) => {
-            this.broker = MQTTjs.connect(url, {
-                clientId: this.options.client,
-                rejectUnauthorized: false,
+            let broker = MQTTjs.connect(this.url, {
+                clientId:           this.options.client,
+                rejectUnauthorized: true,
+                reconnectPeriod:    0,
+                connectTimeout:     20 * 1000,
+                resubscribe:        false
+            })
+            broker.on("connect", () => {
+                broker.end()
+                resolve()
+            })
+            broker.on("error", (err) => {
+                if (err.code === "ENOTFOUND")
+                    err = new Error(`FQDN of host "${err.hostname}" not found in DNS`)
+                else if (err.code === "ECONNREFUSED")
+                    err = new Error(`MQTTS connection refused at IP address ${err.address} and TCP port ${err.port}`)
+                broker.end()
+                reject(err)
+            })
+        })
+    }
+
+    /*  start connecting to the LiVE Relay service  */
+    async start () {
+        let firstConnect = true
+        return new Promise((resolve, reject) => {
+            let broker = MQTTjs.connect(this.url, {
+                clientId:           this.options.client,
+                rejectUnauthorized: true,
+                reconnectPeriod:    1000,
+                connectTimeout:     20 * 1000,
+                resubscribe:        false,
                 will: {
+                    /*  end attendance (implicitly)  */
                     qos: 2,
                     topic: `stream/${this.options.channel}/sender`,
                     payload: JSON.stringify({
@@ -63,13 +97,56 @@ module.exports = class EventStream extends EventEmitter {
                     })
                 }
             })
-            this.broker.on("connect", () => {
-                this.broker.subscribe(`stream/${this.options.channel}/receiver/${this.options.client}`, (err) => {
-                    if (err)
-                        reject(err)
-                    else
-                        resolve()
+            broker.on("error", (err) => {
+                console.log("++ MQTT: error", err)
+                if (firstConnect)
+                    reject(err)
+                else
+                    this.emit("error", err)
+            })
+            broker.on("connect", () => {
+                /*  on connect and re-connect initialize our session  */
+                console.log("++ MQTT: connect")
+
+                /*  (re)subscribe to the attendee-specific channel  */
+                broker.subscribe(`stream/${this.options.channel}/receiver/${this.options.client}`, (err) => {
+                    if (err) {
+                        if (firstConnect)
+                            reject(err)
+                        else
+                            this.emit("error", `subscribe: ${err}`)
+                    }
                 })
+
+                /*  track certain MQTT broker events  */
+                if (firstConnect) {
+                    broker.on("reconnect", () => {
+                        console.log("++ MQTT: reconnect")
+                        this.emit("reconnect")
+                    })
+                    broker.on("close", () => {
+                        console.log("++ MQTT: close")
+                        this.emit("disconnect", "close")
+                    })
+                    broker.on("disconnect", () => {
+                        console.log("++ MQTT: disconnect")
+                        this.emit("disconnect", "disconnect")
+                    })
+                    broker.on("message", (topic, message) => {
+                        console.log("++ MQTT: message", message)
+                        this.emit("message", topic, message)
+                    })
+                }
+
+                /*  provide broker to other methods  */
+                if (firstConnect)
+                    this.broker = broker
+
+                /*  establish RPC-over-MQTT interface  */
+                if (firstConnect)
+                    this.rpc = new RPC(broker)
+
+                /*  begin attendance (initially)  */
                 this.send(JSON.stringify({
                     id:    "training",
                     event: "attendance",
@@ -78,24 +155,29 @@ module.exports = class EventStream extends EventEmitter {
                         event:  "begin"
                     }
                 }))
+
+                /*  refresh attendance (regularly)  */
+                if (firstConnect) {
+                    this.timer = setInterval(() => {
+                        if (this.broker.connected) {
+                            this.send(JSON.stringify({
+                                id:    "training",
+                                event: "attendance",
+                                data: {
+                                    client: this.options.client,
+                                    event:  "refresh"
+                                }
+                            }))
+                        }
+                    }, this.options.interval)
+                }
+
+                /*  indicate initial success  */
+                if (firstConnect) {
+                    firstConnect = false
+                    resolve()
+                }
             })
-            this.timer = setInterval(() => {
-                this.send(JSON.stringify({
-                    id:    "training",
-                    event: "attendance",
-                    data: {
-                        client: this.options.client,
-                        event:  "refresh"
-                    }
-                }))
-            }, this.options.interval)
-            this.broker.on("message", (topic, message) => {
-                this.emit("message", topic, message)
-            })
-            this.broker.on("error", (err) => {
-                reject(err)
-            })
-            this.rpc = new RPC(this.broker)
         })
     }
     async stop () {
@@ -104,6 +186,7 @@ module.exports = class EventStream extends EventEmitter {
             this.timer = null
         }
         if (this.broker !== null) {
+            /*  end attendance (explicitly)  */
             this.send(JSON.stringify({
                 id:    "training",
                 event: "attendance",

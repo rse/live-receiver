@@ -91,6 +91,11 @@ const EventStream  = require("./app-main-relay-eventstream")
             return data
         })
 
+        /*  redirect exception error boxes to the console  */
+        electron.dialog.showErrorBox = (title, content) => {
+            console.log(`++ LiVE-Relay: exception: ${title}: ${content}`)
+        }
+
         /*  create application window  */
         app.win = new electron.BrowserWindow({
             useContentSize: true,
@@ -197,14 +202,9 @@ const EventStream  = require("./app-main-relay-eventstream")
 
             /*  connect to LiVE Relay EventStream  */
             const es = new EventStream(credentials)
-            let result = await es.start().then(() => ({ success: true })).catch((err) => {
-                return { error: `Failed to authenticate at LiVE Relay service: ${err}` }
-            })
-            if (result.error)
-                return result
-            result = await es.stop().then(() => ({ success: true })).catch((err) => {
-                return { error: `EventStream: MQTTS: stop: ${err}` }
-            })
+            let result = await (es.preauth().then(() => ({ success: true })).catch((err) => {
+                return { error: `Failed to authenticate at LiVE Relay service: ${err.message}` }
+            }))
             if (result.error)
                 return result
             return { success: true }
