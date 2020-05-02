@@ -51,7 +51,7 @@ module.exports = class EventStream extends EventEmitter {
         to provide "last will", avoiding any auto-reconnects, etc)  */
     async preauth () {
         return new Promise((resolve, reject) => {
-            let broker = MQTTjs.connect(this.url, {
+            const broker = MQTTjs.connect(this.url, {
                 clientId:           this.options.client,
                 rejectUnauthorized: true,
                 reconnectPeriod:    0,
@@ -77,7 +77,7 @@ module.exports = class EventStream extends EventEmitter {
     async start () {
         let firstConnect = true
         return new Promise((resolve, reject) => {
-            let broker = MQTTjs.connect(this.url, {
+            const broker = MQTTjs.connect(this.url, {
                 clientId:           this.options.client,
                 rejectUnauthorized: true,
                 reconnectPeriod:    1000,
