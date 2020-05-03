@@ -153,6 +153,58 @@
                 </div>
             </div>
         </div>
+        <div class="login-row audio-input-device">
+            <div class="login-col label">
+                <i class="icon fa fa-microphone-alt"></i>
+                Audio Input Device:
+            </div>
+            <div class="login-col input device">
+                <div class="selbox-container">
+                    <v-multiselect
+                        v-bind:options="audioInputDevices"
+                        v-model="intAudioInputDevice"
+                        track-by="id"
+                        label="name"
+                        placeholder="Select audio input device..."
+                        v-bind:searchable="false"
+                        v-bind:allow-empty="true"
+                        v-bind:open-direction="'below'"
+                    ></v-multiselect>
+                    <div class="selbox"
+                        v-on:click="audioInputTest"
+                        v-bind:class="{ disabled: intAudioInputDevice === null, active: audioInputTestActive }">
+                        <span v-show="!audioInputTestActive" class="icon"><i class="fa fa-dot-circle"></i></span>
+                        <span v-show="audioInputTestActive"  class="icon"><i class="fa fa-stop-circle"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="login-row audio-output-device">
+            <div class="login-col label">
+                <i class="icon fa fa-volume-up"></i>
+                Audio Output Device:
+            </div>
+            <div class="login-col input device">
+                <div class="selbox-container">
+                    <v-multiselect
+                        v-bind:options="audioOutputDevices"
+                        v-model="intAudioOutputDevice"
+                        track-by="id"
+                        label="name"
+                        placeholder="Select audio output device..."
+                        v-bind:searchable="false"
+                        v-bind:allow-empty="true"
+                        v-bind:open-direction="'bottom'"
+                    ></v-multiselect>
+                    <div class="selbox"
+                        v-on:click="audioOutputTest"
+                        v-bind:class="{ disabled: intAudioOutputDevice === null || audioBlob === null, active: audioOutputTestActive }">
+                        <span v-show="!audioOutputTestActive" class="icon"><i class="fa fa-play-circle"></i></span>
+                        <span v-show="audioOutputTestActive" class="icon"><i class="fa fa-stop-circle"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="login-row submit">
             <div class="login-col label">
             </div>
@@ -213,7 +265,7 @@
     justify-content: flex-start;
     font-size: 12pt;
     .login-row {
-        margin-bottom: 10px;
+        margin-bottom: 4px;
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
@@ -223,16 +275,48 @@
             &.label {
                 display: flex;
                 flex-direction: row;
+                justify-content: flex-start;
                 width: 220px;
                 .icon {
                     color: var(--color-std-fg-1);
                     margin-right: 10px;
                     position: relative;
                     top: 4px;
+                    width: 20px;
                 }
             }
             &.input {
                 width: 300px;
+            }
+            &.device {
+                .selbox-container {
+                    .multiselect {
+                        width: 250px;
+                        min-width: 250px;
+                    }
+                    .selbox {
+                        width: 50px;
+                        margin-left: 5px;
+                        position: relative;
+                        .icon {
+                            position: absolute;
+                            left: 10px;
+                            top: 2px;
+                            display: block;
+                            font-size: 25px;
+                        }
+                        &.disabled {
+                            color: var(--color-std-fg-1);
+                            &:hover {
+                                background-color:        var(--color-std-bg-4);
+                                border-top:    1px solid var(--color-std-bg-5);
+                                border-left:   1px solid var(--color-std-bg-5);
+                                border-right:  1px solid var(--color-std-bg-1);
+                                border-bottom: 1px solid var(--color-std-bg-1);
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -322,14 +406,17 @@
         font-size: 8pt;
         color: var(--color-std-fg-1);
     }
+    .login-row.notice {
+        margin-top: 10px;
+    }
     .login-row.notice > .login-col.label {
         display: block;
         .logo {
-            padding-left: 20px;
+            padding-left: 40px;
             width: 100px;
         }
         .version {
-            padding-left: 20px;
+            padding-left: 40px;
         }
     }
     .selbox-container {
@@ -368,6 +455,84 @@
             }
         }
     }
+    .multiselect {
+        background-color: inherit;
+    }
+    .multiselect__tags {
+        color:            var(--color-std-fg-3);
+        background-color: var(--color-std-bg-4);
+        border-top:    1px solid var(--color-std-bg-5);
+        border-left:   1px solid var(--color-std-bg-5);
+        border-right:  1px solid var(--color-std-bg-1);
+        border-bottom: 1px solid var(--color-std-bg-1);
+        font-size: 12pt;
+        .multiselect__placeholder {
+            color: var(--color-std-fg-1);
+            font-size: 11pt;
+        }
+        &:hover {
+            color:            var(--color-sig-fg-3);
+            background-color: var(--color-sig-bg-4);
+            border-top:    1px solid var(--color-sig-bg-5);
+            border-left:   1px solid var(--color-sig-bg-5);
+            border-right:  1px solid var(--color-sig-bg-1);
+            border-bottom: 1px solid var(--color-sig-bg-1);
+            .multiselect__placeholder {
+                color: var(--color-sig-fg-1);
+            }
+        }
+    }
+    .multiselect__content-wrapper {
+        color:            var(--color-std-fg-3);
+        background-color: var(--color-std-bg-4);
+        border-top:    1px solid var(--color-std-bg-5);
+        border-left:   1px solid var(--color-std-bg-5);
+        border-right:  1px solid var(--color-std-bg-1);
+        border-bottom: 1px solid var(--color-std-bg-1);
+        font-size: 12pt;
+    }
+    .multiselect__single {
+        color:            var(--color-std-fg-3);
+        background-color: inherit;
+        border: 0px;
+        font-size: 12pt;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+    .multiselect__tags {
+        &:hover {
+            .multiselect__single {
+                color: var(--color-sig-fg-3);
+            }
+        }
+    }
+    .multiselect__option {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+    .multiselect__option::after {
+        display: none;
+    }
+    .multiselect__option--highlight {
+        color:            var(--color-sig-fg-3);
+        background-color: var(--color-sig-bg-4);
+        border-top:    1px solid var(--color-sig-bg-5);
+        border-left:   1px solid var(--color-sig-bg-5);
+        border-right:  1px solid var(--color-sig-bg-1);
+        border-bottom: 1px solid var(--color-sig-bg-1);
+    }
+    .multiselect__option--selected {
+        color:            var(--color-acc-fg-3);
+        background-color: var(--color-acc-bg-4);
+        border-top:    1px solid var(--color-acc-bg-5);
+        border-left:   1px solid var(--color-acc-bg-5);
+        border-right:  1px solid var(--color-acc-bg-1);
+        border-bottom: 1px solid var(--color-acc-bg-1);
+        font-size: 12pt;
+        font-weight: normal;
+    }
 }
 </style>
 
@@ -380,7 +545,9 @@ module.exports = {
         liveRelayServer:      { type: String, default: "" },
         liveAccessToken:      { type: String, default: "" },
         liveStreamResolution: { type: String, default: "1080p" },
-        liveStreamBuffering:  { type: Number, default: 2000 }
+        liveStreamBuffering:  { type: Number, default: 2000 },
+        audioInputDevice:     { type: String, default: "" },
+        audioOutputDevice:    { type: String, default: "" }
     },
     data: function () {
         return {
@@ -390,6 +557,14 @@ module.exports = {
             intLiveAccessToken:      this.liveAccessToken,
             intLiveStreamResolution: this.liveStreamResolution,
             intLiveStreamBuffering:  this.liveStreamBuffering,
+            intAudioInputDevice:     null,
+            intAudioOutputDevice:    null,
+            audioInputDevices:       [],
+            audioOutputDevices:      [],
+            audioInputTestActive:    false,
+            audioOutputTestActive:   false,
+            audioBlob:               null,
+            audioBlobChunks:         [],
             allowConnect:            true,
             logo:                    ui.logo,
             version:                 ui.pkg.version,
@@ -402,7 +577,9 @@ module.exports = {
         intLiveRelayServer:      function (v) { this.$emit("update:live-relay-server", v) },
         intLiveAccessToken:      function (v) { this.$emit("update:live-access-token", v) },
         intLiveStreamResolution: function (v) { this.$emit("update:live-stream-resolution", v) },
-        intLiveStreamBuffering:  function (v) { this.$emit("update:live-stream-buffering", v) }
+        intLiveStreamBuffering:  function (v) { this.$emit("update:live-stream-buffering", v) },
+        intAudioInputDevice:     function (v) { this.$emit("update:audio-input-device",  this.deviceObj2Id(v)) },
+        intAudioOutputDevice:    function (v) { this.$emit("update:audio-output-device", this.deviceObj2Id(v)) }
     },
     computed: {
         style: ui.vueprop2cssvar()
@@ -417,7 +594,104 @@ module.exports = {
                 this.allowConnect = true
             }, 2 * 1000)
             this.$emit("login")
+        },
+        deviceId2Obj (id, list) {
+            if (id === "")
+                return null
+            const x = list.find((device) => device.id === id)
+            return x !== undefined ? x : null
+        },
+        deviceObj2Id (obj) {
+            if (obj === null)
+                return ""
+            return obj.id
+        },
+        deviceUpdate () {
+            if (!ui.devices)
+                return
+            this.audioInputDevices = ui.devices
+                .filter((device) => device.kind === "audioinput")
+                .map((device) => ({ id: device.deviceId, name: device.label }))
+            this.audioOutputDevices = ui.devices
+                .filter((device) => device.kind === "audiooutput")
+                .map((device) => ({ id: device.deviceId, name: device.label }))
+            if (this.intAudioInputDevice === null)
+                this.intAudioInputDevice = this.deviceId2Obj(
+                    this.audioInputDevice, this.audioInputDevices)
+            else
+                this.intAudioInputDevice = this.deviceId2Obj(
+                    this.deviceObj2Id(this.intAudioInputDevice), this.audioInputDevices)
+            if (this.intAudioOutputDevice === null)
+                this.intAudioOutputDevice = this.deviceId2Obj(
+                    this.audioOutputDevice, this.audioOutputDevices)
+            else
+                this.intAudioOutputDevice = this.deviceId2Obj(
+                    this.deviceObj2Id(this.intAudioOutputDevice), this.audioOutputDevices)
+        },
+        async audioInputTest () {
+            if (this.intAudioInputDevice === null)
+                return
+            this.audioInputTestActive = !this.audioInputTestActive
+            if (this.audioInputTestActive) {
+                /*  start recording  */
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({
+                        audio: { deviceId: this.intAudioInputDevice.id },
+                        video: false
+                    })
+                    this.recorder = new MediaRecorder(stream, {
+                        mimeType: "audio/webm; codecs=\"opus\"",
+                        audioBitsPerSecond: 128000
+                    })
+                }
+                catch (err) {
+                    console.log(`ERROR: audio input test: ${err}`)
+                    this.audioInputTestActive = false
+                    return
+                }
+                this.audioBlob = null
+                this.audioBlobChunks = []
+                this.recorder.addEventListener("dataavailable", (event) => {
+                    this.audioBlobChunks.push(event.data)
+                })
+                this.recorder.start()
+            }
+            else {
+                /*  stop recording  */
+                this.recorder.addEventListener("stop", (event) => {
+                    this.audioBlob = new Blob(this.audioBlobChunks,
+                        { "type" : "audio/webm; codecs=\"opus\"" })
+                })
+                this.recorder.stop()
+            }
+        },
+        audioOutputTest () {
+            if (this.intAudioOutputDevice === null)
+                return
+            if (this.audioBlob === null)
+                return
+            this.audioOutputTestActive = !this.audioOutputTestActive
+            if (this.audioOutputTestActive) {
+                /*  play recording  */
+                this.audioElement = new Audio()
+                this.audioElement.setSinkId(this.intAudioOutputDevice.id)
+                this.audioElement.src = URL.createObjectURL(this.audioBlob)
+                this.audioElement.addEventListener("paused", (event) => {
+                    this.audioOutputTestActive = false
+                })
+                this.audioElement.addEventListener("ended", (event) => {
+                    this.audioOutputTestActive = false
+                })
+                this.audioElement.play()
+            }
+            else {
+                /*  stop recording  */
+                this.audioElement.pause()
+            }
         }
+    },
+    created () {
+        this.deviceUpdate()
     },
     mounted () {
         this.$on("error", (error) => {
@@ -425,6 +699,9 @@ module.exports = {
             setTimeout(() => {
                 this.error = ""
             }, 4 * 1000)
+        })
+        this.$on("updated-devices", () => {
+            this.deviceUpdate()
         })
     }
 }

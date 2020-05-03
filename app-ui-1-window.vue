@@ -39,6 +39,11 @@
                 <span class="word">{{ inLogin ? "---" : bandwidthText }}</span>
                 <span class="title">kbps</span>
             </div>
+            <div class="box button mute" v-on:click="mute" v-bind:class="{ disabled: inLogin, active: volume === 0 || volumeMute }">
+                <span v-show="volumeMute"><i class="icon fa fa-volume-mute"></i></span>
+                <span v-show="!volumeMute"><i class="icon fa fa-volume-up"></i></span>
+                <span class="title">Volume Mute</span>
+            </div>
             <div class="box slider volume" v-bind:class="{ disabled: inLogin }">
                 <input ref="volume"
                     v-bind:disabled="inLogin"
@@ -95,28 +100,87 @@
                     v-bind:live-access-token.sync="liveAccessToken"
                     v-bind:live-stream-resolution.sync="liveStreamResolution"
                     v-bind:live-stream-buffering.sync="liveStreamBuffering"
+                    v-bind:audio-input-device.sync="audioInputDevice"
+                    v-bind:audio-output-device.sync="audioOutputDevice"
                     v-on:login="login"
                 />
             </div>
         </div>
         <div ref="footer" class="footer">
-            <div class="box message-icon" v-bind:class="{ disabled: inLogin }">
+            <div class="box message-icon" v-bind:class="{ disabled: inLogin, active: audioBlob !== null }">
+                <i class="icon fa fa-voicemail"></i>
+                <span class="title">Audio Message</span>
+            </div>
+            <div class="box button audio-record" v-on:click="audioRecord" v-bind:class="{ disabled: inLogin || audioInputDevice === '', active: audioRecording }">
+                <i class="icon fa fa-dot-circle"></i>
+                <span class="title">Record Message</span>
+            </div>
+            <div class="box button audio-play" v-on:click="audioPlay" v-bind:class="{ disabled: inLogin || audioInputDevice === '' || audioBlob === null, active: audioPlaying }">
+                <i class="icon fa fa-play-circle"></i>
+                <span class="title">Play Message</span>
+            </div>
+            <div class="box message-icon" v-bind:class="{ disabled: inLogin, active: message !== '' }">
                 <i class="icon fa fa-comment-dots"></i>
+                <span class="title">Text Message</span>
             </div>
             <div class="box message-text" v-bind:class="{ disabled: inLogin }">
                 <input
                     v-bind:disabled="inLogin"
                     ref="message"
                     type="text"
-                    placeholder="Type your message to the trainer here..."
+                    placeholder="Type message..."
                     v-model="message"
                     v-on:keyup.enter="sendMessage"
-                    v-on:keyup.escape="clearMessage"
+                    v-on:keyup.escape="clearMessage(false)"
                 />
             </div>
-            <div class="box button message-send" v-on:click="sendMessage" v-bind:class="{ disabled: inLogin }">
+            <div class="box button message-clear" v-on:click="clearMessage(true)" v-bind:class="{ disabled: inLogin || (audioBlob === null && message === '') }">
+                <i class="icon fa fa-trash-alt"></i>
+                <span class="title">Clear Messages</span>
+            </div>
+            <div class="box button message-send" v-on:click="sendMessage" v-bind:class="{ disabled: inLogin || (message === '' && audioBlob === null) }">
                 <i class="icon fa fa-share"></i>
-                <span class="title">Send Message</span>
+                <span class="title">Send Messages</span>
+            </div>
+            <div class="box move">
+                <span class="grab grab-1"></span>
+                <span class="grab grab-2"></span>
+                <span class="grab grab-3"></span>
+                <span class="grab grab-4"></span>
+                <span class="grab grab-5"></span>
+                <span class="title">Move Window</span>
+            </div>
+            <div class="box button message-send" v-on:click="feedback('smile')" v-bind:class="{ disabled: inLogin }">
+                <i class="icon fa fa-smile"></i>
+                <span class="title">Show Smile</span>
+            </div>
+            <div class="box button message-send" v-on:click="feedback('frown')" v-bind:class="{ disabled: inLogin }">
+                <i class="icon fa fa-angry"></i>
+                <span class="title">Show Frown</span>
+            </div>
+            <div class="box slider challenge" v-bind:class="{ disabled: inLogin }"
+                v-tooltip.top-center="{ html: true, content: challengeText, show: challengeTextShow && !inLogin, trigger: 'manual', hideOnTargetClick: false, autoHide: false, offset: 10 }"
+                v-on:mouseover="challengeTextShow = true"
+                v-on:mouseleave="challengeTextShow = false">
+                <input ref="challenge"
+                    v-bind:class="[ 'challenge', 'range' + challenge ]"
+                    v-bind:disabled="inLogin"
+                    type="range"
+                    min="1" max="5" step="1"
+                    v-model="challenge"/>
+                <span class="title">Show Challenge</span>
+            </div>
+            <div class="box slider mood" v-bind:class="{ disabled: inLogin }"
+                v-tooltip.top-center="{ container: 'body', html: true, content: moodText, show: moodTextShow && !inLogin, trigger: 'manual', hideOnTargetClick: false, autoHide: false, offset: 10 }"
+                v-on:mouseover="moodTextShow = true"
+                v-on:mouseleave="moodTextShow = false">
+                <input ref="mood"
+                    v-bind:class="[ 'mood', 'range' + mood ]"
+                    v-bind:disabled="inLogin"
+                    type="range"
+                    min="1" max="5" step="1"
+                    v-model="mood"/>
+                <span class="title">Show Mood</span>
             </div>
             <!--
             <div class="box button resize"
@@ -149,7 +213,7 @@
     justify-content: flex-start;
     overflow: hidden;
     .box {
-        width: 55px;
+        width: 60px;
         height: 100%;
         position: relative;
         background-color:        var(--color-std-bg-3);
@@ -233,6 +297,7 @@
     }
     .slider {
         width: 100px;
+        position: relative;
         input[type="range"] {
             position: absolute;
             width: calc(100% - 8px);
@@ -263,6 +328,77 @@
                 border-right:  1px solid var(--color-std-bg-5);
                 border-bottom: 1px solid var(--color-std-bg-5);
             }
+            &.challenge.range1,
+            &.challenge.range5 {
+                &::-webkit-slider-thumb {
+                    background-color:        var(--color-sig-bg-4);
+                    border-top:    1px solid var(--color-sig-bg-5);
+                    border-left:   1px solid var(--color-sig-bg-5);
+                    border-right:  1px solid var(--color-sig-bg-3);
+                    border-bottom: 1px solid var(--color-sig-bg-3);
+                }
+            }
+            &.challenge.range2,
+            &.challenge.range4 {
+                &::-webkit-slider-thumb {
+                    background-color:        var(--color-sig-fg-2);
+                    border-top:    1px solid var(--color-sig-fg-3);
+                    border-left:   1px solid var(--color-sig-fg-3);
+                    border-right:  1px solid var(--color-sig-fg-1);
+                    border-bottom: 1px solid var(--color-sig-fg-1);
+                }
+            }
+            &.mood.range1 {
+                &::-webkit-slider-thumb {
+                    background-color:        var(--color-sig-bg-4);
+                    border-top:    1px solid var(--color-sig-bg-5);
+                    border-left:   1px solid var(--color-sig-bg-5);
+                    border-right:  1px solid var(--color-sig-bg-3);
+                    border-bottom: 1px solid var(--color-sig-bg-3);
+                }
+            }
+            &.mood.range2 {
+                &::-webkit-slider-thumb {
+                    background-color:        var(--color-sig-fg-2);
+                    border-top:    1px solid var(--color-sig-fg-3);
+                    border-left:   1px solid var(--color-sig-fg-3);
+                    border-right:  1px solid var(--color-sig-fg-1);
+                    border-bottom: 1px solid var(--color-sig-fg-1);
+                }
+            }
+            &.mood.range3 {
+                &::-webkit-slider-thumb {
+                    background-color:        var(--color-std-fg-2);
+                    border-top:    1px solid var(--color-std-fg-3);
+                    border-left:   1px solid var(--color-std-fg-3);
+                    border-right:  1px solid var(--color-std-fg-1);
+                    border-bottom: 1px solid var(--color-std-fg-1);
+                }
+            }
+            &.mood.range4 {
+                &::-webkit-slider-thumb {
+                    background-color:        var(--color-acc-fg-2);
+                    border-top:    1px solid var(--color-acc-fg-3);
+                    border-left:   1px solid var(--color-acc-fg-3);
+                    border-right:  1px solid var(--color-acc-fg-1);
+                    border-bottom: 1px solid var(--color-acc-fg-1);
+                }
+            }
+            &.mood.range5 {
+                &::-webkit-slider-thumb {
+                    background-color:        var(--color-acc-bg-4);
+                    border-top:    1px solid var(--color-acc-bg-5);
+                    border-left:   1px solid var(--color-acc-bg-5);
+                    border-right:  1px solid var(--color-acc-bg-3);
+                    border-bottom: 1px solid var(--color-acc-bg-3);
+                }
+            }
+        }
+        &.mood {
+            width: 70px;
+        }
+        &.challenge {
+            width: 70px;
         }
     }
     .header {
@@ -271,27 +407,6 @@
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
-        .move {
-            -webkit-app-region: drag;
-            -webkit-user-select: none;
-            flex-grow: 1;
-            padding-top: 6px;
-            height: calc(100% - 6px);
-            position: relative;
-            .name {
-            }
-            .grab {
-                height: 1px;
-                width: calc(100% - 40px);
-                margin: 0px 20px 0px 20px;
-                display: block;
-                border-top:    1px solid var(--color-std-bg-1);
-                border-bottom: 1px solid var(--color-std-bg-5);
-            }
-            &:hover {
-                cursor: grab;
-            }
-        }
         .logo {
             position: relative;
             img {
@@ -301,6 +416,33 @@
                 width: 55%;
             }
         }
+    }
+    .move {
+        -webkit-app-region: drag;
+        -webkit-user-select: none;
+        flex-grow: 1;
+        padding-top: 6px;
+        height: calc(100% - 6px);
+        position: relative;
+        .name {
+        }
+        .grab {
+            height: 1px;
+            width: calc(100% - 40px);
+            margin: 0px 20px 0px 20px;
+            display: block;
+            border-top:    1px solid var(--color-std-bg-1);
+            border-bottom: 1px solid var(--color-std-bg-5);
+        }
+        &:hover {
+            cursor: grab;
+        }
+    }
+    .header .move {
+    }
+    .footer .move {
+        width: 150px;
+        max-width: 150px;
     }
     .content {
         flex-grow: 1;
@@ -317,11 +459,6 @@
         flex-direction: row;
         justify-content: flex-start;
         overflow: hidden;
-        .message-icon {
-            .icon {
-                top: 7px;
-            }
-        }
         .message-text {
             flex-grow: 1;
             input {
@@ -368,6 +505,60 @@
 }
 </style>
 
+<style lang="less">
+.tooltip {
+    display: block;
+    z-index: 10000;
+    .tooltip-inner {
+        color:                   var(--color-std-fg-3);
+        background-color:        var(--color-std-bg-4);
+        border-top:    1px solid var(--color-std-bg-5);
+        border-left:   1px solid var(--color-std-bg-5);
+        border-right:  1px solid var(--color-std-bg-1);
+        border-bottom: 1px solid var(--color-std-bg-1);
+        padding: 10px;
+        border-radius: 5px;
+        font-family: "TypoPRO Source Sans Pro";
+        font-size: 10pt;
+    }
+    .tooltip-arrow {
+        width: 0;
+        height: 0;
+        border-style: solid;
+        position: absolute;
+        margin: 5px;
+        border-color: var(--color-std-bg-4);
+        z-index: 1;
+    }
+    &[x-placement^="top"] {
+        margin-bottom: 5px;
+        .tooltip-arrow {
+            border-width: 10px 10px 0 10px;
+            border-left-color:   transparent !important;
+            border-right-color:  transparent !important;
+            border-bottom-color: transparent !important;
+            bottom: -9px;
+            left: calc(50% - 10px);
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+  }
+    &[x-placement^="bottom"] {
+        margin-top: 5px;
+        .tooltip-arrow {
+            border-width: 0 10px 10px 10px;
+            border-left-color:  transparent !important;
+            border-right-color: transparent !important;
+            border-top-color:   transparent !important;
+            top: -9px;
+            left: calc(50% - 10px);
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+    }
+}
+</style>
+
 <script>
 module.exports = {
     name: "win",
@@ -381,45 +572,114 @@ module.exports = {
         liveAccessToken:      "",
         liveStreamResolution: "",
         liveStreamBuffering:  "",
+        audioInputDevice:     "",
+        audioOutputDevice:    "",
         logo:                 ui.logo,
+        audioBlob:            null,
+        audioBlobChunks:      [],
+        audioRecording:       false,
+        audioPlaying:         false,
         message:              "",
         resizing:             false,
         resizingPos:          { x: 0, y: 0 },
         fullscreened:         false,
         volume:               100,
+        volumeMute:           false,
+        mood:                 3,
+        moodTextShow:         false,
+        challenge:               3,
+        challengeTextShow:       false,
         bandwidthBytes:       0,
         bandwidthText:        "",
         videoSize:            { w: 0, h: 0 }
     }),
     computed: {
-        style: ui.vueprop2cssvar()
+        style: ui.vueprop2cssvar(),
+        challengeText () {
+            let html = "I am contentual<br/><b>"
+            switch (parseInt(this.challenge)) {
+                case 1: html += "sub-challenged";  break
+                case 2: html += "less-challenged"; break
+                case 3: html += "challenged";      break
+                case 4: html += "much-challenged"; break
+                case 5: html += "over-challenged"; break
+            }
+            html += "</b>!"
+            return html
+        },
+        moodText () {
+            let html = "I am mentally<br/><b>"
+            switch (parseInt(this.mood)) {
+                case 1: html += "knocked-off";   break
+                case 2: html += "tired";         break
+                case 3: html += "good";          break
+                case 4: html += "refreshed";     break
+                case 5: html += "excited";       break
+            }
+            html += "</b>!"
+            return html
+        }
     },
     watch: {
         volume: function (v) {
             this.$refs.videostream.$emit("volume", v)
+            if (v > 0)
+                this.volumeMute = false
+            else
+                this.volumeMute = true
         },
+        volumeMute: function (v) {
+            this.$refs.videostream.$emit("mute", v)
+        },
+        challenge: ui.debounce(2000, function (v) { this.sendFeeling() }),
+        mood:      ui.debounce(2000, function (v) { this.sendFeeling() }),
         personPortrait:       function (v) { ui.settings("person-portrait", v) },
         personName:           function (v) { ui.settings("person-name", v) },
         liveRelayServer:      function (v) { ui.settings("live-relay-server", v) },
         liveAccessToken:      function (v) { ui.settings("live-access-token", v) },
         liveStreamResolution: function (v) { ui.settings("live-stream-resolution", v) },
-        liveStreamBuffering:  function (v) { ui.settings("live-stream-buffering", v) }
+        liveStreamBuffering:  function (v) { ui.settings("live-stream-buffering", v) },
+        audioInputDevice:     function (v) { ui.settings("audio-input-device", v) },
+        audioOutputDevice:    function (v) { ui.settings("audio-output-device", v);
+            if (this.$refs.videostream) { this.$refs.videostream.$emit("device", v) } }
     },
     components: {
         "login":       "url:app-ui-2-widget-login.vue",
         "videostream": "url:app-ui-4-widget-videostream.vue"
     },
     methods: {
-        sendMessage () {
-            if (this.message !== "") {
-                this.$emit("message", this.message)
+        async sendMessage () {
+            if (this.message !== "" || this.audioBlob !== null) {
+                let data = { message: this.message }
+                if (this.audioBlob !== null) {
+                    data.audio = await new Promise((resolve, reject) => {
+                        let fr = new FileReader()
+                        fr.addEventListener("load", () => {
+                            resolve(fr.result)
+                        })
+                        fr.readAsDataURL(this.audioBlob)
+                    })
+                }
+                this.$emit("message", data)
                 this.message = ""
+                this.audioBlob = null
             }
             this.$refs.message.blur()
         },
-        clearMessage () {
+        clearMessage (withAudio) {
             this.message = ""
+            if (withAudio)
+                this.audioBlob = null
             this.$refs.message.blur()
+        },
+        feedback (type) {
+            this.$emit("feedback", type)
+        },
+        sendFeeling () {
+            this.$emit("feeling", {
+                challenge: this.challenge,
+                mood:      this.mood
+            })
         },
         login () {
             if (!this.inLogin)
@@ -430,7 +690,9 @@ module.exports = {
                 liveRelayServer:      this.liveRelayServer,
                 liveAccessToken:      this.liveAccessToken,
                 liveStreamResolution: this.liveStreamResolution,
-                liveStreamBuffering:  this.liveStreamBuffering
+                liveStreamBuffering:  this.liveStreamBuffering,
+                audioInputDevice:     this.audioInputDevice,
+                audioOutputDevice:    this.audioOutputDevice
             })
         },
         logout () {
@@ -516,6 +778,74 @@ module.exports = {
         },
         quit () {
             this.$emit("quit")
+        },
+        mute () {
+            this.volumeMute = !this.volumeMute
+        },
+        async audioRecord () {
+            if (!this.audioRecording) {
+                /*  start recording  */
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({
+                        audio: { deviceId: this.audioInputDevice },
+                        video: false
+                    })
+                    this.recorder = new MediaRecorder(stream, {
+                        mimeType: "audio/webm; codecs=\"opus\"",
+                        audioBitsPerSecond: 128000
+                    })
+                }
+                catch (err) {
+                    console.log(`ERROR: audio recording: ${err}`)
+                    this.audioRecording = false
+                    this.audioBlob = null
+                    return
+                }
+                this.audioBlob = null
+                this.audioBlobChunks = []
+                this.recorder.addEventListener("dataavailable", (event) => {
+                    this.audioBlobChunks.push(event.data)
+                })
+                this.recorder.start()
+                this.audioRecording = true
+                this.volumeMute = true
+            }
+            else {
+                /*  stop recording  */
+                this.recorder.addEventListener("stop", (event) => {
+                    this.audioBlob = new Blob(this.audioBlobChunks,
+                        { "type" : "audio/webm; codecs=\"opus\"" })
+                })
+                this.recorder.stop()
+                this.audioRecording = false
+                this.volumeMute = false
+            }
+        },
+        audioPlay () {
+            if (this.audioBlob === null)
+                return
+            this.audioPlaying = !this.audioPlaying
+            if (this.audioPlaying) {
+                /*  play recording  */
+                this.audioElement = new Audio()
+                this.audioElement.setSinkId(this.audioOutputDevice)
+                this.audioElement.src = URL.createObjectURL(this.audioBlob)
+                this.volumeMute = true
+                this.audioElement.addEventListener("paused", (event) => {
+                    this.audioPlaying = false
+                    this.volumeMute = false
+                })
+                this.audioElement.addEventListener("ended", (event) => {
+                    this.audioPlaying = false
+                    this.volumeMute = false
+                })
+                this.audioElement.play()
+            }
+            else {
+                /*  stop recording  */
+                this.audioElement.pause()
+                this.volumeMute = false
+            }
         }
     },
     async created () {
@@ -525,9 +855,14 @@ module.exports = {
         this.liveAccessToken      = await ui.settings("live-access-token")
         this.liveStreamResolution = await ui.settings("live-stream-resolution")
         this.liveStreamBuffering  = await ui.settings("live-stream-buffering")
+        this.audioInputDevice     = await ui.settings("audio-input-device")
+        this.audioOutputDevice    = await ui.settings("audio-output-device")
         this.loaded = true
     },
     mounted () {
+        this.$on("updated-devices", () => {
+            this.$refs.login.$emit("updated-devices")
+        })
         this.$on("login-error", (error) => {
             this.$refs.login.$emit("error", error)
         })
@@ -561,6 +896,10 @@ module.exports = {
             this.allowDisconnect = false
             this.$refs.videostream.$emit("stream-end")
         })
+
+        setInterval(() => {
+            this.sendFeeling()
+        }, 10 * 60 * 1000)
 
         window.addEventListener("resize", () => this.handleResize())
         this.$nextTick(() => {

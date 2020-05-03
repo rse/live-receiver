@@ -54,6 +54,7 @@ globals:
     SoundLP:       true
     Cropper:       true
     httpVueLoader: true
+    VueMultiselect: true
     less:          true
     SVG:           true
     Vue:           true

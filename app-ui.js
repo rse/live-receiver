@@ -94,6 +94,14 @@ const electron = require("electron")
         less.render(lessText, {}).then((result) => result.css)
     Vue.use(httpVueLoader)
 
+    /*  support Vue multi-select widget  */
+    Vue.component("v-multiselect", VueMultiselect.default)
+
+    /*  support Vue tooltip functionality  */
+    Vue.use(VTooltip, {
+        disposeTimeout: 0
+    })
+
     /*  allow Vue modal windows  */
     window["vue-js-modal"].default.install(Vue, { dynamic: true, injectModalsContainer: true })
 
@@ -105,7 +113,7 @@ const electron = require("electron")
 
     /*  ensure the <win> element is available  */
     while (!(typeof ui.root.$refs === "object" && ui.root.$refs.win !== undefined))
-        await ui.delay(50)
+        await ui.delay(100)
 
     /*  hook into the UI events  */
     ui.root.$refs.win.$on("login", async (info) => {
@@ -147,6 +155,12 @@ const electron = require("electron")
     ui.root.$refs.win.$on("message", (message) => {
         ui.ipc.invoke("message", message)
     })
+    ui.root.$refs.win.$on("feedback", (type) => {
+        ui.ipc.invoke("feedback", type)
+    })
+    ui.root.$refs.win.$on("feeling", (feeling) => {
+        ui.ipc.invoke("feeling", feeling)
+    })
 
     /*  hook into the main process events  */
     ui.ipc.on("stream-begin", (event) => {
@@ -158,6 +172,15 @@ const electron = require("electron")
     ui.ipc.on("stream-end", (event) => {
         ui.root.$refs.win.$emit("stream-end")
     })
+
+    /*  determine audio/video devices  */
+    ui.devices = []
+    const updateDevices = async () => {
+        ui.devices = await navigator.mediaDevices.enumerateDevices()
+        ui.root.$refs.win.$emit("updated-devices")
+    }
+    navigator.mediaDevices.ondevicechange = updateDevices
+    await updateDevices()
 })().catch((err) => {
     console.log(`** live-receiver: ui: ERROR: ${err}`)
 })

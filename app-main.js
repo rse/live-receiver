@@ -56,6 +56,8 @@ const EventStream  = require("./app-main-relay-eventstream")
         app.liveAccessToken      = settings.get("live-access-token",      "")
         app.liveStreamResolution = settings.get("live-stream-resolution", "1080p")
         app.liveStreamBuffering  = settings.get("live-stream-buffering",  2000)
+        app.audioInputDevice     = settings.get("audio-input-device",     "")
+        app.audioOutputDevice    = settings.get("audio-output-device",    "")
 
         /*  save back the settings once at startup  */
         settings.set("client-id",              app.clientId)
@@ -69,6 +71,8 @@ const EventStream  = require("./app-main-relay-eventstream")
         settings.set("live-access-token",      app.liveAccessToken)
         settings.set("live-stream-resolution", app.liveStreamResolution)
         settings.set("live-stream-buffering",  app.liveStreamBuffering)
+        settings.set("audio-input-device",     app.audioInputDevice)
+        settings.set("audio-output-device",    app.audioOutputDevice)
         settings.save()
 
         /*  initialize global information  */
@@ -106,7 +110,7 @@ const EventStream  = require("./app-main-relay-eventstream")
             y:              app.y,
             width:          app.w,
             height:         app.h,
-            minWidth:       950,
+            minWidth:       1000,
             minHeight:      650,
             resizable:      true,
             webPreferences: {
@@ -294,7 +298,8 @@ const EventStream  = require("./app-main-relay-eventstream")
         }
         app.ipc.handle("login", async (event, {
             personPortrait, personName, liveRelayServer,
-            liveAccessToken, liveStreamResolution, liveStreamBuffering
+            liveAccessToken, liveStreamResolution, liveStreamBuffering,
+            audioInputDevice, audioOutputDevice
         }) => {
             /*  take login parameters  */
             app.personPortrait       = personPortrait
@@ -303,12 +308,16 @@ const EventStream  = require("./app-main-relay-eventstream")
             app.liveAccessToken      = liveAccessToken
             app.liveStreamResolution = liveStreamResolution
             app.liveStreamBuffering  = liveStreamBuffering
+            app.audioInputDevice     = audioInputDevice
+            app.audioOutputDevice    = audioOutputDevice
             settings.set("person-portrait",        app.personPortrait)
             settings.set("person-name",            app.personName)
             settings.set("live-relay-server",      app.liveRelayServer)
             settings.set("live-access-token",      app.liveAccessToken)
             settings.set("live-stream-resolution", app.liveStreamResolution)
             settings.set("live-stream-buffering",  app.liveStreamBuffering)
+            settings.set("audio-input-device",     app.audioInputDevice)
+            settings.set("audio-output-device",    app.audioOutputDevice)
 
             /*  parse access token  */
             const m = app.liveAccessToken.match(/^(.+?)-([^-]+)-([^-]+)$/)
@@ -347,9 +356,35 @@ const EventStream  = require("./app-main-relay-eventstream")
                     id:    "training",
                     event: "chat",
                     data: {
-                        title: app.personName,
-                        image: app.personPortrait,
-                        message
+                        title:   app.personName,
+                        image:   app.personPortrait,
+                        message: message.message,
+                        ...(message.audio ? { audio: message.audio } : {})
+                    }
+                }))
+            }
+        })
+        app.ipc.handle("feedback", (event, type) => {
+            if (app.es !== null) {
+                app.es.send(JSON.stringify({
+                    id:    "training",
+                    event: "feedback",
+                    data: {
+                        client: app.clientId,
+                        type:   type
+                    }
+                }))
+            }
+        })
+        app.ipc.handle("feeling", (event, feeling) => {
+            if (app.es !== null) {
+                app.es.send(JSON.stringify({
+                    id:    "training",
+                    event: "feeling",
+                    data: {
+                        client:    app.clientId,
+                        challenge: feeling.challenge,
+                        mood:      feeling.mood
                     }
                 }))
             }

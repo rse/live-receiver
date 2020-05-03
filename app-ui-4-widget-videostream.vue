@@ -95,12 +95,16 @@
 module.exports = {
     name: "videostream",
     props: {
-        volume: 100
+        volume: { type: Number,  default: 100 },
+        muted:  { type: Boolean, default: false },
+        device: { type: String,  default: "" }
     },
     data: function () {
         return {
             state:     "stalled",
-            intVolume: this.volume ? this.volume : 100
+            intVolume: this.volume ? this.volume : 100,
+            intMuted:  this.muted  ? this.muted  : false,
+            intDevice: this.device ? this.device : ""
         }
     },
     computed: {
@@ -110,12 +114,30 @@ module.exports = {
         intVolume: function (v) {
             if (this.ve !== null)
                 this.ve.volume = v / 100
+        },
+        intMuted: function (v) {
+            if (this.ve !== null)
+                this.ve.muted = v
+        },
+        intDevice: function (v) {
+            if (this.ve !== null)
+                this.ve.setSinkId(v)
         }
     },
     mounted () {
         /*  allow volume to be adjusted  */
         this.$on("volume", (volume) => {
             this.intVolume = volume
+        })
+
+        /*  allow volume to be muted  */
+        this.$on("mute", (muted) => {
+            this.intMuted = muted
+        })
+
+        /*  allow device to be switched  */
+        this.$on("device", (device) => {
+            this.intDevice = device
         })
 
         /*  animate the two icons  */
@@ -154,6 +176,9 @@ module.exports = {
             this.we.appendChild(ve)
             ve.autoplay = true
             ve.volume = this.intVolume / 100
+            ve.muted  = this.muted
+            if (this.device !== "")
+                ve.setSinkId(this.device)
             ve.addEventListener("loadeddata", () => {
                 console.log("videoelement: loadeddata")
             })
