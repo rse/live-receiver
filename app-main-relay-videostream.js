@@ -25,6 +25,7 @@
 /*  external requirements  */
 const os           = require("os")
 const path         = require("path")
+const { app }      = require("electron")
 const execa        = require("execa")
 const EventEmitter = require("eventemitter2")
 const UUID         = require("pure-uuid")
@@ -33,9 +34,11 @@ const MP4Box       = require("mp4box")
 /*  determine path to embedded fflplay(1) executable  */
 let ffmpeg
 if (os.platform() === "win32")
-    ffmpeg = path.resolve(path.join(__dirname, "ffmpeg", "ffmpeg-win-x64.exe"))
+    ffmpeg = path.resolve(path.join(app.getAppPath(), "ffmpeg", "ffmpeg-win-x64.exe")
+        .replace("app.asar", "app.asar.unpacked"))
 else if (os.platform() === "darwin")
-    ffmpeg = path.resolve(path.join(__dirname, "ffmpeg", "ffmpeg-mac-x64"))
+    ffmpeg = path.resolve(path.join(app.getAppPath(), "ffmpeg", "ffmpeg-mac-x64")
+        .replace("app.asar", "app.asar.unpacked"))
 else
     throw new Error(`operating system platform ${os.platform()} not supported`)
 

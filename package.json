@@ -54,11 +54,7 @@
         "mqtt":                            "3.0.0",
         "mqtt-json-rpc":                   "1.1.1"
     },
-    "main": "./app-main.js",
-    "build": {
-        "appId":             "com.engelschall.apps.live.receiver",
-        "app-category-type": "com.engelschall.apps"
-    },
+    "main":                  "./app-main.js",
     "scripts": {
         "setup":             "npm install --only-production --global-style",
         "lint":              "eslint --config eslint.yaml --ext js,vue *.js *.vue",

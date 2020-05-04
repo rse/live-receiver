@@ -55,6 +55,7 @@ const zip   = require("cross-zip")
             "LiVE-Receiver",
             "--platform=win32",
             "--arch=x64",
+            "--asar.unpackDir=ffmpeg",
             "--ignore", "(?:" + ignore.join("|") + ")",
             "--overwrite"
         ])
@@ -74,7 +75,12 @@ const zip   = require("cross-zip")
             "LiVE-Receiver",
             "--platform=darwin",
             "--arch=x64",
+            "--asar.unpackDir=ffmpeg",
             "--ignore", "(?:" + ignore.join("|") + ")",
+            "--app-bundle-id=com.engelschall.apps.live.receiver",
+            "--app-category-type=com.engelschall.apps",
+            "--protocol=live",
+            "--protocol-name=LiVE",
             "--overwrite"
         ])
 
