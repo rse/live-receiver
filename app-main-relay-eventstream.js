@@ -39,7 +39,7 @@ module.exports = class EventStream extends EventEmitter {
             channel: " ",
             token1:   "",
             token2:   "",
-            interval: 30 * 1000 // FIXME: hardcoded
+            interval: 30 * 1000 /* FIXME: still hardcoded */
         }, options)
         this.broker = null
         this.timer  = null
@@ -142,7 +142,7 @@ module.exports = class EventStream extends EventEmitter {
                 if (firstConnect)
                     this.broker = broker
 
-                /*  support RPC-style communication (still unused)  */
+                /*  support RPC-style communication (FIXME: still unused)  */
                 if (firstConnect)
                     this.rpc = new RPC(broker)
 
@@ -214,7 +214,7 @@ module.exports = class EventStream extends EventEmitter {
         })
     }
 
-    /*  support RPC-style communication (still unused)  */
+    /*  support RPC-style communication (FIXME: still unused)  */
     register (method, callback) {
         return this.rpc.register(method, callback)
     }

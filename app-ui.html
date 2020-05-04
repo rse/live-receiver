@@ -26,37 +26,69 @@
 -->
 <html>
     <head>
+        <!-- application title -->
         <title>LiVE Receiver</title>
 
+        <!-- general meta-information -->
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' 'unsafe-eval';"/>
 
+        <!-- load dependency: VueJS -->
         <script type="text/javascript" src="node_modules/vue/dist/vue.js"></script>
         <script type="text/javascript" src="node_modules/http-vue-loader/src/httpVueLoader.js"></script>
+
+        <!-- load dependency: MouseTrap -->
         <script type="text/javascript" src="node_modules/mousetrap/mousetrap.min.js"></script>
+
+        <!-- load dependency: AnimeJS (FIXME: still unused) -->
         <script type="text/javascript" src="node_modules/animejs/lib/anime.min.js"></script>
+
+        <!-- load dependency: Howler (FIXME: still unused) -->
         <script type="text/javascript" src="node_modules/howler/dist/howler.min.js"></script>
+
+        <!-- load dependency: LESS -->
         <script>less = { env: "production", logLevel: 0 };</script>
         <script type="text/javascript" src="node_modules/less/dist/less.min.js"></script>
+
+        <!-- load dependency: FontAwesome -->
         <link rel="stylesheet" type="text/css" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css">
         <script type="text/javascript" src="node_modules/@fortawesome/fontawesome-free/js/all.min.js"></script>
+
+        <!-- load dependency: TypoPRO -->
         <link rel="stylesheet" type="text/css" href="node_modules/typopro-web/web/TypoPRO-SourceSansPro/TypoPRO-SourceSansPro.css">
         <link rel="stylesheet" type="text/css" href="node_modules/typopro-web/web/TypoPRO-DejaVu/TypoPRO-DejaVu.css">
+
+        <!-- load dependency: SoundFX (FIXME: still unused) -->
         <script type="text/javascript" src="node_modules/@rse/soundfx/soundfx.browser.js"></script>
+
+        <!-- load dependency: SoundLP (FIXME: still unused) -->
         <script type="text/javascript" src="node_modules/@rse/soundlp/soundlp.browser.js"></script>
+
+        <!-- load dependency: Moment -->
         <script type="text/javascript" src="node_modules/moment/min/moment.min.js"></script>
+
+        <!-- load dependency: Cropper -->
         <link rel="stylesheet" type="text/css" href="node_modules/cropperjs/dist/cropper.min.css">
         <script type="text/javascript" src="node_modules/cropperjs/dist/cropper.min.js"></script>
+
+        <!-- load dependency: Vue MultiSelect -->
         <link rel="stylesheet" type="text/css" href="node_modules/vue-multiselect/dist/vue-multiselect.min.css">
         <script type="text/javascript" src="node_modules/vue-multiselect/dist/vue-multiselect.min.js"></script>
+
+        <!-- load dependency: Vue Modal (FIXME: still unused) -->
         <link rel="stylesheet" type="text/css" href="node_modules/vue-js-modal/dist/styles.css">
+
+        <!-- load dependency: V-Tooltip -->
         <script type="text/javascript" src="node_modules/v-tooltip/dist/v-tooltip.min.js"></script>
         <script type="text/javascript" src="node_modules/vue-js-modal/dist/index.js"></script>
+
+        <!-- load application -->
         <link rel="stylesheet" type="text/css" href="app-ui.css"/>
         <script type="text/javascript" src="app-ui.js"></script>
     </head>
     <body>
+        <!-- outmost UI container with initial window -->
         <div id="ui">
             <win ref="win" id="win"></win>
         </div>
