@@ -26,6 +26,7 @@
 
 <template>
     <div v-bind:style="style" class="login">
+        <!-- Your Portrait -->
         <div class="login-row portrait">
             <div class="login-col label">
                 <i class="icon fa fa-portrait"></i>
@@ -38,6 +39,8 @@
                 ></portrait>
             </div>
         </div>
+
+        <!-- Your Name -->
         <div class="login-row name">
             <div class="login-col label">
                 <i class="icon fa fa-file-signature"></i>
@@ -54,6 +57,8 @@
                 />
             </div>
         </div>
+
+        <!-- LiVE Relay Server -->
         <div class="login-row server">
             <div class="login-col label">
                 <i class="icon fa fa-globe"></i>
@@ -70,6 +75,8 @@
                 />
             </div>
         </div>
+
+        <!-- LiVE Access Token -->
         <div class="login-row token">
             <div class="login-col label">
                 <i class="icon fa fa-key"></i>
@@ -86,6 +93,8 @@
                 />
             </div>
         </div>
+
+        <!-- LiVE Stream Resolution -->
         <!--
         <div class="login-row resolution">
             <div class="login-col label">
@@ -113,6 +122,8 @@
             </div>
         </div>
         -->
+
+        <!-- LiVE Stream Buffering -->
         <div class="login-row buffering">
             <div class="login-col label">
                 <i class="icon fa fa-clock"></i>
@@ -153,6 +164,8 @@
                 </div>
             </div>
         </div>
+
+        <!-- Audio Input Device -->
         <div class="login-row audio-input-device">
             <div class="login-col label">
                 <i class="icon fa fa-microphone-alt"></i>
@@ -179,6 +192,8 @@
                 </div>
             </div>
         </div>
+
+        <!-- Audio Output Device -->
         <div class="login-row audio-output-device">
             <div class="login-col label">
                 <i class="icon fa fa-volume-up"></i>
@@ -205,6 +220,8 @@
                 </div>
             </div>
         </div>
+
+        <!-- Connect -->
         <div class="login-row submit">
             <div class="login-col label">
             </div>
@@ -223,6 +240,8 @@
                 />
             </div>
         </div>
+
+        <!-- Optional Error -->
         <div v-show="error !== ''" class="login-row error">
             <div class="login-col label">
             </div>
@@ -230,6 +249,8 @@
                 ERROR: {{ error }}
             </div>
         </div>
+
+        <!-- Logo & GDPR Notice -->
         <div class="login-row notice">
             <div class="login-col label">
                 <img v-bind:src="logo" class="logo" alt="LiVE"/>
