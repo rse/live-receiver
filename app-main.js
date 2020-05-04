@@ -395,5 +395,5 @@ const EventStream  = require("./app-main-relay-eventstream")
         })
     })
 })().catch((err) => {
-    console.log(`** live-receiver: main: ERROR: ${err}`)
+    console.log(`** LiVE Receiver: main: ERROR: ${err}`)
 })
