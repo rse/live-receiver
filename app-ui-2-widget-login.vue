@@ -274,6 +274,7 @@
 
 <style lang="less" scoped>
 .login {
+    /*  dialog box  */
     background-color: var(--color-std-bg-4);
     border-top:    1px solid var(--color-std-bg-5);
     border-left:   1px solid var(--color-std-bg-5);
@@ -285,6 +286,8 @@
     flex-direction: column;
     justify-content: flex-start;
     font-size: 12pt;
+
+    /*  general row/column layout  */
     .login-row {
         margin-bottom: 4px;
         display: flex;
@@ -341,6 +344,8 @@
             }
         }
     }
+
+    /*  text input field  */
     input[type="text"] {
         color:            var(--color-std-fg-3);
         background-color: var(--color-std-bg-4);
@@ -372,6 +377,8 @@
             }
         }
     }
+
+    /*  submit button  */
     input[type="submit"] {
         color:            var(--color-std-fg-3);
         background-color: var(--color-std-bg-4);
@@ -409,6 +416,8 @@
             border-bottom: 1px solid var(--color-std-bg-1);
         }
     }
+
+    /*  special overrides  */
     .login-row > .portrait {
         width: 300px;
         height: 150px;
@@ -440,6 +449,8 @@
             padding-left: 40px;
         }
     }
+
+    /*  select-box row  */
     .selbox-container {
         display: flex;
         flex-direction: row;
@@ -476,6 +487,8 @@
             }
         }
     }
+
+    /*  multi-select/drop-down field  */
     .multiselect {
         background-color: inherit;
     }
@@ -560,6 +573,8 @@
 <script>
 module.exports = {
     name: "login",
+
+    /*  component properties  */
     props: {
         personPortrait:       { type: String, default: "" },
         personName:           { type: String, default: "" },
@@ -570,6 +585,8 @@ module.exports = {
         audioInputDevice:     { type: String, default: "" },
         audioOutputDevice:    { type: String, default: "" }
     },
+
+    /*  component variables  */
     data: function () {
         return {
             intPersonPortrait:       this.personPortrait,
@@ -592,6 +609,13 @@ module.exports = {
             error:                   ""
         }
     },
+
+    /*  component computed properties  */
+    computed: {
+        style: ui.vueprop2cssvar()
+    },
+
+    /*  component property observation  */
     watch: {
         intPersonPortrait:       function (v) { this.$emit("update:person-portrait", v) },
         intPersonName:           function (v) { this.$emit("update:person-name", v) },
@@ -602,20 +626,27 @@ module.exports = {
         intAudioInputDevice:     function (v) { this.$emit("update:audio-input-device",  this.deviceObj2Id(v)) },
         intAudioOutputDevice:    function (v) { this.$emit("update:audio-output-device", this.deviceObj2Id(v)) }
     },
-    computed: {
-        style: ui.vueprop2cssvar()
-    },
+
+    /*  component sub-components  */
     components: {
         "portrait": "url:app-ui-3-widget-portrait.vue"
     },
+
+    /*  component methods  */
     methods: {
+        /*  handle login  */
         login () {
+            /*  prevent hammering connect button  */
             this.allowConnect = false
             setTimeout(() => {
                 this.allowConnect = true
             }, 2 * 1000)
+
+            /*  raise login event  */
             this.$emit("login")
         },
+
+        /*  audio device handling  */
         deviceId2Obj (id, list) {
             if (id === "")
                 return null
@@ -649,6 +680,8 @@ module.exports = {
                 this.intAudioOutputDevice = this.deviceId2Obj(
                     this.deviceObj2Id(this.intAudioOutputDevice), this.audioOutputDevices)
         },
+
+        /*  audio input device test-driving  */
         async audioInputTest () {
             if (this.intAudioInputDevice === null)
                 return
@@ -686,6 +719,8 @@ module.exports = {
                 this.recorder.stop()
             }
         },
+
+        /*  audio output device test-driving  */
         audioOutputTest () {
             if (this.intAudioOutputDevice === null)
                 return
@@ -711,16 +746,24 @@ module.exports = {
             }
         }
     },
+
+    /*  component creation hook  */
     created () {
+        /*  update audio devices (initially)  */
         this.deviceUpdate()
     },
+
+    /*  component DOM mounting hook  */
     mounted () {
+        /*  raise errors  */
         this.$on("error", (error) => {
             this.error = error
             setTimeout(() => {
                 this.error = ""
             }, 4 * 1000)
         })
+
+        /*  update audio devices (subsequently)  */
         this.$on("updated-devices", () => {
             this.deviceUpdate()
         })
