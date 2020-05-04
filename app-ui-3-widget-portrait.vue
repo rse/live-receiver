@@ -28,8 +28,10 @@
     <div v-bind:style="style" class="portrait">
         <div class="portrait-row">
             <div class="portrait-col portrait">
+                <!-- portrait -->
                 <div v-bind:class="{ border: true, editing: editing }">
                     <div v-show="!editing" class="preview-wrap">
+                        <!-- preview -->
                         <img
                             ref="preview"
                             class="preview"
@@ -39,6 +41,7 @@
                         />
                     </div>
                     <div v-show="editing" class="cropper-wrap">
+                        <!-- editor -->
                         <img ref="cropper"
                             class="cropper"
                             v-bind:src="value"
@@ -49,6 +52,7 @@
             </div>
             <div class="portrait-col chooser">
                 <div class="portrait-row">
+                    <!-- avatars -->
                     <div class="portrait-col">
                         <img ref="avatar-man"
                             class="avatar avatar-man"
@@ -67,6 +71,7 @@
                     </div>
                 </div>
                 <div class="portrait-row">
+                    <!-- button -->
                     <button v-show="!editing"
                         class="choose"
                         type="button"
@@ -89,6 +94,7 @@
 
 <style lang="less" scoped>
 .portrait {
+    /*  dialog box  */
     width:  100%;
     height: 100%;
     background-color:        var(--color-std-bg-4);
@@ -96,6 +102,8 @@
     border-left:   1px solid var(--color-std-bg-1);
     border-right:  1px solid var(--color-std-bg-5);
     border-bottom: 1px solid var(--color-std-bg-5);
+
+    /*  general layout  */
     .portrait-row {
         display: flex;
         flex-direction: row;
@@ -106,6 +114,8 @@
         flex-direction: column;
         justify-content: space-between;
     }
+
+    /*  special layouts  */
     .portrait-col.portrait {
         width:  calc(150px - 20px);
         height: calc(150px - 20px);
@@ -198,9 +208,13 @@
 <script>
 module.exports = {
     name: "portrait",
+
+    /*  component properties  */
     props: {
-        value: ""
+        value: { type: String, default: "" }
     },
+
+    /*  component variables  */
     data: () => ({
         imageFile:   "",
         imageData:   "",
@@ -209,9 +223,13 @@ module.exports = {
         editing:     false,
         cropper:     null
     }),
+
+    /*  component computed properties  */
     computed: {
         style: ui.vueprop2cssvar()
     },
+
+    /*  component methods  */
     methods: {
         /*  select a standard avatar (and fixate it)  */
         chooseAvatar (name) {
@@ -253,6 +271,8 @@ module.exports = {
             this.$emit("input", this.imageData)
         }
     },
+
+    /*  component DOM mounting hook  */
     mounted () {
         /*  take over portrait image or provide default avatar  */
         if (this.value !== "")
