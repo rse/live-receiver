@@ -142,7 +142,7 @@ module.exports = class EventStream extends EventEmitter {
                 if (firstConnect)
                     this.broker = broker
 
-                /*  establish RPC-over-MQTT interface  */
+                /*  support RPC-style communication (still unused)  */
                 if (firstConnect)
                     this.rpc = new RPC(broker)
 
@@ -180,6 +180,8 @@ module.exports = class EventStream extends EventEmitter {
             })
         })
     }
+
+    /*  stop communication  */
     async stop () {
         if (this.timer !== null) {
             clearTimeout(this.timer)
@@ -198,6 +200,8 @@ module.exports = class EventStream extends EventEmitter {
             this.broker.end()
         }
     }
+
+    /*  send a message to the LiVE Sender side  */
     send (message) {
         if (this.broker === null)
             throw new Error("not connected")
@@ -209,6 +213,8 @@ module.exports = class EventStream extends EventEmitter {
                 this.emit("send:success", message)
         })
     }
+
+    /*  support RPC-style communication (still unused)  */
     register (method, callback) {
         return this.rpc.register(method, callback)
     }
