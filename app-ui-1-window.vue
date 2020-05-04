@@ -51,7 +51,7 @@
             </div>
 
             <!-- audio mute -->
-            <div class="box button mute" v-on:click="mute"
+            <div class="box button mute" v-on:click="volumeMute = !volumeMute"
                 v-bind:class="{ disabled: inLogin, active: volume === 0 || volumeMute }">
                 <span v-show="volumeMute"><i class="icon fa fa-volume-mute"></i></span>
                 <span v-show="!volumeMute"><i class="icon fa fa-volume-up"></i></span>
@@ -701,6 +701,7 @@ module.exports = {
 
     /*  component methods  */
     methods: {
+        /*  message handling  */
         async sendMessage () {
             if (this.message !== "" || this.audioBlob !== null) {
                 let data = { message: this.message }
@@ -734,6 +735,8 @@ module.exports = {
                 mood:      this.mood
             })
         },
+
+        /*  login/connect and logout/disconnect handling  */
         login () {
             if (!this.inLogin)
                 return
@@ -756,6 +759,11 @@ module.exports = {
             this.allowDisconnect = false
             this.$emit("logout")
         },
+        quit () {
+            this.$emit("quit")
+        },
+
+        /*  window resize handling  */
         resizeBegin (event) {
             if (this.fullscreened || this.resizing)
                 return
@@ -826,15 +834,8 @@ module.exports = {
             this.videoSize.w = dw
             this.videoSize.h = dh
         },
-        resolution (id) {
-            this.resolutionId = id
-        },
-        quit () {
-            this.$emit("quit")
-        },
-        mute () {
-            this.volumeMute = !this.volumeMute
-        },
+
+        /*  audio recording handling  */
         async audioRecord () {
             if (!this.audioRecording) {
                 /*  start recording  */
@@ -917,6 +918,7 @@ module.exports = {
 
     /*  component DOM mounting hook  */
     mounted () {
+        /*  receive events  */
         this.$on("updated-devices", () => {
             this.$refs.login.$emit("updated-devices")
         })
@@ -930,6 +932,7 @@ module.exports = {
                 this.inLogin = false
         })
 
+        /*  stream handling  */
         this.$on("stream-begin", () => {
             this.$refs.videostream.$emit("stream-begin")
             this.allowDisconnect = false
@@ -954,19 +957,16 @@ module.exports = {
             this.$refs.videostream.$emit("stream-end")
         })
 
+        /*  regular feeling refreshing  */
         setInterval(() => {
             this.sendFeeling()
         }, 10 * 60 * 1000)
 
+        /*  window resize tracking  */
         window.addEventListener("resize", () => this.handleResize())
         this.$nextTick(() => {
             this.handleResize()
         })
-    },
-
-    /*  component destruction hook  */
-    beforeDestroy () {
-        window.removeEventListener("resize", () => this.handleResize())
     }
 }
 </script>
