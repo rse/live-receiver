@@ -26,23 +26,38 @@
 
 <template>
     <div v-bind:style="style" class="videostream">
+        <!-- <video> container -->
         <div ref="stream"
             class="stream"
             v-show="state === 'playing' || state === 'stalled'">
         </div>
+
+        <!-- video overlay -->
         <div class="overlay"
             v-show="state !== 'playing'">
             <div ref="overlayIcon" class="icon">
-                <div v-show="state === 'started'"><i class="icon fa fa-play-circle"></i></div>
+                <div v-show="state === 'started'"><i class="icon fa fa-play-circle" ></i></div>
                 <div v-show="state === 'stalled'"><i class="icon fa fa-pause-circle"></i></div>
-                <div v-show="state === 'stopped'"><i class="icon fa fa-stop-circle"></i></div>
+                <div v-show="state === 'stopped'"><i class="icon fa fa-stop-circle" ></i></div>
                 <div v-show="state === 'error'"  ><i class="icon fa fa-times-circle"></i></div>
             </div>
             <div class="text">
-                <div v-show="state === 'started'">Video-Stream Started<br/>(awaiting to receive stream data)</div>
-                <div v-show="state === 'stalled'" >Video-Stream Stalled<br/>(awaiting to receive stream data again)</div>
-                <div v-show="state === 'stopped'">Video-Stream Stopped<br/>(awaiting internal shutdown)</div>
-                <div v-show="state === 'error'"  >Video-Stream Failed<br/>(awaiting internal recovery)</div>
+                <div v-show="state === 'started'">
+                    Video-Stream Started<br/>
+                    (awaiting to receive stream data)
+                </div>
+                <div v-show="state === 'stalled'">
+                    Video-Stream Stalled<br/>
+                    (awaiting to receive stream data again)
+                </div>
+                <div v-show="state === 'stopped'">
+                    Video-Stream Stopped<br/>
+                    (awaiting internal shutdown)
+                </div>
+                <div v-show="state === 'error'">
+                    Video-Stream Failed<br/>
+                    (awaiting internal recovery)
+                </div>
             </div>
         </div>
     </div>
@@ -50,6 +65,7 @@
 
 <style lang="less" scoped>
 .videostream {
+    /*  outer container  */
     width: 100%;
     height: 100%;
     display: flex;
@@ -62,6 +78,8 @@
     border-right:  1px solid var(--color-std-bg-4);
     border-bottom: 1px solid var(--color-std-bg-4);
     position: relative;
+
+    /*  video stream  */
     .stream {
         position: absolute;
         top: 0;
@@ -73,6 +91,8 @@
             height: 100%;
         }
     }
+
+    /*  video overlay  */
     .overlay {
         text-align: center;
         perspective: 0px;
@@ -94,11 +114,15 @@
 <script>
 module.exports = {
     name: "videostream",
+
+    /*  component static properties  */
     props: {
         volume: { type: Number,  default: 100 },
         muted:  { type: Boolean, default: false },
         device: { type: String,  default: "" }
     },
+
+    /*  component variable properties  */
     data: function () {
         return {
             state:     "stalled",
@@ -107,9 +131,13 @@ module.exports = {
             intDevice: this.device ? this.device : ""
         }
     },
+
+    /*  component computed properties  */
     computed: {
         style: ui.vueprop2cssvar()
     },
+
+    /*  component property observation  */
     watch: {
         intVolume: function (v) {
             if (this.ve !== null)
@@ -124,6 +152,8 @@ module.exports = {
                 this.ve.setSinkId(v)
         }
     },
+
+    /*  component DOM mounting hook  */
     mounted () {
         /*  allow volume to be adjusted  */
         this.$on("volume", (volume) => {
