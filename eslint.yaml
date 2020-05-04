@@ -38,27 +38,28 @@ parserOptions:
         jsx:     false
 
 env:
-    browser:       true
-    node:          true
-    mocha:         false
-    commonjs:      true
-    worker:        false
-    serviceworker: false
+    browser:        true
+    node:           true
+    mocha:          false
+    commonjs:       true
+    worker:         false
+    serviceworker:  false
 
 globals:
-    process:       true
-    ui:            true
-    anime:         true
-    Howl:          true
-    SoundFX:       true
-    SoundLP:       true
-    Cropper:       true
-    httpVueLoader: true
+    process:        true
+    ui:             true
+    anime:          true
+    Howl:           true
+    SoundFX:        true
+    SoundLP:        true
+    Cropper:        true
+    httpVueLoader:  true
     VueMultiselect: true
-    less:          true
-    SVG:           true
-    Vue:           true
-    Mousetrap:     true
+    VTooltip:       true
+    less:           true
+    SVG:            true
+    Vue:            true
+    Mousetrap:      true
 
 rules:
     #   modified rules

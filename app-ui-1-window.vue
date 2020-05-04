@@ -27,7 +27,6 @@
 <template>
     <div v-if="loaded" v-bind:style="style" class="win"
         v-on:mousemove="resizeMove" v-on:mouseup="resizeEnd">
-
         <!-- ---- HEADER ---- -->
         <div ref="header" class="header">
             <!-- disconnect -->
@@ -689,8 +688,11 @@ module.exports = {
         liveStreamResolution: function (v) { ui.settings("live-stream-resolution", v) },
         liveStreamBuffering:  function (v) { ui.settings("live-stream-buffering", v) },
         audioInputDevice:     function (v) { ui.settings("audio-input-device", v) },
-        audioOutputDevice:    function (v) { ui.settings("audio-output-device", v);
-            if (this.$refs.videostream) { this.$refs.videostream.$emit("device", v) } }
+        audioOutputDevice:    function (v) {
+            ui.settings("audio-output-device", v)
+            if (this.$refs.videostream)
+                this.$refs.videostream.$emit("device", v)
+        }
     },
 
     /*  component sub-components  */
@@ -704,10 +706,10 @@ module.exports = {
         /*  message handling  */
         async sendMessage () {
             if (this.message !== "" || this.audioBlob !== null) {
-                let data = { message: this.message }
+                const data = { message: this.message }
                 if (this.audioBlob !== null) {
                     data.audio = await new Promise((resolve, reject) => {
-                        let fr = new FileReader()
+                        const fr = new FileReader()
                         fr.addEventListener("load", () => {
                             resolve(fr.result)
                         })
