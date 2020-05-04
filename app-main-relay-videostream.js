@@ -66,6 +66,7 @@ module.exports = class VideoStream extends EventEmitter {
     }
     async start () {
         this.processing = true
+
         /*  cleanup if necessary  */
         if (this.proc !== null)
             await this.stop()
