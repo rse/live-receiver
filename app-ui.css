@@ -22,6 +22,7 @@
 **  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+/*  global theme color definitions  */
 :root {
     --color-std-bg-1: #000000;
     --color-std-bg-2: #111111;
@@ -60,10 +61,64 @@
     --color-sig-fg-5: #fff0d0;
 }
 
+/*  outmost canvas configuration  */
 html, body {
     margin:           0;
     padding:          0;
     height:           100vh;
     width:            100vw;
     background-color: transparent;
+}
+
+/*  global v-tooltip configuration  */
+.tooltip {
+    display: block;
+    z-index: 10000;
+}
+.tooltip-inner {
+    color:                   var(--color-std-fg-3);
+    background-color:        var(--color-std-bg-4);
+    border-top:    1px solid var(--color-std-bg-5);
+    border-left:   1px solid var(--color-std-bg-5);
+    border-right:  1px solid var(--color-std-bg-1);
+    border-bottom: 1px solid var(--color-std-bg-1);
+    padding: 10px;
+    border-radius: 5px;
+    font-family: "TypoPRO Source Sans Pro";
+    font-size: 10pt;
+}
+.tooltip-arrow {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    position: absolute;
+    margin: 5px;
+    border-color: var(--color-std-bg-4);
+    z-index: 1;
+}
+.tooltip[x-placement^="top"] {
+    margin-bottom: 5px;
+}
+.tooltip[x-placement^="top"] .tooltip-arrow {
+    border-width: 10px 10px 0 10px;
+    border-left-color:   transparent !important;
+    border-right-color:  transparent !important;
+    border-bottom-color: transparent !important;
+    bottom: -9px;
+    left: calc(50% - 10px);
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.tooltip[x-placement^="bottom"] {
+    margin-top: 5px;
+}
+.tooltip[x-placement^="bottom"] .tooltip-arrow {
+    border-width: 0 10px 10px 10px;
+    border-left-color:  transparent !important;
+    border-right-color: transparent !important;
+    border-top-color:   transparent !important;
+    top: -9px;
+    left: calc(50% - 10px);
+    margin-top: 0;
+    margin-bottom: 0;
 }

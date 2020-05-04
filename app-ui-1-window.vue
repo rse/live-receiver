@@ -505,60 +505,6 @@
 }
 </style>
 
-<style lang="less">
-.tooltip {
-    display: block;
-    z-index: 10000;
-    .tooltip-inner {
-        color:                   var(--color-std-fg-3);
-        background-color:        var(--color-std-bg-4);
-        border-top:    1px solid var(--color-std-bg-5);
-        border-left:   1px solid var(--color-std-bg-5);
-        border-right:  1px solid var(--color-std-bg-1);
-        border-bottom: 1px solid var(--color-std-bg-1);
-        padding: 10px;
-        border-radius: 5px;
-        font-family: "TypoPRO Source Sans Pro";
-        font-size: 10pt;
-    }
-    .tooltip-arrow {
-        width: 0;
-        height: 0;
-        border-style: solid;
-        position: absolute;
-        margin: 5px;
-        border-color: var(--color-std-bg-4);
-        z-index: 1;
-    }
-    &[x-placement^="top"] {
-        margin-bottom: 5px;
-        .tooltip-arrow {
-            border-width: 10px 10px 0 10px;
-            border-left-color:   transparent !important;
-            border-right-color:  transparent !important;
-            border-bottom-color: transparent !important;
-            bottom: -9px;
-            left: calc(50% - 10px);
-            margin-top: 0;
-            margin-bottom: 0;
-        }
-  }
-    &[x-placement^="bottom"] {
-        margin-top: 5px;
-        .tooltip-arrow {
-            border-width: 0 10px 10px 10px;
-            border-left-color:  transparent !important;
-            border-right-color: transparent !important;
-            border-top-color:   transparent !important;
-            top: -9px;
-            left: calc(50% - 10px);
-            margin-top: 0;
-            margin-bottom: 0;
-        }
-    }
-}
-</style>
-
 <script>
 module.exports = {
     name: "win",
