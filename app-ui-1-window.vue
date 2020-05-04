@@ -268,7 +268,7 @@
                 <span class="title">Show Mood</span>
             </div>
 
-            <!-- window resize -->
+            <!-- window resize (FIXME: still unused) -->
             <!--
             <div class="box button resize"
                 v-on:mousedown="resizeBegin"

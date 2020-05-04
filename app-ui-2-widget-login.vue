@@ -94,7 +94,7 @@
             </div>
         </div>
 
-        <!-- LiVE Stream Resolution -->
+        <!-- LiVE Stream Resolution (FIXME: still unused) -->
         <!--
         <div class="login-row resolution">
             <div class="login-col label">
