@@ -574,7 +574,7 @@
 module.exports = {
     name: "login",
 
-    /*  component properties  */
+    /*  component static properties  */
     props: {
         personPortrait:       { type: String, default: "" },
         personName:           { type: String, default: "" },
@@ -586,7 +586,7 @@ module.exports = {
         audioOutputDevice:    { type: String, default: "" }
     },
 
-    /*  component variables  */
+    /*  component variable properties  */
     data: function () {
         return {
             intPersonPortrait:       this.personPortrait,

@@ -609,7 +609,7 @@
 module.exports = {
     name: "win",
 
-    /*  component data  */
+    /*  component variable properties  */
     data: () => ({
         loaded:               false,
         inLogin:              true,
@@ -671,7 +671,7 @@ module.exports = {
         }
     },
 
-    /*  component watched properties  */
+    /*  component properties observation  */
     watch: {
         volume: function (v) {
             this.$refs.videostream.$emit("volume", v)

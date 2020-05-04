@@ -209,12 +209,12 @@
 module.exports = {
     name: "portrait",
 
-    /*  component properties  */
+    /*  component static properties  */
     props: {
         value: { type: String, default: "" }
     },
 
-    /*  component variables  */
+    /*  component variable properties  */
     data: () => ({
         imageFile:   "",
         imageData:   "",
