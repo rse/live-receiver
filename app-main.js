@@ -349,7 +349,7 @@ const EventStream  = require("./app-main-relay-eventstream")
             return { success: true }
         })
 
-        /*  the LiVE Relay EventStream related communication  */
+        /*  the LiVE Relay EventStream communication: messages  */
         app.ipc.handle("message", (event, message) => {
             if (app.es !== null) {
                 app.es.send(JSON.stringify({
@@ -364,6 +364,8 @@ const EventStream  = require("./app-main-relay-eventstream")
                 }))
             }
         })
+
+        /*  the LiVE Relay EventStream communication: feedback  */
         app.ipc.handle("feedback", (event, type) => {
             if (app.es !== null) {
                 app.es.send(JSON.stringify({
@@ -376,6 +378,8 @@ const EventStream  = require("./app-main-relay-eventstream")
                 }))
             }
         })
+
+        /*  the LiVE Relay EventStream communication: feeling  */
         app.ipc.handle("feeling", (event, feeling) => {
             if (app.es !== null) {
                 app.es.send(JSON.stringify({
