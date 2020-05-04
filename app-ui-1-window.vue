@@ -25,25 +25,40 @@
 -->
 
 <template>
-    <div v-if="loaded" v-bind:style="style" class="win" v-on:mousemove="resizeMove" v-on:mouseup="resizeEnd">
+    <div v-if="loaded" v-bind:style="style" class="win"
+        v-on:mousemove="resizeMove" v-on:mouseup="resizeEnd">
+
+        <!-- ---- HEADER ---- -->
         <div ref="header" class="header">
-            <div class="box button logout" v-on:click="logout" v-bind:class="{ disabled: inLogin || !allowDisconnect }">
+            <!-- disconnect -->
+            <div class="box button logout" v-on:click="logout"
+                v-bind:class="{ disabled: inLogin || !allowDisconnect }">
                 <i class="icon fa fa-arrow-alt-circle-left"></i>
                 <span class="title">Disconnect</span>
             </div>
+
+            <!-- logo -->
             <div class="box logo">
                 <img v-bind:src="logo" alt="LiVE"/>
                 <span class="title">Receiver</span>
             </div>
-            <div class="box bandwidth" v-bind:class="{ disabled: inLogin, active: !inLogin }">
+
+            <!-- bandwidth -->
+            <div class="box bandwidth"
+                v-bind:class="{ disabled: inLogin, active: !inLogin }">
                 <span class="word">{{ inLogin ? "---" : bandwidthText }}</span>
                 <span class="title">kbps</span>
             </div>
-            <div class="box button mute" v-on:click="mute" v-bind:class="{ disabled: inLogin, active: volume === 0 || volumeMute }">
+
+            <!-- audio mute -->
+            <div class="box button mute" v-on:click="mute"
+                v-bind:class="{ disabled: inLogin, active: volume === 0 || volumeMute }">
                 <span v-show="volumeMute"><i class="icon fa fa-volume-mute"></i></span>
                 <span v-show="!volumeMute"><i class="icon fa fa-volume-up"></i></span>
                 <span class="title">Volume Mute</span>
             </div>
+
+            <!-- audio volume -->
             <div class="box slider volume" v-bind:class="{ disabled: inLogin }">
                 <input ref="volume"
                     v-bind:disabled="inLogin"
@@ -53,6 +68,8 @@
                     v-model="volume"/>
                 <span class="title">Audio Volume</span>
             </div>
+
+            <!-- move window -->
             <div class="box move">
                 <span class="grab grab-1"></span>
                 <span class="grab grab-2"></span>
@@ -61,28 +78,45 @@
                 <span class="grab grab-5"></span>
                 <span class="title">Move Window</span>
             </div>
-            <div class="box button fit" v-on:click="sourceSize" v-bind:class="{ disabled: inLogin || fullscreened }">
+
+            <!-- source size -->
+            <div class="box button fit" v-on:click="sourceSize"
+                v-bind:class="{ disabled: inLogin || fullscreened }">
                 <i class="icon fa fa-expand"></i>
                 <span class="title">Source-Size</span>
             </div>
-            <div class="box button minimize" v-on:click="minimize" v-bind:class="{ disabled: fullscreened }">
+
+            <!-- minimize -->
+            <div class="box button minimize" v-on:click="minimize"
+                v-bind:class="{ disabled: fullscreened }">
                 <i class="icon fa fa-window-minimize"></i>
                 <span class="title">Min-Size</span>
             </div>
-            <div class="box button maximize" v-on:click="maximize" v-bind:class="{ disabled: fullscreened }">
+
+            <!-- maximize -->
+            <div class="box button maximize" v-on:click="maximize"
+                v-bind:class="{ disabled: fullscreened }">
                 <i class="icon fa fa-window-maximize"></i>
                 <span class="title">Max-Size</span>
             </div>
-            <div class="box button fullscreen" v-on:click="fullscreen" v-bind:class="{ active: fullscreened }">
+
+            <!-- fullscreen -->
+            <div class="box button fullscreen" v-on:click="fullscreen"
+                v-bind:class="{ active: fullscreened }">
                 <i class="icon fa fa-expand-arrows-alt"></i>
                 <span class="title">Fullscreen</span>
             </div>
+
+            <!-- quit -->
             <div class="box button quit" v-on:click="quit">
                 <i class="icon fa fa-times"></i>
                 <span class="title">Quit</span>
             </div>
         </div>
+
+        <!-- ---- CONTENT ---- -->
         <div ref="content" class="content">
+            <!-- video stream -->
             <div ref="video"
                 v-bind:style="{ width: videoSize.w + 'px', height: videoSize.h + 'px'}"
                 v-show="!inLogin"
@@ -91,6 +125,8 @@
                     ref="videostream"
                 />
             </div>
+
+            <!-- login dialog -->
             <div v-show="inLogin" class="login">
                 <login
                     ref="login"
@@ -106,23 +142,38 @@
                 />
             </div>
         </div>
+
+        <!-- ---- FOOTER ---- -->
         <div ref="footer" class="footer">
-            <div class="box message-icon" v-bind:class="{ disabled: inLogin, active: audioBlob !== null }">
+            <!-- audio message icon -->
+            <div class="box message-icon"
+                v-bind:class="{ disabled: inLogin, active: audioBlob !== null }">
                 <i class="icon fa fa-voicemail"></i>
                 <span class="title">Audio Message</span>
             </div>
-            <div class="box button audio-record" v-on:click="audioRecord" v-bind:class="{ disabled: inLogin || audioInputDevice === '', active: audioRecording }">
+
+            <!-- audio record -->
+            <div class="box button audio-record" v-on:click="audioRecord"
+                v-bind:class="{ disabled: inLogin || audioInputDevice === '', active: audioRecording }">
                 <i class="icon fa fa-dot-circle"></i>
                 <span class="title">Record Message</span>
             </div>
-            <div class="box button audio-play" v-on:click="audioPlay" v-bind:class="{ disabled: inLogin || audioInputDevice === '' || audioBlob === null, active: audioPlaying }">
+
+            <!-- audio play -->
+            <div class="box button audio-play" v-on:click="audioPlay"
+                v-bind:class="{ disabled: inLogin || audioInputDevice === '' || audioBlob === null,
+                    active: audioPlaying }">
                 <i class="icon fa fa-play-circle"></i>
                 <span class="title">Play Message</span>
             </div>
+
+            <!-- message icon -->
             <div class="box message-icon" v-bind:class="{ disabled: inLogin, active: message !== '' }">
                 <i class="icon fa fa-comment-dots"></i>
                 <span class="title">Text Message</span>
             </div>
+
+            <!-- enter message -->
             <div class="box message-text" v-bind:class="{ disabled: inLogin }">
                 <input
                     v-bind:disabled="inLogin"
@@ -134,14 +185,22 @@
                     v-on:keyup.escape="clearMessage(false)"
                 />
             </div>
-            <div class="box button message-clear" v-on:click="clearMessage(true)" v-bind:class="{ disabled: inLogin || (audioBlob === null && message === '') }">
+
+            <!-- clear message -->
+            <div class="box button message-clear" v-on:click="clearMessage(true)"
+                v-bind:class="{ disabled: inLogin || (audioBlob === null && message === '') }">
                 <i class="icon fa fa-trash-alt"></i>
                 <span class="title">Clear Messages</span>
             </div>
-            <div class="box button message-send" v-on:click="sendMessage" v-bind:class="{ disabled: inLogin || (message === '' && audioBlob === null) }">
+
+            <!-- send message -->
+            <div class="box button message-send" v-on:click="sendMessage"
+                v-bind:class="{ disabled: inLogin || (message === '' && audioBlob === null) }">
                 <i class="icon fa fa-share"></i>
                 <span class="title">Send Messages</span>
             </div>
+
+            <!-- move window -->
             <div class="box move">
                 <span class="grab grab-1"></span>
                 <span class="grab grab-2"></span>
@@ -150,16 +209,32 @@
                 <span class="grab grab-5"></span>
                 <span class="title">Move Window</span>
             </div>
-            <div class="box button message-send" v-on:click="feedback('smile')" v-bind:class="{ disabled: inLogin }">
+
+            <!-- send smile -->
+            <div class="box button message-send" v-on:click="feedback('smile')"
+                v-bind:class="{ disabled: inLogin }">
                 <i class="icon fa fa-smile"></i>
                 <span class="title">Show Smile</span>
             </div>
-            <div class="box button message-send" v-on:click="feedback('frown')" v-bind:class="{ disabled: inLogin }">
+
+            <!-- send frown -->
+            <div class="box button message-send" v-on:click="feedback('frown')"
+                v-bind:class="{ disabled: inLogin }">
                 <i class="icon fa fa-angry"></i>
                 <span class="title">Show Frown</span>
             </div>
+
+            <!-- challenge -->
             <div class="box slider challenge" v-bind:class="{ disabled: inLogin }"
-                v-tooltip.top-center="{ html: true, content: challengeText, show: challengeTextShow && !inLogin, trigger: 'manual', hideOnTargetClick: false, autoHide: false, offset: 10 }"
+                v-tooltip.top-center="{
+                    html: true,
+                    content: challengeText,
+                    show: challengeTextShow && !inLogin,
+                    trigger: 'manual',
+                    hideOnTargetClick: false,
+                    autoHide: false,
+                    offset: 10
+                }"
                 v-on:mouseover="challengeTextShow = true"
                 v-on:mouseleave="challengeTextShow = false">
                 <input ref="challenge"
@@ -170,8 +245,18 @@
                     v-model="challenge"/>
                 <span class="title">Show Challenge</span>
             </div>
+
+            <!-- mood -->
             <div class="box slider mood" v-bind:class="{ disabled: inLogin }"
-                v-tooltip.top-center="{ container: 'body', html: true, content: moodText, show: moodTextShow && !inLogin, trigger: 'manual', hideOnTargetClick: false, autoHide: false, offset: 10 }"
+                v-tooltip.top-center="{
+                    html: true,
+                    content: moodText,
+                    show: moodTextShow && !inLogin,
+                    trigger: 'manual',
+                    hideOnTargetClick: false,
+                    autoHide: false,
+                    offset: 10
+                }"
                 v-on:mouseover="moodTextShow = true"
                 v-on:mouseleave="moodTextShow = false">
                 <input ref="mood"
@@ -182,12 +267,13 @@
                     v-model="mood"/>
                 <span class="title">Show Mood</span>
             </div>
+
+            <!-- window resize -->
             <!--
             <div class="box button resize"
                 v-on:mousedown="resizeBegin"
                 v-on:mousemove="resizeMove"
-                v-bind:class="{ disabled: fullscreened }"
-            >
+                v-bind:class="{ disabled: fullscreened }">
                 <i class="icon fa fa-expand-alt"></i>
                 <span class="title">Re-Size</span>
             </div>
@@ -212,6 +298,8 @@
     flex-direction: column;
     justify-content: flex-start;
     overflow: hidden;
+
+    /*  header/footer box  */
     .box {
         width: 60px;
         height: 100%;
@@ -273,6 +361,8 @@
             .title { color:          var(--color-acc-fg-1); }
         }
     }
+
+    /*  button widget  */
     .button {
         &:hover {
             background-color:        var(--color-sig-bg-3);
@@ -295,6 +385,8 @@
             .title { color:          var(--color-std-fg-1); }
         }
     }
+
+    /*  slider widget  */
     .slider {
         width: 100px;
         position: relative;
@@ -401,6 +493,8 @@
             width: 70px;
         }
     }
+
+    /*  header area  */
     .header {
         width: 100vw;
         height: 36px;
@@ -417,6 +511,8 @@
             }
         }
     }
+
+    /*  move window  */
     .move {
         -webkit-app-region: drag;
         -webkit-user-select: none;
@@ -444,6 +540,8 @@
         width: 150px;
         max-width: 150px;
     }
+
+    /*  content area  */
     .content {
         flex-grow: 1;
         display: flex;
@@ -452,6 +550,8 @@
         align-items: center;
         overflow: hidden;
     }
+
+    /*  footer area  */
     .footer {
         width: 100vw;
         height: 36px;
@@ -508,6 +608,8 @@
 <script>
 module.exports = {
     name: "win",
+
+    /*  component data  */
     data: () => ({
         loaded:               false,
         inLogin:              true,
@@ -533,12 +635,14 @@ module.exports = {
         volumeMute:           false,
         mood:                 3,
         moodTextShow:         false,
-        challenge:               3,
-        challengeTextShow:       false,
+        challenge:            3,
+        challengeTextShow:    false,
         bandwidthBytes:       0,
         bandwidthText:        "",
         videoSize:            { w: 0, h: 0 }
     }),
+
+    /*  component computed properties  */
     computed: {
         style: ui.vueprop2cssvar(),
         challengeText () {
@@ -566,13 +670,12 @@ module.exports = {
             return html
         }
     },
+
+    /*  component watched properties  */
     watch: {
         volume: function (v) {
             this.$refs.videostream.$emit("volume", v)
-            if (v > 0)
-                this.volumeMute = false
-            else
-                this.volumeMute = true
+            this.volumeMute = (v > 0)
         },
         volumeMute: function (v) {
             this.$refs.videostream.$emit("mute", v)
@@ -589,10 +692,14 @@ module.exports = {
         audioOutputDevice:    function (v) { ui.settings("audio-output-device", v);
             if (this.$refs.videostream) { this.$refs.videostream.$emit("device", v) } }
     },
+
+    /*  component sub-components  */
     components: {
         "login":       "url:app-ui-2-widget-login.vue",
         "videostream": "url:app-ui-4-widget-videostream.vue"
     },
+
+    /*  component methods  */
     methods: {
         async sendMessage () {
             if (this.message !== "" || this.audioBlob !== null) {
@@ -794,6 +901,8 @@ module.exports = {
             }
         }
     },
+
+    /*  component creation hook  */
     async created () {
         this.personPortrait       = await ui.settings("person-portrait")
         this.personName           = await ui.settings("person-name")
@@ -805,6 +914,8 @@ module.exports = {
         this.audioOutputDevice    = await ui.settings("audio-output-device")
         this.loaded = true
     },
+
+    /*  component DOM mounting hook  */
     mounted () {
         this.$on("updated-devices", () => {
             this.$refs.login.$emit("updated-devices")
@@ -852,6 +963,8 @@ module.exports = {
             this.handleResize()
         })
     },
+
+    /*  component destruction hook  */
     beforeDestroy () {
         window.removeEventListener("resize", () => this.handleResize())
     }
