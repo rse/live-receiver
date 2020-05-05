@@ -27,254 +27,190 @@
 <template>
     <div v-bind:style="style" class="login">
         <!-- Your Portrait -->
-        <div class="login-row portrait">
-            <div class="login-col label">
-                <i class="icon fa fa-portrait"></i>
-                Your Portrait <span class="footnote">*</span>:
-            </div>
-            <div class="login-col input">
-                <portrait class="portrait"
-                    ref="personPortrait"
-                    v-model="intPersonPortrait"
-                ></portrait>
-            </div>
-        </div>
+        <i class="icon fa fa-portrait"></i>
+        <div class="label">Your Portrait <span class="footnote">*</span></div>
+        <portrait ref="personPortrait"
+                v-model="intPersonPortrait"
+        ></portrait>
 
         <!-- Your Name -->
-        <div class="login-row name">
-            <div class="login-col label">
-                <i class="icon fa fa-file-signature"></i>
-                Your Name <span class="footnote">*</span>:
-            </div>
-            <div class="login-col input">
-                <input
-                    ref="personName"
-                    type="text"
-                    placeholder="Enter your personal name..."
-                    v-model="intPersonName"
-                    v-on:keyup.escape="intPersonName = ''"
-                    v-on:keyup.enter="$refs.liveRelayServer.focus()"
-                />
-            </div>
-        </div>
+        <i class="icon fa fa-file-signature"></i>
+        <div class="label">Your Name <span class="footnote">*</span></div>
+        <input
+            ref="personName"
+            type="text"
+            placeholder="Enter your personal name..."
+            v-model="intPersonName"
+            v-on:keyup.escape="intPersonName = ''"
+            v-on:keyup.enter="$refs.liveRelayServer.focus()"
+        />
 
         <!-- LiVE Relay Server -->
-        <div class="login-row server">
-            <div class="login-col label">
-                <i class="icon fa fa-globe"></i>
-                LiVE Relay Server (FQDN):
-            </div>
-            <div class="login-col input">
-                <input
-                    ref="liveRelayServer"
-                    type="text"
-                    placeholder="Enter your LiVE relay server FQDN..."
-                    v-model="intLiveRelayServer"
-                    v-on:keyup.escape="intLiveRelayServer = ''"
-                    v-on:keyup.enter="$refs.liveAccessToken.focus()"
-                />
-            </div>
-        </div>
+        <i class="icon fa fa-globe"></i>
+        <div class="label">LiVE Relay Server (FQDN)</div>
+        <input
+            ref="liveRelayServer"
+            type="text"
+            placeholder="Enter your LiVE relay server FQDN..."
+            v-model="intLiveRelayServer"
+            v-on:keyup.escape="intLiveRelayServer = ''"
+            v-on:keyup.enter="$refs.liveAccessToken.focus()"
+        />
 
         <!-- LiVE Access Token -->
-        <div class="login-row token">
-            <div class="login-col label">
-                <i class="icon fa fa-key"></i>
-                LiVE Access Token:
-            </div>
-            <div class="login-col input">
-                <input
-                    ref="liveAccessToken"
-                    type="text"
-                    placeholder="Enter your LiVE access token..."
-                    v-model="intLiveAccessToken"
-                    v-on:keyup.escape="intLiveAccessToken = ''"
-                    v-on:keyup.enter="$refs.login.focus()"
-                />
-            </div>
-        </div>
+        <i class="icon fa fa-key"></i>
+        <div class="label">LiVE Access Token</div>
+        <input
+            ref="liveAccessToken"
+            type="text"
+            placeholder="Enter your LiVE access token..."
+            v-model="intLiveAccessToken"
+            v-on:keyup.escape="intLiveAccessToken = ''"
+            v-on:keyup.enter="$refs.login.focus()"
+        />
 
         <!-- LiVE Stream Resolution (FIXME: still unused) -->
         <!--
-        <div class="login-row resolution">
-            <div class="login-col label">
-                <i class="icon fa fa-expand-alt"></i>
-                LiVE Stream Resolution:
+        <i class="icon fa fa-expand-alt"></i>
+        <div> LiVE Stream Resolution:</span>
+        <div class="selbox-container">
+            <div class="selbox"
+                v-bind:class="{ active: intLiveStreamResolution === '480p' }"
+                v-on:click="intLiveStreamResolution = '480p'">
+                480p
             </div>
-            <div class="login-col input">
-                <div class="selbox-container">
-                    <div class="selbox"
-                        v-bind:class="{ active: intLiveStreamResolution === '480p' }"
-                        v-on:click="intLiveStreamResolution = '480p'">
-                        480p
-                    </div>
-                    <div class="selbox"
-                        v-bind:class="{ active: intLiveStreamResolution === '720p' }"
-                        v-on:click="intLiveStreamResolution = '720p'">
-                        720p
-                    </div>
-                    <div class="selbox"
-                        v-bind:class="{ active: intLiveStreamResolution === '1080p' }"
-                        v-on:click="intLiveStreamResolution = '1080p'">
-                        1080p
-                    </div>
-                </div>
+            <div class="selbox"
+                v-bind:class="{ active: intLiveStreamResolution === '720p' }"
+                v-on:click="intLiveStreamResolution = '720p'">
+                720p
+            </div>
+            <div class="selbox"
+                v-bind:class="{ active: intLiveStreamResolution === '1080p' }"
+                v-on:click="intLiveStreamResolution = '1080p'">
+                1080p
             </div>
         </div>
         -->
 
         <!-- LiVE Stream Buffering -->
-        <div class="login-row buffering">
-            <div class="login-col label">
-                <i class="icon fa fa-clock"></i>
-                LiVE Stream Buffering (ms):
+        <i class="icon fa fa-clock"></i>
+        <div class="label">LiVE Stream Buffering (ms)</div>
+        <div class="selbox-container">
+            <div class="selbox"
+               v-bind:class="{ active: intLiveStreamBuffering === 500 }"
+                v-on:click="intLiveStreamBuffering = 500">
+                500
             </div>
-            <div class="login-col input">
-                <div class="selbox-container">
-                    <div class="selbox"
-                        v-bind:class="{ active: intLiveStreamBuffering === 500 }"
-                        v-on:click="intLiveStreamBuffering = 500">
-                        500
-                    </div>
-                    <div class="selbox"
-                        v-bind:class="{ active: intLiveStreamBuffering === 1000 }"
-                        v-on:click="intLiveStreamBuffering = 1000">
-                        1000
-                    </div>
-                    <div class="selbox"
-                        v-bind:class="{ active: intLiveStreamBuffering === 1500 }"
-                        v-on:click="intLiveStreamBuffering = 1500">
-                        1500
-                    </div>
-                    <div class="selbox"
-                        v-bind:class="{ active: intLiveStreamBuffering === 2000 }"
-                        v-on:click="intLiveStreamBuffering = 2000">
-                        2000
-                    </div>
-                    <div class="selbox"
-                        v-bind:class="{ active: intLiveStreamBuffering === 2500 }"
-                        v-on:click="intLiveStreamBuffering = 2500">
-                        2500
-                    </div>
-                    <div class="selbox"
-                        v-bind:class="{ active: intLiveStreamBuffering === 3000 }"
-                        v-on:click="intLiveStreamBuffering = 3000">
-                        3000
-                    </div>
-                </div>
+            <div class="selbox"
+                v-bind:class="{ active: intLiveStreamBuffering === 1000 }"
+                v-on:click="intLiveStreamBuffering = 1000">
+                1000
+            </div>
+            <div class="selbox"
+                v-bind:class="{ active: intLiveStreamBuffering === 1500 }"
+                v-on:click="intLiveStreamBuffering = 1500">
+                1500
+            </div>
+            <div class="selbox"
+                v-bind:class="{ active: intLiveStreamBuffering === 2000 }"
+                v-on:click="intLiveStreamBuffering = 2000">
+                2000
+            </div>
+            <div class="selbox"
+                v-bind:class="{ active: intLiveStreamBuffering === 2500 }"
+                v-on:click="intLiveStreamBuffering = 2500">
+                2500
+            </div>
+            <div class="selbox"
+                v-bind:class="{ active: intLiveStreamBuffering === 3000 }"
+                v-on:click="intLiveStreamBuffering = 3000">
+                3000
             </div>
         </div>
 
         <!-- Audio Input Device -->
-        <div class="login-row audio-input-device">
-            <div class="login-col label">
-                <i class="icon fa fa-microphone-alt"></i>
-                Audio Input Device:
-            </div>
-            <div class="login-col input device">
-                <div class="selbox-container">
-                    <v-multiselect
-                        v-bind:options="audioInputDevices"
-                        v-model="intAudioInputDevice"
-                        track-by="id"
-                        label="name"
-                        placeholder="Select audio input device..."
-                        v-bind:searchable="false"
-                        v-bind:allow-empty="true"
-                        v-bind:open-direction="'below'"
-                    ></v-multiselect>
-                    <div class="selbox"
-                        v-on:click="audioInputTest"
-                        v-bind:class="{ disabled: intAudioInputDevice === null, active: audioInputTestActive }">
-                        <span v-show="!audioInputTestActive" class="icon"><i class="fa fa-dot-circle"></i></span>
-                        <span v-show="audioInputTestActive"  class="icon"><i class="fa fa-stop-circle"></i></span>
-                    </div>
-                </div>
+        <i class="icon fa fa-microphone-alt"></i>
+        <div class="label">Audio Input Device</div>
+        <div class="selbox-container">
+            <v-multiselect
+                v-bind:options="audioInputDevices"
+                v-model="intAudioInputDevice"
+                track-by="id"
+                label="name"
+                placeholder="Select audio input device..."
+                v-bind:searchable="false"
+                v-bind:allow-empty="true"
+                v-bind:open-direction="'below'"
+            ></v-multiselect>
+            <div class="selbox"
+                v-on:click="audioInputTest"
+                v-bind:class="{ disabled: intAudioInputDevice === null, active: audioInputTestActive }">
+                <span v-show="!audioInputTestActive" class="icon"><i class="fa fa-dot-circle"></i></span>
+                <span v-show="audioInputTestActive"  class="icon"><i class="fa fa-stop-circle"></i></span>
             </div>
         </div>
 
         <!-- Audio Output Device -->
-        <div class="login-row audio-output-device">
-            <div class="login-col label">
-                <i class="icon fa fa-volume-up"></i>
-                Audio Output Device:
-            </div>
-            <div class="login-col input device">
-                <div class="selbox-container">
-                    <v-multiselect
-                        v-bind:options="audioOutputDevices"
-                        v-model="intAudioOutputDevice"
-                        track-by="id"
-                        label="name"
-                        placeholder="Select audio output device..."
-                        v-bind:searchable="false"
-                        v-bind:allow-empty="true"
-                        v-bind:open-direction="'bottom'"
-                    ></v-multiselect>
-                    <div class="selbox"
-                        v-on:click="audioOutputTest"
-                        v-bind:class="{ disabled: intAudioOutputDevice === null || audioBlob === null, active: audioOutputTestActive }">
-                        <span v-show="!audioOutputTestActive" class="icon"><i class="fa fa-play-circle"></i></span>
-                        <span v-show="audioOutputTestActive" class="icon"><i class="fa fa-stop-circle"></i></span>
-                    </div>
-                </div>
+        <i class="icon fa fa-volume-up"></i>
+        <div class="label">Audio Output Device</div>
+        <div class="selbox-container">
+            <v-multiselect
+                v-bind:options="audioOutputDevices"
+                v-model="intAudioOutputDevice"
+                track-by="id"
+                label="name"
+                placeholder="Select audio output device..."
+                v-bind:searchable="false"
+                v-bind:allow-empty="true"
+                v-bind:open-direction="'bottom'"
+            ></v-multiselect>
+            <div class="selbox"
+                v-on:click="audioOutputTest"
+                v-bind:class="{ disabled: intAudioOutputDevice === null || audioBlob === null, active: audioOutputTestActive }">
+                <span v-show="!audioOutputTestActive" class="icon"><i class="fa fa-play-circle"></i></span>
+                <span v-show="audioOutputTestActive" class="icon"><i class="fa fa-stop-circle"></i></span>
             </div>
         </div>
 
         <!-- Connect -->
-        <div class="login-row submit">
-            <div class="login-col label">
-            </div>
-            <div class="login-col input">
-                <input
-                    v-bind:disabled="
-                        intPersonPortrait  === '' ||
-                        intPersonName      === '' ||
-                        intLiveRelayServer === '' ||
-                        intLiveAccessToken === '' ||
-                        !allowConnect"
-                    ref="login"
-                    type="submit"
-                    value="Connect"
-                    v-on:click="login"
-                />
-            </div>
-        </div>
+        <input class="col-3"
+            v-bind:disabled="
+                intPersonPortrait  === '' ||
+                intPersonName      === '' ||
+                intLiveRelayServer === '' ||
+                intLiveAccessToken === '' ||
+                !allowConnect"
+            ref="login"
+            type="submit"
+            value="Connect"
+            v-on:click="login"
+        />
 
         <!-- Optional Error -->
-        <div v-show="error !== ''" class="login-row error">
-            <div class="login-col label">
-            </div>
-            <div class="login-col error">
-                ERROR: {{ error }}
-            </div>
+        <div v-show="error !== ''" class="col-3 error">
+            ERROR: {{ error }}
         </div>
 
         <!-- Logo & GDPR Notice -->
-        <div class="login-row notice">
-            <div class="login-col label">
-                <img v-bind:src="logo" class="logo" alt="LiVE"/>
-                <div class="version">Receiver {{ version }}</div>
-            </div>
-            <div class="login-col notice">
-                <span class="footnote">
-                    * Your portrait image and name are stored locally
-                    in <i>LiVE Receiver</i> (trainee-side) and are
-                    only transmitted to the <i>LiVE Relay</i>
-                    (server-side) and <i>LiVE Sender</i> (trainer-side)
-                    when you explicitly send a message to the
-                    trainer.  Choose a standard avatar as your
-                    portrait and an arbitrary nickname if you wish
-                    to remain anomymous.
-                </span>
-            </div>
+        <div class="col-2 notice">
+            <img v-bind:src="logo" class="logo" alt="LiVE"/>
+            <div class="version">Receiver {{ version }}</div>
         </div>
+        <span class="footnote notice">
+            * Your portrait image and name are stored locally
+            in <i>LiVE Receiver</i> (trainee-side) and are
+            only transmitted to the <i>LiVE Relay</i>
+            (server-side) and <i>LiVE Sender</i> (trainer-side)
+            when you explicitly send a message to the
+            trainer.  Choose a standard avatar as your
+            portrait and an arbitrary nickname if you wish
+            to remain anomymous.
+        </span>
     </div>
 </template>
 
 <style lang="less" scoped>
 .login {
-    /*  dialog box  */
     background-color: var(--color-std-bg-4);
     border-top:    1px solid var(--color-std-bg-5);
     border-left:   1px solid var(--color-std-bg-5);
@@ -282,66 +218,60 @@
     border-bottom: 1px solid var(--color-std-bg-1);
     padding: 20px;
     border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+    display: grid;
+    grid-template-columns: 30px 220px 300px;
+    row-gap: 4px;
     font-size: 12pt;
 
-    /*  general row/column layout  */
-    .login-row {
-        margin-bottom: 4px;
+    >.icon {
+        color: var(--color-std-fg-1);
+        padding-top: 4px;
+    }
+    .label {
         display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        .login-col {
+        &:after {
+            content: ':';
+        }
+    }
+    >.col-2 {
+        grid-column-start: 2;
+    }
+    >.col-3 {
+        grid-column-start: 3;
+    }
+    .notice {
+        margin-top: 6px;
+        .logo {
+            width: 100px;
+        }
+    }
+    >.selbox-container {
+        display: flex;
+        .multiselect {
+            width: 250px;
+            min-width: 250px;
+            .multiselect__tags {
+                height: 40px;
+                min-height: 40px;
+            }
+        }
+        .selbox {
             display: flex;
-            flex-direction: column;
-            &.label {
-                display: flex;
-                flex-direction: row;
-                justify-content: flex-start;
-                width: 220px;
-                .icon {
-                    color: var(--color-std-fg-1);
-                    margin-right: 10px;
-                    position: relative;
-                    top: 4px;
-                    width: 20px;
-                }
+            margin-left: 5px;
+            width: 46px;
+            justify-content: center;
+            .icon {
+                padding-top: 3px;
+                width: 100%;
+                font-size: 24px;
             }
-            &.input {
-                width: 300px;
-            }
-            &.device {
-                .selbox-container {
-                    .multiselect {
-                        width: 250px;
-                        min-width: 250px;
-                    }
-                    .selbox {
-                        width: 50px;
-                        margin-left: 5px;
-                        position: relative;
-                        .icon {
-                            position: absolute;
-                            left: 10px;
-                            top: 2px;
-                            display: block;
-                            font-size: 25px;
-                        }
-                        &.disabled {
-                            color: var(--color-std-fg-1);
-                            &:hover {
-                                background-color:        var(--color-std-bg-4);
-                                border-top:    1px solid var(--color-std-bg-5);
-                                border-left:   1px solid var(--color-std-bg-5);
-                                border-right:  1px solid var(--color-std-bg-1);
-                                border-bottom: 1px solid var(--color-std-bg-1);
-                            }
-                        }
-                    }
-                }
-            }
+        }
+        .selbox:first-child {
+            margin-left: 0px;
+        }
+        .selbox:last-child {
+            margin-left: 4px;
+            width: 46px;
         }
     }
 
@@ -416,16 +346,7 @@
             border-bottom: 1px solid var(--color-std-bg-1);
         }
     }
-
-    /*  special overrides  */
-    .login-row > .portrait {
-        width: 300px;
-        height: 150px;
-    }
-    .login-row > .notice {
-        width: 300px;
-    }
-    .login-col.error {
+    .error {
         font-size: 12pt;
         padding: 5px 10px 5px 10px;
         color: var(--color-sig-fg-1);
@@ -436,31 +357,10 @@
         font-size: 8pt;
         color: var(--color-std-fg-1);
     }
-    .login-row.notice {
-        margin-top: 10px;
-    }
-    .login-row.notice > .login-col.label {
-        display: block;
-        .logo {
-            padding-left: 40px;
-            width: 100px;
-        }
-        .version {
-            padding-left: 40px;
-        }
-    }
 
     /*  select-box row  */
     .selbox-container {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
         .selbox {
-            margin-right: 4px;
-            &:last-child {
-                margin-right: 0;
-            }
-            width: 100%;
             color:                   var(--color-std-fg-3);
             background-color:        var(--color-std-bg-4);
             border-top:    1px solid var(--color-std-bg-5);
@@ -484,6 +384,16 @@
                 border-left:   1px solid var(--color-acc-bg-5);
                 border-right:  1px solid var(--color-acc-bg-1);
                 border-bottom: 1px solid var(--color-acc-bg-1);
+            }
+            &.disabled {
+                color: var(--color-std-fg-1);
+                &:hover {
+                    background-color:        var(--color-std-bg-4);
+                    border-top:    1px solid var(--color-std-bg-5);
+                    border-left:   1px solid var(--color-std-bg-5);
+                    border-right:  1px solid var(--color-std-bg-1);
+                    border-bottom: 1px solid var(--color-std-bg-1);
+                }
             }
         }
     }
