@@ -30,66 +30,39 @@ const execa = require("execa")
 const zip   = require("cross-zip")
 
 ;(async () => {
-    const electronpackager = path.resolve(path.join("node_modules", ".bin", "electron-packager"))
-
     console.log("++ cleanup")
+    shell.rm("-rf", "dist")
     shell.rm("-rf", "LiVE-Receiver-win32-x64")
     shell.rm("-rf", "LiVE-Receiver-darwin-x64")
     shell.rm("-f", "LiVE-Receiver-win32-x64.zip")
     shell.rm("-f", "LiVE-Receiver-darwin-x64.zip")
 
-    console.log("++ packaging App as an Electron distribution")
+    console.log("++ reducing source-tree")
     const remove = glob.sync("node_modules/typopro-web/web/TypoPRO-*")
         .filter((path) => !path.match(/\/TypoPRO-(SourceSansPro|DejaVu)$/))
     for (const file of remove)
         shell.rm("-rf", file)
-    let ignore = []
-    ignore.push("node_modules/electron-prebuilt")
-    ignore.push("node_modules/electron-packager")
-    ignore = ignore.concat(glob.sync("*.ai"))
-    if (os.platform() === "win32") {
-        ignore.push("ffmpeg/ffmpeg-mac-x64")
-        ignore.push("ffmpeg/ffmpeg-mac-x64\\.sh")
-        execa.sync(electronpackager, [
-            ".",
-            "LiVE-Receiver",
-            "--platform=win32",
-            "--arch=x64",
-            "--asar.unpackDir=ffmpeg",
-            "--ignore", "(?:" + ignore.join("|") + ")",
-            "--overwrite"
-        ])
 
+    console.log("++ packaging App as an Electron distribution")
+    const electronbuilder = path.resolve(path.join("node_modules", ".bin", "electron-builder"))
+    if (os.platform() === "win32") {
+        execa.sync(electronbuilder, [ "--dir" ],
+            { stdin: "inherit", stdout: "inherit", stderr: "inherit" })
         console.log("++ packing App into ZIP archive")
-        shell.rm("-f", "LiVE-Receiver-win32-x64/LICENSE*")
-        shell.rm("-f", "LiVE-Receiver-win32-x64/version")
+        shell.mv("dist/win-unpacked", "dist/LiVE-Receiver")
         zip.zipSync(
-            path.join(__dirname, "LiVE-Receiver-win32-x64"),
-            path.join(__dirname, "LiVE-Receiver-win32-x64.zip")
+            path.join(__dirname, "dist/LiVE-Receiver"),
+            path.join(__dirname, "dist/LiVE-Receiver-win32-x64.zip")
         )
     }
     else if (os.platform() === "darwin") {
-        ignore.push("ffmpeg/ffmpeg-win-x64\\.exe")
-        execa.sync(electronpackager, [
-            ".",
-            "LiVE-Receiver",
-            "--platform=darwin",
-            "--arch=x64",
-            "--asar.unpackDir=ffmpeg",
-            "--ignore", "(?:" + ignore.join("|") + ")",
-            "--app-bundle-id=com.engelschall.apps.live.receiver",
-            "--app-category-type=com.engelschall.apps",
-            "--protocol=live",
-            "--protocol-name=LiVE",
-            "--overwrite"
-        ])
-
+        execa.sync(electronbuilder, [ "--dir" ],
+            { stdin: "inherit", stdout: "inherit", stderr: "inherit" })
         console.log("++ packing App into ZIP archive")
-        shell.rm("-f", "LiVE-Receiver-darwin-x64/LICENSE*")
-        shell.rm("-f", "LiVE-Receiver-darwin-x64/version")
+        shell.mv("dist/mac/LiVE-Receiver.app", "dist/LiVE-Receiver.app")
         zip.zipSync(
-            path.join(__dirname, "LiVE-Receiver-darwin-x64"),
-            path.join(__dirname, "LiVE-Receiver-darwin-x64.zip")
+            path.join(__dirname, "dist/LiVE-Receiver.app"),
+            path.join(__dirname, "dist/LiVE-Receiver-darwin-x64.zip")
         )
     }
 })().catch((err) => {
