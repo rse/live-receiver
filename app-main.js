@@ -163,8 +163,10 @@ const EventStream  = require("./app-main-relay-eventstream")
 
         /*  allow UI command events to control application window  */
         app.ipc.handle("minimize", (event) => {
-            if (app.win.isMinimized())
+            if (app.win.isMinimized()) {
                 app.win.restore()
+                app.win.focus()
+            }
             else
                 app.win.minimize()
         })
