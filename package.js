@@ -49,9 +49,10 @@ const zip   = require("cross-zip")
         execa.sync(electronbuilder, [ "--dir" ],
             { stdin: "inherit", stdout: "inherit", stderr: "inherit" })
         console.log("++ packing App into ZIP archive")
-        shell.mv("dist/win-unpacked", "dist/LiVE-Receiver")
+        shell.mkdir("dist/win")
+        shell.mv("dist/win-unpacked", "dist/win/LiVE-Receiver")
         zip.zipSync(
-            path.join(__dirname, "dist/LiVE-Receiver"),
+            path.join(__dirname, "dist/win"),
             path.join(__dirname, "dist/LiVE-Receiver-win32-x64.zip")
         )
     }
