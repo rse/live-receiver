@@ -31,7 +31,7 @@ const EventEmitter = require("eventemitter2")
 const UUID         = require("pure-uuid")
 const MP4Box       = require("mp4box")
 
-/*  determine path to embedded fflplay(1) executable  */
+/*  determine path to embedded ffmpeg(1) executable  */
 let ffmpeg
 if (os.platform() === "win32")
     ffmpeg = path.resolve(path.join(app.getAppPath(), "ffmpeg", "ffmpeg-win-x64.exe")
