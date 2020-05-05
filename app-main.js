@@ -24,6 +24,7 @@
 
 /*  external requirements  */
 const electron     = require("electron")
+const os           = require("os")
 const path         = require("path")
 const EventEmitter = require("eventemitter2")
 const imageDataURI = require("image-data-uri")
@@ -77,13 +78,15 @@ const EventStream  = require("./app-main-relay-eventstream")
     }
 
     /*  hook into macOS-only protocol handling  */
-    app.setAsDefaultProtocolClient("live")
-    app.on("open-url", (event, data) => {
-        event.preventDefault()
+    if (os.platform() === "darwin") {
+        app.setAsDefaultProtocolClient("live")
+        app.on("open-url", (event, data) => {
+            event.preventDefault()
 
-        /*  notify about deep-linking  */
-        deepLinkURL(data)
-    })
+            /*  notify about deep-linking  */
+            deepLinkURL(data)
+        })
+    }
 
     /*  hook into macOS/Windows single-instance handling  */
     const isPrimary = app.requestSingleInstanceLock()
@@ -100,9 +103,16 @@ const EventStream  = require("./app-main-relay-eventstream")
             app.win.focus()
         }
 
-        /*  notify about deep-linking  */
-        deepLinkURL(argv[argv.length - 1])
+        /*  notify about deep-linking under Windows
+            (in case we are the primary instance and a second instance was executed) */
+        if (os.platform() === "win32" && argv.length > 0)
+            deepLinkURL(argv[argv.length - 1])
     })
+
+    /*  notify about deep-linking under Windows
+        (in case we are the primary instance and were just initially started) */
+    if (os.platform() === "win32" && process.argv.length > 0)
+        deepLinkURL(process.argv[process.argv.length - 1])
 
     /*  start startup procedure once Electron is ready  */
     app.on("ready", async () => {
