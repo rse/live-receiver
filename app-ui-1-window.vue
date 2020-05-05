@@ -933,6 +933,13 @@ module.exports = {
             else if (state === "video")
                 this.inLogin = false
         })
+        this.$on("deep-link", (credentials) => {
+            this.liveRelayServer = credentials.liveRelayServer
+            this.liveAccessToken = credentials.liveAccessToken
+            this.$refs.login.$emit("deep-link", this.liveRelayServer, this.liveAccessToken)
+            if (this.inLogin)
+                this.logout()
+        })
 
         /*  stream handling  */
         this.$on("stream-begin", () => {

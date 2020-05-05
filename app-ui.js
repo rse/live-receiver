@@ -172,6 +172,9 @@ const electron = require("electron")
     ui.ipc.on("stream-end", (event) => {
         ui.root.$refs.win.$emit("stream-end")
     })
+    ui.ipc.on("deep-link", (event, credentials) => {
+        ui.root.$refs.win.$emit("deep-link", credentials)
+    })
 
     /*  determine audio/video devices  */
     ui.devices = []
@@ -181,6 +184,9 @@ const electron = require("electron")
     }
     navigator.mediaDevices.ondevicechange = updateDevices
     await updateDevices()
+
+    /*  finally signal main thread we are ready  */
+    ui.ipc.invoke("ui-ready")
 })().catch((err) => {
     console.log(`** live-receiver: ui: ERROR: ${err}`)
 })

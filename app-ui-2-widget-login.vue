@@ -677,6 +677,13 @@ module.exports = {
         this.$on("updated-devices", () => {
             this.deviceUpdate()
         })
+
+        /*  react on deep-link scenario  */
+        this.$on("deep-link", (liveRelayServer, liveAccessToken) => {
+            this.intLiveRelayServer = liveRelayServer
+            this.intLiveAccessToken = liveAccessToken
+            this.$refs.login.focus()
+        })
     }
 }
 </script>

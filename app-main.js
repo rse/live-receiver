@@ -40,6 +40,71 @@ const EventStream  = require("./app-main-relay-eventstream")
     /*   establish Electron application  */
     const app = electron.app
     app.allowRendererProcessReuse = true
+
+    /*  initialize global information  */
+    app.win       = null
+    app.connected = false
+
+    /*  provide APIs for communication  */
+    app.ipc   = electron.ipcMain
+    app.event = new EventEmitter({ wildcard: true })
+
+    /*  track the readyness of the UI  */
+    app.uiReady = false
+    app.ipc.handle("ui-ready", (event) => {
+        app.uiReady = true
+    })
+
+    /*  react on "live://<live-relay-server>/<live-access-token>" deep-links  */
+    const deepLinkURL = (url) => {
+        /*  parse deep-link URL  */
+        const m = url.match(/^live:\/\/([^/]+)\/([^/]+)$/)
+        if (m === null)
+            return
+        const [ , liveRelayServer, liveAccessToken ] = m
+
+        /*  send event to application window
+            (once the UI is really ready)  */
+        const deliverEvent = (attempts) => {
+            if (app.win !== null && app.uiReady)
+                app.win.webContents.send("deep-link", { liveRelayServer, liveAccessToken })
+            else if (--attempts > 0)
+                setTimeout(() => deliverEvent(attempts), 250)
+            else
+                throw Error("failed to deliver deep-link event to application window")
+        }
+        deliverEvent(5 * 10)
+    }
+
+    /*  hook into macOS-only protocol handling  */
+    app.setAsDefaultProtocolClient("live")
+    app.on("open-url", (event, data) => {
+        event.preventDefault()
+
+        /*  notify about deep-linking  */
+        deepLinkURL(data)
+    })
+
+    /*  hook into macOS/Windows single-instance handling  */
+    const isPrimary = app.requestSingleInstanceLock()
+    if (!isPrimary) {
+        /*  stop secondary instances  */
+        app.quit()
+        return
+    }
+    app.on("second-instance", (event, argv, cwd) => {
+        /*  raise window on primary instance  */
+        if (app.win !== null) {
+            if (app.win.isMinimized())
+                app.win.restore()
+            app.win.focus()
+        }
+
+        /*  notify about deep-linking  */
+        deepLinkURL(argv[argv.length - 1])
+    })
+
+    /*  start startup procedure once Electron is ready  */
     app.on("ready", async () => {
         /*  establish settings and their default values  */
         const clientId   = (new UUID(1)).format("std")
@@ -74,14 +139,6 @@ const EventStream  = require("./app-main-relay-eventstream")
         settings.set("audio-input-device",     app.audioInputDevice)
         settings.set("audio-output-device",    app.audioOutputDevice)
         settings.save()
-
-        /*  initialize global information  */
-        app.win       = null
-        app.connected = false
-
-        /*  provide APIs for renderer process  */
-        app.ipc   = electron.ipcMain
-        app.event = new EventEmitter({ wildcard: true })
 
         /*  provide helper functions for renderer  */
         app.ipc.handle("settings", async (event, ...args) => {
