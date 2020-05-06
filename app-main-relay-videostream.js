@@ -34,10 +34,10 @@ const MP4Box       = require("mp4box")
 /*  determine path to embedded ffmpeg(1) executable  */
 let ffmpeg
 if (os.platform() === "win32")
-    ffmpeg = path.resolve(path.join(app.getAppPath(), "ffmpeg", "ffmpeg-win-x64.exe")
+    ffmpeg = path.resolve(path.join(app.getAppPath(), "app-main-relay-videostream.d", "ffmpeg.exe")
         .replace("app.asar", "app.asar.unpacked"))
 else if (os.platform() === "darwin")
-    ffmpeg = path.resolve(path.join(app.getAppPath(), "ffmpeg", "ffmpeg-mac-x64")
+    ffmpeg = path.resolve(path.join(app.getAppPath(), "app-main-relay-videostream.d", "ffmpeg")
         .replace("app.asar", "app.asar.unpacked"))
 else
     throw new Error(`operating system platform ${os.platform()} not supported`)
@@ -86,7 +86,7 @@ module.exports = class VideoStream extends EventEmitter {
         url += `?key=${this.options.token1}-${this.options.token2}`
 
         /*  start ffmpeg(1) sub-process  */
-        this.proc = execa(this.options.ffmpeg, [
+        const options = [
             "-loglevel",    "0",
             "-i",           url,
             "-rtmp_live",   "live",
@@ -98,7 +98,9 @@ module.exports = class VideoStream extends EventEmitter {
             "-movflags",    "frag_keyframe+omit_tfhd_offset+empty_moov+default_base_moof",
             "-y",
             "pipe:1"
-        ])
+        ]
+        this.options.log("info", `executing: ${this.options.ffmpeg} ${options.join(" ")}`)
+        this.proc = execa(this.options.ffmpeg, options)
 
         /*  establish segmentation of the bytestream into MP4 boxes
             (reason: the <video> element later accepts only valid and complete MP4 segments)  */

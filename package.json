@@ -11,7 +11,6 @@
     "devDependencies": {
         "electron":                        "8.2.5",
         "electron-builder":                "22.6.0",
-        "electron-log":                    "4.1.2",
         "nodemon":                         "2.0.3",
         "shelljs":                         "0.8.4",
         "glob":                            "7.1.6",
@@ -24,9 +23,11 @@
         "eslint-plugin-node":              "11.1.0",
         "eslint-plugin-vue":               "6.2.2",
         "cross-env":                       "7.0.2",
-        "cross-zip":                       "3.0.0"
+        "cross-zip":                       "3.0.0",
+        "npm-install-fetch":               "1.2.0"
     },
     "dependencies": {
+        "electron-log":                    "4.1.2",
         "jsonfile":                        "6.0.1",
         "syspath":                         "1.0.1",
         "execa":                           "4.0.0",
@@ -57,7 +58,7 @@
     "build": {
         "appId":             "com.engelschall.apps.live.receiver",
         "asar":              true,
-        "asarUnpack":        [ "ffmpeg/*" ],
+        "asarUnpack":        [ "app-main-relay-videostream.d/ffmpeg*" ],
         "removePackageScripts": true,
         "directories": {
             "output":        "dist"
@@ -68,12 +69,12 @@
         },
         "mac": {
             "category":      "com.engelschall.apps",
+            "identity":      null,
             "icon":          "app-res-icon.png",
             "files": [
                 "!*.ai",
                 "!node_modules/electron-prebuilt/**",
-                "!node_modules/electron-builder/**",
-                "!ffmpeg/ffmpeg-win-*"
+                "!node_modules/electron-builder/**"
             ]
         },
         "win": {
@@ -81,12 +82,12 @@
             "files": [
                 "!*.ai",
                 "!node_modules/electron-prebuilt/**",
-                "!node_modules/electron-builder/**",
-                "!ffmpeg/ffmpeg-mac-*"
+                "!node_modules/electron-builder/**"
             ]
         }
     },
     "scripts": {
+        "install":           "npm-install-fetch --config npm-install.yaml",
         "setup":             "npm install --only-production --global-style",
         "lint":              "eslint --config eslint.yaml --ext js,vue *.js *.vue",
         "start":             "electron app-main.js",
