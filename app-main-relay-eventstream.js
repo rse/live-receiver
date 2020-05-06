@@ -142,7 +142,7 @@ module.exports = class EventStream extends EventEmitter {
                 if (firstConnect)
                     this.broker = broker
 
-                /*  support RPC-style communication (FIXME: still unused)  */
+                /*  support RPC-style communication  */
                 if (firstConnect)
                     this.rpc = new RPC(broker)
 
@@ -214,11 +214,13 @@ module.exports = class EventStream extends EventEmitter {
         })
     }
 
-    /*  support RPC-style communication (FIXME: still unused)  */
-    register (method, callback) {
+    /*  support RPC-style communication  */
+    register (name, callback) {
+        let method = `stream/${this.options.channel}/sender/${name}`
         return this.rpc.register(method, callback)
     }
-    call (method, ...params) {
+    call (name, ...params) {
+        let method = `stream/${this.options.channel}/sender/${name}`
         return this.rpc.call(method, ...params)
     }
 }
