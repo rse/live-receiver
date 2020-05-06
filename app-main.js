@@ -117,7 +117,7 @@ const EventStream  = require("./app-main-relay-eventstream")
     /*  start startup procedure once Electron is ready  */
     app.on("ready", async () => {
         /*  establish settings and their default values  */
-        const clientId   = (new UUID(1)).format("std")
+        const clientId = (new UUID(1)).format("std")
         const settings = new Settings({ appId: "LiVE-Receiver", flushAfter: 1 * 1000 })
         settings.load()
         app.clientId             = settings.get("client-id",              clientId)

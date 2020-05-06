@@ -49,7 +49,7 @@ const electron = require("electron")
     }
 
     /*  pass remote API to UI  */
-    ui.remote  = require("electron").remote
+    ui.remote = electron.remote
 
     /*  external requirements  */
     ui.sprintf      = require("sprintfjs")
