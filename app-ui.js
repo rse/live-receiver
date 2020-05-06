@@ -64,7 +64,7 @@ const electron = require("electron")
 
     /*  provide convenience method  */
     ui.soundfx.playAndWait = (name) => {
-        let id = ui.soundfx.play(name)
+        const id = ui.soundfx.play(name)
         return new Promise((resolve, reject) => {
             ui.soundfx.once("end", () => {
                 resolve()
