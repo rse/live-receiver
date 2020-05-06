@@ -96,7 +96,7 @@ const electron = require("electron")
 
     /*  ensure the DOM is now finally available  */
     while (!ui.domReady || !document.getElementById("ui"))
-        await ui.delay(50) /* FIXME: hard-coded */
+        await ui.delay(50)
 
     /*  support on-the-fly loading and compiling of Vue single-file components  */
     httpVueLoader.langProcessor.less = (lessText) =>
@@ -117,7 +117,7 @@ const electron = require("electron")
 
     /*  ensure the <win> element is available  */
     while (!(typeof ui.root.$refs === "object" && ui.root.$refs.win !== undefined))
-        await ui.delay(100) /* FIXME: hard-coded */
+        await ui.delay(50)
 
     /*  hook into the UI events  */
     ui.root.$refs.win.$on("login", async (info) => {
