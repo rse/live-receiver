@@ -151,6 +151,17 @@
 
             <!-- audio record -->
             <div class="box button audio-record" v-on:click="audioRecord"
+                v-tooltip.top-center="{
+                    html: true,
+                    content: recordText,
+                    show: recordTextShow && !inLogin,
+                    trigger: 'manual',
+                    hideOnTargetClick: false,
+                    autoHide: false,
+                    offset: 10
+                }"
+                v-on:mouseover="recordTextShow = true"
+                v-on:mouseleave="recordTextShow = false"
                 v-bind:class="{ disabled: inLogin || audioInputDevice === '', active: audioRecording }">
                 <i class="icon fa fa-dot-circle"></i>
                 <span class="title">Record Message</span>
@@ -610,6 +621,8 @@ module.exports = {
         fullscreened:         false,
         volume:               100,
         volumeMute:           false,
+        recordState:          0,
+        recordTextShow:       false,
         mood:                 3,
         moodTextShow:         false,
         challenge:            3,
@@ -622,6 +635,22 @@ module.exports = {
     /*  component computed properties  */
     computed: {
         style: ui.vueprop2cssvar(),
+        recordText () {
+            let html
+            if (this.recordState === 0 && this.audioBlob !== null)
+                html = "Press to record your<br/>audio message again."
+            else if (this.recordState === 0 && this.audioBlob === null)
+                html = "Press to record your<br/>audio message."
+            else if (this.recordState === 1)
+                html = "Please wait &mdash; recording your<br/>message starts in <b>3</b> seconds..."
+            else if (this.recordState === 2)
+                html = "Please wait &mdash; recording your<br/>message starts in <b>2</b> seconds..."
+            else if (this.recordState === 3)
+                html = "Please wait &mdash; recording your<br/>message starts in <b>1</b> second..."
+            else if (this.recordState === 4)
+                html = "Now speak! &mdash; press again<br/>to stop your message recording."
+            return html
+        },
         challengeText () {
             let html = "I am contentual<br/><b>"
             switch (parseInt(this.challenge)) {
@@ -796,8 +825,13 @@ module.exports = {
         async audioRecord () {
             if (!this.audioRecording) {
                 /*  start recording  */
-                await ui.soundfx.playAndWait("click1")
-                await new Promise((resolve) => setTimeout(resolve, 100))
+                ui.soundfx.play("chime3")
+                this.recordState = 0
+                for (let i = 1; i <= 3; i++) {
+                    this.recordState++
+                    await new Promise((resolve) => setTimeout(resolve, 1000))
+                }
+                this.recordState++
                 try {
                     const stream = await navigator.mediaDevices.getUserMedia({
                         audio: { deviceId: this.audioInputDevice },
@@ -819,9 +853,9 @@ module.exports = {
                 this.recorder.addEventListener("dataavailable", (event) => {
                     this.audioBlobChunks.push(event.data)
                 })
-                this.recorder.start()
-                this.audioRecording = true
                 this.volumeMute = true
+                this.audioRecording = true
+                this.recorder.start()
             }
             else {
                 /*  stop recording  */
@@ -833,6 +867,7 @@ module.exports = {
                 this.audioRecording = false
                 this.volumeMute = false
                 ui.soundfx.playAndWait("chime3")
+                this.recordState = 0
             }
         },
         audioPlay () {
