@@ -62,10 +62,6 @@ const electron = require("electron")
     const sfx = new SoundFX({ basedir: "node_modules/@rse/soundfx" })
     ui.soundfx = new Howl({ ...sfx.config(), volume: 0.4, preload: true })
 
-    /*  initialize sound loops  */
-    const slp = new SoundLP({ basedir: "node_modules/@rse/soundlp" })
-    ui.soundlp = new Howl({ ...slp.config(), loop: true, volume: 0.4, preload: true })
-
     /*  helper function for converting VueJS properties into CSS variables  */
     ui.vueprop2cssvar = () => {
         return function () {
