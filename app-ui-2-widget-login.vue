@@ -219,7 +219,7 @@
     padding: 20px;
     border-radius: 5px;
     display: grid;
-    grid-template-columns: 30px 220px 300px;
+    grid-template-columns: 30px 200px 300px;
     row-gap: 4px;
     font-size: 12pt;
 
@@ -667,6 +667,7 @@ module.exports = {
     mounted () {
         /*  raise errors  */
         this.$on("error", (error) => {
+            ui.soundfx.play("error3")
             this.error = error
             setTimeout(() => {
                 this.error = ""

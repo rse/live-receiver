@@ -723,6 +723,8 @@ module.exports = {
             this.$refs.message.blur()
         },
         clearMessage (withAudio) {
+            if (!(this.message !== "" || this.audioBlob !== null))
+                return
             this.message = ""
             if (withAudio)
                 this.audioBlob = null
@@ -841,6 +843,7 @@ module.exports = {
         async audioRecord () {
             if (!this.audioRecording) {
                 /*  start recording  */
+                await ui.soundfx.playAndWait("chime3")
                 try {
                     const stream = await navigator.mediaDevices.getUserMedia({
                         audio: { deviceId: this.audioInputDevice },
@@ -875,6 +878,7 @@ module.exports = {
                 this.recorder.stop()
                 this.audioRecording = false
                 this.volumeMute = false
+                ui.soundfx.playAndWait("chime3")
             }
         },
         audioPlay () {

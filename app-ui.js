@@ -62,6 +62,19 @@ const electron = require("electron")
     const sfx = new SoundFX({ basedir: "node_modules/@rse/soundfx" })
     ui.soundfx = new Howl({ ...sfx.config(), volume: 0.4, preload: true })
 
+    /*  provide convenience method  */
+    ui.soundfx.playAndWait = (name) => {
+        let id = ui.soundfx.play(name)
+        return new Promise((resolve, reject) => {
+            ui.soundfx.once("end", () => {
+                resolve()
+            }, id)
+            ui.soundfx.once("playerror", (err) => {
+                reject(err)
+            }, id)
+        })
+    }
+
     /*  helper function for converting VueJS properties into CSS variables  */
     ui.vueprop2cssvar = () => {
         return function () {
