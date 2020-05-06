@@ -197,12 +197,14 @@ const EventStream  = require("./app-main-relay-eventstream")
             app.win.focus()
         })
 
-        /*  react on implicit window close  */
-        app.win.on("closed", () => {
-        })
-
         /*  react on explicit window close  */
         app.ipc.handle("quit", (event) => {
+            settings.save()
+            app.quit()
+        })
+
+        /*  react on implicit window close  */
+        app.win.on("closed", () => {
             settings.save()
             app.quit()
         })
