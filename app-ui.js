@@ -107,12 +107,7 @@ const electron = require("electron")
     Vue.component("v-multiselect", VueMultiselect.default)
 
     /*  support Vue tooltip functionality  */
-    Vue.use(VTooltip, {
-        disposeTimeout: 0
-    })
-
-    /*  allow Vue modal windows  */
-    window["vue-js-modal"].default.install(Vue, { dynamic: true, injectModalsContainer: true })
+    Vue.use(VTooltip, { disposeTimeout: 0 })
 
     /*  allow Vue DevTools integration  */
     Vue.config.devtools = true
