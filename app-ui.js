@@ -124,53 +124,30 @@ const electron = require("electron")
         if (!result.error)
             ui.root.$refs.win.$emit("state", "login")
     })
-    ui.root.$refs.win.$on("stream-resolution", async (resolution) => {
-        ui.ipc.invoke("stream-resolution", resolution)
-    })
-    ui.root.$refs.win.$on("stream-buffering", async (buffer) => {
-        ui.ipc.invoke("stream-buffering", buffer)
-    })
-    ui.root.$refs.win.$on("minimize", () => {
-        ui.ipc.invoke("minimize")
-    })
-    ui.root.$refs.win.$on("maximize", () => {
-        ui.ipc.invoke("maximize")
-    })
-    ui.root.$refs.win.$on("fullscreen", () => {
-        ui.ipc.invoke("fullscreen")
-    })
-    ui.root.$refs.win.$on("resize", (diff) => {
-        ui.ipc.invoke("resize", diff)
-    })
-    ui.root.$refs.win.$on("set-size", (size) => {
-        ui.ipc.invoke("set-size", size)
-    })
-    ui.root.$refs.win.$on("quit", () => {
-        ui.ipc.invoke("quit")
-    })
-    ui.root.$refs.win.$on("message", (message) => {
-        ui.ipc.invoke("message", message)
-    })
-    ui.root.$refs.win.$on("feedback", (type) => {
-        ui.ipc.invoke("feedback", type)
-    })
-    ui.root.$refs.win.$on("feeling", (feeling) => {
-        ui.ipc.invoke("feeling", feeling)
-    })
 
-    /*  hook into the main process events  */
-    ui.ipc.on("stream-begin", (event) => {
-        ui.root.$refs.win.$emit("stream-begin")
-    })
-    ui.ipc.on("stream-data", (event, data) => {
-        ui.root.$refs.win.$emit("stream-data", data)
-    })
-    ui.ipc.on("stream-end", (event) => {
-        ui.root.$refs.win.$emit("stream-end")
-    })
-    ui.ipc.on("deep-link", (event, credentials) => {
-        ui.root.$refs.win.$emit("deep-link", credentials)
-    })
+    /*  pass-through events from renderer to main thread  */
+    let events = [
+        "stream-resolution", "stream-buffering",
+        "minimize", "maximize", "fullscreen",
+        "resize", "set-size", "quit",
+        "message", "feedback", "feeling"
+    ]
+    for (const event of events) {
+        ui.root.$refs.win.$on(event, async (...args) => {
+            ui.ipc.invoke(event, ...args)
+        })
+    }
+
+    /*  pass-through events from main to renderer thread  */
+    events = [
+        "stream-begin", "stream-data", "stream-end",
+        "deep-link"
+    ]
+    for (const event of events) {
+        ui.ipc.on(event, (ev, ...args) => {
+            ui.root.$refs.win.$emit(event, ...args)
+        })
+    }
 
     /*  determine audio/video devices  */
     ui.devices = []
