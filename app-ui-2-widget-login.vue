@@ -583,7 +583,7 @@ module.exports = {
                     })
                 }
                 catch (err) {
-                    console.log(`ERROR: audio input test: ${err}`)
+                    ui.log.error(`ui: audio input test: error: ${err}`)
                     this.audioInputTestActive = false
                     return
                 }

@@ -808,7 +808,7 @@ module.exports = {
                     })
                 }
                 catch (err) {
-                    console.log(`ERROR: audio recording: ${err}`)
+                    ui.log.error(`audio recording: ${err}`)
                     this.audioRecording = false
                     this.audioBlob = null
                     return

@@ -210,33 +210,33 @@ module.exports = {
             if (this.device !== "")
                 ve.setSinkId(this.device)
             ve.addEventListener("loadeddata", () => {
-                console.log("videoelement: loadeddata")
+                ui.log.debug("ui: videoelement: loadeddata")
             })
             ve.addEventListener("canplay", () => {
-                console.log("videoelement: canplay")
+                ui.log.debug("ui: videoelement: canplay")
             })
             ve.addEventListener("progress", () => {
-                console.log("videoelement: progress")
+                ui.log.debug("ui: videoelement: progress")
             })
             ve.addEventListener("playing", () => {
-                console.log("videoelement: playing")
+                ui.log.debug("ui: videoelement: playing")
                 this.state = "playing"
             })
             ve.addEventListener("stalled", () => {
-                console.log("videoelement: stalled")
+                ui.log.debug("ui: videoelement: stalled")
                 this.state = "stalled"
             })
             ve.addEventListener("waiting", () => {
-                console.log("videoelement: waiting")
+                ui.log.debug("ui: videoelement: waiting")
                 this.state = "stalled"
             })
             ve.addEventListener("ended", () => {
-                console.log("videoelement: ended")
+                ui.log.debug("ui: videoelement: ended")
                 this.state = "stopped"
             })
             ve.addEventListener("error", (ev) => {
                 this.$emit("error", `HTMLMediaElement: ${ev}`)
-                console.log("videoelement: error", ev)
+                ui.log.debug("ui: videoelement: error", ev)
                 this.state = "error"
                 this.$emit("stream-reboot")
             })
@@ -246,17 +246,17 @@ module.exports = {
             const ms = new MediaSource()
             ve.src = window.URL.createObjectURL(ms)
             ms.addEventListener("sourceopen", (ev) => {
-                console.log("mediasource: sourceopen")
+                ui.log.debug("ui: mediasource: sourceopen")
             })
             ms.addEventListener("sourceended", (ev) => {
-                console.log("mediasource: sourceended")
+                ui.log.debug("ui: mediasource: sourceended")
             })
             ms.addEventListener("sourceclose", (ev) => {
-                console.log("mediasource: sourceclose")
+                ui.log.debug("ui: mediasource: sourceclose")
             })
             ms.addEventListener("error", (ev) => {
                 this.$emit("error", `MediaSource: ${ev}`)
-                console.log("mediasource: error", ev)
+                ui.log.debug("ui: mediasource: error", ev)
                 this.state = "error"
                 this.$emit("stream-reboot")
             })
@@ -294,7 +294,7 @@ module.exports = {
                                 this.sb[data.id].appendBuffer(data.buffer)
                             }
                             catch (err) {
-                                console.log("sourcebuffer: appendBuffer: exception:", err)
+                                ui.log.error("ui: sourcebuffer: appendBuffer: exception:", err)
                                 this.$emit("error", `SourceBuffer: ${err}`)
                             }
                         }
@@ -319,18 +319,18 @@ module.exports = {
                             transfer()
                         })
                         this.sb[data.id].addEventListener("abort", () => {
-                            console.log("sourcebuffer: abort")
+                            ui.log.debug("ui: sourcebuffer: abort")
                             this.$emit("error", "SourceBuffer: abort")
                             updating[data.id] = false
                         })
                         this.sb[data.id].addEventListener("error", (event, err) => {
-                            console.log("sourcebuffer: error", err)
+                            ui.log.error("ui: sourcebuffer: error", err)
                             this.$emit("error", `SourceBuffer: ${err}`)
                             updating[data.id] = false
                         })
                     }
                     catch (err) {
-                        console.log("sourcebuffer: addSourceBuffer: exception:", err)
+                        ui.log.debug("ui: sourcebuffer: addSourceBuffer: exception:", err)
                         this.$emit("error", `SourceBuffer: ${err}`)
                     }
                 }
@@ -364,36 +364,36 @@ module.exports = {
 
         /*  provide event entry hooks  */
         this.$on("stream-begin", async () => {
-            console.log("stream-begin: begin")
+            ui.log.info("ui: stream-begin: begin")
             if (!this.streaming) {
                 await streamBegin().catch(() => true)
                 this.streaming = true
             }
             this.$emit("stream-begin:done")
-            console.log("stream-begin: end")
+            ui.log.info("ui: stream-begin: end")
         })
         this.$on("stream-data", async (data) => {
             if (this.streaming)
                 streamData(data)
         })
         this.$on("stream-end", async () => {
-            console.log("stream-end: begin")
+            ui.log.info("ui: stream-end: begin")
             if (this.streaming) {
                 this.streaming = false
                 await streamEnd().catch(() => true)
             }
             this.$emit("stream-end:done")
-            console.log("stream-end: end")
+            ui.log.info("ui: stream-end: end")
         })
 
         /*  allow rebooting on Video element or MediaSource errors  */
         this.$on("stream-reboot", async () => {
-            console.log("stream-reboot: begin")
+            ui.log.info("ui: stream-reboot: begin")
             this.streaming = false
             await streamEnd().catch(() => true)
             await streamBegin().catch(() => true)
             this.streaming = true
-            console.log("stream-reboot: end")
+            ui.log.info("ui: stream-reboot: end")
         })
     }
 }

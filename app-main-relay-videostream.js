@@ -58,7 +58,8 @@ module.exports = class VideoStream extends EventEmitter {
             token2:     "",
             timeout:    20 * 1000,
             resolution: "1080p",
-            buffering:  2000
+            buffering:  2000,
+            log:        (level, msg) => {}
         }, options)
 
         /*  initialize state  */
@@ -105,7 +106,7 @@ module.exports = class VideoStream extends EventEmitter {
         this.mp4box.onReady = (info) => {
             let segment = 0
             const onTimeout = async () => {
-                console.log(`++ LiVE-Relay: data receiving timeout (${this.options.timeout / 1000}s) ` +
+                this.options.log("info", `videostream: data receiving timeout (${this.options.timeout / 1000}s) ` +
                     "-- restarting FFMpeg subprocess")
                 await this.stop()
                 this.start()

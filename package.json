@@ -11,6 +11,7 @@
     "devDependencies": {
         "electron":                        "8.2.5",
         "electron-builder":                "22.6.0",
+        "electron-log":                    "4.1.2",
         "nodemon":                         "2.0.3",
         "shelljs":                         "0.8.4",
         "glob":                            "7.1.6",

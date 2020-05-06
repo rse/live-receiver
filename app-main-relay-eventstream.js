@@ -39,7 +39,8 @@ module.exports = class EventStream extends EventEmitter {
             channel: " ",
             token1:   "",
             token2:   "",
-            interval: 30 * 1000
+            interval: 30 * 1000,
+            log:      (level, msg) => {}
         }, options)
         this.broker = null
         this.timer  = null
@@ -63,6 +64,7 @@ module.exports = class EventStream extends EventEmitter {
                 resolve()
             })
             broker.on("error", (err) => {
+                this.options.log("error", `eventstream: MQTT: connect: ${err}`)
                 if (err.code === "ENOTFOUND")
                     err = new Error(`FQDN of host "${err.hostname}" not found in DNS`)
                 else if (err.code === "ECONNREFUSED")
@@ -98,7 +100,7 @@ module.exports = class EventStream extends EventEmitter {
                 }
             })
             broker.on("error", (err) => {
-                console.log("++ MQTT: error", err)
+                this.options.log("error", `eventstream: MQTT: ${err}`)
                 if (firstConnect)
                     reject(err)
                 else
@@ -106,34 +108,37 @@ module.exports = class EventStream extends EventEmitter {
             })
             broker.on("connect", () => {
                 /*  on connect and re-connect initialize our session  */
-                console.log("++ MQTT: connect")
+                this.options.log("info", "eventstream: MQTT: connect")
 
                 /*  (re)subscribe to the attendee-specific channel  */
                 broker.subscribe(`stream/${this.options.channel}/receiver/${this.options.client}`, (err) => {
                     if (err) {
                         if (firstConnect)
                             reject(err)
-                        else
+                        else {
+                            this.options.log("error", `eventstream: MQTT: subscribe: ${err}`)
                             this.emit("error", `subscribe: ${err}`)
+                        }
                     }
                 })
 
                 /*  track certain MQTT broker events  */
                 if (firstConnect) {
                     broker.on("reconnect", () => {
-                        console.log("++ MQTT: reconnect")
+                        this.options.log("info", "eventstream: MQTT: reconnect")
                         this.emit("reconnect")
                     })
                     broker.on("close", () => {
-                        console.log("++ MQTT: close")
+                        this.options.log("info", "eventstream: MQTT: close")
                         this.emit("disconnect", "close")
                     })
                     broker.on("disconnect", () => {
-                        console.log("++ MQTT: disconnect")
+                        this.options.log("info", "eventstream: MQTT: disconnect")
                         this.emit("disconnect", "disconnect")
                     })
                     broker.on("message", (topic, message) => {
-                        console.log("++ MQTT: message", message)
+                        this.options.log("debug", `eventstream: MQTT: message: topic=${topic} ` +
+                            `message=${JSON.stringify(message)}`)
                         this.emit("message", topic, message)
                     })
                 }
@@ -207,8 +212,10 @@ module.exports = class EventStream extends EventEmitter {
             throw new Error("not connected")
         this.emit("sent", message)
         this.broker.publish(`stream/${this.options.channel}/sender`, message, { qos: 2 }, (err) => {
-            if (err)
+            if (err) {
+                this.options.log("error", `eventstream: MQTT: publish: ${err}`)
                 this.emit("send:error", err)
+            }
             else
                 this.emit("send:success", message)
         })

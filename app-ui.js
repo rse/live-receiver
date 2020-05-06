@@ -23,7 +23,8 @@
 */
 
 /*  external requirements  */
-const electron = require("electron")
+const electron    = require("electron")
+const electronLog = require("electron-log")
 
 /*  enter an asynchronous environment in renderer process  */
 ;(async () => {
@@ -37,6 +38,11 @@ const electron = require("electron")
     document.addEventListener("DOMContentLoaded", (event) => {
         ui.domReady = true
     })
+
+    /*  provide logging  */
+    ui.log = electronLog
+    ui.log.transports.console.format = "{h}:{i}:{s}.{ms} › [{level}] {text}"
+    ui.log.info("ui: starting up")
 
     /*  delay processing a certain amount of time  */
     ui.delay = (delay) =>
@@ -97,6 +103,7 @@ const electron = require("electron")
     /*  ensure the DOM is now finally available  */
     while (!ui.domReady || !document.getElementById("ui"))
         await ui.delay(50)
+    ui.log.info("ui: DOM ready")
 
     /*  support on-the-fly loading and compiling of Vue single-file components  */
     httpVueLoader.langProcessor.less = (lessText) =>
@@ -118,6 +125,7 @@ const electron = require("electron")
     /*  ensure the <win> element is available  */
     while (!(typeof ui.root.$refs === "object" && ui.root.$refs.win !== undefined))
         await ui.delay(50)
+    ui.log.info("ui: <win> ready")
 
     /*  hook into the UI events  */
     ui.root.$refs.win.$on("login", async (info) => {
@@ -167,8 +175,9 @@ const electron = require("electron")
     await updateDevices()
 
     /*  finally signal main thread we are ready  */
+    ui.log.info("ui: UI ready")
     ui.ipc.invoke("ui-ready")
 })().catch((err) => {
-    console.log(`** live-receiver: ui: ERROR: ${err}`)
+    ui.log.error(`ui: ERROR: ${err}`)
 })
 

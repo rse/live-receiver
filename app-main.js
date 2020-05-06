@@ -24,6 +24,7 @@
 
 /*  external requirements  */
 const electron     = require("electron")
+const electronLog  = require("electron-log")
 const os           = require("os")
 const path         = require("path")
 const EventEmitter = require("eventemitter2")
@@ -37,9 +38,9 @@ const VideoStream  = require("./app-main-relay-videostream")
 const EventStream  = require("./app-main-relay-eventstream")
 
 /*  enter an asynchronous environment in main process  */
+const app = electron.app
 ;(async () => {
     /*   establish Electron application  */
-    const app = electron.app
     app.allowRendererProcessReuse = true
 
     /*  initialize global information  */
@@ -50,9 +51,17 @@ const EventStream  = require("./app-main-relay-eventstream")
     app.ipc   = electron.ipcMain
     app.event = new EventEmitter({ wildcard: true })
 
+    /*  provide logging facility  */
+    app.log = electronLog
+    app.log.transports.console.format = "{h}:{i}:{s}.{ms} › [{level}] {text}"
+    app.log.transports.file.format = "[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}"
+    app.log.debug(`(persistent log under ${app.log.transports.file.getFile()})`)
+    app.log.info(`main: starting up`)
+
     /*  track the readyness of the UI  */
     app.uiReady = false
     app.ipc.handle("ui-ready", (event) => {
+        app.log.info("main: UI ready")
         app.uiReady = true
     })
 
@@ -67,8 +76,10 @@ const EventStream  = require("./app-main-relay-eventstream")
         /*  send event to application window
             (once the UI is really ready)  */
         const deliverEvent = (attempts) => {
-            if (app.win !== null && app.uiReady)
+            if (app.win !== null && app.uiReady) {
+                app.log.info("main: send deep-link event to UI")
                 app.win.webContents.send("deep-link", { liveRelayServer, liveAccessToken })
+            }
             else if (--attempts > 0)
                 setTimeout(() => deliverEvent(attempts), 250)
             else
@@ -162,7 +173,7 @@ const EventStream  = require("./app-main-relay-eventstream")
 
         /*  redirect exception error boxes to the console  */
         electron.dialog.showErrorBox = (title, content) => {
-            console.log(`++ LiVE-Relay: exception: ${title}: ${content}`)
+            app.log.info(`main: UI: exception: ${title}: ${content}`)
         }
 
         /*  create application window  */
@@ -271,10 +282,13 @@ const EventStream  = require("./app-main-relay-eventstream")
             client: app.clientId
         }
         const liveAuth = async () => {
-            console.log("++ LiVE-Relay: authenticate")
+            app.log.info("main: LiVE-Relay: authenticate")
 
             /*  connect to LiVE Relay EventStream  */
-            const es = new EventStream(credentials)
+            const es = new EventStream({
+                ...credentials,
+                log: (level, message) => { app.log[level](message) }
+            })
             const result = await (es.preauth().then(() => ({ success: true })).catch((err) => {
                 return { error: `Failed to authenticate at LiVE Relay service: ${err.message}` }
             }))
@@ -284,17 +298,20 @@ const EventStream  = require("./app-main-relay-eventstream")
         }
         const liveConnect = async () => {
             if (app.connected) {
-                console.log("++ LiVE-Relay: connect (ALREADY CONNECTED)")
+                app.log.error("main: LiVE-Relay: connect (ALREADY CONNECTED)")
                 return { error: "invalid use -- already connected" }
             }
-            console.log("++ LiVE-Relay: connect (begin)")
+            app.log.info("main: LiVE-Relay: connect (begin)")
 
             /*  give UI some time to start stream processing  */
             app.win.webContents.send("stream-begin")
             await new Promise((resolve) => setTimeout(resolve, 1 * 1000))
 
             /*  connect to LiVE Relay EventStream  */
-            const es = new EventStream(credentials)
+            const es = new EventStream({
+                ...credentials,
+                log: (level, message) => { app.log[level](message) }
+            })
             let result = await es.start().then(() => ({ success: true })).catch((err) => {
                 return { error: `EventStream: MQTTS: start: ${err}` }
             })
@@ -303,17 +320,21 @@ const EventStream  = require("./app-main-relay-eventstream")
             app.es = es
 
             /*  connect to LiVE Relay VideoStream  */
-            const vs = new VideoStream(credentials)
+            const vs = new VideoStream({
+                ...credentials,
+                log: (level, message) => { app.log[level](message) }
+            })
             vs.on("segment", (num, id, user, buffer) => {
                 if (!app.connected)
                     return
-                // console.log(`-- LiVE-Relay: RTMPS segment #${num}: ${id} @ ${user.mimeCodec} (${buffer.byteLength} bytes)`)
+                // app.log.debug(`main: LiVE-Relay: RTMPS segment #${num}: ${id} @ ${user.mimeCodec} ` +
+                //     `(${buffer.byteLength} bytes)`)
                 app.win.webContents.send("stream-data", { id, user, buffer })
             })
             vs.on("error", (err) => {
                 if (!app.connected)
                     return
-                console.log(`** LiVE-Relay: RTMPS: ERROR: ${err}`)
+                app.log.error(`main: LiVE-Relay: RTMPS: ERROR: ${err}`)
                 app.win.webContents.send("stream-end")
             })
             result = await vs.start().then(() => ({ success: true })).catch((err) => {
@@ -325,15 +346,15 @@ const EventStream  = require("./app-main-relay-eventstream")
 
             /*  indicate success  */
             app.connected = true
-            console.log("++ LiVE-Relay: connect (end)")
+            app.log.info("main: LiVE-Relay: connect (end)")
             return { success: true }
         }
         const liveDisconnect = async () => {
             if (!app.connected) {
-                console.log("++ LiVE-Relay: disconnect (STILL NOT CONNECTED)")
+                app.log.error("main: LiVE-Relay: disconnect (STILL NOT CONNECTED)")
                 return { error: "invalid use -- still not connected" }
             }
-            console.log("++ LiVE Relay: disconnect (begin)")
+            app.log.info("main: LiVE Relay: disconnect (begin)")
 
             /*  disconnect from LiVE Relay EventStream  */
             let result
@@ -362,7 +383,7 @@ const EventStream  = require("./app-main-relay-eventstream")
 
             /*  indicate success  */
             app.connected = false
-            console.log("++ LiVE Relay: disconnect (end)")
+            app.log.info("main: LiVE Relay: disconnect (end)")
             return { success: true }
         }
         app.ipc.handle("login", async (event, {
@@ -461,5 +482,8 @@ const EventStream  = require("./app-main-relay-eventstream")
         })
     })
 })().catch((err) => {
-    console.log(`** LiVE Receiver: main: ERROR: ${err}`)
+    if (app.log)
+        app.log.error(`main: ERROR: ${err}`)
+    else
+        console.log(`main: ERROR: ${err}`)
 })
