@@ -135,7 +135,7 @@ const electron = require("electron")
 
     /*  pass-through events from renderer to main thread  */
     let events = [
-        "stream-resolution", "stream-buffering",
+        "stream-buffering",
         "minimize", "maximize", "fullscreen",
         "resize", "set-size", "quit",
         "message", "feedback", "feeling"

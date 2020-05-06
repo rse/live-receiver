@@ -132,7 +132,6 @@
                     v-bind:person-name.sync="personName"
                     v-bind:live-relay-server.sync="liveRelayServer"
                     v-bind:live-access-token.sync="liveAccessToken"
-                    v-bind:live-stream-resolution.sync="liveStreamResolution"
                     v-bind:live-stream-buffering.sync="liveStreamBuffering"
                     v-bind:audio-input-device.sync="audioInputDevice"
                     v-bind:audio-output-device.sync="audioOutputDevice"
@@ -599,7 +598,6 @@ module.exports = {
         personName:           "",
         liveRelayServer:      "",
         liveAccessToken:      "",
-        liveStreamResolution: "",
         liveStreamBuffering:  "",
         audioInputDevice:     "",
         audioOutputDevice:    "",
@@ -665,7 +663,6 @@ module.exports = {
         personName:           function (v) { ui.settings("person-name", v) },
         liveRelayServer:      function (v) { ui.settings("live-relay-server", v) },
         liveAccessToken:      function (v) { ui.settings("live-access-token", v) },
-        liveStreamResolution: function (v) { ui.settings("live-stream-resolution", v) },
         liveStreamBuffering:  function (v) { ui.settings("live-stream-buffering", v) },
         audioInputDevice:     function (v) { ui.settings("audio-input-device", v) },
         audioOutputDevice:    function (v) {
@@ -729,7 +726,6 @@ module.exports = {
                 personName:           this.personName,
                 liveRelayServer:      this.liveRelayServer,
                 liveAccessToken:      this.liveAccessToken,
-                liveStreamResolution: this.liveStreamResolution,
                 liveStreamBuffering:  this.liveStreamBuffering,
                 audioInputDevice:     this.audioInputDevice,
                 audioOutputDevice:    this.audioOutputDevice
@@ -872,7 +868,6 @@ module.exports = {
         this.personName           = await ui.settings("person-name")
         this.liveRelayServer      = await ui.settings("live-relay-server")
         this.liveAccessToken      = await ui.settings("live-access-token")
-        this.liveStreamResolution = await ui.settings("live-stream-resolution")
         this.liveStreamBuffering  = await ui.settings("live-stream-buffering")
         this.audioInputDevice     = await ui.settings("audio-input-device")
         this.audioOutputDevice    = await ui.settings("audio-output-device")

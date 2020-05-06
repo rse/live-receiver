@@ -69,29 +69,6 @@
             v-on:keyup.enter="$refs.login.focus()"
         />
 
-        <!-- LiVE Stream Resolution (FIXME: still unused) -->
-        <!--
-        <i class="icon fa fa-expand-alt"></i>
-        <div> LiVE Stream Resolution:</span>
-        <div class="selbox-container">
-            <div class="selbox"
-                v-bind:class="{ active: intLiveStreamResolution === '480p' }"
-                v-on:click="intLiveStreamResolution = '480p'">
-                480p
-            </div>
-            <div class="selbox"
-                v-bind:class="{ active: intLiveStreamResolution === '720p' }"
-                v-on:click="intLiveStreamResolution = '720p'">
-                720p
-            </div>
-            <div class="selbox"
-                v-bind:class="{ active: intLiveStreamResolution === '1080p' }"
-                v-on:click="intLiveStreamResolution = '1080p'">
-                1080p
-            </div>
-        </div>
-        -->
-
         <!-- LiVE Stream Buffering -->
         <i class="icon fa fa-clock"></i>
         <div class="label">LiVE Stream Buffering (ms)</div>
@@ -490,7 +467,6 @@ module.exports = {
         personName:           { type: String, default: "" },
         liveRelayServer:      { type: String, default: "" },
         liveAccessToken:      { type: String, default: "" },
-        liveStreamResolution: { type: String, default: "1080p" },
         liveStreamBuffering:  { type: Number, default: 2000 },
         audioInputDevice:     { type: String, default: "" },
         audioOutputDevice:    { type: String, default: "" }
@@ -503,7 +479,6 @@ module.exports = {
             intPersonName:           this.personName,
             intLiveRelayServer:      this.liveRelayServer,
             intLiveAccessToken:      this.liveAccessToken,
-            intLiveStreamResolution: this.liveStreamResolution,
             intLiveStreamBuffering:  this.liveStreamBuffering,
             intAudioInputDevice:     null,
             intAudioOutputDevice:    null,
@@ -531,7 +506,6 @@ module.exports = {
         intPersonName:           function (v) { this.$emit("update:person-name", v) },
         intLiveRelayServer:      function (v) { this.$emit("update:live-relay-server", v) },
         intLiveAccessToken:      function (v) { this.$emit("update:live-access-token", v) },
-        intLiveStreamResolution: function (v) { this.$emit("update:live-stream-resolution", v) },
         intLiveStreamBuffering:  function (v) { this.$emit("update:live-stream-buffering", v) },
         intAudioInputDevice:     function (v) { this.$emit("update:audio-input-device",  this.deviceObj2Id(v)) },
         intAudioOutputDevice:    function (v) { this.$emit("update:audio-output-device", this.deviceObj2Id(v)) }

@@ -129,7 +129,6 @@ const EventStream  = require("./app-main-relay-eventstream")
         app.personName           = settings.get("person-name",            "")
         app.liveRelayServer      = settings.get("live-relay-server",      "")
         app.liveAccessToken      = settings.get("live-access-token",      "")
-        app.liveStreamResolution = settings.get("live-stream-resolution", "1080p")
         app.liveStreamBuffering  = settings.get("live-stream-buffering",  2000)
         app.audioInputDevice     = settings.get("audio-input-device",     "")
         app.audioOutputDevice    = settings.get("audio-output-device",    "")
@@ -144,7 +143,6 @@ const EventStream  = require("./app-main-relay-eventstream")
         settings.set("person-name",            app.personName)
         settings.set("live-relay-server",      app.liveRelayServer)
         settings.set("live-access-token",      app.liveAccessToken)
-        settings.set("live-stream-resolution", app.liveStreamResolution)
         settings.set("live-stream-buffering",  app.liveStreamBuffering)
         settings.set("audio-input-device",     app.audioInputDevice)
         settings.set("audio-output-device",    app.audioOutputDevice)
@@ -368,8 +366,8 @@ const EventStream  = require("./app-main-relay-eventstream")
             return { success: true }
         }
         app.ipc.handle("login", async (event, {
-            personPortrait, personName, liveRelayServer,
-            liveAccessToken, liveStreamResolution, liveStreamBuffering,
+            personPortrait, personName,
+            liveRelayServer, liveAccessToken, liveStreamBuffering,
             audioInputDevice, audioOutputDevice
         }) => {
             /*  take login parameters  */
@@ -377,7 +375,6 @@ const EventStream  = require("./app-main-relay-eventstream")
             app.personName           = personName
             app.liveRelayServer      = liveRelayServer
             app.liveAccessToken      = liveAccessToken
-            app.liveStreamResolution = liveStreamResolution
             app.liveStreamBuffering  = liveStreamBuffering
             app.audioInputDevice     = audioInputDevice
             app.audioOutputDevice    = audioOutputDevice
@@ -385,7 +382,6 @@ const EventStream  = require("./app-main-relay-eventstream")
             settings.set("person-name",            app.personName)
             settings.set("live-relay-server",      app.liveRelayServer)
             settings.set("live-access-token",      app.liveAccessToken)
-            settings.set("live-stream-resolution", app.liveStreamResolution)
             settings.set("live-stream-buffering",  app.liveStreamBuffering)
             settings.set("audio-input-device",     app.audioInputDevice)
             settings.set("audio-output-device",    app.audioOutputDevice)
@@ -401,7 +397,6 @@ const EventStream  = require("./app-main-relay-eventstream")
             credentials.channel    = channel
             credentials.token1     = token1
             credentials.token2     = token2
-            credentials.resolution = app.liveStreamResolution
             credentials.buffering  = app.liveStreamBuffering
 
             /*  establish communication  */
