@@ -796,7 +796,8 @@ module.exports = {
         async audioRecord () {
             if (!this.audioRecording) {
                 /*  start recording  */
-                await ui.soundfx.playAndWait("chime3")
+                await ui.soundfx.playAndWait("click1")
+                await new Promise((resolve) => setTimeout(resolve, 100))
                 try {
                     const stream = await navigator.mediaDevices.getUserMedia({
                         audio: { deviceId: this.audioInputDevice },
