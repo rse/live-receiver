@@ -25,8 +25,7 @@
 -->
 
 <template>
-    <div v-if="loaded" v-bind:style="style" class="win"
-        v-on:mousemove="resizeMove" v-on:mouseup="resizeEnd">
+    <div v-if="loaded" v-bind:style="style" class="win">
         <!-- ---- HEADER ---- -->
         <div ref="header" class="header">
             <!-- disconnect -->
@@ -266,17 +265,6 @@
                     v-model="mood"/>
                 <span class="title">Show Mood</span>
             </div>
-
-            <!-- window resize (FIXME: still unused) -->
-            <!--
-            <div class="box button resize"
-                v-on:mousedown="resizeBegin"
-                v-on:mousemove="resizeMove"
-                v-bind:class="{ disabled: fullscreened }">
-                <i class="icon fa fa-expand-alt"></i>
-                <span class="title">Re-Size</span>
-            </div>
-            -->
         </div>
     </div>
 </template>
@@ -594,12 +582,6 @@
                 }
             }
         }
-        .resize {
-            .icon {
-                cursor: grab;
-                transform: rotate(-90deg);
-            }
-        }
     }
 }
 </style>
@@ -627,8 +609,6 @@ module.exports = {
         audioRecording:       false,
         audioPlaying:         false,
         message:              "",
-        resizing:             false,
-        resizingPos:          { x: 0, y: 0 },
         fullscreened:         false,
         volume:               100,
         volumeMute:           false,
@@ -768,29 +748,6 @@ module.exports = {
         },
 
         /*  window resize handling  */
-        resizeBegin (event) {
-            if (this.fullscreened || this.resizing)
-                return
-            this.resizing = true
-            this.resizingPos.x = event.screenX
-            this.resizingPos.y = event.screenY
-        },
-        resizeMove (event) {
-            if (this.fullscreened || !this.resizing)
-                return
-            if (this.resizingPos.x === event.screenX && this.resizingPos.y === event.screenY)
-                return
-            const diffX = event.screenX - this.resizingPos.x
-            const diffY = event.screenY - this.resizingPos.y
-            this.$emit("resize", { x: diffX, y: diffY })
-            this.resizingPos.x = event.screenX
-            this.resizingPos.y = event.screenY
-        },
-        resizeEnd (event) {
-            if (this.fullscreened || !this.resizing)
-                return
-            this.resizing = false
-        },
         minimize (event) {
             if (this.fullscreened)
                 return
