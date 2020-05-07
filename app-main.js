@@ -56,7 +56,7 @@ const app = electron.app
     app.log.transports.console.format = "{h}:{i}:{s}.{ms} › [{level}] {text}"
     app.log.transports.file.format = "[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}"
     app.log.debug(`(persistent log under ${app.log.transports.file.getFile()})`)
-    app.log.info(`main: starting up`)
+    app.log.info("main: starting up")
 
     /*  track the readyness of the UI  */
     app.uiReady = false
@@ -386,26 +386,30 @@ const app = electron.app
             app.log.info("main: LiVE Relay: disconnect (end)")
             return { success: true }
         }
-        app.ipc.handle("login", async (event, {
-            personPortrait, personName,
-            liveRelayServer, liveAccessToken, liveStreamBuffering,
+        app.ipc.handle("save-settings", async (event, {
+            personPortrait, personName, liveStreamBuffering,
             audioInputDevice, audioOutputDevice
         }) => {
             /*  take login parameters  */
             app.personPortrait       = personPortrait
             app.personName           = personName
-            app.liveRelayServer      = liveRelayServer
-            app.liveAccessToken      = liveAccessToken
             app.liveStreamBuffering  = liveStreamBuffering
             app.audioInputDevice     = audioInputDevice
             app.audioOutputDevice    = audioOutputDevice
             settings.set("person-portrait",        app.personPortrait)
             settings.set("person-name",            app.personName)
-            settings.set("live-relay-server",      app.liveRelayServer)
-            settings.set("live-access-token",      app.liveAccessToken)
             settings.set("live-stream-buffering",  app.liveStreamBuffering)
             settings.set("audio-input-device",     app.audioInputDevice)
             settings.set("audio-output-device",    app.audioOutputDevice)
+        })
+        app.ipc.handle("login", async (event, {
+            liveRelayServer, liveAccessToken
+        }) => {
+            /*  take login parameters  */
+            app.liveRelayServer      = liveRelayServer
+            app.liveAccessToken      = liveAccessToken
+            settings.set("live-relay-server",      app.liveRelayServer)
+            settings.set("live-access-token",      app.liveAccessToken)
 
             /*  parse access token  */
             const m = app.liveAccessToken.match(/^(.+?)-([^-]+)-([^-]+)$/)

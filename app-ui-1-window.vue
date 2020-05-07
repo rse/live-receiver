@@ -28,17 +28,24 @@
     <div v-if="loaded" v-bind:style="style" class="win">
         <!-- ---- HEADER ---- -->
         <div ref="header" class="header">
+            <!-- logo -->
+            <div class="box logo">
+                <img v-bind:src="logo" alt="LiVE"/>
+                <span class="title">Receiver</span>
+            </div>
+
+            <!-- settings -->
+            <div class="box button settings" v-on:click="settingsOpen"
+                v-bind:class="{ disabled: !inLogin || inSettings }">
+                <i class="icon fa fa-users-cog"></i>
+                <span class="title">Settings</span>
+            </div>
+
             <!-- disconnect -->
             <div class="box button logout" v-on:click="logout"
                 v-bind:class="{ disabled: inLogin || !allowDisconnect }">
                 <i class="icon fa fa-arrow-alt-circle-left"></i>
                 <span class="title">Disconnect</span>
-            </div>
-
-            <!-- logo -->
-            <div class="box logo">
-                <img v-bind:src="logo" alt="LiVE"/>
-                <span class="title">Receiver</span>
             </div>
 
             <!-- bandwidth -->
@@ -117,7 +124,7 @@
             <!-- video stream -->
             <div ref="video"
                 v-bind:style="{ width: videoSize.w + 'px', height: videoSize.h + 'px'}"
-                v-show="!inLogin"
+                v-show="!inLogin && !inSettings"
                 class="video">
                 <videostream
                     ref="videostream"
@@ -125,17 +132,26 @@
             </div>
 
             <!-- login dialog -->
-            <div v-show="inLogin" class="login">
+            <div v-show="inLogin && !inSettings" class="login">
                 <login
                     ref="login"
-                    v-bind:person-portrait.sync="personPortrait"
-                    v-bind:person-name.sync="personName"
                     v-bind:live-relay-server.sync="liveRelayServer"
                     v-bind:live-access-token.sync="liveAccessToken"
+                    v-on:settings="settingsOpen"
+                    v-on:login="login"
+                />
+            </div>
+
+            <!-- settings dialog -->
+            <div v-show="inSettings" class="settings">
+                <settings
+                    ref="settings"
+                    v-bind:person-portrait.sync="personPortrait"
+                    v-bind:person-name.sync="personName"
                     v-bind:live-stream-buffering.sync="liveStreamBuffering"
                     v-bind:audio-input-device.sync="audioInputDevice"
                     v-bind:audio-output-device.sync="audioOutputDevice"
-                    v-on:login="login"
+                    v-on:save="settingsClose"
                 />
             </div>
         </div>
@@ -604,12 +620,13 @@ module.exports = {
     data: () => ({
         loaded:               false,
         inLogin:              true,
+        inSettings:           false,
         allowDisconnect:      true,
         personPortrait:       "",
         personName:           "",
         liveRelayServer:      "",
         liveAccessToken:      "",
-        liveStreamBuffering:  "",
+        liveStreamBuffering:  0,
         audioInputDevice:     "",
         audioOutputDevice:    "",
         logo:                 ui.logo,
@@ -704,7 +721,8 @@ module.exports = {
     /*  component sub-components  */
     components: {
         "login":       "url:app-ui-2-widget-login.vue",
-        "videostream": "url:app-ui-4-widget-videostream.vue"
+        "settings":    "url:app-ui-3-widget-settings.vue",
+        "videostream": "url:app-ui-5-widget-videostream.vue"
     },
 
     /*  component methods  */
@@ -746,18 +764,43 @@ module.exports = {
             })
         },
 
+        /*  settings handling */
+        settingsOpen () {
+            if (!this.inLogin || this.inSettings)
+                return
+            this.inSettings = true
+        },
+        settingsClose () {
+            if (!this.inSettings)
+                return
+            this.inSettings = false
+            this.$emit("save-settings", {
+                personPortrait:       this.personPortrait,
+                personName:           this.personName,
+                liveStreamBuffering:  this.liveStreamBuffering,
+                audioInputDevice:     this.audioInputDevice,
+                audioOutputDevice:    this.audioOutputDevice
+            })
+        },
+
         /*  login/connect and logout/disconnect handling  */
         login () {
             if (!this.inLogin)
                 return
+            const missingSettings = (name) => {
+                this.$refs.login.$emit("error",
+                    `Please configure your <b>${name}</b> ` +
+                    `in the <b>Settings</b> dialog first.`
+                )
+            }
+            if (this.personPortrait      === "") { missingSettings("Personal Portrait");      return }
+            if (this.personPortrait      === "") { missingSettings("Personal Name");          return }
+            if (this.liveStreamBuffering === 0)  { missingSettings("Video Stream Buffering"); return }
+            if (this.audioInputDevice    === "") { missingSettings("Audio Input Device");     return }
+            if (this.audioOutputDevice   === "") { missingSettings("Audio Output Device");    return }
             this.$emit("login", {
-                personPortrait:       this.personPortrait,
-                personName:           this.personName,
                 liveRelayServer:      this.liveRelayServer,
-                liveAccessToken:      this.liveAccessToken,
-                liveStreamBuffering:  this.liveStreamBuffering,
-                audioInputDevice:     this.audioInputDevice,
-                audioOutputDevice:    this.audioOutputDevice
+                liveAccessToken:      this.liveAccessToken
             })
         },
         logout () {
@@ -914,7 +957,7 @@ module.exports = {
     mounted () {
         /*  receive events  */
         this.$on("updated-devices", () => {
-            this.$refs.login.$emit("updated-devices")
+            this.$refs.settings.$emit("updated-devices")
         })
         this.$on("login-error", (error) => {
             this.$refs.login.$emit("error", error)

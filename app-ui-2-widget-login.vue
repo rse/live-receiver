@@ -26,24 +26,12 @@
 
 <template>
     <div v-bind:style="style" class="login">
-        <!-- Your Portrait -->
-        <i class="icon fa fa-portrait"></i>
-        <div class="label">Your Portrait <span class="footnote">*</span></div>
-        <portrait ref="personPortrait"
-                v-model="intPersonPortrait"
-        ></portrait>
-
-        <!-- Your Name -->
-        <i class="icon fa fa-file-signature"></i>
-        <div class="label">Your Name <span class="footnote">*</span></div>
-        <input
-            ref="personName"
-            type="text"
-            placeholder="Enter your personal name..."
-            v-model="intPersonName"
-            v-on:keyup.escape="intPersonName = ''"
-            v-on:keyup.enter="$refs.liveRelayServer.focus()"
-        />
+        <!-- title -->
+        <div class="col-2 notice">
+        </div>
+        <div class="title">
+            Your Connection
+        </div>
 
         <!-- LiVE Relay Server -->
         <i class="icon fa fa-globe"></i>
@@ -69,91 +57,9 @@
             v-on:keyup.enter="$refs.login.focus()"
         />
 
-        <!-- LiVE Stream Buffering -->
-        <i class="icon fa fa-clock"></i>
-        <div class="label">LiVE Stream Buffering (ms)</div>
-        <div class="selbox-container">
-            <div class="selbox"
-               v-bind:class="{ active: intLiveStreamBuffering === 500 }"
-                v-on:click="intLiveStreamBuffering = 500">
-                500
-            </div>
-            <div class="selbox"
-                v-bind:class="{ active: intLiveStreamBuffering === 1000 }"
-                v-on:click="intLiveStreamBuffering = 1000">
-                1000
-            </div>
-            <div class="selbox"
-                v-bind:class="{ active: intLiveStreamBuffering === 1500 }"
-                v-on:click="intLiveStreamBuffering = 1500">
-                1500
-            </div>
-            <div class="selbox"
-                v-bind:class="{ active: intLiveStreamBuffering === 2000 }"
-                v-on:click="intLiveStreamBuffering = 2000">
-                2000
-            </div>
-            <div class="selbox"
-                v-bind:class="{ active: intLiveStreamBuffering === 2500 }"
-                v-on:click="intLiveStreamBuffering = 2500">
-                2500
-            </div>
-            <div class="selbox"
-                v-bind:class="{ active: intLiveStreamBuffering === 3000 }"
-                v-on:click="intLiveStreamBuffering = 3000">
-                3000
-            </div>
-        </div>
-
-        <!-- Audio Input Device -->
-        <i class="icon fa fa-microphone-alt"></i>
-        <div class="label">Audio Input Device</div>
-        <div class="selbox-container">
-            <v-multiselect
-                v-bind:options="audioInputDevices"
-                v-model="intAudioInputDevice"
-                track-by="id"
-                label="name"
-                placeholder="Select audio input device..."
-                v-bind:searchable="false"
-                v-bind:allow-empty="true"
-                v-bind:open-direction="'below'"
-            ></v-multiselect>
-            <div class="selbox"
-                v-on:click="audioInputTest"
-                v-bind:class="{ disabled: intAudioInputDevice === null, active: audioInputTestActive }">
-                <span v-show="!audioInputTestActive" class="icon"><i class="fa fa-dot-circle"></i></span>
-                <span v-show="audioInputTestActive"  class="icon"><i class="fa fa-stop-circle"></i></span>
-            </div>
-        </div>
-
-        <!-- Audio Output Device -->
-        <i class="icon fa fa-volume-up"></i>
-        <div class="label">Audio Output Device</div>
-        <div class="selbox-container">
-            <v-multiselect
-                v-bind:options="audioOutputDevices"
-                v-model="intAudioOutputDevice"
-                track-by="id"
-                label="name"
-                placeholder="Select audio output device..."
-                v-bind:searchable="false"
-                v-bind:allow-empty="true"
-                v-bind:open-direction="'bottom'"
-            ></v-multiselect>
-            <div class="selbox"
-                v-on:click="audioOutputTest"
-                v-bind:class="{ disabled: intAudioOutputDevice === null || audioBlob === null, active: audioOutputTestActive }">
-                <span v-show="!audioOutputTestActive" class="icon"><i class="fa fa-play-circle"></i></span>
-                <span v-show="audioOutputTestActive" class="icon"><i class="fa fa-stop-circle"></i></span>
-            </div>
-        </div>
-
         <!-- Connect -->
         <input class="col-3"
             v-bind:disabled="
-                intPersonPortrait  === '' ||
-                intPersonName      === '' ||
                 intLiveRelayServer === '' ||
                 intLiveAccessToken === '' ||
                 !allowConnect"
@@ -164,8 +70,7 @@
         />
 
         <!-- Optional Error -->
-        <div v-show="error !== ''" class="col-3 error">
-            ERROR: {{ error }}
+        <div v-show="error !== ''" class="col-3 error" v-html="error">
         </div>
 
         <!-- Logo & GDPR Notice -->
@@ -173,16 +78,26 @@
             <img v-bind:src="logo" class="logo" alt="LiVE"/>
             <div class="version">Receiver {{ version }}</div>
         </div>
-        <span class="footnote notice">
-            * Your portrait image and name are stored locally
-            in <i>LiVE Receiver</i> (trainee-side) and are
-            only transmitted to the <i>LiVE Relay</i>
-            (server-side) and <i>LiVE Sender</i> (trainer-side)
-            when you explicitly send a message to the
-            trainer.  Choose a standard avatar as your
-            portrait and an arbitrary nickname if you wish
-            to remain anomymous.
-        </span>
+        <div class="footnote notice">
+            Please enter the <b>LiVE Relay Server</b> Fully Qualified
+            Domain Name (FQDN) like <tt>live.example.com</tt>) and
+            the <b>LiVE Access Token</b> like <tt>example-XXXX-XXXX</tt>) you received.
+            Alternatively, you can deep-link into this dialog of <b>LiVE Receiver</b>
+            through an external URL like <tt>live://live.example.com/example-XXXX-XXXX</tt>.
+        </div>
+
+        <div class="col-2 settings">
+            <div class="box button" v-on:click="settings">
+                <i class="icon fa fa-users-cog"></i>
+            </div>
+        </div>
+        <div class="footnote notice">
+            At first use of <b>LiVE Receiver</b>, or at least before you are connecting
+            the first time, please ensure that you have configured your personal name
+            and local audio devices in the user settings correctly. Please open the
+            <b>Settings</b> dialog with the button on the left side or in the top-left
+            corner for this.
+        </div>
     </div>
 </template>
 
@@ -216,39 +131,22 @@
     >.col-3 {
         grid-column-start: 3;
     }
+    .title {
+        margin-bottom: 10px;
+        font-size: 20pt;
+        font-weight: bold;
+    }
     .notice {
-        margin-top: 6px;
+        margin-top: 10px;
         .logo {
             width: 100px;
         }
     }
-    >.selbox-container {
-        display: flex;
-        .multiselect {
-            width: 250px;
-            min-width: 250px;
-            .multiselect__tags {
-                height: 40px;
-                min-height: 40px;
-            }
-        }
-        .selbox {
-            display: flex;
-            margin-left: 5px;
-            width: 46px;
-            justify-content: center;
-            .icon {
-                padding-top: 3px;
-                width: 100%;
-                font-size: 24px;
-            }
-        }
-        .selbox:first-child {
-            margin-left: 0px;
-        }
-        .selbox:last-child {
-            margin-left: 4px;
-            width: 46px;
+    .logo-container {
+        margin-left: 100px;
+        margin-bottom: 20px;
+        .logo {
+            height: 50px;
         }
     }
 
@@ -334,125 +232,21 @@
         font-size: 8pt;
         color: var(--color-std-fg-1);
     }
-
-    /*  select-box row  */
-    .selbox-container {
-        .selbox {
-            color:                   var(--color-std-fg-3);
-            background-color:        var(--color-std-bg-4);
-            border-top:    1px solid var(--color-std-bg-5);
-            border-left:   1px solid var(--color-std-bg-5);
-            border-right:  1px solid var(--color-std-bg-1);
-            border-bottom: 1px solid var(--color-std-bg-1);
-            text-align: center;
-            border-radius: 5px;
+    .settings {
+        .button {
+            margin-top: 10px;
+            width: 50px;
+            height: 50px;
+            padding-left: 10px;
+            background-color: var(--color-std-bg-4);
             &:hover {
-                color:                   var(--color-sig-fg-3);
-                background-color:        var(--color-sig-bg-3);
-                border-top:    1px solid var(--color-sig-bg-5);
-                border-left:   1px solid var(--color-sig-bg-5);
-                border-right:  1px solid var(--color-sig-bg-1);
-                border-bottom: 1px solid var(--color-sig-bg-1);
+                background-color: var(--color-sig-bg-4);
             }
-            &.active {
-                color:                   var(--color-acc-fg-3);
-                background-color:        var(--color-acc-bg-3);
-                border-top:    1px solid var(--color-acc-bg-5);
-                border-left:   1px solid var(--color-acc-bg-5);
-                border-right:  1px solid var(--color-acc-bg-1);
-                border-bottom: 1px solid var(--color-acc-bg-1);
-            }
-            &.disabled {
-                color: var(--color-std-fg-1);
-                &:hover {
-                    background-color:        var(--color-std-bg-4);
-                    border-top:    1px solid var(--color-std-bg-5);
-                    border-left:   1px solid var(--color-std-bg-5);
-                    border-right:  1px solid var(--color-std-bg-1);
-                    border-bottom: 1px solid var(--color-std-bg-1);
-                }
+            .icon {
+                margin-top: 5px;
+                font-size: 24pt;
             }
         }
-    }
-
-    /*  multi-select/drop-down field  */
-    .multiselect {
-        background-color: inherit;
-    }
-    .multiselect__tags {
-        color:            var(--color-std-fg-3);
-        background-color: var(--color-std-bg-4);
-        border-top:    1px solid var(--color-std-bg-5);
-        border-left:   1px solid var(--color-std-bg-5);
-        border-right:  1px solid var(--color-std-bg-1);
-        border-bottom: 1px solid var(--color-std-bg-1);
-        font-size: 12pt;
-        .multiselect__placeholder {
-            color: var(--color-std-fg-1);
-            font-size: 11pt;
-        }
-        &:hover {
-            color:            var(--color-sig-fg-3);
-            background-color: var(--color-sig-bg-4);
-            border-top:    1px solid var(--color-sig-bg-5);
-            border-left:   1px solid var(--color-sig-bg-5);
-            border-right:  1px solid var(--color-sig-bg-1);
-            border-bottom: 1px solid var(--color-sig-bg-1);
-            .multiselect__placeholder {
-                color: var(--color-sig-fg-1);
-            }
-        }
-    }
-    .multiselect__content-wrapper {
-        color:            var(--color-std-fg-3);
-        background-color: var(--color-std-bg-4);
-        border-top:    1px solid var(--color-std-bg-5);
-        border-left:   1px solid var(--color-std-bg-5);
-        border-right:  1px solid var(--color-std-bg-1);
-        border-bottom: 1px solid var(--color-std-bg-1);
-        font-size: 12pt;
-    }
-    .multiselect__single {
-        color:            var(--color-std-fg-3);
-        background-color: inherit;
-        border: 0px;
-        font-size: 12pt;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-    }
-    .multiselect__tags {
-        &:hover {
-            .multiselect__single {
-                color: var(--color-sig-fg-3);
-            }
-        }
-    }
-    .multiselect__option {
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-    }
-    .multiselect__option::after {
-        display: none;
-    }
-    .multiselect__option--highlight {
-        color:            var(--color-sig-fg-3);
-        background-color: var(--color-sig-bg-4);
-        border-top:    1px solid var(--color-sig-bg-5);
-        border-left:   1px solid var(--color-sig-bg-5);
-        border-right:  1px solid var(--color-sig-bg-1);
-        border-bottom: 1px solid var(--color-sig-bg-1);
-    }
-    .multiselect__option--selected {
-        color:            var(--color-acc-fg-3);
-        background-color: var(--color-acc-bg-4);
-        border-top:    1px solid var(--color-acc-bg-5);
-        border-left:   1px solid var(--color-acc-bg-5);
-        border-right:  1px solid var(--color-acc-bg-1);
-        border-bottom: 1px solid var(--color-acc-bg-1);
-        font-size: 12pt;
-        font-weight: normal;
     }
 }
 </style>
@@ -463,31 +257,15 @@ module.exports = {
 
     /*  component static properties  */
     props: {
-        personPortrait:       { type: String, default: "" },
-        personName:           { type: String, default: "" },
         liveRelayServer:      { type: String, default: "" },
-        liveAccessToken:      { type: String, default: "" },
-        liveStreamBuffering:  { type: Number, default: 2000 },
-        audioInputDevice:     { type: String, default: "" },
-        audioOutputDevice:    { type: String, default: "" }
+        liveAccessToken:      { type: String, default: "" }
     },
 
     /*  component variable properties  */
     data: function () {
         return {
-            intPersonPortrait:       this.personPortrait,
-            intPersonName:           this.personName,
             intLiveRelayServer:      this.liveRelayServer,
             intLiveAccessToken:      this.liveAccessToken,
-            intLiveStreamBuffering:  this.liveStreamBuffering,
-            intAudioInputDevice:     null,
-            intAudioOutputDevice:    null,
-            audioInputDevices:       [],
-            audioOutputDevices:      [],
-            audioInputTestActive:    false,
-            audioOutputTestActive:   false,
-            audioBlob:               null,
-            audioBlobChunks:         [],
             allowConnect:            true,
             logo:                    ui.logo,
             version:                 ui.pkg.version,
@@ -502,13 +280,8 @@ module.exports = {
 
     /*  component property observation  */
     watch: {
-        intPersonPortrait:       function (v) { this.$emit("update:person-portrait", v) },
-        intPersonName:           function (v) { this.$emit("update:person-name", v) },
         intLiveRelayServer:      function (v) { this.$emit("update:live-relay-server", v) },
-        intLiveAccessToken:      function (v) { this.$emit("update:live-access-token", v) },
-        intLiveStreamBuffering:  function (v) { this.$emit("update:live-stream-buffering", v) },
-        intAudioInputDevice:     function (v) { this.$emit("update:audio-input-device",  this.deviceObj2Id(v)) },
-        intAudioOutputDevice:    function (v) { this.$emit("update:audio-output-device", this.deviceObj2Id(v)) }
+        intLiveAccessToken:      function (v) { this.$emit("update:live-access-token", v) }
     },
 
     /*  component sub-components  */
@@ -518,6 +291,11 @@ module.exports = {
 
     /*  component methods  */
     methods: {
+        /*  handle settings  */
+        settings () {
+            this.$emit("settings")
+        },
+
         /*  handle login  */
         login () {
             /*  prevent hammering connect button  */
@@ -528,113 +306,7 @@ module.exports = {
 
             /*  raise login event  */
             this.$emit("login")
-        },
-
-        /*  audio device handling  */
-        deviceId2Obj (id, list) {
-            if (id === "")
-                return null
-            const x = list.find((device) => device.id === id)
-            return x !== undefined ? x : null
-        },
-        deviceObj2Id (obj) {
-            if (obj === null)
-                return ""
-            return obj.id
-        },
-        deviceUpdate () {
-            if (!ui.devices)
-                return
-            this.audioInputDevices = ui.devices
-                .filter((device) => device.kind === "audioinput")
-                .map((device) => ({ id: device.deviceId, name: device.label }))
-            this.audioOutputDevices = ui.devices
-                .filter((device) => device.kind === "audiooutput")
-                .map((device) => ({ id: device.deviceId, name: device.label }))
-            if (this.intAudioInputDevice === null)
-                this.intAudioInputDevice = this.deviceId2Obj(
-                    this.audioInputDevice, this.audioInputDevices)
-            else
-                this.intAudioInputDevice = this.deviceId2Obj(
-                    this.deviceObj2Id(this.intAudioInputDevice), this.audioInputDevices)
-            if (this.intAudioOutputDevice === null)
-                this.intAudioOutputDevice = this.deviceId2Obj(
-                    this.audioOutputDevice, this.audioOutputDevices)
-            else
-                this.intAudioOutputDevice = this.deviceId2Obj(
-                    this.deviceObj2Id(this.intAudioOutputDevice), this.audioOutputDevices)
-        },
-
-        /*  audio input device test-driving  */
-        async audioInputTest () {
-            if (this.intAudioInputDevice === null)
-                return
-            this.audioInputTestActive = !this.audioInputTestActive
-            if (this.audioInputTestActive) {
-                /*  start recording  */
-                try {
-                    const stream = await navigator.mediaDevices.getUserMedia({
-                        audio: { deviceId: this.intAudioInputDevice.id },
-                        video: false
-                    })
-                    this.recorder = new MediaRecorder(stream, {
-                        mimeType: "audio/webm; codecs=\"opus\"",
-                        audioBitsPerSecond: 128000
-                    })
-                }
-                catch (err) {
-                    ui.log.error(`ui: audio input test: error: ${err}`)
-                    this.audioInputTestActive = false
-                    return
-                }
-                this.audioBlob = null
-                this.audioBlobChunks = []
-                this.recorder.addEventListener("dataavailable", (event) => {
-                    this.audioBlobChunks.push(event.data)
-                })
-                this.recorder.start()
-            }
-            else {
-                /*  stop recording  */
-                this.recorder.addEventListener("stop", (event) => {
-                    this.audioBlob = new Blob(this.audioBlobChunks,
-                        { "type" : "audio/webm; codecs=\"opus\"" })
-                })
-                this.recorder.stop()
-            }
-        },
-
-        /*  audio output device test-driving  */
-        audioOutputTest () {
-            if (this.intAudioOutputDevice === null)
-                return
-            if (this.audioBlob === null)
-                return
-            this.audioOutputTestActive = !this.audioOutputTestActive
-            if (this.audioOutputTestActive) {
-                /*  play recording  */
-                this.audioElement = new Audio()
-                this.audioElement.setSinkId(this.intAudioOutputDevice.id)
-                this.audioElement.src = URL.createObjectURL(this.audioBlob)
-                this.audioElement.addEventListener("paused", (event) => {
-                    this.audioOutputTestActive = false
-                })
-                this.audioElement.addEventListener("ended", (event) => {
-                    this.audioOutputTestActive = false
-                })
-                this.audioElement.play()
-            }
-            else {
-                /*  stop recording  */
-                this.audioElement.pause()
-            }
         }
-    },
-
-    /*  component creation hook  */
-    created () {
-        /*  update audio devices (initially)  */
-        this.deviceUpdate()
     },
 
     /*  component DOM mounting hook  */
@@ -646,11 +318,6 @@ module.exports = {
             setTimeout(() => {
                 this.error = ""
             }, 4 * 1000)
-        })
-
-        /*  update audio devices (subsequently)  */
-        this.$on("updated-devices", () => {
-            this.deviceUpdate()
         })
 
         /*  react on deep-link scenario  */

@@ -143,6 +143,7 @@ const electronLog = require("electron-log")
 
     /*  pass-through events from renderer to main thread  */
     let events = [
+        "save-settings",
         "stream-buffering",
         "minimize", "maximize", "fullscreen",
         "resize", "set-size", "quit",
