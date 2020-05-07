@@ -44,19 +44,19 @@
             <div class="text">
                 <div v-show="state === 'started'">
                     Video-Stream Started<br/>
-                    (awaiting to receive stream data)
+                    <div class="sub">(awaiting to receive stream data)</div>
                 </div>
                 <div v-show="state === 'stalled'">
                     Video-Stream Stalled<br/>
-                    (awaiting to receive stream data again)
+                    <div class="sub">(awaiting to receive stream data again)</div>
                 </div>
                 <div v-show="state === 'stopped'">
                     Video-Stream Stopped<br/>
-                    (awaiting internal shutdown)
+                    <div class="sub">(awaiting internal shutdown)</div>
                 </div>
                 <div v-show="state === 'error'">
                     Video-Stream Failed<br/>
-                    (awaiting internal recovery)
+                    <div class="sub">(awaiting internal recovery)</div>
                 </div>
             </div>
         </div>
@@ -106,6 +106,9 @@
         .text {
             color: var(--color-std-fg-3);
             font-size: 16pt;
+            .sub {
+                font-weight: 200;
+            }
         }
     }
 }
