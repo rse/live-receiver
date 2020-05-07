@@ -143,6 +143,9 @@
         .logo {
             width: 100px;
         }
+        .version {
+            font-weight: 200;
+        }
     }
     .logo-container {
         perspective: 0px;
