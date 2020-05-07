@@ -223,11 +223,11 @@ module.exports = class EventStream extends EventEmitter {
 
     /*  support RPC-style communication  */
     register (name, callback) {
-        let method = `stream/${this.options.channel}/sender/${name}`
+        const method = `stream/${this.options.channel}/sender/${name}`
         return this.rpc.register(method, callback)
     }
     call (name, ...params) {
-        let method = `stream/${this.options.channel}/sender/${name}`
+        const method = `stream/${this.options.channel}/sender/${name}`
         return this.rpc.call(method, ...params)
     }
 }
