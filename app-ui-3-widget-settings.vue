@@ -244,7 +244,7 @@
             position: relative;
             top: -2px;
         }
-        &:focus {
+        &:hover, &:focus {
             border: 0;
             outline: none;
             color:                   var(--color-sig-fg-5);

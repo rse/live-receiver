@@ -593,7 +593,7 @@
                     position: relative;
                     top: -4px;
                 }
-                &:focus {
+                &:hover, &:focus {
                     border: 0;
                     outline: none;
                     color:                   var(--color-sig-fg-5);
