@@ -185,7 +185,7 @@
 
             <!-- audio play -->
             <div class="box button audio-play" v-on:click="audioPlay"
-                v-bind:class="{ disabled: inLogin || audioInputDevice === '' || audioBlob === null,
+                v-bind:class="{ disabled: inLogin || audioOutputDevice === '' || audioBlob === null,
                     active: audioPlaying }">
                 <i class="icon fa fa-play-circle"></i>
                 <span class="title">Play Message</span>
@@ -794,10 +794,8 @@ module.exports = {
                 )
             }
             if (this.personPortrait      === "") { missingSettings("Personal Portrait");      return }
-            if (this.personPortrait      === "") { missingSettings("Personal Name");          return }
+            if (this.personName          === "") { missingSettings("Personal Name");          return }
             if (this.liveStreamBuffering === 0)  { missingSettings("Video Stream Buffering"); return }
-            if (this.audioInputDevice    === "") { missingSettings("Audio Input Device");     return }
-            if (this.audioOutputDevice   === "") { missingSettings("Audio Output Device");    return }
             this.$emit("login", {
                 liveRelayServer:      this.liveRelayServer,
                 liveAccessToken:      this.liveAccessToken
@@ -866,6 +864,8 @@ module.exports = {
 
         /*  audio recording handling  */
         async audioRecord () {
+            if (this.inLogin || this.audioInputDevice === "")
+                return
             if (!this.audioRecording) {
                 /*  start recording  */
                 ui.soundfx.play("chime3")
@@ -914,6 +914,8 @@ module.exports = {
             }
         },
         audioPlay () {
+            if (this.inLogin || this.audioOutputDevice === "")
+                return
             if (this.audioBlob === null)
                 return
             this.audioPlaying = !this.audioPlaying

@@ -148,7 +148,7 @@ module.exports = {
                 this.ve.muted = v
         },
         intDevice: function (v) {
-            if (this.ve !== null)
+            if (this.ve !== null && v !== "")
                 this.ve.setSinkId(v)
         }
     },
