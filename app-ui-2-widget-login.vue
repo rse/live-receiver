@@ -75,7 +75,9 @@
 
         <!-- Logo & GDPR Notice -->
         <div class="col-2 notice">
-            <img v-bind:src="logo" class="logo" alt="LiVE"/>
+            <div ref="logo" class="logo-container">
+                <img v-bind:src="logo" class="logo" alt="LiVE"/>
+            </div>
             <div class="version">Receiver {{ version }}</div>
         </div>
         <div class="footnote notice">
@@ -143,10 +145,12 @@
         }
     }
     .logo-container {
-        margin-left: 100px;
-        margin-bottom: 20px;
+        perspective: 0px;
+        width: 100px;
         .logo {
-            height: 50px;
+            transform-origin: 50% 50%;
+            transform-style:  preserve-3d;
+            width: 100px;
         }
     }
 
@@ -281,8 +285,8 @@ module.exports = {
 
     /*  component property observation  */
     watch: {
-        intLiveRelayServer:      function (v) { this.$emit("update:live-relay-server", v) },
-        intLiveAccessToken:      function (v) { this.$emit("update:live-access-token", v) }
+        intLiveRelayServer: function (v) { this.$emit("update:live-relay-server", v) },
+        intLiveAccessToken: function (v) { this.$emit("update:live-access-token", v) }
     },
 
     /*  component sub-components  */
@@ -326,6 +330,24 @@ module.exports = {
             this.intLiveRelayServer = liveRelayServer
             this.intLiveAccessToken = liveAccessToken
             this.$refs.login.focus()
+        })
+
+        /*  animate logo  */
+        let animation = anime({
+            targets:  this.$refs.logo,
+            duration: 4 * 1000,
+            easing:   "easeInOutQuad",
+            autoplay: false,
+            loop:     true,
+            delay:    10 * 1000,
+            rotateY:  [ 0, 360 ]
+        })
+        animation.play()
+        this.$on("enable", () => {
+            animation.play()
+        })
+        this.$on("disable", () => {
+            animation.pause()
         })
     }
 }

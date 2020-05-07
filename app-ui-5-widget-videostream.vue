@@ -173,7 +173,7 @@ module.exports = {
             this.intDevice = device
         })
 
-        /*  animate the two icons  */
+        /*  animate the icon  */
         anime({
             targets:  this.$refs.overlayIcon,
             duration: 5000,

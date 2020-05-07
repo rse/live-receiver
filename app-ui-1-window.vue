@@ -1009,10 +1009,14 @@ module.exports = {
             this.$refs.login.$emit("error", error)
         })
         this.$on("state", (state) => {
-            if (state === "login")
+            if (state === "login") {
                 this.inLogin = true
-            else if (state === "video")
+                this.$refs.login.$emit("enable")
+            }
+            else if (state === "video") {
                 this.inLogin = false
+                this.$refs.login.$emit("disable")
+            }
         })
         this.$on("deep-link", (credentials) => {
             this.liveRelayServer = credentials.liveRelayServer
