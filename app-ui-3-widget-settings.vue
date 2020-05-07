@@ -30,7 +30,7 @@
         <div class="col-2 notice">
         </div>
         <div class="title">
-            Your Settings
+            Your LiVE Receiver Settings
         </div>
 
         <!-- Your Portrait -->
@@ -190,8 +190,8 @@
     }
     .title {
         margin-bottom: 10px;
-        font-size: 20pt;
-        font-weight: bold;
+        font-size: 18pt;
+        font-weight: 200;
     }
     .notice {
         margin-top: 6px;
