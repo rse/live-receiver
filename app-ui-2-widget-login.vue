@@ -96,7 +96,7 @@
             the first time, please ensure that you have configured your personal name
             and local audio devices in the user settings correctly. Please open the
             <b>Settings</b> dialog with the button on the left side or in the top-left
-            corner for this.
+            corner of the window for this.
         </div>
     </div>
 </template>
