@@ -35,7 +35,7 @@
 
         <!-- LiVE Relay Server -->
         <i class="icon fa fa-globe"></i>
-        <div class="label">LiVE Relay Server (FQDN)</div>
+        <div class="label">LiVE Relay Server</div>
         <input
             ref="liveRelayServer"
             type="text"
@@ -111,7 +111,7 @@
     padding: 20px;
     border-radius: 5px;
     display: grid;
-    grid-template-columns: 30px 200px 300px;
+    grid-template-columns: 30px 160px 300px;
     row-gap: 4px;
     font-size: 12pt;
 
