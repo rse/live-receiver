@@ -119,6 +119,7 @@
     .portrait-col.portrait {
         width:  calc(150px - 20px);
         height: calc(150px - 20px);
+        border: 10px;
         .border {
             width: 130px;
             height: 130px;
