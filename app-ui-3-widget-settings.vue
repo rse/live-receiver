@@ -36,8 +36,9 @@
         <!-- Your Portrait -->
         <i class="icon fa fa-portrait"></i>
         <div class="label">Your Portrait <span class="footnote">*</span></div>
-        <portrait ref="personPortrait"
-                v-model="intPersonPortrait"
+        <portrait
+            ref="personPortrait"
+            v-model="intPersonPortrait"
         ></portrait>
 
         <!-- Your Name -->
