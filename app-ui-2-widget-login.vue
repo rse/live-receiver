@@ -81,9 +81,9 @@
         <div class="footnote notice">
             Please enter the <b>LiVE Relay Server</b> Fully Qualified
             Domain Name (FQDN) like <tt>live.example.com</tt>) and
-            the <b>LiVE Access Token</b> like <tt>example-XXXX-XXXX</tt>) you received.
+            the <b>LiVE Access Token</b>, like <tt>example-XXXX-XXXX</tt>, you received.
             Alternatively, you can deep-link into this dialog of <b>LiVE Receiver</b>
-            through an external URL like <tt>live://live.example.com/example-XXXX-XXXX</tt>.
+            through an external URL, like <tt>live://live.example.com/example-XXXX-XXXX</tt>.
         </div>
 
         <div class="col-2 settings">
