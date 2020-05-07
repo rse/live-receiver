@@ -403,6 +403,26 @@
     .slider {
         width: 100px;
         position: relative;
+        &:hover {
+            background-color:        var(--color-sig-bg-3);
+            border-top:    1px solid var(--color-sig-bg-5);
+            border-left:   1px solid var(--color-sig-bg-5);
+            border-right:  1px solid var(--color-sig-bg-1);
+            border-bottom: 1px solid var(--color-sig-bg-1);
+            .icon  { color:          var(--color-sig-fg-3); }
+            .word  { color:          var(--color-sig-fg-3); }
+            .title { color:          var(--color-sig-fg-1); }
+        }
+        &:hover.disabled {
+            background-color:        var(--color-std-bg-3);
+            border-top:    1px solid var(--color-std-bg-5);
+            border-left:   1px solid var(--color-std-bg-5);
+            border-right:  1px solid var(--color-std-bg-1);
+            border-bottom: 1px solid var(--color-std-bg-1);
+            .icon  { color:          var(--color-std-fg-1); }
+            .word  { color:          var(--color-std-fg-1); }
+            .title { color:          var(--color-std-fg-1); }
+        }
         input[type="range"] {
             position: absolute;
             width: calc(100% - 8px);
@@ -496,6 +516,30 @@
                     border-left:   1px solid var(--color-acc-bg-5);
                     border-right:  1px solid var(--color-acc-bg-3);
                     border-bottom: 1px solid var(--color-acc-bg-3);
+                }
+            }
+        }
+        &:hover {
+            input[type="range"] {
+                background-color: var(--color-sig-bg-3);
+                &::-webkit-slider-runnable-track {
+                    background-color: var(--color-sig-bg-3);
+                    border-top:    1px solid var(--color-sig-bg-1);
+                    border-left:   1px solid var(--color-sig-bg-1);
+                    border-right:  1px solid var(--color-sig-bg-5);
+                    border-bottom: 1px solid var(--color-sig-bg-5);
+                }
+            }
+            &.disabled {
+                input[type="range"] {
+                    background-color: var(--color-std-bg-3);
+                    &::-webkit-slider-runnable-track {
+                        background-color: var(--color-std-bg-3);
+                        border-top:    1px solid var(--color-std-bg-1);
+                        border-left:   1px solid var(--color-std-bg-1);
+                        border-right:  1px solid var(--color-std-bg-5);
+                        border-bottom: 1px solid var(--color-std-bg-5);
+                    }
                 }
             }
         }
