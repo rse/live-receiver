@@ -79,11 +79,11 @@
             <div class="version">Receiver {{ version }}</div>
         </div>
         <div class="footnote notice">
-            Please enter the <b>LiVE Relay Server</b> Fully Qualified
-            Domain Name (FQDN) like <tt>live.example.com</tt>) and
-            the <b>LiVE Access Token</b>, like <tt>example-XXXX-XXXX</tt>, you received.
+            Please enter the received <b>LiVE Relay Server</b> Fully Qualified
+            Domain Name (FQDN), like <tt>live.example.com</tt>, and
+            the <b>LiVE Access Token</b>, like <tt>example-XXXX-XXXX</tt>.
             Alternatively, you can deep-link into this dialog of <b>LiVE Receiver</b>
-            through an external URL, like <tt>live://live.example.com/example-XXXX-XXXX</tt>.
+            through an external URL like <tt>live://live.example.com/example-XXXX-XXXX</tt>.
         </div>
 
         <div class="col-2 settings">
@@ -239,6 +239,7 @@
             height: 50px;
             padding-left: 10px;
             background-color: var(--color-std-bg-4);
+            border-radius: 5px;
             &:hover {
                 background-color: var(--color-sig-bg-4);
             }
