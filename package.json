@@ -1,6 +1,6 @@
 {
     "name":                   "LiVE-Receiver",
-    "version":                "0.9.4",
+    "version":                "0.9.5",
     "description":            "Live Video Experience (LiVE) Receiver",
     "keywords":               [ "live", "video", "experience", "receiver" ],
     "private":                true,
