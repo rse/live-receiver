@@ -179,16 +179,20 @@
                 v-on:mouseover="recordTextShow = true"
                 v-on:mouseleave="recordTextShow = false"
                 v-bind:class="{ disabled: inLogin || audioInputDevice === '', active: audioRecording }">
-                <i class="icon fa fa-dot-circle"></i>
-                <span class="title">Record Message</span>
+                <span v-show="!audioRecording"><i class="icon fa fa-dot-circle"></i></span>
+                <span v-show="audioRecording"><i class="icon fa fa-stop-circle"></i></span>
+                <span v-show="!audioRecording" class="title">Record Message</span>
+                <span v-show="audioRecording" class="title">Stop Recording</span>
             </div>
 
             <!-- audio play -->
             <div class="box button audio-play" v-on:click="audioPlay"
                 v-bind:class="{ disabled: inLogin || audioOutputDevice === '' || audioBlob === null,
                     active: audioPlaying }">
-                <i class="icon fa fa-play-circle"></i>
-                <span class="title">Play Message</span>
+                <span v-show="!audioPlaying"><i class="icon fa fa-play-circle"></i></span>
+                <span v-show="audioPlaying"><i class="icon fa fa-stop-circle"></i></span>
+                <span v-show="!audioPlaying" class="title">Play Message</span>
+                <span v-show="audioPlaying" class="title">Stop Playing</span>
             </div>
 
             <!-- message icon -->
