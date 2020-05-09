@@ -25,7 +25,7 @@
 -->
 
 <template>
-    <div v-if="loaded" v-bind:style="style" class="win">
+    <div ref="win" v-if="loaded" v-bind:style="style" class="win">
         <!-- ---- HEADER ---- -->
         <div ref="header" class="header">
             <!-- disconnect -->
@@ -78,11 +78,18 @@
                 <span class="title">Move Window</span>
             </div>
 
+            <!-- smallest size -->
+            <div class="box button fit" v-on:click="smallestSize"
+                v-bind:class="{ disabled: isWinSmallest || fullscreened }">
+                <i class="icon fa fa-compress"></i>
+                <span class="title">Smallest Size</span>
+            </div>
+
             <!-- source size -->
             <div class="box button fit" v-on:click="sourceSize"
                 v-bind:class="{ disabled: inLogin || fullscreened }">
                 <i class="icon fa fa-expand"></i>
-                <span class="title">Fit Video</span>
+                <span class="title">Native Size</span>
             </div>
 
             <!-- minimize -->
@@ -265,7 +272,7 @@
                     type="range"
                     min="1" max="5" step="1"
                     v-model.number="challenge"/>
-                <span class="title">Show Challenge</span>
+                <span class="title">My Challenge</span>
             </div>
 
             <!-- mood -->
@@ -287,7 +294,7 @@
                     type="range"
                     min="1" max="5" step="1"
                     v-model.number="mood"/>
-                <span class="title">Show Mood</span>
+                <span class="title">My Mood</span>
             </div>
         </div>
     </div>
@@ -698,7 +705,8 @@ module.exports = {
         bandwidthText:        "",
         videoSize:            { w: 0, h: 0 },
         timer1:               null,
-        timer2:               null
+        timer2:               null,
+        isWinSmallest:        false
     }),
 
     /*  component computed properties  */
@@ -880,10 +888,15 @@ module.exports = {
             this.$emit("fullscreen")
             this.fullscreened = !this.fullscreened
         },
+        smallestSize () {
+            if (this.fullscreened)
+                return
+            this.$emit("set-size", { w: 1000, h: 650 })
+        },
         sourceSize () {
             if (this.fullscreened || this.inLogin)
                 return
-            const res = { w: 1920, h: 1080 } // hardcoded
+            const res = { w: 1920, h: 1080 } /* FIXME: hardcoded */
             let w = res.w
             let h = res.h
             h += this.$refs.header.clientHeight
@@ -912,6 +925,11 @@ module.exports = {
             }
             this.videoSize.w = dw
             this.videoSize.h = dh
+            if (this.$refs.win) {
+                const winWidth  = this.$refs.win.clientWidth
+                const winHeight = this.$refs.win.clientHeight
+                this.isWinSmallest = winWidth === 1000 && winHeight === 650
+            }
         },
 
         /*  audio recording handling  */

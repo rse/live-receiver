@@ -224,21 +224,6 @@ const app = electron.app
             app.quit()
         })
 
-        /*  track application window changes  */
-        const updateBounds = () => {
-            const bounds = app.win.getBounds()
-            app.x = bounds.x
-            app.y = bounds.y
-            app.w = bounds.width
-            app.h = bounds.height
-            settings.set("window-x",      app.x)
-            settings.set("window-y",      app.y)
-            settings.set("window-width",  app.w)
-            settings.set("window-height", app.h)
-        }
-        app.win.on("resize", throttle(1000, updateBounds))
-        app.win.on("move",   throttle(1000, updateBounds))
-
         /*  handle window minimize functionality  */
         let minimized = false
         app.win.on("minimize", () => {
@@ -283,6 +268,25 @@ const app = electron.app
             app.win.setFullScreen(!fullscreened)
         })
 
+        /*  track application window changes  */
+        const updateBounds = () => {
+            const bounds = app.win.getBounds()
+            app.x = bounds.x
+            app.y = bounds.y
+            app.w = bounds.width
+            app.h = bounds.height
+            settings.set("window-x",      app.x)
+            settings.set("window-y",      app.y)
+            settings.set("window-width",  app.w)
+            settings.set("window-height", app.h)
+        }
+        app.win.on("resize", throttle(1000, () => {
+            updateBounds()
+        }))
+        app.win.on("move",   throttle(1000, () => {
+            updateBounds()
+        }))
+
         /*  handle window resizing functionality  */
         app.ipc.handle("resize", (event, diff) => {
             app.w += diff.x
@@ -290,6 +294,9 @@ const app = electron.app
             app.win.setSize(app.w, app.h)
         })
         app.ipc.handle("set-size", (event, size) => {
+            maximized   = false
+            minimized   = false
+            fullscreend = false
             app.w = size.w
             app.h = size.h
             app.win.setSize(app.w, app.h)
