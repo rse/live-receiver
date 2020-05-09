@@ -725,13 +725,16 @@ module.exports = {
                 else if (this.recordState === 0 && this.audioBlob === null)
                     html = "Press to record your<br/>audio message."
                 else if (this.recordState === 1)
-                    html = "Please wait &mdash; recording your<br/>message starts in <b>3</b> seconds..."
+                    html = "PLEASE WAIT &mdash; audio output soon will be muted<br/>" +
+                        "and recording your message starts in <b>3</b> seconds..."
                 else if (this.recordState === 2)
-                    html = "Please wait &mdash; recording your<br/>message starts in <b>2</b> seconds..."
+                    html = "PLEASE WAIT &mdash; audio output soon will be muted<br/>" +
+                        "and recording your message starts in <b>2</b> seconds..."
                 else if (this.recordState === 3)
-                    html = "Please wait &mdash; recording your<br/>message starts in <b>1</b> second..."
+                    html = "PLEASE WAIT &mdash; audio output soon will be muted<br/>" +
+                        "and recording your message starts in <b>1</b> second..."
                 else if (this.recordState === 4)
-                    html = "Now speak! &mdash; press again<br/>to stop your message recording."
+                    html = "NOW PLEASE SPEAK! &mdash; Press again<br/>to stop your message recording."
             }
             else {
                 if (this.audioPlaying)
