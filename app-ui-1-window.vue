@@ -61,15 +61,11 @@
                 <span class="title">Audio Volume</span>
             </div>
 
-            <!-- logo -->
-            <div class="box logo">
-                <img v-bind:src="logo" alt="LiVE"/>
-                <span class="title">Receiver</span>
-            </div>
-
-
             <!-- move window -->
             <div class="box move">
+                <div class="logo">
+                    <img v-bind:src="logo" alt="LiVE"/>
+                </div>
                 <span class="grab grab-1"></span>
                 <span class="grab grab-2"></span>
                 <span class="grab grab-3"></span>
@@ -571,15 +567,6 @@
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
-        .logo {
-            position: relative;
-            img {
-                position: absolute;
-                top: 6px;
-                left: 14px;
-                width: 55%;
-            }
-        }
     }
 
     /*  move window  */
@@ -590,7 +577,15 @@
         padding-top: 6px;
         height: calc(100% - 6px);
         position: relative;
-        .name {
+        .logo {
+            position: absolute;
+            left: 0;
+            top: 6px;
+            width: 100%;
+            text-align: center;
+            img {
+                height: 13px;
+            }
         }
         .grab {
             height: 1px;

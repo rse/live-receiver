@@ -98,8 +98,7 @@
             At first use of <b>LiVE Receiver</b>, or at least before you are connecting
             the first time, please ensure that you have configured your personal name
             and local audio devices in the user settings correctly. Please open the
-            <b>Settings</b> dialog with the button on the left side or in the top-left
-            corner of the window for this.
+            <b>Settings</b> dialog with the button on the left side for this.
         </div>
     </div>
 </template>
