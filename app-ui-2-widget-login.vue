@@ -242,8 +242,8 @@
     .settings {
         .button {
             margin-top: 10px;
-            width: 50px;
-            height: 50px;
+            width: 55px;
+            height: 55px;
             padding-left: 10px;
             background-color: var(--color-std-bg-4);
             border-radius: 5px;
@@ -251,7 +251,7 @@
                 background-color: var(--color-sig-bg-4);
             }
             .icon {
-                margin-top: 0px;
+                margin-top: 4px;
                 font-size: 24pt;
             }
         }
