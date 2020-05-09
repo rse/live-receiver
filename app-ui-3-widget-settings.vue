@@ -424,24 +424,37 @@ module.exports = {
         deviceUpdate () {
             if (!ui.devices)
                 return
+
+            /*  filter audio input devices  */
             this.audioInputDevices = ui.devices
                 .filter((device) => device.kind === "audioinput")
                 .map((device) => ({ id: device.deviceId, name: device.label }))
+            console.log(ui.devices)
+
+            /*  filter audio output devices  */
             this.audioOutputDevices = ui.devices
                 .filter((device) => device.kind === "audiooutput")
                 .map((device) => ({ id: device.deviceId, name: device.label }))
-            if (this.intAudioInputDevice === null)
-                this.intAudioInputDevice = this.deviceId2Obj(
-                    this.audioInputDevice, this.audioInputDevices)
+
+            /*  (re)select audio input devices  */
+            let deviceId = ""
+            if (this.intAudioInputDevice !== null)
+                deviceId = this.deviceObj2Id(this.intAudioInputDevice)
+            else if (this.audioInputDevice !== "")
+                deviceId = this.audioInputDevice
             else
-                this.intAudioInputDevice = this.deviceId2Obj(
-                    this.deviceObj2Id(this.intAudioInputDevice), this.audioInputDevices)
-            if (this.intAudioOutputDevice === null)
-                this.intAudioOutputDevice = this.deviceId2Obj(
-                    this.audioOutputDevice, this.audioOutputDevices)
+                deviceId = "default"
+            this.intAudioInputDevice = this.deviceId2Obj(deviceId, this.audioInputDevices)
+
+            /*  (re)select audio output devices  */
+            deviceId = ""
+            if (this.intAudioOutputDevice !== null)
+                deviceId = this.deviceObj2Id(this.intAudioOutputDevice)
+            else if (this.audioOutputDevice !== "")
+                deviceId = this.audioOutputDevice
             else
-                this.intAudioOutputDevice = this.deviceId2Obj(
-                    this.deviceObj2Id(this.intAudioOutputDevice), this.audioOutputDevices)
+                deviceId = "default"
+            this.intAudioOutputDevice = this.deviceId2Obj(deviceId, this.audioOutputDevices)
         },
 
         /*  audio input device test-driving  */
