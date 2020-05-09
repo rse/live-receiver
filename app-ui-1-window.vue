@@ -270,7 +270,7 @@
                     v-bind:disabled="inLogin"
                     type="range"
                     min="1" max="5" step="1"
-                    v-model="challenge"/>
+                    v-model.number="challenge"/>
                 <span class="title">Show Challenge</span>
             </div>
 
@@ -292,7 +292,7 @@
                     v-bind:disabled="inLogin"
                     type="range"
                     min="1" max="5" step="1"
-                    v-model="mood"/>
+                    v-model.number="mood"/>
                 <span class="title">Show Mood</span>
             </div>
         </div>
@@ -1056,9 +1056,10 @@ module.exports = {
         })
 
         /*  regular feeling refreshing  */
+        this.sendFeeling()
         setInterval(() => {
             this.sendFeeling()
-        }, 10 * 60 * 1000)
+        }, 60 * 1000)
 
         /*  window resize tracking  */
         window.addEventListener("resize", () => this.handleResize())
