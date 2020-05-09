@@ -719,18 +719,26 @@ module.exports = {
         style: ui.vueprop2cssvar(),
         recordText () {
             let html
-            if (this.recordState === 0 && this.audioBlob !== null)
-                html = "Press to record your<br/>audio message again."
-            else if (this.recordState === 0 && this.audioBlob === null)
-                html = "Press to record your<br/>audio message."
-            else if (this.recordState === 1)
-                html = "Please wait &mdash; recording your<br/>message starts in <b>3</b> seconds..."
-            else if (this.recordState === 2)
-                html = "Please wait &mdash; recording your<br/>message starts in <b>2</b> seconds..."
-            else if (this.recordState === 3)
-                html = "Please wait &mdash; recording your<br/>message starts in <b>1</b> second..."
-            else if (this.recordState === 4)
-                html = "Now speak! &mdash; press again<br/>to stop your message recording."
+            if (this.audioBlob === null) {
+                if (this.recordState === 0 && this.audioBlob !== null)
+                    html = "Press to record your<br/>audio message again."
+                else if (this.recordState === 0 && this.audioBlob === null)
+                    html = "Press to record your<br/>audio message."
+                else if (this.recordState === 1)
+                    html = "Please wait &mdash; recording your<br/>message starts in <b>3</b> seconds..."
+                else if (this.recordState === 2)
+                    html = "Please wait &mdash; recording your<br/>message starts in <b>2</b> seconds..."
+                else if (this.recordState === 3)
+                    html = "Please wait &mdash; recording your<br/>message starts in <b>1</b> second..."
+                else if (this.recordState === 4)
+                    html = "Now speak! &mdash; press again<br/>to stop your message recording."
+            }
+            else {
+                if (this.audioPlaying)
+                    html = "Press to stop playing<br/>your audio message."
+                else
+                    html = "Press to play<br/>your audio message."
+            }
             return html
         },
         challengeText () {
