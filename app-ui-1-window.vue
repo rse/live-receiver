@@ -28,19 +28,6 @@
     <div v-if="loaded" v-bind:style="style" class="win">
         <!-- ---- HEADER ---- -->
         <div ref="header" class="header">
-            <!-- logo -->
-            <div class="box logo">
-                <img v-bind:src="logo" alt="LiVE"/>
-                <span class="title">Receiver</span>
-            </div>
-
-            <!-- settings -->
-            <div class="box button settings" v-on:click="settingsOpen"
-                v-bind:class="{ disabled: !inLogin || inSettings }">
-                <i class="icon fa fa-users-cog"></i>
-                <span class="title">Settings</span>
-            </div>
-
             <!-- disconnect -->
             <div class="box button logout" v-on:click="logout"
                 v-bind:class="{ disabled: inLogin || !allowDisconnect }">
@@ -73,6 +60,13 @@
                     v-model="volume"/>
                 <span class="title">Audio Volume</span>
             </div>
+
+            <!-- logo -->
+            <div class="box logo">
+                <img v-bind:src="logo" alt="LiVE"/>
+                <span class="title">Receiver</span>
+            </div>
+
 
             <!-- move window -->
             <div class="box move">
