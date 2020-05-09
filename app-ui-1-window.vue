@@ -613,7 +613,7 @@
             input[type="text"] {
                 width: calc(100% - 20px);
                 height: 100%;
-                font-size: 14pt;
+                font-size: 12pt;
                 border: 0;
                 color:                   var(--color-std-fg-3);
                 background-color:        var(--color-std-bg-3);
