@@ -88,21 +88,21 @@
             <div class="box button fit" v-on:click="sourceSize"
                 v-bind:class="{ disabled: inLogin || fullscreened }">
                 <i class="icon fa fa-expand"></i>
-                <span class="title">Source-Size</span>
+                <span class="title">Fit Video</span>
             </div>
 
             <!-- minimize -->
             <div class="box button minimize" v-on:click="minimize"
                 v-bind:class="{ disabled: fullscreened }">
                 <i class="icon fa fa-window-minimize"></i>
-                <span class="title">Min-Size</span>
+                <span class="title">Minimize</span>
             </div>
 
             <!-- maximize -->
             <div class="box button maximize" v-on:click="maximize"
                 v-bind:class="{ disabled: fullscreened }">
                 <i class="icon fa fa-window-maximize"></i>
-                <span class="title">Max-Size</span>
+                <span class="title">Maximize</span>
             </div>
 
             <!-- fullscreen -->
