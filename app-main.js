@@ -180,7 +180,7 @@ const app = electron.app
         app.win = new electron.BrowserWindow({
             useContentSize: true,
             frame:          false,
-            transparent:    true,
+            transparent:    false,
             show:           false,
             x:              app.x,
             y:              app.y,

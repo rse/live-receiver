@@ -307,7 +307,6 @@
     user-select: none;
     cursor: default;
     background-color: var(--color-std-bg-3);
-    border-radius: 5px;
     color: var(--color-std-fg-3);
     font-family: "TypoPRO Source Sans Pro";
     font-size: 10pt;
