@@ -90,7 +90,7 @@
 
         <div class="col-2 settings">
             <div class="box button" v-on:click="settings">
-                <i class="icon fa fa-users-cog"></i>
+                <i class="icon fa fa-user-cog"></i>
                 <div class="title">Settings</div>
             </div>
         </div>
