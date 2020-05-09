@@ -239,31 +239,51 @@ const app = electron.app
         app.win.on("resize", throttle(1000, updateBounds))
         app.win.on("move",   throttle(1000, updateBounds))
 
-        /*  allow UI command events to control application window  */
+        /*  handle window minimize functionality  */
+        let minimized = false
+        app.win.on("minimize", () => {
+            minimized = true
+        })
+        app.win.on("restore", () => {
+            minimized = false
+        })
         app.ipc.handle("minimize", (event) => {
-            if (app.win.isMinimized()) {
+            if (minimized) {
                 app.win.restore()
                 app.win.focus()
             }
             else
                 app.win.minimize()
         })
+
+        /*  handle window maximize functionality  */
         let maximized = false
+        app.win.on("maximize", () => {
+            maximized = true
+        })
+        app.win.on("unmaximize", () => {
+            maximized = false
+        })
         app.ipc.handle("maximize", (event) => {
-            if (maximized) {
+            if (maximized)
                 app.win.unmaximize()
-                maximized = false
-            }
-            else {
+            else
                 app.win.maximize()
-                maximized = true
-            }
         })
+
+        /*  handle window fullscreen functionality  */
         let fullscreened = false
-        app.ipc.handle("fullscreen", (event) => {
-            fullscreened = !fullscreened
-            app.win.setFullScreen(fullscreened)
+        app.win.on("enter-full-screen", () => {
+            fullscreened = true
         })
+        app.win.on("leave-full-screen", () => {
+            fullscreened = false
+        })
+        app.ipc.handle("fullscreen", (event) => {
+            app.win.setFullScreen(!fullscreened)
+        })
+
+        /*  handle window resizing functionality  */
         app.ipc.handle("resize", (event, diff) => {
             app.w += diff.x
             app.h += diff.y
