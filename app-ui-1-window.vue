@@ -210,10 +210,17 @@
                 <span class="title">Send Messages</span>
             </div>
 
+            <!-- send surprise -->
+            <div class="box button message-send" v-on:click="feedback('surprise')"
+                v-bind:class="{ disabled: inLogin || feedbackDisabled.surprise }">
+                <i class="icon fa fa-surprise"></i>
+                <span class="title">Show Surprise</span>
+            </div>
+
             <!-- send smile -->
             <div class="box button message-send" v-on:click="feedback('smile')"
                 v-bind:class="{ disabled: inLogin || feedbackDisabled.smile }">
-                <i class="icon fa fa-smile"></i>
+                <i class="icon fa fa-grin-wink"></i>
                 <span class="title">Show Smile</span>
             </div>
 
@@ -222,6 +229,13 @@
                 v-bind:class="{ disabled: inLogin || feedbackDisabled.frown }">
                 <i class="icon fa fa-angry"></i>
                 <span class="title">Show Frown</span>
+            </div>
+
+            <!-- send sadness -->
+            <div class="box button message-send" v-on:click="feedback('sadness')"
+                v-bind:class="{ disabled: inLogin || feedbackDisabled.sadness }">
+                <i class="icon fa fa-sad-tear"></i>
+                <span class="title">Show Sadness</span>
             </div>
 
             <!-- challenge -->
@@ -299,7 +313,7 @@
 
     /*  header/footer box  */
     .box {
-        width: 60px;
+        width: 58px;
         height: 100%;
         position: relative;
         background-color:        var(--color-std-bg-3);
@@ -712,7 +726,7 @@ module.exports = {
         timer1:                null,
         timer2:                null,
         isWinSmallest:         false,
-        feedbackDisabled:      { smile: false, frown: false }
+        feedbackDisabled:      { suprise: false, smile: false, frown: false, sadness: false }
     }),
 
     /*  component computed properties  */
