@@ -294,9 +294,9 @@ const app = electron.app
             app.win.setSize(app.w, app.h)
         })
         app.ipc.handle("set-size", (event, size) => {
-            maximized   = false
-            minimized   = false
-            fullscreend = false
+            maximized    = false
+            minimized    = false
+            fullscreened = false
             app.w = size.w
             app.h = size.h
             app.win.setSize(app.w, app.h)
