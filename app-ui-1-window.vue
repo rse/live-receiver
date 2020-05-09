@@ -589,8 +589,8 @@
         }
         .grab {
             height: 1px;
-            width: calc(100% - 40px);
-            margin: 0px 20px 0px 20px;
+            width: calc(100% - 20px);
+            margin: 0px 10px 0px 10px;
             display: block;
             border-top:    1px solid var(--color-std-bg-1);
             border-bottom: 1px solid var(--color-std-bg-5);
@@ -602,8 +602,8 @@
     .header .move {
     }
     .footer .move {
-        width: 150px;
-        max-width: 150px;
+        width: 60px;
+        max-width: 60px;
     }
 
     /*  content area  */
