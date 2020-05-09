@@ -726,7 +726,7 @@ module.exports = {
         timer1:                null,
         timer2:                null,
         isWinSmallest:         false,
-        feedbackDisabled:      { suprise: false, smile: false, frown: false, sadness: false }
+        feedbackDisabled:      { surprise: false, smile: false, frown: false, sadness: false }
     }),
 
     /*  component computed properties  */
