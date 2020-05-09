@@ -429,7 +429,6 @@ module.exports = {
             this.audioInputDevices = ui.devices
                 .filter((device) => device.kind === "audioinput")
                 .map((device) => ({ id: device.deviceId, name: device.label }))
-            console.log(ui.devices)
 
             /*  filter audio output devices  */
             this.audioOutputDevices = ui.devices
