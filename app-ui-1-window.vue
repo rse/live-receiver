@@ -44,7 +44,7 @@
 
             <!-- audio mute -->
             <div class="box button mute" v-on:click="volumeMute = !volumeMute"
-                v-bind:class="{ disabled: inLogin, active: volume === 0 || volumeMute }">
+                v-bind:class="{ disabled: inLogin, active: volumeMute }">
                 <span v-show="volumeMute"><i class="icon fa fa-volume-mute"></i></span>
                 <span v-show="!volumeMute"><i class="icon fa fa-volume-up"></i></span>
                 <span class="title">Audio Mute</span>
@@ -57,7 +57,7 @@
                     class="volume"
                     type="range"
                     min="0" max="100"
-                    v-model="volume"/>
+                    v-model.number="volume"/>
                 <span class="title">Audio Volume</span>
             </div>
 
@@ -758,7 +758,7 @@ module.exports = {
     watch: {
         volume: function (v) {
             this.$refs.videostream.$emit("volume", v)
-            this.volumeMute = (v > 0)
+            this.volumeMute = (v === 0)
         },
         volumeMute: function (v) {
             this.$refs.videostream.$emit("mute", v)
