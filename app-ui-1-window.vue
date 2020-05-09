@@ -155,13 +155,6 @@
 
         <!-- ---- FOOTER ---- -->
         <div ref="footer" class="footer">
-            <!-- audio message icon -->
-            <div class="box message-icon"
-                v-bind:class="{ disabled: inLogin, active: audioBlob !== null }">
-                <i class="icon fa fa-voicemail"></i>
-                <span class="title">Audio Message</span>
-            </div>
-
             <!-- audio record -->
             <div class="box button audio-record" v-on:click="audioRecord"
                 v-tooltip.top-center="{
@@ -175,7 +168,10 @@
                 }"
                 v-on:mouseover="recordTextShow = true"
                 v-on:mouseleave="recordTextShow = false"
-                v-bind:class="{ disabled: inLogin || audioInputDevice === '', active: audioRecording }">
+                v-bind:class="{
+                    disabled: inLogin || audioInputDevice === '',
+                    active: audioRecording || audioBlob !== null
+                }">
                 <span v-show="!audioRecording"><i class="icon fa fa-dot-circle"></i></span>
                 <span v-show="audioRecording"><i class="icon fa fa-stop-circle"></i></span>
                 <span v-show="!audioRecording" class="title">Record Message</span>
@@ -184,22 +180,18 @@
 
             <!-- audio play -->
             <div class="box button audio-play" v-on:click="audioPlay"
-                v-bind:class="{ disabled: inLogin || audioOutputDevice === '' || audioBlob === null,
-                    active: audioPlaying }">
+                v-bind:class="{
+                    disabled: inLogin || audioOutputDevice === '' || audioBlob === null,
+                    active: audioPlaying
+                }">
                 <span v-show="!audioPlaying"><i class="icon fa fa-play-circle"></i></span>
                 <span v-show="audioPlaying"><i class="icon fa fa-stop-circle"></i></span>
                 <span v-show="!audioPlaying" class="title">Play Message</span>
                 <span v-show="audioPlaying" class="title">Stop Playing</span>
             </div>
 
-            <!-- message icon -->
-            <div class="box message-icon" v-bind:class="{ disabled: inLogin, active: message !== '' }">
-                <i class="icon fa fa-comment-dots"></i>
-                <span class="title">Text Message</span>
-            </div>
-
             <!-- enter message -->
-            <div class="box message-text" v-bind:class="{ disabled: inLogin }">
+            <div class="box message-text" v-bind:class="{ disabled: inLogin, active: message !== '' }">
                 <input
                     v-bind:disabled="inLogin"
                     ref="message"
@@ -626,7 +618,7 @@
         overflow: hidden;
         .message-text {
             flex-grow: 1;
-            input {
+            input[type="text"] {
                 width: calc(100% - 20px);
                 height: 100%;
                 font-size: 14pt;
@@ -656,6 +648,31 @@
                     border-bottom: 1px solid var(--color-sig-bg-5);
                     &::placeholder {
                         color:               var(--color-sig-fg-1);
+                    }
+                }
+            }
+            &.active {
+                input[type="text"] {
+                    color:                   var(--color-acc-fg-3);
+                    background-color:        var(--color-acc-bg-3);
+                    border-top:    1px solid var(--color-acc-bg-1);
+                    border-left:   1px solid var(--color-acc-bg-1);
+                    border-right:  1px solid var(--color-acc-bg-5);
+                    border-bottom: 1px solid var(--color-acc-bg-5);
+                }
+            }
+            &.disabled {
+                input[type="text"] {
+                    &::placeholder {
+                        color: var(--color-std-bg-5);
+                    }
+                    &:hover, &:focus {
+                        color:                   var(--color-std-fg-3);
+                        background-color:        var(--color-std-bg-3);
+                        border-top:    1px solid var(--color-std-bg-1);
+                        border-left:   1px solid var(--color-std-bg-1);
+                        border-right:  1px solid var(--color-std-bg-5);
+                        border-bottom: 1px solid var(--color-std-bg-5);
                     }
                 }
             }
