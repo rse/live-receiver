@@ -990,11 +990,29 @@ module.exports = {
                 }
                 this.recordState++
                 try {
+                    /*  get audio stream from audio input device  */
                     const stream = await navigator.mediaDevices.getUserMedia({
                         audio: { deviceId: this.audioInputDevice },
                         video: false
                     })
-                    this.recorder = new MediaRecorder(stream, {
+
+                    /*  create audio graph  */
+                    let ac = new AudioContext()
+                    let src = ac.createMediaStreamSource(stream)
+                    let dst = ac.createMediaStreamDestination()
+
+                    /*  add compressor to audio graph  */
+                    let compressor = ac.createDynamicsCompressor()
+                    compressor.threshold.value = -18
+                    compressor.knee.value      = 40
+                    compressor.ratio.value     = 10
+                    compressor.attack.value    = 0.006
+                    compressor.release.value   = 0.060
+                    src.connect(compressor)
+                    compressor.connect(dst)
+
+                    /*  record the resulting audio stream  */
+                    this.recorder = new MediaRecorder(dst.stream, {
                         mimeType: "audio/webm; codecs=\"opus\"",
                         audioBitsPerSecond: 128000
                     })
