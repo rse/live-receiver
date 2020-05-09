@@ -67,12 +67,14 @@
                 <div class="logo">
                     <img v-bind:src="logo" alt="LiVE"/>
                 </div>
-                <span class="grab grab-1"></span>
-                <span class="grab grab-2"></span>
-                <span class="grab grab-3"></span>
-                <span class="grab grab-4"></span>
-                <span class="grab grab-5"></span>
-                <span class="title">Move Window</span>
+                <div class="grab-container">
+                    <span class="grab grab-1"></span>
+                    <span class="grab grab-2"></span>
+                    <span class="grab grab-3"></span>
+                    <span class="grab grab-4"></span>
+                    <span class="grab grab-5"></span>
+                    <span class="title">Move Window</span>
+                </div>
             </div>
 
             <!-- smallest size -->
@@ -284,11 +286,13 @@
 
             <!-- move window -->
             <div class="box move">
-                <span class="grab grab-1"></span>
-                <span class="grab grab-2"></span>
-                <span class="grab grab-3"></span>
-                <span class="grab grab-4"></span>
-                <span class="grab grab-5"></span>
+                <div class="grab-container">
+                    <span class="grab grab-1"></span>
+                    <span class="grab grab-2"></span>
+                    <span class="grab grab-3"></span>
+                    <span class="grab grab-4"></span>
+                    <span class="grab grab-5"></span>
+                </div>
                 <span class="title">Move Window</span>
             </div>
         </div>
@@ -570,8 +574,6 @@
 
     /*  move window  */
     .move {
-        -webkit-app-region: drag;
-        -webkit-user-select: none;
         flex-grow: 1;
         padding-top: 6px;
         height: calc(100% - 6px);
@@ -586,16 +588,20 @@
                 height: 13px;
             }
         }
-        .grab {
-            height: 1px;
-            width: calc(100% - 20px);
-            margin: 0px 10px 0px 10px;
-            display: block;
-            border-top:    1px solid var(--color-std-bg-1);
-            border-bottom: 1px solid var(--color-std-bg-5);
-        }
-        &:hover {
-            cursor: grab;
+        .grab-container {
+             -webkit-app-region: drag;
+             -webkit-user-select: none;
+            .grab {
+                height: 1px;
+                width: calc(100% - 20px);
+                margin: 0px 10px 0px 10px;
+                display: block;
+                border-top:    1px solid var(--color-std-bg-1);
+                border-bottom: 1px solid var(--color-std-bg-5);
+            }
+            &:hover {
+                cursor: grab;
+            }
         }
     }
     .header .move {
