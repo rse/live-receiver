@@ -46,7 +46,8 @@
             <div class="box button mute" v-on:click="volumeMute = volume === 0 ? volumeMute : !volumeMute"
                 v-bind:class="{ disabled: inLogin || volume === 0, active: volumeMute }">
                 <span v-show="volumeMute"><i class="icon fa fa-volume-mute"></i></span>
-                <span v-show="!volumeMute"><i class="icon fa fa-volume-up"></i></span>
+                <span v-show="!volumeMute && volume < 30"><i class="icon fa fa-volume-down"></i></span>
+                <span v-show="!volumeMute && volume >= 30"><i class="icon fa fa-volume-up"></i></span>
                 <span class="title">Audio Mute</span>
             </div>
 
