@@ -29,7 +29,7 @@
         <!-- title -->
         <div class="col-2 notice">
         </div>
-        <div class="title">
+        <div class="headline">
             Your LiVE Relay Connection
         </div>
 
@@ -91,6 +91,7 @@
         <div class="col-2 settings">
             <div class="box button" v-on:click="settings">
                 <i class="icon fa fa-users-cog"></i>
+                <div class="title">Settings</div>
             </div>
         </div>
         <div class="footnote notice">
@@ -133,7 +134,7 @@
     >.col-3 {
         grid-column-start: 3;
     }
-    .title {
+    .headline {
         margin-bottom: 10px;
         font-size: 18pt;
         font-weight: 200;
@@ -251,7 +252,7 @@
                 background-color: var(--color-sig-bg-4);
             }
             .icon {
-                margin-top: 5px;
+                margin-top: 0px;
                 font-size: 24pt;
             }
         }
