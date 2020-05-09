@@ -694,7 +694,9 @@ module.exports = {
         challengeTextShow:    false,
         bandwidthBytes:       0,
         bandwidthText:        "",
-        videoSize:            { w: 0, h: 0 }
+        videoSize:            { w: 0, h: 0 },
+        timer1:               null,
+        timer2:               null
     }),
 
     /*  component computed properties  */
@@ -838,7 +840,7 @@ module.exports = {
             const missingSettings = (name) => {
                 this.$refs.login.$emit("error",
                     `Please configure your <b>${name}</b> ` +
-                    `in the <b>Settings</b> dialog first.`
+                    "in the <b>Settings</b> dialog first."
                 )
             }
             if (this.personPortrait      === "") { missingSettings("Personal Portrait");      return }
@@ -993,6 +995,7 @@ module.exports = {
 
     /*  component creation hook  */
     async created () {
+        /*  load settings  */
         this.personPortrait       = await ui.settings("person-portrait")
         this.personName           = await ui.settings("person-name")
         this.liveRelayServer      = await ui.settings("live-relay-server")
@@ -1000,7 +1003,14 @@ module.exports = {
         this.liveStreamBuffering  = await ui.settings("live-stream-buffering")
         this.audioInputDevice     = await ui.settings("audio-input-device")
         this.audioOutputDevice    = await ui.settings("audio-output-device")
+
+        /* indicate loading  */
         this.loaded = true
+
+        /*  regularly refresh feeling  */
+        this.timer1 = setInterval(() => {
+            this.sendFeeling()
+        }, 60 * 1000)
     },
 
     /*  component DOM mounting hook  */
@@ -1045,7 +1055,7 @@ module.exports = {
             this.$refs.videostream.$emit("stream-data", data)
         })
         const interval = 2
-        setInterval(() => {
+        this.timer2 = setInterval(() => {
             const kbps = Math.ceil((this.bandwidthBytes * 8) / 1024 / interval)
             this.bandwidthText = kbps
             this.bandwidthBytes = 0
@@ -1055,17 +1065,20 @@ module.exports = {
             this.$refs.videostream.$emit("stream-end")
         })
 
-        /*  regular feeling refreshing  */
-        this.sendFeeling()
-        setInterval(() => {
-            this.sendFeeling()
-        }, 60 * 1000)
-
         /*  window resize tracking  */
         window.addEventListener("resize", () => this.handleResize())
         this.$nextTick(() => {
             this.handleResize()
         })
+    },
+
+    /*  component destruction hook  */
+    beforeDestroy () {
+        /*  destroy timers  */
+        if (this.timer1 !== null)
+            clearTimeout(this.timer1)
+        if (this.timer2 !== null)
+            clearTimeout(this.timer2)
     }
 }
 </script>
