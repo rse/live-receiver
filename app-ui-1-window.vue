@@ -60,7 +60,7 @@
                 v-bind:class="{ disabled: inLogin, active: volume === 0 || volumeMute }">
                 <span v-show="volumeMute"><i class="icon fa fa-volume-mute"></i></span>
                 <span v-show="!volumeMute"><i class="icon fa fa-volume-up"></i></span>
-                <span class="title">Volume Mute</span>
+                <span class="title">Audio Mute</span>
             </div>
 
             <!-- audio volume -->
