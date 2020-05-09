@@ -241,14 +241,14 @@
 
             <!-- send smile -->
             <div class="box button message-send" v-on:click="feedback('smile')"
-                v-bind:class="{ disabled: inLogin }">
+                v-bind:class="{ disabled: inLogin || feedbackDisabled.smile }">
                 <i class="icon fa fa-smile"></i>
                 <span class="title">Show Smile</span>
             </div>
 
             <!-- send frown -->
             <div class="box button message-send" v-on:click="feedback('frown')"
-                v-bind:class="{ disabled: inLogin }">
+                v-bind:class="{ disabled: inLogin || feedbackDisabled.frown }">
                 <i class="icon fa fa-angry"></i>
                 <span class="title">Show Frown</span>
             </div>
@@ -675,38 +675,39 @@ module.exports = {
 
     /*  component variable properties  */
     data: () => ({
-        loaded:               false,
-        inLogin:              true,
-        inSettings:           false,
-        allowDisconnect:      true,
-        personPortrait:       "",
-        personName:           "",
-        liveRelayServer:      "",
-        liveAccessToken:      "",
-        liveStreamBuffering:  0,
-        audioInputDevice:     "",
-        audioOutputDevice:    "",
-        logo:                 ui.logo,
-        audioBlob:            null,
-        audioBlobChunks:      [],
-        audioRecording:       false,
-        audioPlaying:         false,
-        message:              "",
-        fullscreened:         false,
-        volume:               100,
-        volumeMute:           false,
-        recordState:          0,
-        recordTextShow:       false,
-        mood:                 3,
-        moodTextShow:         false,
-        challenge:            3,
-        challengeTextShow:    false,
-        bandwidthBytes:       0,
-        bandwidthText:        "",
-        videoSize:            { w: 0, h: 0 },
-        timer1:               null,
-        timer2:               null,
-        isWinSmallest:        false
+        loaded:                false,
+        inLogin:               true,
+        inSettings:            false,
+        allowDisconnect:       true,
+        personPortrait:        "",
+        personName:            "",
+        liveRelayServer:       "",
+        liveAccessToken:       "",
+        liveStreamBuffering:   0,
+        audioInputDevice:      "",
+        audioOutputDevice:     "",
+        logo:                  ui.logo,
+        audioBlob:             null,
+        audioBlobChunks:       [],
+        audioRecording:        false,
+        audioPlaying:          false,
+        message:               "",
+        fullscreened:          false,
+        volume:                100,
+        volumeMute:            false,
+        recordState:           0,
+        recordTextShow:        false,
+        mood:                  3,
+        moodTextShow:          false,
+        challenge:             3,
+        challengeTextShow:     false,
+        bandwidthBytes:        0,
+        bandwidthText:         "",
+        videoSize:             { w: 0, h: 0 },
+        timer1:                null,
+        timer2:                null,
+        isWinSmallest:         false,
+        feedbackDisabled:      { smile: false, frown: false }
     }),
 
     /*  component computed properties  */
@@ -815,7 +816,13 @@ module.exports = {
             this.$refs.message.blur()
         },
         feedback (type) {
+            if (this.feedbackDisabled[type])
+                return
             this.$emit("feedback", type)
+            this.feedbackDisabled[type] = true
+            setTimeout(() => {
+                this.feedbackDisabled[type] = false
+            }, 1 * 1000)
         },
         sendFeeling () {
             this.$emit("feeling", {
