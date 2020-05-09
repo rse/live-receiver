@@ -728,7 +728,7 @@ module.exports = {
             return html
         },
         challengeText () {
-            let html = "I am contentual<br/><b>"
+            let html = "I am <i>content-wise</i><br/><b>"
             switch (parseInt(this.challenge)) {
                 case 1: html += "sub-challenged";  break
                 case 2: html += "less-challenged"; break
@@ -740,7 +740,7 @@ module.exports = {
             return html
         },
         moodText () {
-            let html = "I am mentally<br/><b>"
+            let html = "I am <i>mentally</i><br/><b>"
             switch (parseInt(this.mood)) {
                 case 1: html += "knocked-off";   break
                 case 2: html += "tired";         break
