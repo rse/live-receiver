@@ -225,16 +225,6 @@
                 <span class="title">Send Messages</span>
             </div>
 
-            <!-- move window -->
-            <div class="box move">
-                <span class="grab grab-1"></span>
-                <span class="grab grab-2"></span>
-                <span class="grab grab-3"></span>
-                <span class="grab grab-4"></span>
-                <span class="grab grab-5"></span>
-                <span class="title">Move Window</span>
-            </div>
-
             <!-- send smile -->
             <div class="box button message-send" v-on:click="feedback('smile')"
                 v-bind:class="{ disabled: inLogin || feedbackDisabled.smile }">
@@ -291,6 +281,16 @@
                     min="1" max="5" step="1"
                     v-model.number="mood"/>
                 <span class="title">My Mood</span>
+            </div>
+
+            <!-- move window -->
+            <div class="box move">
+                <span class="grab grab-1"></span>
+                <span class="grab grab-2"></span>
+                <span class="grab grab-3"></span>
+                <span class="grab grab-4"></span>
+                <span class="grab grab-5"></span>
+                <span class="title">Move Window</span>
             </div>
         </div>
     </div>
