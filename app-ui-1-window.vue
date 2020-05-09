@@ -1001,15 +1001,29 @@ module.exports = {
                     let src = ac.createMediaStreamSource(stream)
                     let dst = ac.createMediaStreamDestination()
 
-                    /*  add compressor to audio graph  */
+                    /*  add compressor filter to audio graph  */
                     let compressor = ac.createDynamicsCompressor()
                     compressor.threshold.value = -18
                     compressor.knee.value      = 40
                     compressor.ratio.value     = 10
                     compressor.attack.value    = 0.006
                     compressor.release.value   = 0.060
+
+                    /*  add noise reducing biquad filters to audio graph  */
+                    let biquad1 = ac.createBiquadFilter()
+                    let biquad2 = ac.createBiquadFilter()
+                    biquad1.type                = "highpass"
+                    biquad1.Q.value             = 1.0
+                    biquad1.frequency.value     = 144
+                    biquad2.type                = "notch"
+                    biquad2.Q.value             = 0.5
+                    biquad2.frequency.value     = 986
+
+                    /*  connect the audio graph nodes  */
                     src.connect(compressor)
-                    compressor.connect(dst)
+                    compressor.connect(biquad1)
+                    biquad1.connect(biquad2)
+                    biquad2.connect(dst)
 
                     /*  record the resulting audio stream  */
                     this.recorder = new MediaRecorder(dst.stream, {
