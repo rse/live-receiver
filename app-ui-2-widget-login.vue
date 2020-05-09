@@ -336,7 +336,7 @@ module.exports = {
         })
 
         /*  animate logo  */
-        let animation = anime({
+        const animation = anime({
             targets:  this.$refs.logo,
             duration: 4 * 1000,
             easing:   "easeInOutQuad",
