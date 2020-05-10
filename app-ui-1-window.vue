@@ -163,7 +163,7 @@
                 v-tooltip.top-center="{
                     html: true,
                     content: recordText,
-                    show: recordTextShow && !inLogin,
+                    show: recordTextShow && !inLogin || recordState > 0 || audioRecording || audioPlaying,
                     trigger: 'manual',
                     hideOnTargetClick: false,
                     autoHide: false,
