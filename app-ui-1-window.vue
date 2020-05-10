@@ -79,35 +79,35 @@
 
             <!-- smallest size -->
             <div class="box button fit" v-on:click="smallestSize"
-                v-bind:class="{ disabled: isWinSmallest || fullscreened }">
+                v-bind:class="{ disabled: isWinSmallest || fullscreened || maximized }">
                 <i class="icon fa fa-compress"></i>
                 <span class="title">Smallest Size</span>
             </div>
 
             <!-- source size -->
             <div class="box button fit" v-on:click="sourceSize"
-                v-bind:class="{ disabled: inLogin || fullscreened }">
+                v-bind:class="{ disabled: inLogin || fullscreened || maximized }">
                 <i class="icon fa fa-expand"></i>
                 <span class="title">Native Size</span>
             </div>
 
             <!-- minimize -->
             <div class="box button minimize" v-on:click="minimize"
-                v-bind:class="{ disabled: fullscreened }">
+                v-bind:class="{ disabled: fullscreened || maximized }">
                 <i class="icon fa fa-window-minimize"></i>
                 <span class="title">Minimize</span>
             </div>
 
             <!-- maximize -->
             <div class="box button maximize" v-on:click="maximize"
-                v-bind:class="{ disabled: fullscreened }">
+                v-bind:class="{ disabled: fullscreened, active: maximized }">
                 <i class="icon fa fa-window-maximize"></i>
                 <span class="title">Maximize</span>
             </div>
 
             <!-- fullscreen -->
             <div class="box button fullscreen" v-on:click="fullscreen"
-                v-bind:class="{ active: fullscreened }">
+                v-bind:class="{ disabled: maximized, active: fullscreened }">
                 <i class="icon fa fa-expand-arrows-alt"></i>
                 <span class="title">Fullscreen</span>
             </div>
@@ -718,6 +718,7 @@ module.exports = {
         audioPlaying:          false,
         message:               "",
         fullscreened:          false,
+        maximized:             false,
         volume:                100,
         volumeMute:            false,
         recordState:           0,
@@ -918,26 +919,29 @@ module.exports = {
 
         /*  window resize handling  */
         minimize (event) {
-            if (this.fullscreened)
+            if (this.fullscreened || this.maximized)
                 return
             this.$emit("minimize")
         },
         maximize (event) {
             if (this.fullscreened)
                 return
+            this.maximized = !this.maximized
             this.$emit("maximize")
         },
         fullscreen (event) {
-            this.$emit("fullscreen")
+            if (this.maximized)
+                return
             this.fullscreened = !this.fullscreened
+            this.$emit("fullscreen")
         },
         smallestSize () {
-            if (this.fullscreened)
+            if (this.fullscreened || this.maximized)
                 return
             this.$emit("set-size", { w: 1000, h: 650 })
         },
         sourceSize () {
-            if (this.fullscreened || this.inLogin)
+            if (this.fullscreened || this.maximized || this.inLogin)
                 return
             const res = { w: 1920, h: 1080 } /* FIXME: hardcoded */
             let w = res.w
@@ -1169,6 +1173,12 @@ module.exports = {
         })
 
         /*  window resize tracking  */
+        this.$on("maximized", (value) => {
+            this.maximized = value
+        })
+        this.$on("fullscreened", (value) => {
+            this.fullscreened = value
+        })
         window.addEventListener("resize", () => this.handleResize())
         this.$nextTick(() => {
             this.handleResize()

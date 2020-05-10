@@ -245,9 +245,11 @@ const app = electron.app
         let maximized = false
         app.win.on("maximize", () => {
             maximized = true
+            app.win.webContents.send("maximized", true)
         })
         app.win.on("unmaximize", () => {
             maximized = false
+            app.win.webContents.send("maximized", false)
         })
         app.ipc.handle("maximize", (event) => {
             if (maximized)
@@ -260,9 +262,11 @@ const app = electron.app
         let fullscreened = false
         app.win.on("enter-full-screen", () => {
             fullscreened = true
+            app.win.webContents.send("fullscreened", true)
         })
         app.win.on("leave-full-screen", () => {
             fullscreened = false
+            app.win.webContents.send("fullscreened", false)
         })
         app.ipc.handle("fullscreen", (event) => {
             app.win.setFullScreen(!fullscreened)
