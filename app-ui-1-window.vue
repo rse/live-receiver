@@ -1076,6 +1076,7 @@ module.exports = {
                 this.audioElement = new Audio()
                 this.audioElement.setSinkId(this.audioOutputDevice)
                 this.audioElement.src = URL.createObjectURL(this.audioBlob)
+                this.audioElement.volume = this.volume / 100
                 this.volumeMute = true
                 this.audioElement.addEventListener("paused", (event) => {
                     this.audioPlaying = false
