@@ -1003,12 +1003,12 @@ module.exports = {
                     })
 
                     /*  create audio graph  */
-                    let ac = new AudioContext()
-                    let src = ac.createMediaStreamSource(stream)
-                    let dst = ac.createMediaStreamDestination()
+                    const ac = new AudioContext()
+                    const src = ac.createMediaStreamSource(stream)
+                    const dst = ac.createMediaStreamDestination()
 
                     /*  add compressor filter to audio graph  */
-                    let compressor = ac.createDynamicsCompressor()
+                    const compressor = ac.createDynamicsCompressor()
                     compressor.threshold.value = -18
                     compressor.knee.value      = 40
                     compressor.ratio.value     = 10
@@ -1016,8 +1016,8 @@ module.exports = {
                     compressor.release.value   = 0.060
 
                     /*  add noise reducing biquad filters to audio graph  */
-                    let biquad1 = ac.createBiquadFilter()
-                    let biquad2 = ac.createBiquadFilter()
+                    const biquad1 = ac.createBiquadFilter()
+                    const biquad2 = ac.createBiquadFilter()
                     biquad1.type                = "highpass"
                     biquad1.Q.value             = 1.0
                     biquad1.frequency.value     = 144
