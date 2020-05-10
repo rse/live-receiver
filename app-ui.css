@@ -206,3 +206,14 @@ html, body {
     border-right:  1px solid var(--color-sig-bg-1);
     border-bottom: 1px solid var(--color-sig-bg-1);
 }
+
+/*  the attention attracting boxed content in tooltips  */
+.attention-boxed {
+    border-radius: 5px;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+    color: var(--color-acc-fg-3);
+    background-color: var(--color-acc-bg-4);
+}
