@@ -292,15 +292,12 @@ const app = electron.app
         }))
 
         /*  handle window resizing functionality  */
-        app.ipc.handle("resize", (event, diff) => {
-            app.w += diff.x
-            app.h += diff.y
-            app.win.setSize(app.w, app.h)
-        })
         app.ipc.handle("set-size", (event, size) => {
-            maximized    = false
             minimized    = false
+            maximized    = false
             fullscreened = false
+            app.win.webContents.send("maximized",    false)
+            app.win.webContents.send("fullscreened", false)
             app.w = size.w
             app.h = size.h
             app.win.setSize(app.w, app.h)
