@@ -214,28 +214,28 @@
 
             <!-- send surprise -->
             <div class="box button message-send" v-on:click="feedback('surprise')"
-                v-bind:class="{ disabled: inLogin || feedbackDisabled.surprise }">
+                v-bind:class="{ disabled: inLogin || feedbackDisabled }">
                 <i class="icon fa fa-surprise"></i>
                 <span class="title">Show Surprise</span>
             </div>
 
             <!-- send smile -->
             <div class="box button message-send" v-on:click="feedback('smile')"
-                v-bind:class="{ disabled: inLogin || feedbackDisabled.smile }">
+                v-bind:class="{ disabled: inLogin || feedbackDisabled }">
                 <i class="icon fa fa-grin-wink"></i>
                 <span class="title">Show Smile</span>
             </div>
 
             <!-- send frown -->
             <div class="box button message-send" v-on:click="feedback('frown')"
-                v-bind:class="{ disabled: inLogin || feedbackDisabled.frown }">
+                v-bind:class="{ disabled: inLogin || feedbackDisabled }">
                 <i class="icon fa fa-angry"></i>
                 <span class="title">Show Frown</span>
             </div>
 
             <!-- send sadness -->
             <div class="box button message-send" v-on:click="feedback('sadness')"
-                v-bind:class="{ disabled: inLogin || feedbackDisabled.sadness }">
+                v-bind:class="{ disabled: inLogin || feedbackDisabled }">
                 <i class="icon fa fa-sad-tear"></i>
                 <span class="title">Show Sadness</span>
             </div>
@@ -732,7 +732,7 @@ module.exports = {
         timer1:                null,
         timer2:                null,
         isWinSmallest:         false,
-        feedbackDisabled:      { surprise: false, smile: false, frown: false, sadness: false }
+        feedbackDisabled:      false
     }),
 
     /*  component computed properties  */
@@ -852,12 +852,12 @@ module.exports = {
             this.$refs.message.blur()
         },
         feedback (type) {
-            if (this.feedbackDisabled[type])
+            if (this.feedbackDisabled)
                 return
             this.$emit("feedback", type)
-            this.feedbackDisabled[type] = true
+            this.feedbackDisabled = true
             setTimeout(() => {
-                this.feedbackDisabled[type] = false
+                this.feedbackDisabled = false
             }, 60 * 1000)
         },
         sendFeeling () {
