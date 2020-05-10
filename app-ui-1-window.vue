@@ -858,7 +858,7 @@ module.exports = {
             this.feedbackDisabled[type] = true
             setTimeout(() => {
                 this.feedbackDisabled[type] = false
-            }, 1 * 1000)
+            }, 60 * 1000)
         },
         sendFeeling () {
             this.$emit("feeling", {
