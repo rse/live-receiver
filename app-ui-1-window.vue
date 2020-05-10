@@ -1022,7 +1022,7 @@ module.exports = {
                     biquad1.Q.value             = 1.0
                     biquad1.frequency.value     = 144
                     biquad2.type                = "notch"
-                    biquad2.Q.value             = 0.5
+                    biquad2.Q.value             = 0.25
                     biquad2.frequency.value     = 986
 
                     /*  connect the audio graph nodes  */
