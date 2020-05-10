@@ -285,6 +285,11 @@ const app = electron.app
             settings.set("window-height", app.h)
         }
         app.win.on("resize", throttle(1000, () => {
+            minimized    = app.win.isMinimized()
+            maximized    = app.win.isMaximized()
+            fullscreened = app.win.isFullScreen()
+            app.win.webContents.send("maximized",    maximized)
+            app.win.webContents.send("fullscreened", fullscreened)
             updateBounds()
         }))
         app.win.on("move",   throttle(1000, () => {
