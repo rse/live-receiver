@@ -159,7 +159,7 @@ const electronLog = require("electron-log")
     events = [
         "maximized", "fullscreened",
         "stream-begin", "stream-data", "stream-reset", "stream-end",
-        "voting-begin", "voting-filter", "voting-unfilter", "voting-end",
+        "voting-begin", "voting-type", "voting-end",
         "deep-link"
     ]
     for (const event of events) {

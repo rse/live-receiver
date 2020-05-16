@@ -1196,12 +1196,13 @@ module.exports = {
 
         /*  voting support  */
         this.$on("voting-begin", () => {
+            ui.log.info("voting-begin")
         })
-        this.$on("voting-filter", () => {
-        })
-        this.$on("voting-unfilter", () => {
+        this.$on("voting-type", ({ type }) => {
+            ui.log.info(`voting-type: ${type}`)
         })
         this.$on("voting-end", () => {
+            ui.log.info("voting-end")
         })
     },
 

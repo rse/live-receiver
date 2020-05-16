@@ -368,10 +368,8 @@ const app = electron.app
                 }
                 else if (message.event === "voting-begin")
                     app.win.webContents.send("voting-begin")
-                else if (message.event === "voting-filter")
-                    app.win.webContents.send("voting-filter", message.data)
-                else if (message.event === "voting-unfilter")
-                    app.win.webContents.send("voting-unfilter")
+                else if (message.event === "voting-type")
+                    app.win.webContents.send("voting-type", message.data)
                 else if (message.event === "voting-end")
                     app.win.webContents.send("voting-end")
                 else
