@@ -716,6 +716,7 @@ module.exports = {
         audioBlobChunks:       [],
         audioRecording:        false,
         audioPlaying:          false,
+        audioDuration:         0,
         message:               "",
         fullscreened:          false,
         maximized:             false,
@@ -762,7 +763,8 @@ module.exports = {
                 if (this.audioPlaying)
                     html = "Press to stop playing<br/>your audio message."
                 else
-                    html = "Press to play<br/>your audio message."
+                    html = "Press to play and check<br/>your recorded audio message.<br/>" +
+                        `(duration: <b class='attention-boxed'>${this.audioDuration.toFixed(1)}</b> seconds)`
             }
             return html
         },
@@ -1047,6 +1049,7 @@ module.exports = {
                     this.audioBlob = null
                     return
                 }
+                this.audioDuration = 0
                 this.audioBlob = null
                 this.audioBlobChunks = []
                 this.recorder.addEventListener("dataavailable", (event) => {
@@ -1058,9 +1061,14 @@ module.exports = {
             }
             else {
                 /*  stop recording  */
-                this.recorder.addEventListener("stop", (event) => {
+                this.recorder.addEventListener("stop", async (event) => {
                     this.audioBlob = new Blob(this.audioBlobChunks,
                         { "type" : "audio/webm; codecs=\"opus\"" })
+                    const ac = new AudioContext()
+                    let arrayBuffer = await this.audioBlob.arrayBuffer()
+                    ac.decodeAudioData(arrayBuffer, (audioBuffer) => {
+                        this.audioDuration = audioBuffer.duration
+                    })
                 })
                 this.recorder.stop()
                 this.audioRecording = false
