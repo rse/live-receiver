@@ -208,8 +208,9 @@ module.exports = {
             const ve = document.createElement("video")
             this.we.appendChild(ve)
             ve.autoplay = true
-            ve.volume = this.intVolume / 100
-            ve.muted  = this.muted
+            ve.preload  = "none"
+            ve.volume   = this.intVolume / 100
+            ve.muted    = this.muted
             if (this.device !== "")
                 ve.setSinkId(this.device)
             ve.addEventListener("loadeddata", () => {
@@ -259,7 +260,7 @@ module.exports = {
             })
             ms.addEventListener("error", (ev) => {
                 this.$emit("error", `MediaSource: ${ev}`)
-                ui.log.debug("ui: mediasource: error", ev)
+                ui.log.debug(`ui: mediasource: error: ${ev}`)
                 this.state = "error"
                 this.$emit("stream-reboot")
             })
@@ -304,7 +305,7 @@ module.exports = {
                                 this.sb[data.id].appendBuffer(data.buffer)
                             }
                             catch (err) {
-                                ui.log.error("ui: sourcebuffer: appendBuffer: exception:", err)
+                                ui.log.error(`ui: sourcebuffer: appendBuffer: exception: ${err}`)
                                 this.$emit("error", `SourceBuffer: ${err}`)
                             }
                         }
@@ -334,13 +335,13 @@ module.exports = {
                             updating[data.id] = false
                         })
                         this.sb[data.id].addEventListener("error", (event, err) => {
-                            ui.log.error("ui: sourcebuffer: error", err)
+                            ui.log.error(`ui: sourcebuffer: error: ${err}`)
                             this.$emit("error", `SourceBuffer: ${err}`)
                             updating[data.id] = false
                         })
                     }
                     catch (err) {
-                        ui.log.debug("ui: sourcebuffer: addSourceBuffer: exception:", err)
+                        ui.log.debug(`ui: sourcebuffer: addSourceBuffer: exception: ${err}`)
                         this.$emit("error", `SourceBuffer: ${err}`)
                     }
                 }
