@@ -1193,6 +1193,16 @@ module.exports = {
         this.$nextTick(() => {
             this.handleResize()
         })
+
+        /*  voting support  */
+        this.$on("voting-begin", () => {
+        })
+        this.$on("voting-filter", () => {
+        })
+        this.$on("voting-unfilter", () => {
+        })
+        this.$on("voting-end", () => {
+        })
     },
 
     /*  component destruction hook  */

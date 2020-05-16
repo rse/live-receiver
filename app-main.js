@@ -352,6 +352,32 @@ const app = electron.app
                 return result
             app.es = es
 
+            /*  receive receiver control messages via LiVE-Relay EventStream  */
+            app.es.on("message", async (scope, message) => {
+                app.log.debug(`main: LiVE-Relay: message: scope=${scope} message=${JSON.stringify(message)}`)
+                if (!(typeof message === "object"
+                    && typeof message.id === "string" && message.id === "live-receiver"
+                    && typeof message.event === "string" && message.event !== ""
+                    && typeof message.data === "object")) {
+                    app.log.error(`main: LiVE-Relay: message: invalid message: ${JSON.stringify(message)}`)
+                    return
+                }
+                if (message.event === "reconnect") {
+                    await liveDisconnect()
+                    await liveConnect()
+                }
+                else if (message.event === "voting-begin")
+                    app.win.webContents.send("voting-begin")
+                else if (message.event === "voting-filter")
+                    app.win.webContents.send("voting-filter", message.data)
+                else if (message.event === "voting-unfilter")
+                    app.win.webContents.send("voting-unfilter")
+                else if (message.event === "voting-end")
+                    app.win.webContents.send("voting-end")
+                else
+                    app.log.error(`main: LiVE-Relay: message: invalid event: "${message.event}`)
+            })
+
             /*  connect to LiVE Relay VideoStream  */
             const vs = new VideoStream({
                 ...credentials,
@@ -480,8 +506,8 @@ const app = electron.app
         /*  the LiVE Relay EventStream communication: messages  */
         app.ipc.handle("message", (event, message) => {
             if (app.es !== null) {
-                app.es.send(JSON.stringify({
-                    id:    "training",
+                app.es.send({
+                    id:    "live-sender",
                     event: "message",
                     data: {
                         title:   app.personName,
@@ -489,36 +515,36 @@ const app = electron.app
                         text:    message.message,
                         ...(message.audio ? { audio: message.audio } : {})
                     }
-                }))
+                })
             }
         })
 
         /*  the LiVE Relay EventStream communication: feedback  */
         app.ipc.handle("feedback", (event, type) => {
             if (app.es !== null) {
-                app.es.send(JSON.stringify({
-                    id:    "training",
+                app.es.send({
+                    id:    "live-sender",
                     event: "feedback",
                     data: {
                         client: app.clientId,
                         type:   type
                     }
-                }))
+                })
             }
         })
 
         /*  the LiVE Relay EventStream communication: feeling  */
         app.ipc.handle("feeling", (event, feeling) => {
             if (app.es !== null) {
-                app.es.send(JSON.stringify({
-                    id:    "training",
+                app.es.send({
+                    id:    "live-sender",
                     event: "feeling",
                     data: {
                         client:    app.clientId,
                         challenge: feeling.challenge,
                         mood:      feeling.mood
                     }
-                }))
+                })
             }
         })
     })

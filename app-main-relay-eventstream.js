@@ -90,7 +90,7 @@ module.exports = class EventStream extends EventEmitter {
                     qos: 2,
                     topic: `stream/${this.options.channel}/sender`,
                     payload: JSON.stringify({
-                        id:    "training",
+                        id:    "live-sender",
                         event: "attendance",
                         data: {
                             client: this.options.client,
@@ -110,7 +110,19 @@ module.exports = class EventStream extends EventEmitter {
                 /*  on connect and re-connect initialize our session  */
                 this.options.log("info", "eventstream: MQTT: connect")
 
-                /*  (re)subscribe to the attendee-specific channel  */
+                /*  (re)subscribe to the general attendee/receiver channel  */
+                broker.subscribe(`stream/${this.options.channel}/receiver`, (err) => {
+                    if (err) {
+                        if (firstConnect)
+                            reject(err)
+                        else {
+                            this.options.log("error", `eventstream: MQTT: subscribe: ${err}`)
+                            this.emit("error", `subscribe: ${err}`)
+                        }
+                    }
+                })
+
+                /*  (re)subscribe to the individual attendee/receiver channel  */
                 broker.subscribe(`stream/${this.options.channel}/receiver/${this.options.client}`, (err) => {
                     if (err) {
                         if (firstConnect)
@@ -137,9 +149,26 @@ module.exports = class EventStream extends EventEmitter {
                         this.emit("disconnect", "disconnect")
                     })
                     broker.on("message", (topic, message) => {
-                        this.options.log("debug", `eventstream: MQTT: message: topic=${topic} ` +
-                            `message=${JSON.stringify(message)}`)
-                        this.emit("message", topic, message)
+                        this.options.log("debug", `eventstream: MQTT: message: topic=${topic}`)
+                        let scope
+                        if (topic === `stream/${this.options.channel}/receiver/${this.options.client}`)
+                            scope = "unicast"
+                        else if (topic === `stream/${this.options.channel}/receiver`)
+                            scope = "broadcast"
+                        else {
+                            this.options.log("error", "eventstream: MQTT: message: invalid topic")
+                            this.emit("error", "message: invalid topic")
+                            return
+                        }
+                        try {
+                            message = JSON.parse(message.toString())
+                        }
+                        catch (err) {
+                            this.options.log("error", `eventstream: MQTT: message: failed to parse JSON: ${err}`)
+                            this.emit("error", `message: failed to parse JSON: ${err}`)
+                            return
+                        }
+                        this.emit("message", scope, message)
                     })
                 }
 
@@ -152,27 +181,27 @@ module.exports = class EventStream extends EventEmitter {
                     this.rpc = new RPC(broker)
 
                 /*  begin attendance (initially)  */
-                this.send(JSON.stringify({
-                    id:    "training",
+                this.send({
+                    id:    "live-sender",
                     event: "attendance",
                     data: {
                         client: this.options.client,
                         event:  "begin"
                     }
-                }))
+                })
 
                 /*  refresh attendance (regularly)  */
                 if (firstConnect) {
                     this.timer = setInterval(() => {
                         if (this.broker.connected) {
-                            this.send(JSON.stringify({
-                                id:    "training",
+                            this.send({
+                                id:    "live-sender",
                                 event: "attendance",
                                 data: {
                                     client: this.options.client,
                                     event:  "refresh"
                                 }
-                            }))
+                            })
                         }
                     }, this.options.interval)
                 }
@@ -194,14 +223,14 @@ module.exports = class EventStream extends EventEmitter {
         }
         if (this.broker !== null) {
             /*  end attendance (explicitly)  */
-            this.send(JSON.stringify({
-                id:    "training",
+            this.send({
+                id:    "live-sender",
                 event: "attendance",
                 data: {
                     client: this.options.client,
                     event:  "end"
                 }
-            }))
+            })
             this.broker.end()
         }
     }
@@ -210,6 +239,7 @@ module.exports = class EventStream extends EventEmitter {
     send (message) {
         if (this.broker === null)
             throw new Error("not connected")
+        message = JSON.stringify(message)
         this.emit("sent", message)
         this.broker.publish(`stream/${this.options.channel}/sender`, message, { qos: 2 }, (err) => {
             if (err) {
