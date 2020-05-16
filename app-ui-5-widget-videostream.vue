@@ -270,6 +270,13 @@ module.exports = {
                 await new Promise((resolve) => setTimeout(resolve, 100))
         }
 
+        /*  reset stream position  */
+        const streamReset = async () => {
+            /*  reset the time position of the <video> element
+                to esure that a new stream (after FFMpeg wimmediately plays again  */
+            this.ve.currentTime = 0.0
+        }
+
         /*  receive stream data  */
         const streamData = async (data) => {
             /*  transfer a stream data chunk into the <video> stream element  */
@@ -378,6 +385,12 @@ module.exports = {
         this.$on("stream-data", async (data) => {
             if (this.streaming)
                 streamData(data)
+        })
+        this.$on("stream-reset", async () => {
+            if (this.streaming) {
+                ui.log.info("ui: stream-reset")
+                streamReset()
+            }
         })
         this.$on("stream-end", async () => {
             ui.log.info("ui: stream-end: begin")

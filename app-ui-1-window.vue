@@ -1167,6 +1167,9 @@ module.exports = {
             this.bandwidthText = kbps
             this.bandwidthBytes = 0
         }, interval * 1000)
+        this.$on("stream-reset", () => {
+            this.$refs.videostream.$emit("stream-reset")
+        })
         this.$on("stream-end", () => {
             this.allowDisconnect = false
             this.$refs.videostream.$emit("stream-end")

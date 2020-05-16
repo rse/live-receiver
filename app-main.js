@@ -357,11 +357,15 @@ const app = electron.app
                 ...credentials,
                 log: (level, message) => { app.log[level](message) }
             })
+            let numLast = -1
             vs.on("segment", (num, id, user, buffer) => {
                 if (!app.connected)
                     return
                 // app.log.debug(`main: LiVE-Relay: RTMPS segment #${num}: ${id} @ ${user.mimeCodec} ` +
                 //     `(${buffer.byteLength} bytes)`)
+                if (num <= numLast)
+                    app.win.webContents.send("stream-reset")
+                numLast = num
                 app.win.webContents.send("stream-data", { id, user, buffer })
             })
             vs.on("error", (err) => {

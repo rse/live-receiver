@@ -158,7 +158,7 @@ const electronLog = require("electron-log")
     /*  pass-through events from main to renderer thread  */
     events = [
         "maximized", "fullscreened",
-        "stream-begin", "stream-data", "stream-end",
+        "stream-begin", "stream-data", "stream-reset", "stream-end",
         "deep-link"
     ]
     for (const event of events) {
