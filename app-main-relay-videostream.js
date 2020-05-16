@@ -88,9 +88,9 @@ module.exports = class VideoStream extends EventEmitter {
         /*  start ffmpeg(1) sub-process  */
         const options = [
             "-loglevel",    "0",
-            "-i",           url,
             "-rtmp_live",   "live",
             "-rtmp_buffer", this.options.buffering,
+            "-i",           url,
             "-threads",     "4",
             "-c:a",         "copy",
             "-c:v",         "copy",
