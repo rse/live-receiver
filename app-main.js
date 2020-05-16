@@ -482,11 +482,11 @@ const app = electron.app
             if (app.es !== null) {
                 app.es.send(JSON.stringify({
                     id:    "training",
-                    event: "chat",
+                    event: "message",
                     data: {
                         title:   app.personName,
                         image:   app.personPortrait,
-                        message: message.message,
+                        text:    message.message,
                         ...(message.audio ? { audio: message.audio } : {})
                     }
                 }))
