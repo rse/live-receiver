@@ -172,7 +172,7 @@
                 v-on:mouseover="recordTextShow = true"
                 v-on:mouseleave="recordTextShow = false"
                 v-bind:class="{
-                    disabled: inLogin || audioInputDevice === '' || audioOutputDevice === '',
+                    disabled: inLogin || audioInputDevice === '' || audioOutputDevice === '' || votingActive,
                     active: audioRecording || audioPlaying || audioBlob !== null
                 }">
                 <span v-show="!audioRecording && audioBlob === null"><i class="icon fa fa-dot-circle"></i></span>
@@ -187,15 +187,72 @@
 
             <!-- enter message -->
             <div class="box message-text" v-bind:class="{ disabled: inLogin, active: message !== '' }">
-                <input
-                    v-bind:disabled="inLogin"
-                    ref="message"
-                    type="text"
-                    placeholder="Type message..."
-                    v-model="message"
-                    v-on:keyup.enter="sendMessage"
-                    v-on:keyup.escape="clearMessage(false)"
-                />
+                <span v-show="!votingActive || votingActive && votingType === 'propose'">
+                    <input
+                        v-bind:disabled="inLogin"
+                        ref="message"
+                        type="text"
+                        v-bind:placeholder="votingActive ? 'Type vote...' : 'Type message...'"
+                        v-model="message"
+                        v-on:keyup.enter="sendMessage"
+                        v-on:keyup.escape="clearMessage(false)"
+                    />
+                </span>
+                <div v-show="votingActive && votingType === 'judge'"
+                    v-bind:class="{ 'choice-row': true, disabled: votingDone }">
+                    <div v-bind:class="{ 'choice-box': true, active: votingChoice === 1 }"
+                        v-on:click="sendChoice(1, 'yes')">
+                        <span class="choice-icon"><i class="fa fa-thumbs-up"></i></span>Yes
+                    </div>
+                    <div v-bind:class="{ 'choice-box': true, active: votingChoice === 2 }"
+                        v-on:click="sendChoice(2, 'no')">
+                        <span class="choice-icon"><i class="fa fa-thumbs-down"></i></span>No
+                    </div>
+                </div>
+                <div v-show="votingActive && votingType === 'evaluate'"
+                    v-bind:class="{ 'choice-row': true, disabled: votingDone }">
+                    <div v-bind:class="{ 'choice-box': true, active: votingChoice === 1 }"
+                        v-on:click="sendChoice(1, '-2')">
+                        <span class="choice-icon"><i class="fa fa-sad-cry"></i></span>-2
+                    </div>
+                    <div v-bind:class="{ 'choice-box': true, active: votingChoice === 2 }"
+                        v-on:click="sendChoice(2, '-1')">
+                        <span class="choice-icon"><i class="fa fa-frown"></i></span>-1
+                    </div>
+                    <div v-bind:class="{ 'choice-box': true, active: votingChoice === 3 }"
+                        v-on:click="sendChoice(3, '0')">
+                        <span class="choice-icon"><i class="fa fa-meh"></i></span>0
+                    </div>
+                    <div v-bind:class="{ 'choice-box': true, active: votingChoice === 4 }"
+                        v-on:click="sendChoice(4, '+1')">
+                        <span class="choice-icon"><i class="fa fa-smile"></i></span>+1
+                    </div>
+                    <div v-bind:class="{ 'choice-box': true, active: votingChoice === 5 }"
+                        v-on:click="sendChoice(5, '+2')">
+                        <span class="choice-icon"><i class="fa fa-grin-stars"></i></span>+2
+                    </div>
+                </div>
+                <div v-show="votingActive && votingType === 'choose'"
+                    v-bind:class="{ 'choice-row': true, disabled: votingDone }">
+                    <div v-bind:class="{ 'choice-box': true, active: votingChoice === 1 }"
+                         v-on:click="sendChoice(1, '1')">1</div>
+                    <div v-bind:class="{ 'choice-box': true, active: votingChoice === 2 }"
+                         v-on:click="sendChoice(2, '2')">2</div>
+                    <div v-bind:class="{ 'choice-box': true, active: votingChoice === 3 }"
+                         v-on:click="sendChoice(3, '3')">3</div>
+                    <div v-bind:class="{ 'choice-box': true, active: votingChoice === 4 }"
+                         v-on:click="sendChoice(4, '4')">4</div>
+                    <div v-bind:class="{ 'choice-box': true, active: votingChoice === 5 }"
+                         v-on:click="sendChoice(5, '5')">5</div>
+                    <div v-bind:class="{ 'choice-box': true, active: votingChoice === 6 }"
+                         v-on:click="sendChoice(6, '6')">6</div>
+                    <div v-bind:class="{ 'choice-box': true, active: votingChoice === 7 }"
+                         v-on:click="sendChoice(7, '7')">7</div>
+                    <div v-bind:class="{ 'choice-box': true, active: votingChoice === 8 }"
+                         v-on:click="sendChoice(8, '8')">8</div>
+                    <div v-bind:class="{ 'choice-box': true, active: votingChoice === 9 }"
+                         v-on:click="sendChoice(9, '9')">9</div>
+                </div>
             </div>
 
             <!-- clear message -->
@@ -689,6 +746,80 @@
                     }
                 }
             }
+            .choice-row {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+                height: 100%;
+                width:  100%;
+                margin-left: 4px;
+                .choice-box {
+                    color:                   var(--color-std-fg-3);
+                    background-color:        var(--color-std-bg-3);
+                    border-top:    1px solid var(--color-std-bg-5);
+                    border-left:   1px solid var(--color-std-bg-5);
+                    border-right:  1px solid var(--color-std-bg-1);
+                    border-bottom: 1px solid var(--color-std-bg-1);
+                    border-radius: 5px;
+                    padding: 0px 12px 0px 12px;
+                    margin-right: 2px;
+                    font-family: "TypoPRO Source Sans Pro";
+                    font-size: 14pt;
+                    font-weight: bold;
+                    .choice-icon {
+                        font-size: 12pt;
+                        color: var(--color-std-fg-1);
+                        padding-right: 5px;
+                    }
+                    &.active {
+                        color:                   var(--color-acc-fg-3);
+                        background-color:        var(--color-acc-bg-3);
+                        border-top:    1px solid var(--color-acc-bg-5);
+                        border-left:   1px solid var(--color-acc-bg-5);
+                        border-right:  1px solid var(--color-acc-bg-1);
+                        border-bottom: 1px solid var(--color-acc-bg-1);
+                        .choice-icon {
+                            color: var(--color-acc-fg-1);
+                        }
+                    }
+                    &:hover {
+                        color:                   var(--color-sig-fg-5);
+                        background-color:        var(--color-sig-bg-3);
+                        border-top:    1px solid var(--color-sig-bg-5);
+                        border-left:   1px solid var(--color-sig-bg-5);
+                        border-right:  1px solid var(--color-sig-bg-1);
+                        border-bottom: 1px solid var(--color-sig-bg-1);
+                        .choice-icon {
+                            color: var(--color-sig-fg-1);
+                        }
+                    }
+                }
+                &.disabled {
+                    .choice-box {
+                        color:                   var(--color-std-fg-3);
+                        background-color:        var(--color-std-bg-3);
+                        border-top:    1px solid var(--color-std-bg-5);
+                        border-left:   1px solid var(--color-std-bg-5);
+                        border-right:  1px solid var(--color-std-bg-1);
+                        border-bottom: 1px solid var(--color-std-bg-1);
+                        .choice-icon {
+                            color: var(--color-std-fg-1);
+                        }
+                        &.active {
+                            color:                   var(--color-acc-fg-3);
+                            background-color:        var(--color-acc-bg-3);
+                            border-top:    1px solid var(--color-acc-bg-5);
+                            border-left:   1px solid var(--color-acc-bg-5);
+                            border-right:  1px solid var(--color-acc-bg-1);
+                            border-bottom: 1px solid var(--color-acc-bg-1);
+                            .choice-icon {
+                                color: var(--color-acc-fg-1);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -734,7 +865,11 @@ module.exports = {
         timer1:                null,
         timer2:                null,
         isWinSmallest:         false,
-        feedbackDisabled:      false
+        feedbackDisabled:      false,
+        votingActive:          false,
+        votingType:            "propose",
+        votingDone:            false,
+        votingChoice:          ""
     }),
 
     /*  component computed properties  */
@@ -828,7 +963,17 @@ module.exports = {
     /*  component methods  */
     methods: {
         /*  message handling  */
+        async sendChoice (activate, choice) {
+            if (this.votingDone)
+                return
+            this.message = choice
+            this.sendMessage()
+            this.votingChoice = activate
+            this.votingDone = true
+        },
         async sendMessage () {
+            if (this.votingDone)
+                return
             if (this.message !== "" || this.audioBlob !== null) {
                 const data = { message: this.message }
                 if (this.audioBlob !== null) {
@@ -990,7 +1135,7 @@ module.exports = {
 
         /*  audio recording handling  */
         async audioRecord () {
-            if (this.inLogin || this.audioInputDevice === "")
+            if (this.inLogin || this.audioInputDevice === "" || this.votingActive)
                 return
             if (!this.audioRecording) {
                 /*  start recording  */
@@ -1077,7 +1222,7 @@ module.exports = {
             }
         },
         audioPlay () {
-            if (this.inLogin || this.audioOutputDevice === "")
+            if (this.inLogin || this.audioOutputDevice === "" || this.votingActive)
                 return
             if (this.audioBlob === null)
                 return
@@ -1197,12 +1342,21 @@ module.exports = {
         /*  voting support  */
         this.$on("voting-begin", () => {
             ui.log.info("voting-begin")
+            this.votingActive = true
+            this.votingChoice = ""
+            this.votingType   = "propose"
+            this.votingDone   = false
         })
         this.$on("voting-type", ({ type }) => {
             ui.log.info(`voting-type: ${type}`)
+            this.votingActive = true
+            this.votingChoice = ""
+            this.votingType   = type
+            this.votingDone   = false
         })
         this.$on("voting-end", () => {
             ui.log.info("voting-end")
+            this.votingActive = false
         })
     },
 
