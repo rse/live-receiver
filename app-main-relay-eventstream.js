@@ -36,7 +36,7 @@ module.exports = class EventStream extends EventEmitter {
         return new Promise((resolve, reject) => {
             const broker = MQTTjs.connect(this.url, {
                 clientId:           this.options.client,
-                rejectUnauthorized: true,
+                rejectUnauthorized: false,
                 reconnectPeriod:    0,
                 connectTimeout:     20 * 1000,
                 resubscribe:        false
@@ -63,7 +63,7 @@ module.exports = class EventStream extends EventEmitter {
         return new Promise((resolve, reject) => {
             const broker = MQTTjs.connect(this.url, {
                 clientId:           this.options.client,
-                rejectUnauthorized: true,
+                rejectUnauthorized: false,
                 reconnectPeriod:    1000,
                 connectTimeout:     20 * 1000,
                 resubscribe:        false,
