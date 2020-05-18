@@ -492,7 +492,7 @@ const app = electron.app
                     data: {
                         title:   app.personName,
                         image:   app.personPortrait,
-                        text:    message.message,
+                        text:    message.text,
                         ...(message.audio ? { audio: message.audio } : {})
                     }
                 })

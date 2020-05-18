@@ -957,7 +957,7 @@ module.exports = {
             if (this.votingDone)
                 return
             if (this.message !== "" || this.audioBlob !== null) {
-                const data = { message: this.message }
+                const data = { text: this.message }
                 if (this.audioBlob !== null) {
                     data.audio = await new Promise((resolve, reject) => {
                         const fr = new FileReader()
