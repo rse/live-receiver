@@ -180,8 +180,10 @@ const app = electron.app
         app.win.setHasShadow(true)
         app.win.loadURL(`file://${__dirname}/app-ui.html`)
         if (process.env.DEBUG) {
-            require("vue-devtools").install()
-            app.win.webContents.openDevTools()
+            setTimeout(() => {
+                require("vue-devtools").install()
+                app.win.webContents.openDevTools()
+            }, 1000)
         }
         app.win.on("ready-to-show", () => {
             app.win.show()
