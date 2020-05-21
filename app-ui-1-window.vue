@@ -1194,8 +1194,8 @@ module.exports = {
                     this.audioBlob = new Blob(this.audioBlobChunks,
                         { "type" : "audio/webm; codecs=\"opus\"" })
                     const ac = new AudioContext()
-                    let arrayBuffer = await this.audioBlob.arrayBuffer()
-                    let audioBuffer = await ac.decodeAudioData(arrayBuffer)
+                    const arrayBuffer = await this.audioBlob.arrayBuffer()
+                    const audioBuffer = await ac.decodeAudioData(arrayBuffer)
                     this.audioDuration = audioBuffer.duration
                 })
                 this.recorder.stop()

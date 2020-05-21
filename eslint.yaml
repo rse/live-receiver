@@ -72,6 +72,7 @@ rules:
     "vue/no-multi-spaces":               off
     "vue/html-closing-bracket-newline":  off
     "vue/singleline-html-element-content-newline": off
+    "vue/multiline-html-element-content-newline":  off
     "vue/html-closing-bracket-spacing":  off
     "vue/no-v-html":                     off
     "vue/v-on-style":                    off
