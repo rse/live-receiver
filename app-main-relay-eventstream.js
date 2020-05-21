@@ -17,6 +17,8 @@ module.exports = class EventStream extends EventEmitter {
         const id = (new UUID(1)).format("std")
         this.options = Object.assign({}, {
             client:   id,
+            name:     "",
+            image:    "",
             server:   "",
             channel: " ",
             token1:   "",
@@ -168,7 +170,11 @@ module.exports = class EventStream extends EventEmitter {
                     event: "attendance",
                     data: {
                         client: this.options.client,
-                        event:  "begin"
+                        event:  "begin",
+                        data: {
+                            name:  this.options.name,
+                            image: this.options.image
+                        }
                     }
                 })
 

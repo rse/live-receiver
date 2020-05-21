@@ -327,7 +327,9 @@ const app = electron.app
             /*  connect to LiVE Relay EventStream  */
             const es = new EventStream({
                 ...credentials,
-                log: (level, message) => { app.log[level](message) }
+                name:  app.personName,
+                image: app.personPortrait,
+                log:   (level, message) => { app.log[level](message) }
             })
             let result = await es.start().then(() => ({ success: true })).catch((err) => {
                 return { error: `EventStream: MQTTS: start: ${err}` }
