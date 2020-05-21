@@ -171,10 +171,10 @@
             <div class="box message-text" v-bind:class="{ disabled: inLogin, active: message !== '' }">
                 <span v-show="!votingActive || votingActive && votingType === 'propose'">
                     <input
-                        v-bind:disabled="inLogin"
+                        v-bind:disabled="inLogin || votingDone"
                         ref="message"
                         type="text"
-                        v-bind:placeholder="votingActive ? 'Type vote...' : 'Type message...'"
+                        v-bind:placeholder="votingDone ? 'Thanks for voting' : (votingActive ? 'Type vote...' : 'Type message...')"
                         v-model="message"
                         v-on:keyup.enter="sendMessage"
                         v-on:keyup.escape="clearMessage(false)"
@@ -970,6 +970,7 @@ module.exports = {
                 this.$emit("message", data)
                 this.message = ""
                 this.audioBlob = null
+                this.votingDone = true
             }
             this.$refs.message.blur()
         },
