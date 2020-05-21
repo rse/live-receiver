@@ -970,7 +970,8 @@ module.exports = {
                 this.$emit("message", data)
                 this.message = ""
                 this.audioBlob = null
-                this.votingDone = true
+                if (this.votingActive)
+                    this.votingDone = true
             }
             this.$refs.message.blur()
         },
