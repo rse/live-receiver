@@ -41,19 +41,15 @@
         "less":                            "3.11.1",
         "@fortawesome/fontawesome-free":   "5.13.0",
         "typopro-web":                     "4.2.3",
-        "mousetrap":                       "1.6.5",
         "animejs":                         "3.2.0",
         "howler":                          "2.2.0",
-        "moment":                          "2.26.0",
-        "sprintfjs":                       "1.2.15",
         "@rse/soundfx":                    "0.9.8",
         "eventemitter2":                   "6.4.1",
         "throttle-debounce":               "2.1.0",
         "mp4box":                          "0.3.20",
         "pure-uuid":                       "1.6.0",
         "image-data-uri":                  "2.0.1",
-        "mqtt":                            "4.1.0",
-        "mqtt-json-rpc":                   "1.2.0"
+        "mqtt":                            "4.1.0"
     },
     "main":                  "./app-main.js",
     "build": {

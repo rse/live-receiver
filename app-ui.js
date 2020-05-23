@@ -40,7 +40,6 @@ const electronLog = require("electron-log")
     ui.remote = electron.remote
 
     /*  external requirements  */
-    ui.sprintf      = require("sprintfjs")
     ui.throttle     = require("throttle-debounce").throttle
     ui.debounce     = require("throttle-debounce").debounce
     ui.imageDataURI = require("image-data-uri")

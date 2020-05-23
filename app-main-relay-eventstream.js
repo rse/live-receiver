@@ -6,7 +6,6 @@
 
 /*  external requirements  */
 const MQTTjs       = require("mqtt")
-const RPC          = require("mqtt-json-rpc")
 const EventEmitter = require("eventemitter2")
 const UUID         = require("pure-uuid")
 
@@ -160,10 +159,6 @@ module.exports = class EventStream extends EventEmitter {
                 if (firstConnect)
                     this.broker = broker
 
-                /*  support RPC-style communication  */
-                if (firstConnect)
-                    this.rpc = new RPC(broker)
-
                 /*  begin attendance (initially)  */
                 this.send({
                     id:    "live-sender",
@@ -238,14 +233,5 @@ module.exports = class EventStream extends EventEmitter {
                 this.emit("send:success", message)
         })
     }
-
-    /*  support RPC-style communication  */
-    register (name, callback) {
-        const method = `stream/${this.options.channel}/sender/${name}`
-        return this.rpc.register(method, callback)
-    }
-    call (name, ...params) {
-        const method = `stream/${this.options.channel}/sender/${name}`
-        return this.rpc.call(method, ...params)
-    }
 }
+

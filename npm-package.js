@@ -21,7 +21,7 @@ const zip   = require("cross-zip")
     /*  reduce the size of the development tree  */
     console.log("++ reducing source-tree")
     const remove = glob.sync("node_modules/typopro-web/web/TypoPRO-*")
-        .filter((path) => !path.match(/\/TypoPRO-(SourceSansPro|DejaVu)$/))
+        .filter((path) => !path.match(/\/TypoPRO-SourceSansPro$/))
     for (const file of remove)
         shell.rm("-rf", file)
 
