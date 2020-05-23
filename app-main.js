@@ -19,9 +19,11 @@ const Settings     = require("./app-main-settings")
 const VideoStream  = require("./app-main-relay-videostream")
 const EventStream  = require("./app-main-relay-eventstream")
 
-/*  provide more run-time debugging  */
+/*  control run-time debugging (increase tracing or even avoid warnings)  */
 if (process.env.DEBUG)
     process.traceProcessWarnings = true
+else
+    process.noDeprecation = true
 
 /*  enter an asynchronous environment in main process  */
 const app = electron.app

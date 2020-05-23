@@ -8,9 +8,11 @@
 const electron    = require("electron")
 const electronLog = require("electron-log")
 
-/*  provide more run-time debugging  */
+/*  control run-time debugging (increase tracing or even avoid warnings)  */
 if (process.env.DEBUG)
     process.traceProcessWarnings = true
+else
+    process.noDeprecation = true
 
 /*  enter an asynchronous environment in renderer process  */
 ;(async () => {
