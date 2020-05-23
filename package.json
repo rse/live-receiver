@@ -33,7 +33,6 @@
         "syspath":                         "1.0.1",
         "execa":                           "4.0.1",
         "vue":                             "2.6.11",
-        "vue-devtools":                    "5.1.3",
         "vue-multiselect":                 "2.1.6",
         "v-tooltip":                       "2.0.3",
         "cropperjs":                       "1.5.6",

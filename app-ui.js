@@ -97,9 +97,6 @@ const electronLog = require("electron-log")
     /*  support Vue tooltip functionality  */
     Vue.use(VTooltip, { disposeTimeout: 0 })
 
-    /*  allow Vue DevTools integration  */
-    Vue.config.devtools = true
-
     /*  start DOM rendering with the outmost <win> component  */
     ui.root = new Vue({ el: "#ui", name: "ui", components: { "win": "url:app-ui-1-window.vue" } })
 

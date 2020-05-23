@@ -181,7 +181,6 @@ const app = electron.app
         app.win.loadURL(`file://${__dirname}/app-ui.html`)
         if (process.env.DEBUG) {
             setTimeout(() => {
-                require("vue-devtools").install()
                 app.win.webContents.openDevTools()
             }, 1000)
         }
