@@ -489,47 +489,47 @@ const app = electron.app
 
         /*  the LiVE Relay EventStream communication: messages  */
         app.ipc.handle("message", (event, message) => {
-            if (app.es !== null) {
-                app.es.send({
-                    id:    "live-sender",
-                    event: "message",
-                    data: {
-                        title:   app.personName,
-                        image:   app.personPortrait,
-                        text:    message.text,
-                        ...(message.audio ? { audio: message.audio } : {})
-                    }
-                })
-            }
+            if (app.es === null)
+                return
+            app.es.send({
+                id:    "live-sender",
+                event: "message",
+                data: {
+                    title:   app.personName,
+                    image:   app.personPortrait,
+                    text:    message.text,
+                    ...(message.audio ? { audio: message.audio } : {})
+                }
+            })
         })
 
         /*  the LiVE Relay EventStream communication: feedback  */
         app.ipc.handle("feedback", (event, type) => {
-            if (app.es !== null) {
-                app.es.send({
-                    id:    "live-sender",
-                    event: "feedback",
-                    data: {
-                        client: app.clientId,
-                        type:   type
-                    }
-                })
-            }
+            if (app.es === null)
+                return
+            app.es.send({
+                id:    "live-sender",
+                event: "feedback",
+                data: {
+                    client: app.clientId,
+                    type:   type
+                }
+            })
         })
 
         /*  the LiVE Relay EventStream communication: feeling  */
         app.ipc.handle("feeling", (event, feeling) => {
-            if (app.es !== null) {
-                app.es.send({
-                    id:    "live-sender",
-                    event: "feeling",
-                    data: {
-                        client:    app.clientId,
-                        challenge: feeling.challenge,
-                        mood:      feeling.mood
-                    }
-                })
-            }
+            if (app.es === null)
+                return
+            app.es.send({
+                id:    "live-sender",
+                event: "feeling",
+                data: {
+                    client:    app.clientId,
+                    challenge: feeling.challenge,
+                    mood:      feeling.mood
+                }
+            })
         })
     })
 })().catch((err) => {
