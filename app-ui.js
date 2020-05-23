@@ -27,6 +27,11 @@ else
         ui.domReady = true
     })
 
+    /*  provide support for opening external items  */
+    ui.openExternal = (item) => {
+        return electron.shell.openExternal(item)
+    }
+
     /*  provide logging  */
     ui.log = electronLog
     ui.log.transports.console.format = "{h}:{i}:{s}.{ms} › [{level}] {text}"

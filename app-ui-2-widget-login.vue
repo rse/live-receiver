@@ -57,10 +57,12 @@
 
         <!-- Logo & GDPR Notice -->
         <div class="col-2 notice">
-            <div ref="logo" class="logo-container">
-                <img v-bind:src="logo" class="logo" alt="LiVE"/>
+            <div class="box button" v-on:click="about">
+                <div ref="logo" class="logo-container">
+                    <img v-bind:src="logo" class="logo" alt="LiVE"/>
+                </div>
+                <div class="version">Receiver {{ version }}</div>
             </div>
-            <div class="version">Receiver {{ version }}</div>
         </div>
         <div class="footnote notice">
             Please enter the received <b>LiVE Relay Server</b> Fully Qualified
@@ -119,24 +121,6 @@
         margin-bottom: 10px;
         font-size: 18pt;
         font-weight: 200;
-    }
-    .notice {
-        margin-top: 10px;
-        .logo {
-            width: 100px;
-        }
-        .version {
-            font-weight: 200;
-        }
-    }
-    .logo-container {
-        perspective: 0px;
-        width: 100px;
-        .logo {
-            transform-origin: 50% 50%;
-            transform-style:  preserve-3d;
-            width: 100px;
-        }
     }
 
     /*  text input field  */
@@ -221,10 +205,38 @@
         font-size: 8pt;
         color: var(--color-std-fg-1);
     }
+    .notice {
+        margin-top: 10px;
+        .button {
+            width: calc(100% - 60px);
+            background-color: var(--color-std-bg-4);
+            border-radius: 5px;
+            padding: 10px 10px 5px 10px;
+            &:hover {
+                background-color: var(--color-sig-bg-4);
+            }
+            .logo-container {
+                perspective: 0px;
+                width: 80px;
+                margin-left: 10px;
+                .logo {
+                    transform-origin: 50% 50%;
+                    transform-style:  preserve-3d;
+                    width: 80px;
+                }
+            }
+            .version {
+                width: 100%;
+                font-weight: 200;
+                font-size: 10pt;
+                text-align: center;
+            }
+        }
+    }
     .settings {
         .button {
             margin-top: 10px;
-            width: 55px;
+            width: calc(100% - 50px);
             height: 55px;
             padding-left: 10px;
             background-color: var(--color-std-bg-4);
@@ -281,6 +293,11 @@ module.exports = {
 
     /*  component methods  */
     methods: {
+        /*  handle about  */
+        about () {
+            this.$emit("about")
+        },
+
         /*  handle settings  */
         settings () {
             this.$emit("settings")

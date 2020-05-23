@@ -114,12 +114,13 @@
             </div>
 
             <!-- login dialog -->
-            <div v-show="inLogin && !inSettings" class="login">
+            <div v-show="inLogin && !inSettings && !inAbout" class="login">
                 <login
                     ref="login"
                     v-bind:live-relay-server.sync="liveRelayServer"
                     v-bind:live-access-token.sync="liveAccessToken"
                     v-on:settings="settingsOpen"
+                    v-on:about="aboutOpen"
                     v-on:login="login"
                 />
             </div>
@@ -134,6 +135,14 @@
                     v-bind:audio-input-device.sync="audioInputDevice"
                     v-bind:audio-output-device.sync="audioOutputDevice"
                     v-on:save="settingsClose"
+                />
+            </div>
+
+            <!-- about dialog -->
+            <div v-show="inAbout" class="about">
+                <about
+                    ref="about"
+                    v-on:close="aboutClose"
                 />
             </div>
         </div>
@@ -816,6 +825,7 @@ module.exports = {
         loaded:                false,
         inLogin:               true,
         inSettings:            false,
+        inAbout:               false,
         allowDisconnect:       true,
         personPortrait:        "",
         personName:            "",
@@ -939,7 +949,8 @@ module.exports = {
     components: {
         "login":       "url:app-ui-2-widget-login.vue",
         "settings":    "url:app-ui-3-widget-settings.vue",
-        "videostream": "url:app-ui-5-widget-videostream.vue"
+        "videostream": "url:app-ui-5-widget-videostream.vue",
+        "about":       "url:app-ui-6-widget-about.vue"
     },
 
     /*  component methods  */
@@ -1016,6 +1027,18 @@ module.exports = {
                 audioInputDevice:     this.audioInputDevice,
                 audioOutputDevice:    this.audioOutputDevice
             })
+        },
+
+        /*  about handling */
+        aboutOpen () {
+            if (!this.inLogin || this.inSettings || this.inAbout)
+                return
+            this.inAbout = true
+        },
+        aboutClose () {
+            if (!this.inAbout)
+                return
+            this.inAbout = false
         },
 
         /*  login/connect and logout/disconnect handling  */
