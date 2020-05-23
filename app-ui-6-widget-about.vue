@@ -75,6 +75,7 @@
 
             <p/>
             <div class="box button close" v-on:click="$emit('close')">Close</div>
+        </div>
     </div>
 </template>
 
@@ -180,7 +181,7 @@ module.exports = {
     /*  component methods  */
     methods: {
         openURL (ev) {
-            let url = ev.target.getAttribute("href")
+            const url = ev.target.getAttribute("href")
             ev.preventDefault()
             ui.openExternal(url)
         }

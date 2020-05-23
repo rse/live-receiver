@@ -15,10 +15,8 @@ else
     process.noDeprecation = true
 
 /*  enter an asynchronous environment in renderer process  */
+ui = {}
 ;(async () => {
-    /*  the global UI object  */
-    ui = {}
-
     /*  flag the readyness of the DOM
         (we have to call this very early to not miss the event,
         although we will wait for this event later on)  */
