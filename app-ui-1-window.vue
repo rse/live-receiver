@@ -157,8 +157,8 @@
                     disabled: inLogin || audioInputDevice === '' || audioOutputDevice === '' || votingActive,
                     active: audioRecording || audioPlaying || audioBlob !== null
                 }">
-                <span v-show="!audioRecording && audioBlob === null"><i class="icon fa fa-dot-circle"></i></span>
-                <span v-show=" audioRecording && audioBlob === null"><i class="icon fa fa-stop-circle"></i></span>
+                <span v-show="!audioRecording && audioBlob === null"><i class="icon fa fa-microphone-alt"></i></span>
+                <span v-show=" audioRecording && audioBlob === null"><i class="icon fa fa-microphone-alt-slash"></i></span>
                 <span v-show="!audioPlaying   && audioBlob !== null"><i class="icon fa fa-play-circle"></i></span>
                 <span v-show=" audioPlaying   && audioBlob !== null"><i class="icon fa fa-stop-circle"></i></span>
                 <span v-show="!audioRecording && audioBlob === null" class="title">Record Message</span>

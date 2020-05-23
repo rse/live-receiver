@@ -88,8 +88,8 @@
             <div class="selbox"
                 v-on:click="audioInputTest"
                 v-bind:class="{ disabled: intAudioInputDevice === null, active: audioInputTestActive }">
-                <span v-show="!audioInputTestActive" class="icon"><i class="fa fa-dot-circle"></i></span>
-                <span v-show="audioInputTestActive"  class="icon"><i class="fa fa-stop-circle"></i></span>
+                <span v-show="!audioInputTestActive" class="icon"><i class="fa fa-microphone-alt"></i></span>
+                <span v-show="audioInputTestActive"  class="icon"><i class="fa fa-microphone-alt-slash"></i></span>
             </div>
         </div>
 
