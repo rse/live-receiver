@@ -8,6 +8,10 @@
 const electron    = require("electron")
 const electronLog = require("electron-log")
 
+/*  provide more run-time debugging  */
+if (process.env.DEBUG)
+    process.traceProcessWarnings = true
+
 /*  enter an asynchronous environment in renderer process  */
 ;(async () => {
     /*  the global UI object  */
