@@ -7,7 +7,7 @@
 -->
 
 <template>
-    <div v-bind:style="style" class="about">
+    <div class="about">
         <div class="col-2-3">
             <div class="title">
                 About LiVE Receiver
@@ -37,11 +37,11 @@
                     <tr>
                         <td class="product"><a href="https://www.electronjs.org/" v-on:click="openURL">Electron</a></td>
                         <td class="version">{{ versions.electron }}</td>
-                        <td class="product"><a href="https://vuejs.org/" v-on:click="openURL">VueJS</a></td>
+                        <td class="product"><a href="https://vuejs.org/" v-on:click="openURL">Vue.js</a></td>
                         <td class="version">{{ pkg.dependencies.vue }}</td>
                     </tr>
                     <tr>
-                        <td class="product"><a href="https://nodejs.org/" v-on:click="openURL">Node</a></td>
+                        <td class="product"><a href="https://nodejs.org/" v-on:click="openURL">Node.js</a></td>
                         <td class="version">{{ versions.node }}</td>
                         <td class="product"><a href="https://lesscss.org/" v-on:click="openURL">LESS-CSS</a></td>
                         <td class="version">{{ pkg.dependencies.less }}</td>
@@ -59,15 +59,15 @@
                         <td class="version">{{ pkg.dependencies["typopro-web"] }}</td>
                     </tr>
                     <tr>
-                        <td class="product"><a href="https://vuejs.org/" v-on:click="openURL">MP4Box</a></td>
+                        <td class="product"><a href="https://gpac.github.io/mp4box.js/" v-on:click="openURL">MP4Box.js</a></td>
                         <td class="version">{{ pkg.dependencies.mp4box }}</td>
-                        <td class="product"><a href="https://animejs.com/" v-on:click="openURL">AnimeJS</a></td>
+                        <td class="product"><a href="https://animejs.com/" v-on:click="openURL">Anime.js</a></td>
                         <td class="version">{{ pkg.dependencies.animejs }}</td>
                     </tr>
                     <tr>
                         <td class="product"><a href="https://npmjs.com/mqtt" v-on:click="openURL">MQTT.js</a></td>
                         <td class="version">{{ pkg.dependencies.mqtt }}</td>
-                        <td class="product"><a href="https://howlerjs.com/" v-on:click="openURL">HowlerJS</a></td>
+                        <td class="product"><a href="https://howlerjs.com/" v-on:click="openURL">Howler.js</a></td>
                         <td class="version">{{ pkg.dependencies.howler }}</td>
                     </tr>
                 </table>
@@ -89,10 +89,11 @@
     padding: 20px 30px 20px 30px;
     border-radius: 5px;
     display: grid;
-    grid-template-columns: 120px 80px 400px;
+    grid-template-columns: 120px 80px 300px;
     column-gap: 20px;
     row-gap: 0px;
-    font-size: 12pt;
+    font-family: "TypoPRO Source Sans Pro";
+    font-size: 11pt;
     .col-1 {
         grid-column-start: 1;
     }
@@ -122,10 +123,10 @@
             border-spacing: 0;
         }
         .product {
-            padding-left: 40px;
+            padding-left: 30px;
         }
         .version {
-            padding-left: 20px;
+            padding-left: 10px;
         }
     }
     .close {
@@ -144,7 +145,6 @@
         outline: none;
         text-decoration: none;
         color: var(--color-std-fg-5);
-        padding: 0 4px 0 4px;
         border-radius: 5px;
     }
     a:hover {
@@ -158,23 +158,12 @@
 module.exports = {
     name: "about",
 
-    /*  component static properties  */
-    props: {
-    },
-
     /*  component variable properties  */
     data: function () {
         return {
-            logo:    ui.logo,
-            pkg:     ui.pkg
-        }
-    },
-
-    /*  component computed properties  */
-    computed: {
-        style: ui.vueprop2cssvar(),
-        versions: () => {
-            return process.versions
+            logo:     ui.logo,
+            pkg:      ui.pkg,
+            versions: process.versions
         }
     },
 
@@ -185,10 +174,6 @@ module.exports = {
             ev.preventDefault()
             ui.openExternal(url)
         }
-    },
-
-    /*  component DOM mounting hook  */
-    mounted () {
     }
 }
 </script>
