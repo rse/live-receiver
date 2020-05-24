@@ -56,6 +56,7 @@
         "asar":              true,
         "asarUnpack":        [ "app-main-relay-videostream.d/ffmpeg*" ],
         "removePackageScripts": true,
+        "compression":       "normal",
         "directories": {
             "output":        "dist"
         },
@@ -79,7 +80,15 @@
                 "!*.ai",
                 "!node_modules/electron-prebuilt/**",
                 "!node_modules/electron-builder/**"
-            ]
+            ],
+            "target": [ {
+                "target":    "portable",
+                "arch":      [ "x64" ]
+            } ]
+        },
+        "portable": {
+            "useZip":        true,
+            "artifactName":  "LiVE-Receiver.exe"
         }
     },
     "scripts": {

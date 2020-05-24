@@ -30,17 +30,15 @@ const zip   = require("cross-zip")
     if (os.platform() === "win32") {
         /*  run Electron-Builder to package the application  */
         console.log("++ packaging App as an Electron distribution for Windows platform")
-        execa.sync(electronbuilder, [ "--dir" ],
+        execa.sync(electronbuilder, [],
             { stdin: "inherit", stdout: "inherit", stderr: "inherit" })
 
         /*  pack application into a distribution archive
             (notice: under macOS the ZIP does NOT automatically use a top-level directory)  */
         console.log("++ packing App into ZIP distribution archive")
-        shell.mkdir("dist/win")
-        shell.mv("dist/win-unpacked", "dist/win/LiVE-Receiver")
         zip.zipSync(
-            path.join(__dirname, "dist/win"),
-            path.join(__dirname, "dist/LiVE-Receiver-win32-x64.zip")
+            path.join(__dirname, "dist/LiVE-Receiver.exe"),
+            path.join(__dirname, "dist/LiVE-Receiver-win-x64.zip")
         )
     }
     else if (os.platform() === "darwin") {
@@ -55,7 +53,7 @@ const zip   = require("cross-zip")
         shell.mv("dist/mac/LiVE-Receiver.app", "dist/LiVE-Receiver.app")
         zip.zipSync(
             path.join(__dirname, "dist/LiVE-Receiver.app"),
-            path.join(__dirname, "dist/LiVE-Receiver-darwin-x64.zip")
+            path.join(__dirname, "dist/LiVE-Receiver-mac-x64.zip")
         )
     }
 })().catch((err) => {
