@@ -1058,6 +1058,9 @@ module.exports = {
                 liveRelayServer:      this.liveRelayServer,
                 liveAccessToken:      this.liveAccessToken
             })
+            setTimeout(() => {
+                this.sendFeeling()
+            }, 2 * 1000)
         },
         logout () {
             if (this.inLogin)
