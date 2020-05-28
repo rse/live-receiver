@@ -176,7 +176,7 @@ module.exports = class EventStream extends EventEmitter {
                 /*  refresh attendance (regularly)  */
                 if (firstConnect) {
                     this.timer = setInterval(() => {
-                        if (this.broker.connected) {
+                        if (this.broker !== null && this.broker.connected) {
                             this.send({
                                 id:    "live-sender",
                                 event: "attendance",
@@ -184,7 +184,7 @@ module.exports = class EventStream extends EventEmitter {
                                     client: this.options.client,
                                     event:  "refresh"
                                 }
-                            })
+                            }).catch((err) => true)
                         }
                     }, this.options.interval)
                 }
@@ -206,7 +206,7 @@ module.exports = class EventStream extends EventEmitter {
         }
         if (this.broker !== null) {
             /*  end attendance (explicitly)  */
-            this.send({
+            await this.send({
                 id:    "live-sender",
                 event: "attendance",
                 data: {
@@ -215,22 +215,28 @@ module.exports = class EventStream extends EventEmitter {
                 }
             })
             this.broker.end()
+            this.broker = null
         }
     }
 
     /*  send a message to the LiVE Sender side  */
-    send (message) {
+    async send (message) {
         if (this.broker === null)
             throw new Error("not connected")
-        message = JSON.stringify(message)
-        this.emit("sent", message)
-        this.broker.publish(`stream/${this.options.channel}/sender`, message, { qos: 2 }, (err) => {
-            if (err) {
-                this.options.log("error", `eventstream: MQTT: publish: ${err}`)
-                this.emit("send:error", err)
-            }
-            else
-                this.emit("send:success", message)
+        return new Promise((resolve, reject) => {
+            message = JSON.stringify(message)
+            this.emit("sent", message)
+            this.broker.publish(`stream/${this.options.channel}/sender`, message, { qos: 2 }, (err) => {
+                if (err) {
+                    this.options.log("error", `eventstream: MQTT: publish: ${err}`)
+                    this.emit("send:error", err)
+                    reject(err)
+                }
+                else {
+                    this.emit("send:success", message)
+                    resolve()
+                }
+            })
         })
     }
 }
