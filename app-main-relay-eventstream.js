@@ -22,7 +22,7 @@ module.exports = class EventStream extends EventEmitter {
             channel: " ",
             token1:   "",
             token2:   "",
-            interval: 30 * 1000,
+            interval: 10 * 60 * 1000,
             log:      (level, msg) => {}
         }, options)
         this.broker = null

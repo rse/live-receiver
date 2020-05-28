@@ -1276,7 +1276,7 @@ module.exports = {
         /*  regularly refresh feeling  */
         this.timer1 = setInterval(() => {
             this.sendFeeling()
-        }, 60 * 1000)
+        }, 10 * 60 * 1000)
     },
 
     /*  component DOM mounting hook  */
