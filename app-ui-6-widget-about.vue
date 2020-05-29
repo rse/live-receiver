@@ -55,7 +55,7 @@
                     </tr>
                     <tr>
                         <td class="product"><a href="https://ffmpeg.org/" v-on:click="openURL">FFmpeg</a></td>
-                        <td class="version">4.2.2</td>
+                        <td class="version">4.2.3</td>
                         <td class="product"><a href="https://typopro.org" v-on:click="openURL">TypoPRO</a></td>
                         <td class="version">{{ pkg.dependencies["typopro-web"] }}</td>
                     </tr>
