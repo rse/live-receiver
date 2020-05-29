@@ -132,6 +132,23 @@ const app = electron.app
         app.audioInputDevice     = settings.get("audio-input-device",     "")
         app.audioOutputDevice    = settings.get("audio-output-device",    "")
 
+        /*  ensure to-be-restored window position is still valid
+            (because if external dispays are used, they can be no longer connected)  */
+        const visible = electron.screen.getAllDisplays().some((display) => {
+            return (
+                app.x >= display.bounds.x &&
+                app.y >= display.bounds.y &&
+                app.x + app.w <= display.bounds.x + display.bounds.width &&
+                app.y + app.h <= display.bounds.y + display.bounds.height
+            )
+        })
+        if (!visible) {
+            app.x = 100
+            app.y = 100
+            app.w = 1280 + 40
+            app.h = 720  + 40
+        }
+
         /*  save back the settings once at startup  */
         settings.set("client-id",              app.clientId)
         settings.set("window-x",               app.x)
