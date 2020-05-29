@@ -184,7 +184,7 @@ module.exports = class EventStream extends EventEmitter {
                                     client: this.options.client,
                                     event:  "refresh"
                                 }
-                            }).catch((err) => true)
+                            }).catch((err) => void (err))
                         }
                     }, this.options.interval)
                 }
