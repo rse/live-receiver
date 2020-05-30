@@ -1395,7 +1395,7 @@ module.exports = {
             this.votingActive = false
         })
 
-        /*  global hotkey support  */
+        /*  hotkey support  */
         Mousetrap.bind("ctrl+s", () => this.screenshot())
         Mousetrap.bind("ctrl+a", () => this.toggleAudio())
         Mousetrap.bind("ctrl+f", () => this.fullscreen())

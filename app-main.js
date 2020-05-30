@@ -138,10 +138,10 @@ const app = electron.app
             (because if external dispays are used, they can be no longer connected)  */
         const visible = electron.screen.getAllDisplays().some((display) => {
             return (
-                app.x >= display.bounds.x &&
-                app.y >= display.bounds.y &&
-                app.x + app.w <= display.bounds.x + display.bounds.width &&
-                app.y + app.h <= display.bounds.y + display.bounds.height
+                app.x >= display.bounds.x
+                && app.y >= display.bounds.y
+                && app.x + app.w <= display.bounds.x + display.bounds.width
+                && app.y + app.h <= display.bounds.y + display.bounds.height
             )
         })
         if (!visible) {
@@ -198,7 +198,7 @@ const app = electron.app
             minHeight:       650,
             resizable:       true,
             webPreferences: {
-                devTools:                process.env.DEBUG ? true : false,
+                devTools:                !!process.env.DEBUG,
                 nodeIntegration:         true,
                 nodeIntegrationInWorker: true,
                 enableRemoteModule:      true,
@@ -244,7 +244,7 @@ const app = electron.app
                 submenu: [
                     { role: "cut" },
                     { role: "copy" },
-                    { role: "paste" },
+                    { role: "paste" }
                 ]
             }, {
                 role: "window",
