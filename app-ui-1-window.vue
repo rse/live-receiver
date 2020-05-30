@@ -30,7 +30,7 @@
             <!-- screenshot -->
             <div class="box button screenshot" v-on:click="screenshot"
                 v-tooltip.bottom-center="{ content: 'Saves a screenshot of the current video<br/>' +
-                    'stream to your personal Picture folder' }"
+                    'stream to your personal <i>Picture</i> folder' }"
                 v-bind:class="{ disabled: inLogin }">
                 <i class="icon fa fa-camera"></i>
                 <span class="title">Screenshot</span>
