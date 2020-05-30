@@ -1278,6 +1278,7 @@ module.exports = {
         screenshot () {
             if (this.inLogin)
                 return
+            ui.soundfx.playAndWait("throw2")
             let { x, y, width, height } = this.$refs.video.getBoundingClientRect()
             x      = Math.floor(x)
             y      = Math.floor(y)
