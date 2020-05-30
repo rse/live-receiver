@@ -1392,6 +1392,15 @@ module.exports = {
             ui.log.info("voting-end")
             this.votingActive = false
         })
+
+        /*  global hotkey support  */
+        Mousetrap.bind("ctrl+s", () => this.screenshot())
+        Mousetrap.bind("ctrl+a", () => this.toggleAudio())
+        Mousetrap.bind("ctrl+f", () => this.fullscreen())
+        Mousetrap.bind("ctrl+m", (ev) => {
+            this.$refs.message.focus()
+            ev.preventDefault()
+        })
     },
 
     /*  component destruction hook  */

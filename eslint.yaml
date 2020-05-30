@@ -41,6 +41,7 @@ globals:
     less:           true
     SVG:            true
     Vue:            true
+    Mousetrap:      true
 
 rules:
     #   modified rules
