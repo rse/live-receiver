@@ -33,7 +33,7 @@
 
             <!-- audio mute -->
             <div class="box button mute"
-                v-on:click="volumeMute = inLogin ? volumeMute : (volume === 0 ? volumeMute : !volumeMute)"
+                v-on:click="toggleAudio"
                 v-bind:class="{ disabled: inLogin || volume === 0, active: volumeMute }">
                 <span v-show="volumeMute"><i class="icon fa fa-volume-mute"></i></span>
                 <span v-show="!volumeMute && volume < 30"><i class="icon fa fa-volume-down"></i></span>
@@ -1267,6 +1267,12 @@ module.exports = {
                 this.audioElement.pause()
                 this.volumeMute = false
             }
+        },
+        toggleAudio () {
+            if (!inLogin)
+                return
+            if (volume > 0)
+                volumeMute = !volumeMute
         },
         screenshot () {
             if (this.inLogin)
