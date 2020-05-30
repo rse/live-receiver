@@ -54,6 +54,16 @@ ui = {}
     ui.imageDataURI = require("image-data-uri")
     ui.pkg          = require("./package.json")
 
+    /*  determine audio/video devices  */
+    ui.devices = []
+    const updateDevices = async () => {
+        ui.devices = await navigator.mediaDevices.enumerateDevices()
+        if (ui.root && ui.root.$refs && ui.root.$refs.win)
+            ui.root.$refs.win.$emit("updated-devices")
+    }
+    navigator.mediaDevices.ondevicechange = updateDevices
+    await updateDevices()
+
     /*  initialize sound effects  */
     const sfx = new SoundFX({ basedir: "node_modules/@rse/soundfx" })
     ui.soundfx = new Howl({ ...sfx.config(), volume: 0.4, preload: true })
@@ -161,15 +171,6 @@ ui = {}
             ui.root.$refs.win.$emit(event, ...args)
         })
     }
-
-    /*  determine audio/video devices  */
-    ui.devices = []
-    const updateDevices = async () => {
-        ui.devices = await navigator.mediaDevices.enumerateDevices()
-        ui.root.$refs.win.$emit("updated-devices")
-    }
-    navigator.mediaDevices.ondevicechange = updateDevices
-    await updateDevices()
 
     /*  finally signal main thread we are ready  */
     ui.log.info("ui: UI ready")
