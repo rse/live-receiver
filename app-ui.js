@@ -134,7 +134,8 @@ ui = {}
         "stream-buffering",
         "minimize", "maximize", "fullscreen",
         "resize", "set-size", "quit",
-        "message", "feedback", "feeling"
+        "message", "feedback", "feeling",
+        "screenshot"
     ]
     for (const event of events) {
         ui.root.$refs.win.$on(event, async (...args) => {

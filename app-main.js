@@ -8,10 +8,12 @@
 const electron     = require("electron")
 const electronLog  = require("electron-log")
 const os           = require("os")
+const fs           = require("fs")
 const path         = require("path")
 const EventEmitter = require("eventemitter2")
 const imageDataURI = require("image-data-uri")
 const throttle     = require("throttle-debounce").throttle
+const moment       = require("moment")
 const UUID         = require("pure-uuid")
 
 /*  internal requirements  */
@@ -320,6 +322,17 @@ const app = electron.app
             app.w = size.w
             app.h = size.h
             app.win.setSize(app.w, app.h)
+        })
+
+        /*  handle screenshot creation  */
+        app.ipc.handle("screenshot", async (event, rect) => {
+            const nativeImage = await app.win.capturePage(rect)
+            const buffer = nativeImage.toPNG()
+            const timestamp = moment().format("YYYY-MM-DD-HH-mm-ss")
+            const filename = path.join(app.getPath("pictures"),
+                `LiVE-Receiver-Screenshot-${timestamp}.png`)
+            app.log.info(`saving screenshot ${rect.width}x${rect.height}@${rect.x}+${rect.y} to "${filename}"`)
+            await fs.promises.writeFile(filename, buffer, { encoding: null })
         })
 
         /*  the LiVE Relay VideoStream/EventStream communication establishment  */

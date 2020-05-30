@@ -32,6 +32,7 @@
         "jsonfile":                        "6.0.1",
         "syspath":                         "1.0.1",
         "execa":                           "4.0.2",
+        "moment":                          "2.26.0",
         "vue":                             "2.6.11",
         "vue-multiselect":                 "2.1.6",
         "v-tooltip":                       "2.0.3",

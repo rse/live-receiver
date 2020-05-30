@@ -24,8 +24,16 @@
                 <span class="title">kbps</span>
             </div>
 
+            <!-- screenshot -->
+            <div class="box button screenshot" v-on:click="screenshot"
+                v-bind:class="{ disabled: inLogin }">
+                <i class="icon fa fa-camera"></i>
+                <span class="title">Screenshot</span>
+            </div>
+
             <!-- audio mute -->
-            <div class="box button mute" v-on:click="volumeMute = volume === 0 ? volumeMute : !volumeMute"
+            <div class="box button mute"
+                v-on:click="volumeMute = inLogin ? volumeMute : (volume === 0 ? volumeMute : !volumeMute)"
                 v-bind:class="{ disabled: inLogin || volume === 0, active: volumeMute }">
                 <span v-show="volumeMute"><i class="icon fa fa-volume-mute"></i></span>
                 <span v-show="!volumeMute && volume < 30"><i class="icon fa fa-volume-down"></i></span>
@@ -1259,6 +1267,16 @@ module.exports = {
                 this.audioElement.pause()
                 this.volumeMute = false
             }
+        },
+        screenshot () {
+            if (this.inLogin)
+                return
+            let { x, y, width, height } = this.$refs.video.getBoundingClientRect()
+            x      = Math.floor(x)
+            y      = Math.floor(y)
+            width  = Math.floor(width)
+            height = Math.floor(height)
+            this.$emit("screenshot", { x, y, width, height })
         }
     },
 
