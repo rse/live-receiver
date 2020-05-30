@@ -104,7 +104,13 @@ ui = {}
     Vue.component("v-multiselect", VueMultiselect.default)
 
     /*  support Vue tooltip functionality  */
-    Vue.use(VTooltip, { disposeTimeout: 0 })
+    Object.assign(VTooltip.VTooltip.options, {
+        defaultHtml:    true,
+        defaultDelay:   { show: 1000, hide: 0 },
+        defaultOffset:  5,
+        disposeTimeout: 0
+    })
+    Vue.use(VTooltip)
 
     /*  start DOM rendering with the outmost <win> component  */
     ui.root = new Vue({ el: "#ui", name: "ui", components: { "win": "url:app-ui-1-window.vue" } })
