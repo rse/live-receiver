@@ -179,15 +179,10 @@
             <!-- audio record -->
             <div class="box button audio-record" v-on:click="audioRecordOrPlay"
                 v-tooltip.top-center="{
-                    html: true,
                     content: recordText,
-                    show: recordTextShow && !inLogin || recordState > 0 || audioRecording,
-                    trigger: 'manual',
                     hideOnTargetClick: false,
                     autoHide: false
                 }"
-                v-on:mouseover="recordTextShow = true"
-                v-on:mouseleave="recordTextShow = false"
                 v-bind:class="{
                     disabled: inLogin || audioInputDevice === '' || audioOutputDevice === '' || votingActive,
                     active: audioRecording || audioPlaying || audioBlob !== null
@@ -204,9 +199,9 @@
 
             <!-- enter message -->
             <div class="box message-text" v-bind:class="{ disabled: inLogin, active: message !== '' }">
-                <span v-show="!votingActive || votingActive && votingType === 'propose'">
+                <span v-show="!votingActive || votingActive && votingType === 'propose'"
+                    v-tooltip.bottom-center="{ content: 'Send a textual message to the trainer' }">
                     <input
-                        v-tooltip.bottom-center="{ content: 'Send a textual message to the trainer' }"
                         v-bind:disabled="inLogin || votingDone"
                         ref="message"
                         type="text"
@@ -217,6 +212,7 @@
                     />
                 </span>
                 <div v-show="votingActive && votingType === 'judge'"
+                    v-tooltip.bottom-center="{ content: 'Send a boolean voting to the trainer' }"
                     v-bind:class="{ 'choice-row': true, disabled: votingDone }">
                     <div v-bind:class="{ 'choice-box': true, active: votingChoice === 1 }"
                         v-on:click="sendChoice(1, 'yes')">
@@ -228,6 +224,7 @@
                     </div>
                 </div>
                 <div v-show="votingActive && votingType === 'evaluate'"
+                    v-tooltip.bottom-center="{ content: 'Send a numeric evaluation to the trainer' }"
                     v-bind:class="{ 'choice-row': true, disabled: votingDone }">
                     <div v-bind:class="{ 'choice-box': true, active: votingChoice === 1 }"
                         v-on:click="sendChoice(1, '-2')">
@@ -251,6 +248,7 @@
                     </div>
                 </div>
                 <div v-show="votingActive && votingType === 'choose'"
+                    v-tooltip.bottom-center="{ content: 'Send a numeric choice to the trainer' }"
                     v-bind:class="{ 'choice-row': true, disabled: votingDone }">
                     <div v-bind:class="{ 'choice-box': true, active: votingChoice === 1 }"
                          v-on:click="sendChoice(1, '1')">1</div>
@@ -323,16 +321,7 @@
 
             <!-- challenge -->
             <div class="box slider challenge" v-bind:class="{ disabled: inLogin }"
-                v-tooltip.top-center="{
-                    html: true,
-                    content: challengeText,
-                    show: challengeTextShow && !inLogin,
-                    trigger: 'manual',
-                    hideOnTargetClick: false,
-                    autoHide: false
-                }"
-                v-on:mouseover="challengeTextShow = true"
-                v-on:mouseleave="challengeTextShow = false">
+                v-tooltip.top-center="{ content: challengeText, hideOnTargetClick: false }">
                 <input ref="challenge"
                     v-bind:class="[ 'challenge', 'range' + challenge ]"
                     v-bind:disabled="inLogin"
@@ -344,16 +333,7 @@
 
             <!-- mood -->
             <div class="box slider mood" v-bind:class="{ disabled: inLogin }"
-                v-tooltip.top-center="{
-                    html: true,
-                    content: moodText,
-                    show: moodTextShow && !inLogin,
-                    trigger: 'manual',
-                    hideOnTargetClick: false,
-                    autoHide: false
-                }"
-                v-on:mouseover="moodTextShow = true"
-                v-on:mouseleave="moodTextShow = false">
+                v-tooltip.top-center="{ content: moodText, hideOnTargetClick: false }">
                 <input ref="mood"
                     v-bind:class="[ 'mood', 'range' + mood ]"
                     v-bind:disabled="inLogin"
@@ -878,11 +858,8 @@ module.exports = {
         volume:                100,
         volumeMute:            false,
         recordState:           0,
-        recordTextShow:        false,
         mood:                  3,
-        moodTextShow:          false,
         challenge:             3,
-        challengeTextShow:     false,
         bandwidthBytes:        0,
         bandwidthText:         "",
         videoSize:             { w: 0, h: 0 },
