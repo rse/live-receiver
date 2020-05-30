@@ -206,6 +206,7 @@ const app = electron.app
             }
         })
         app.win.setHasShadow(true)
+        app.win.setContentProtection(true)
         app.win.loadURL(`file://${__dirname}/app-ui.html`)
         if (process.env.DEBUG) {
             setTimeout(() => {
