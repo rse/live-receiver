@@ -1269,10 +1269,10 @@ module.exports = {
             }
         },
         toggleAudio () {
-            if (!inLogin)
+            if (this.inLogin)
                 return
-            if (volume > 0)
-                volumeMute = !volumeMute
+            if (this.volume > 0)
+                this.volumeMute = !this.volumeMute
         },
         screenshot () {
             if (this.inLogin)
