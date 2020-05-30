@@ -689,7 +689,7 @@
             flex-grow: 1;
             input[type="text"] {
                 width: calc(100% - 20px);
-                height: 100%;
+                height: calc(100% - 12px);
                 font-size: 12pt;
                 border: 0;
                 color:                   var(--color-std-fg-3);
@@ -698,13 +698,13 @@
                 border-left:   1px solid var(--color-std-bg-1);
                 border-right:  1px solid var(--color-std-bg-5);
                 border-bottom: 1px solid var(--color-std-bg-5);
-                padding: 0px 10px 4px 10px;
+                padding: 4px 10px 4px 10px;
                 position: relative;
                 &::placeholder {
                     color: var(--color-std-fg-1);
                     font-size: 10pt;
                     position: relative;
-                    top: -4px;
+                    top: -1px;
                 }
                 &:hover, &:focus {
                     border: 0;
