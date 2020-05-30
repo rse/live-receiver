@@ -39,7 +39,6 @@ module.exports = class VideoStream extends EventEmitter {
             token1:     "",
             token2:     "",
             timeout:    20 * 1000,
-            resolution: "1080p",
             buffering:  2000,
             log:        (level, msg) => {}
         }, options)
@@ -63,8 +62,6 @@ module.exports = class VideoStream extends EventEmitter {
 
         /*  determine RTMPS URL  */
         let url = `rtmps://${this.options.server}/stream/${this.options.channel}`
-        if (this.options.resolution !== "1080p")
-            url += `-${this.options.resolution}`
         url += `?key=${this.options.token1}-${this.options.token2}`
 
         /*  start ffmpeg(1) sub-process  */
