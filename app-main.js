@@ -306,7 +306,7 @@ const app = electron.app
             app.win.webContents.send("fullscreened", fullscreened)
             updateBounds()
         }))
-        app.win.on("move",   throttle(1000, () => {
+        app.win.on("move", throttle(1000, () => {
             updateBounds()
         }))
 
