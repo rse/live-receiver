@@ -212,6 +212,11 @@ const app = electron.app
             app.win.show()
             app.win.focus()
         })
+        app.win.webContents.on("did-finish-load", () => {
+            app.win.webContents.setZoomFactor(1.0)
+            app.win.webContents.setZoomLevel(0)
+            app.win.webContents.setVisualZoomLevelLimits(1, 1)
+        })
 
         /*  react on explicit window close  */
         app.ipc.handle("quit", (event) => {
