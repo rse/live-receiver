@@ -223,6 +223,48 @@ const app = electron.app
             app.win.webContents.setVisualZoomLevelLimits(1, 1)
         })
 
+        /*  configure application menu
+            (actually only relevant under macOS where even frameless windows have a menu)  */
+        const openURL = (url) =>
+            async () => { await electron.shell.openExternal(url) }
+        const menuTemplate = [
+            {
+                label: app.name,
+                submenu: [
+                    { role: "about" },
+                    { type: "separator" },
+                    { role: "hide" },
+                    { role: "hideothers" },
+                    { role: "unhide" },
+                    { type: "separator" },
+                    { role: "quit" }
+                ]
+            }, {
+                label: "Edit",
+                submenu: [
+                    { role: "cut" },
+                    { role: "copy" },
+                    { role: "paste" },
+                ]
+            }, {
+                role: "window",
+                submenu: [
+                    { role: "minimize" },
+                    { role: "zoom" },
+                    { role: "togglefullscreen" },
+                    { role: "front" }
+                ]
+            }, {
+                role: "help",
+                submenu: [
+                    { label: "More about LiVE",          click: openURL("https://video-experience.live") },
+                    { label: "More about LiVE Receiver", click: openURL("https://github.com/rse/live-receiver") }
+                ]
+            }
+        ]
+        const menu = electron.Menu.buildFromTemplate(menuTemplate)
+        electron.Menu.setApplicationMenu(menu)
+
         /*  react on explicit window close  */
         app.ipc.handle("quit", (event) => {
             settings.save()
