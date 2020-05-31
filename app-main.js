@@ -43,6 +43,16 @@ const app = electron.app
 
     /*  provide logging facility  */
     app.log = electronLog
+    if (process.env.DEBUG) {
+        app.log.transports.file.level    = "debug"
+        app.log.transports.console.level = "debug"
+    }
+    else {
+        app.log.transports.file.level    = "info"
+        app.log.transports.console.level = false
+    }
+    app.log.transports.remote.level  = false
+    app.log.transports.ipc.level     = false
     app.log.transports.console.format = "{h}:{i}:{s}.{ms} › [{level}] {text}"
     app.log.transports.file.format = "[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}"
     app.log.debug(`(persistent log under ${app.log.transports.file.getFile()})`)
