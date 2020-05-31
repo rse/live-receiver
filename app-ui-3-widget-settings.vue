@@ -132,10 +132,10 @@
             in <i>LiVE Receiver</i> (trainee-side) and are
             only transmitted to the <i>LiVE Relay</i>
             (server-side) and <i>LiVE Sender</i> (trainer-side)
-            when you explicitly send a message to the
-            trainer.  Choose a standard avatar as your
+            when you connect and send a message to the
+            trainer. Choose a standard avatar as your
             portrait and an arbitrary nickname if you wish
-            to remain anomymous.
+            to remain anonymous.
         </span>
     </div>
 </template>
