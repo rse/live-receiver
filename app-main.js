@@ -10,7 +10,6 @@ const electronLog  = require("electron-log")
 const os           = require("os")
 const fs           = require("fs")
 const path         = require("path")
-const EventEmitter = require("eventemitter2")
 const imageDataURI = require("image-data-uri")
 const throttle     = require("throttle-debounce").throttle
 const moment       = require("moment")
@@ -39,7 +38,6 @@ const app = electron.app
 
     /*  provide APIs for communication  */
     app.ipc   = electron.ipcMain
-    app.event = new EventEmitter({ wildcard: true })
 
     /*  provide logging facility  */
     app.log = electronLog
