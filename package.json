@@ -72,7 +72,14 @@
             "files": [
                 "!*.ai",
                 "!node_modules/electron-prebuilt/**",
-                "!node_modules/electron-builder/**"
+                "!node_modules/electron-builder/**",
+                "!node_modules/nodemon/**",
+                "!node_modules/shelljs/**",
+                "!node_modules/glob/**",
+                "!node_modules/babel-eslint/**",
+                "!node_modules/eslint*/**",
+                "!node_modules/cross-env/**",
+                "!node_modules/cross-zip/**"
             ]
         },
         "win": {
@@ -80,7 +87,14 @@
             "files": [
                 "!*.ai",
                 "!node_modules/electron-prebuilt/**",
-                "!node_modules/electron-builder/**"
+                "!node_modules/electron-builder/**",
+                "!node_modules/nodemon/**",
+                "!node_modules/shelljs/**",
+                "!node_modules/glob/**",
+                "!node_modules/babel-eslint/**",
+                "!node_modules/eslint*/**",
+                "!node_modules/cross-env/**",
+                "!node_modules/cross-zip/**"
             ],
             "target": [ {
                 "target":    "portable",
