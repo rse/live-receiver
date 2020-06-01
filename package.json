@@ -15,7 +15,6 @@
         "nodemon":                         "2.0.4",
         "shelljs":                         "0.8.4",
         "glob":                            "7.1.6",
-        "babel-eslint":                    "10.1.0",
         "eslint":                          "7.1.0",
         "eslint-config-standard":          "14.1.1",
         "eslint-plugin-standard":          "4.0.1",
@@ -73,7 +72,6 @@
             "icon":          "app-res-icon.png",
             "files": [
                 "!*.ai",
-                "!node_modules/electron-prebuilt/**",
                 "!node_modules/electron-builder/**",
                 "!node_modules/nodemon/**",
                 "!node_modules/shelljs/**",
@@ -84,14 +82,19 @@
                 "!node_modules/cross-zip/**",
                 "!node_modules/npm-install-fetch/**",
                 "!node_modules/npm-run-all/**",
-                "!node_modules/modclean/**"
+                "!node_modules/modclean/**",
+                "!node_modules/electron/dist/**",
+                "!node_modules/dmg-builder/**",
+                "!node_modules/app-builder-bin/**",
+                "!node_modules/app-builder-lib/**",
+                "!node_modules/7zip-bin/**",
+                "!node_modules/npm/**"
             ]
         },
         "win": {
             "icon":          "app-res-icon.png",
             "files": [
                 "!*.ai",
-                "!node_modules/electron-prebuilt/**",
                 "!node_modules/electron-builder/**",
                 "!node_modules/nodemon/**",
                 "!node_modules/shelljs/**",
@@ -102,7 +105,13 @@
                 "!node_modules/cross-zip/**",
                 "!node_modules/npm-install-fetch/**",
                 "!node_modules/npm-run-all/**",
-                "!node_modules/modclean/**"
+                "!node_modules/modclean/**",
+                "!node_modules/electron/dist/**",
+                "!node_modules/dmg-builder/**",
+                "!node_modules/app-builder-bin/**",
+                "!node_modules/app-builder-lib/**",
+                "!node_modules/7zip-bin/**",
+                "!node_modules/npm/**"
             ],
             "target": [ {
                 "target":    "portable",

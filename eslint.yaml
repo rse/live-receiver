@@ -13,8 +13,7 @@ extends:
     - plugin:vue/essential
 
 parserOptions:
-    parser: babel-eslint
-    ecmaVersion: 8
+    ecmaVersion: 10
     sourceType:  module
     ecmaFeatures:
         jsx:     false
