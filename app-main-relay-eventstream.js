@@ -4,9 +4,11 @@
 **  Licensed under GPL 3.0 <https://spdx.org/licenses/GPL-3.0-only-only>
 */
 
+/*  standard requirements  */
+const EventEmitter = require("events")
+
 /*  external requirements  */
 const MQTTjs       = require("mqtt")
-const EventEmitter = require("eventemitter2")
 const UUID         = require("pure-uuid")
 
 /*  the exported API class  */

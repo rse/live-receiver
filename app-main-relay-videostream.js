@@ -4,12 +4,14 @@
 **  Licensed under GPL 3.0 <https://spdx.org/licenses/GPL-3.0-only>
 */
 
-/*  external requirements  */
+/*  standard requirements  */
 const os           = require("os")
 const path         = require("path")
+const EventEmitter = require("events")
+
+/*  external requirements  */
 const { app }      = require("electron")
 const execa        = require("execa")
-const EventEmitter = require("eventemitter2")
 const UUID         = require("pure-uuid")
 const MP4Box       = require("mp4box")
 

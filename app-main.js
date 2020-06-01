@@ -4,12 +4,14 @@
 **  Licensed under GPL 3.0 <https://spdx.org/licenses/GPL-3.0-only>
 */
 
-/*  external requirements  */
-const electron     = require("electron")
-const electronLog  = require("electron-log")
+/*  standard requirements  */
 const os           = require("os")
 const fs           = require("fs")
 const path         = require("path")
+
+/*  external requirements  */
+const electron     = require("electron")
+const electronLog  = require("electron-log")
 const imageDataURI = require("image-data-uri")
 const throttle     = require("throttle-debounce").throttle
 const moment       = require("moment")
