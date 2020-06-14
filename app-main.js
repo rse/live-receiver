@@ -591,8 +591,7 @@ const app = electron.app
                 id:    "live-sender",
                 event: "message",
                 data: {
-                    title:   app.personName,
-                    image:   app.personPortrait,
+                    client:  app.clientId,
                     text:    message.text,
                     ...(message.audio ? { audio: message.audio } : {})
                 }
