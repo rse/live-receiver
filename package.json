@@ -1,6 +1,6 @@
 {
     "name":                   "LiVE-Receiver",
-    "version":                "1.0.8",
+    "version":                "1.0.9",
     "description":            "Live Video Experience (LiVE) Receiver",
     "keywords":               [ "live", "video", "experience", "receiver" ],
     "license":                "GPL-3.0-only",
