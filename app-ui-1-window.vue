@@ -202,10 +202,10 @@
                 <span v-show="!votingActive || votingActive && votingType === 'propose'"
                     v-tooltip.bottom-center="{ content: 'Send a textual message to the trainer' }">
                     <input
-                        v-bind:disabled="inLogin || votingDone"
+                        v-bind:disabled="inLogin || (votingActive && votingDone)"
                         ref="message"
                         type="text"
-                        v-bind:placeholder="votingDone ? 'Thanks for voting' : (votingActive ? 'Type vote...' : 'Type message...')"
+                        v-bind:placeholder="(votingActive && votingDone) ? 'Thanks for voting' : (votingActive ? 'Type vote...' : 'Type message...')"
                         v-model="message"
                         v-on:keyup.enter="sendMessage"
                         v-on:keyup.escape="clearMessage(false)"
