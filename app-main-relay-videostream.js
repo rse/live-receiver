@@ -113,7 +113,7 @@ module.exports = class VideoStream extends EventEmitter {
                     continue
                 const user = { info: track, mimeCodec }
                 this.mp4box.setSegmentOptions(track.id, user, {
-                    nbSamples:     track.type === "video" ? 1 : 1,
+                    nbSamples:     track.type === "video" ? 30 : 60,
                     rapAlignement: true
                 })
             }

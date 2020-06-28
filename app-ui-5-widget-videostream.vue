@@ -263,7 +263,15 @@ module.exports = {
         /*  receive stream data  */
         const streamData = async (data) => {
             /*  transfer a stream data chunk into the <video> stream element  */
-            const transfer = () => {
+            let transferProgress = false
+            const transfer = async () => {
+                /*  ensure we are handling just one transfer per time  */
+                if (transferProgress) {
+                    timer = setTimeout(transfer, 1000 / 60 /* = 1s/60fps */)
+                    return
+                }
+                transferProgress = true
+
                 /*  remove a still pending timer  */
                 if (timer !== null) {
                     clearTimeout(timer)
@@ -282,7 +290,16 @@ module.exports = {
                         /*  feed new data  */
                         const data = queue.shift()
                         if (this.streaming) {
+                            /*  STRANGE: on the first appendBuffer() of the first SourceBuffer
+                                we have to wait a little bit (think: race condition!), or the second
+                                addSourceBuffer() of the MediaSource (see below) raised an exception!  */
+                            if (this.sb[data.id].buffered.length === 0)
+                                await new Promise((resolve) => setTimeout(resolve, 50))
+
+                            /*  track updating on our own, too */
                             updating[data.id] = true
+
+                            /*  now finally feed the data into the SourceBuiffer  */
                             try {
                                 this.sb[data.id].appendBuffer(data.buffer)
                             }
@@ -293,6 +310,7 @@ module.exports = {
                         }
                     }
                 }
+                transferProgress = false
             }
 
             /*  on-the-fly create SourceBuffer  */
@@ -301,7 +319,8 @@ module.exports = {
                     this.$emit("error", `unknown codec "${data.user.mimeCodec}" -- ignoring stream data`)
                 else {
                     try {
-                        this.sb[data.id] = this.ms.addSourceBuffer(data.user.mimeCodec)
+                        let sb = this.ms.addSourceBuffer(data.user.mimeCodec)
+                        this.sb[data.id] = sb
                         this.sb[data.id].addEventListener("updatestart", () => {
                             updating[data.id] = true
                         })
@@ -323,7 +342,7 @@ module.exports = {
                         })
                     }
                     catch (err) {
-                        ui.log.debug(`ui: sourcebuffer: addSourceBuffer: exception: ${err}`)
+                        ui.log.debug(`ui: mediasource: addSourceBuffer: exception: ${err}`)
                         this.$emit("error", `SourceBuffer: ${err}`)
                     }
                 }
