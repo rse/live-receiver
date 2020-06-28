@@ -1351,13 +1351,38 @@ module.exports = {
             this.bandwidthBytes += data.buffer.byteLength
             this.$refs.videostream.$emit("stream-data", data)
         })
-        const interval = 2
+        let   kbpsList     = []
+        let   kbpsPos      = 0
+        const kbpsLength   = 10
+        const kbpsInterval = 1
+        const avg = (arr, pos) => {
+            const max = arr.length
+            let avg = arr[0]
+            let num = 0
+            for (let i = pos; i >= 0; i--) {
+                const w = max - (pos - i)
+                avg += w * arr[i]
+                num += w
+            }
+            for (let i = max - 1; i > pos; i--) {
+                const w = i - pos
+                avg += w * arr[i]
+                num += w
+            }
+            avg /= num
+            console.log(arr, pos, avg)
+            return avg
+        }
         this.timer2 = setInterval(() => {
-            const kbps = Math.ceil((this.bandwidthBytes * 8) / 1024 / interval)
-            this.bandwidthText = kbps
+            const kbps = Math.ceil((this.bandwidthBytes * 8) / 1024 / kbpsInterval)
+            kbpsList[kbpsPos] = kbps
+            kbpsPos = (kbpsPos + 1) % kbpsLength
+            this.bandwidthText = avg(kbpsList, kbpsPos).toFixed(0)
             this.bandwidthBytes = 0
-        }, interval * 1000)
+        }, 1000 * kbpsInterval)
         this.$on("stream-reset", () => {
+            kbpsList = []
+            kbpsPos  = 0
             this.$refs.videostream.$emit("stream-reset")
         })
         this.$on("stream-end", () => {
