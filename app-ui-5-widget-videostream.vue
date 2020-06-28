@@ -319,7 +319,7 @@ module.exports = {
                     this.$emit("error", `unknown codec "${data.user.mimeCodec}" -- ignoring stream data`)
                 else {
                     try {
-                        let sb = this.ms.addSourceBuffer(data.user.mimeCodec)
+                        const sb = this.ms.addSourceBuffer(data.user.mimeCodec)
                         this.sb[data.id] = sb
                         this.sb[data.id].addEventListener("updatestart", () => {
                             updating[data.id] = true
