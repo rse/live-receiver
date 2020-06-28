@@ -68,15 +68,18 @@ module.exports = class VideoStream extends EventEmitter {
 
         /*  start ffmpeg(1) sub-process  */
         const options = [
-            "-loglevel",    "0",
-            "-rtmp_live",   "live",
-            "-rtmp_buffer", this.options.buffering,
-            "-i",           url,
-            "-threads",     "4",
-            "-c:a",         "copy",
-            "-c:v",         "copy",
-            "-f",           "mp4",
-            "-movflags",    "frag_keyframe+omit_tfhd_offset+empty_moov+default_base_moof",
+            "-loglevel",      "0",
+            "-probesize",     "2000000",
+            "-rtmp_live",     "live",
+            "-rtmp_buffer",   this.options.buffering,
+            "-i",             url,
+            "-threads",       "4",
+            "-c:a",           "copy",
+            "-c:v",           "copy",
+            "-f",             "mp4",
+            "-movflags",      "frag_keyframe+omit_tfhd_offset+empty_moov+default_base_moof",
+            "-fflags",        "flush_packets",
+            "-flush_packets", "1",
             "-y",
             "pipe:1"
         ]
