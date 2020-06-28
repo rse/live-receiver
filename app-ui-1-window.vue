@@ -1370,7 +1370,6 @@ module.exports = {
                 num += w
             }
             avg /= num
-            console.log(arr, pos, avg)
             return avg
         }
         this.timer2 = setInterval(() => {
