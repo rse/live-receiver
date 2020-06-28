@@ -1335,29 +1335,11 @@ module.exports = {
                 this.logout()
         })
 
-        /*  stream handling  */
-        this.$on("stream-begin", () => {
-            this.$refs.videostream.$emit("mute", this.volumeMute)
-            this.$refs.videostream.$emit("volume", this.volume)
-            this.$refs.videostream.$emit("stream-begin")
-            this.allowDisconnect = false
-        })
-        setTimeout(() => {
-            this.$refs.videostream.$on("stream-begin:done", () => {
-                this.allowDisconnect = true
-            })
-        }, 400)
-        this.$on("stream-data", (data) => {
-            this.bandwidthBytes += data.buffer.byteLength
-            this.$refs.videostream.$emit("stream-data", data)
-        })
-        let   kbpsList     = []
-        let   kbpsPos      = 0
-        const kbpsLength   = 10
-        const kbpsInterval = 1
+        /*  helper function for calculating weighted average value
+            of a list of values (older ones have less weight)  */
         const avg = (arr, pos) => {
             const max = arr.length
-            let avg = arr[0]
+            let avg = 0
             let num = 0
             for (let i = pos; i >= 0; i--) {
                 const w = max - (pos - i)
@@ -1372,13 +1354,37 @@ module.exports = {
             avg /= num
             return avg
         }
-        this.timer2 = setInterval(() => {
-            const kbps = Math.ceil((this.bandwidthBytes * 8) / 1024 / kbpsInterval)
-            kbpsList[kbpsPos] = kbps
-            kbpsPos = (kbpsPos + 1) % kbpsLength
-            this.bandwidthText = avg(kbpsList, kbpsPos).toFixed(0)
-            this.bandwidthBytes = 0
-        }, 1000 * kbpsInterval)
+
+        /*  stream handling  */
+        let kbpsList  = []
+        let kbpsPos   = 0
+        const kbpsLen = 10
+        this.$on("stream-begin", () => {
+            this.$refs.videostream.$emit("mute", this.volumeMute)
+            this.$refs.videostream.$emit("volume", this.volume)
+            this.$refs.videostream.$emit("stream-begin")
+            this.allowDisconnect = false
+
+            /*  calculate average bandwidth  */
+            kbpsList = []
+            kbpsPos  = 0
+            this.timer2 = setInterval(() => {
+                const kbps = Math.ceil((this.bandwidthBytes * 8) / 1024)
+                kbpsList[kbpsPos] = kbps
+                this.bandwidthText = avg(kbpsList, kbpsPos).toFixed(0)
+                this.bandwidthBytes = 0
+                kbpsPos = (kbpsPos + 1) % kbpsLen
+            }, 1000)
+        })
+        setTimeout(() => {
+            this.$refs.videostream.$on("stream-begin:done", () => {
+                this.allowDisconnect = true
+            })
+        }, 400)
+        this.$on("stream-data", (data) => {
+            this.bandwidthBytes += data.buffer.byteLength
+            this.$refs.videostream.$emit("stream-data", data)
+        })
         this.$on("stream-reset", () => {
             kbpsList = []
             kbpsPos  = 0
@@ -1387,6 +1393,10 @@ module.exports = {
         this.$on("stream-end", () => {
             this.allowDisconnect = false
             this.$refs.videostream.$emit("stream-end")
+            if (this.timer2 !== null) {
+                clearTimeout(this.timer2)
+                this.timer2 = null
+            }
         })
 
         /*  window resize tracking  */
