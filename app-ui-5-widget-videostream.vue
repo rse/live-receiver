@@ -276,7 +276,7 @@ module.exports = {
                     const id = queue[0].id
                     if (this.sb[id] !== undefined && (updating[id] || this.sb[id].updating)) {
                         /*  the <video> element is still updating, so repeat  */
-                        timer = setTimeout(transfer, 1000 / 30 /* = 1s/30fps */)
+                        timer = setTimeout(transfer, 1000 / 60 /* = 1s/60fps */)
                     }
                     else if (this.sb[id] !== undefined && queue.length > 0) {
                         /*  feed new data  */
