@@ -1337,6 +1337,8 @@ module.exports = {
 
         /*  stream handling  */
         this.$on("stream-begin", () => {
+            this.$refs.videostream.$emit("mute", this.volumeMute)
+            this.$refs.videostream.$emit("volume", this.volume)
             this.$refs.videostream.$emit("stream-begin")
             this.allowDisconnect = false
         })

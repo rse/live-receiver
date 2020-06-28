@@ -192,7 +192,7 @@ module.exports = {
             ve.autoplay = true
             ve.preload  = "none"
             ve.volume   = this.intVolume / 100
-            ve.muted    = this.muted
+            ve.muted    = this.intMuted
             if (this.device !== "")
                 ve.setSinkId(this.device)
             ve.addEventListener("loadeddata", () => {
