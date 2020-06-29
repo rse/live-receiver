@@ -40,7 +40,7 @@ module.exports = class VideoStream extends EventEmitter {
             channel:    "",
             token1:     "",
             token2:     "",
-            timeout:    20 * 1000,
+            timeout:    15 * 1000,
             buffering:  2000,        /* FIXME: INTENTIONALLY UNUSED! */
             log:        (level, msg) => {}
         }, options)
