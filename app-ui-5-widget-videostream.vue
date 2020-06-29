@@ -256,7 +256,7 @@ module.exports = {
         /*  reset stream position  */
         const streamReset = async () => {
             /*  reset the time position of the <video> element
-                to esure that a new stream (after FFmpeg immediately plays again)  */
+                to ensure that a new stream (after FFmpeg immediately plays again)  */
             this.ve.currentTime = 0.0
         }
 
