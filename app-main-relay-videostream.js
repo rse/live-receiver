@@ -41,7 +41,7 @@ module.exports = class VideoStream extends EventEmitter {
             token1:     "",
             token2:     "",
             timeout:    20 * 1000,
-            buffering:  2000,
+            buffering:  2000,        /* FIXME: INTENTIONALLY UNUSED! */
             log:        (level, msg) => {}
         }, options)
 
@@ -68,42 +68,57 @@ module.exports = class VideoStream extends EventEmitter {
 
         /*  start ffmpeg(1) sub-process  */
         const options = [
+            /*  global options  */
             "-loglevel",      "0",
-            "-probesize",     "2000000",
+
+            /*  input options  */
+            "-probesize",     "1000000",  /*  1MB   */
+            "-max_delay",     "2000000",  /*  2.0s  */
             "-rtmp_live",     "live",
-            "-rtmp_buffer",   this.options.buffering,
+            "-rtmp_buffer",   "2000",     /*  2.0s  */ /* FIXME: this.options.buffering INTENTIONALLY UNUSED! */
+            "-fflags",        "nobuffer",
             "-i",             url,
+
+            /*  output options  */
             "-threads",       "4",
-            "-c:a",           "copy",
-            "-c:v",           "copy",
+            "-c:a",           "copy",     /*  no re-encoding */
+            "-c:v",           "copy",     /*  no re-encoding */
             "-f",             "mp4",
+            "-muxdelay",      "0.5",      /*  0.5s  */
             "-movflags",      "frag_keyframe+omit_tfhd_offset+empty_moov+default_base_moof",
             "-fflags",        "flush_packets",
             "-flush_packets", "1",
             "-y",
             "pipe:1"
         ]
-        this.options.log("info", `executing: ${this.options.ffmpeg} ${options.join(" ")}`)
+        this.options.log("info", `videostream: starting FFmpeg process: ${this.options.ffmpeg} ${options.join(" ")}`)
         this.proc = execa(this.options.ffmpeg, options)
+
+        /*  timeout handler  */
+        const onTimeout = async () => {
+            this.options.log("info", `videostream: data receiving timeout (${this.options.timeout / 1000}s) ` +
+                "-- restarting FFMpeg subprocess")
+            await this.stop()
+            this.start()
+        }
+        this.timer = setTimeout(onTimeout, this.options.timeout)
 
         /*  establish segmentation of the bytestream into MP4 boxes
             (reason: the <video> element later accepts only valid and complete MP4 segments)  */
         this.mp4box = MP4Box.createFile()
         this.mp4box.onReady = (info) => {
             let segment = 0
-            const onTimeout = async () => {
-                this.options.log("info", `videostream: data receiving timeout (${this.options.timeout / 1000}s) ` +
-                    "-- restarting FFMpeg subprocess")
-                await this.stop()
-                this.start()
-            }
-            if (!this.processing)
-                this.timer = setTimeout(onTimeout, this.options.timeout)
-            this.mp4box.onSegment = (id, user, buffer) => {
+            if (!this.processing) {
                 if (this.timer !== null)
                     clearTimeout(this.timer)
-                if (!this.processing)
+                this.timer = setTimeout(onTimeout, this.options.timeout)
+            }
+            this.mp4box.onSegment = (id, user, buffer) => {
+                if (!this.processing) {
+                    if (this.timer !== null)
+                        clearTimeout(this.timer)
                     this.timer = setTimeout(onTimeout, this.options.timeout)
+                }
                 this.emit("segment", segment++, id, user, buffer)
             }
             for (const track of info.tracks) {
@@ -126,7 +141,7 @@ module.exports = class VideoStream extends EventEmitter {
             this.mp4box.start()
         }
         this.mp4box.onError = (err) => {
-            this.emit("error", `mp4box: ${err}`)
+            this.emit("error", `videostream: mp4box: ${err}`)
         }
 
         /*  process output of ffmpeg(1) subprocess  */
@@ -141,7 +156,7 @@ module.exports = class VideoStream extends EventEmitter {
             this.emit("end")
         })
         this.proc.stderr.on("data", (line) => {
-            this.emit("error", `ffmpeg: ${line.toString()}`)
+            this.emit("error", `videostream: FFmpeg: ${line.toString()}`)
         })
 
         this.processing = false
@@ -158,6 +173,7 @@ module.exports = class VideoStream extends EventEmitter {
 
         /*  kill ffmpeg(1) subprocess  */
         if (this.proc !== null) {
+            this.options.log("info", "videostream: stopping FFmpeg process")
             this.proc.kill("SIGTERM", { forceKillAfterTimeout: 2 * 1000 })
             try {
                 await this.proc

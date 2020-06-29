@@ -36,6 +36,7 @@
         />
 
         <!-- Video Stream Buffering -->
+        <!--
         <i class="icon fa fa-clock"></i>
         <div class="label">Video Stream Buffering (ms)</div>
         <div class="selbox-container">
@@ -70,6 +71,7 @@
                 3000
             </div>
         </div>
+        -->
 
         <!-- Audio Input Device -->
         <i class="icon fa fa-microphone-alt"></i>
