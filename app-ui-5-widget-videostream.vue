@@ -255,8 +255,19 @@ module.exports = {
 
         /*  reset stream position  */
         const streamReset = async () => {
-            /*  reset the time position of the <video> element
-                to ensure that a new stream (after FFmpeg immediately plays again)  */
+            /*  reset the source buffers and video element to ensure that a
+                new stream (after FFmpeg restarted) immediately plays
+                and no old content is still displayed  */
+            for (const id of Object.keys(this.sb)) {
+                if (this.sb[id].updating) {
+                    this.sb[id].abort()
+                    while (this.sb[id].updating)
+                        await new Promise((resolve) => setTimeout(resolve, 10))
+                }
+                const range = this.sb[id].buffered
+                for (let i = 0; i < range.length; i++)
+                    this.sb[id].remove(range.start(i), range.end(i))
+            }
             this.ve.currentTime = 0.0
         }
 
@@ -362,6 +373,7 @@ module.exports = {
                 for (const id of Object.keys(this.sb)) {
                     this.ms.removeSourceBuffer(this.sb[id])
                     delete this.sb[id]
+                    delete updating[id]
                 }
                 this.ms = null
             }
@@ -390,8 +402,11 @@ module.exports = {
         })
         this.$on("stream-reset", async () => {
             if (this.streaming) {
-                ui.log.info("ui: stream-reset")
-                streamReset()
+                ui.log.info("ui: stream-reset: begin")
+                this.streaming = false
+                await streamReset()
+                this.streaming = true
+                ui.log.info("ui: stream-reset: end")
             }
         })
         this.$on("stream-end", async () => {
