@@ -68,7 +68,7 @@ module.exports = class VideoStream extends EventEmitter {
 
         /*  start ffmpeg(1) sub-process  */
         const options = [
-            /*  global options  */
+            /*  top-level options  */
             "-loglevel",      "0",
 
             /*  input options  */
