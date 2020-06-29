@@ -1369,12 +1369,13 @@ module.exports = {
             kbpsList = []
             kbpsPos  = 0
             this.timer2 = setInterval(() => {
-                const kbps = Math.ceil((this.bandwidthBytes * 8) / 1024)
+                const kbps = Math.ceil((this.bandwidthBytes * 8) / 1024 / 2)
+                console.log(kbpsList)
                 kbpsList[kbpsPos] = kbps
                 this.bandwidthText = avg(kbpsList, kbpsPos).toFixed(0)
                 this.bandwidthBytes = 0
                 kbpsPos = (kbpsPos + 1) % kbpsLen
-            }, 1000)
+            }, 1000 * 2)
         })
         setTimeout(() => {
             this.$refs.videostream.$on("stream-begin:done", () => {
