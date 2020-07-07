@@ -208,7 +208,7 @@ const app = electron.app
             minHeight:       650,
             resizable:       true,
             webPreferences: {
-                devTools:                !!process.env.DEBUG,
+                devTools:                process.env.DEBUG ? true : false,
                 nodeIntegration:         true,
                 nodeIntegrationInWorker: true,
                 enableRemoteModule:      true,
@@ -216,7 +216,7 @@ const app = electron.app
             }
         })
         app.win.setHasShadow(true)
-        app.win.setContentProtection(true)
+        app.win.setContentProtection(process.env.DEBUG ? false : true)
         app.win.loadURL(`file://${__dirname}/app-ui.html`)
         if (process.env.DEBUG) {
             setTimeout(() => {
