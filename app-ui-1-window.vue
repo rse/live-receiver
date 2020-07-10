@@ -1429,6 +1429,7 @@ module.exports = {
         this.$on("voting-end", () => {
             ui.log.info("voting-end")
             this.votingActive = false
+            this.votingDone   = false
         })
 
         /*  hotkey support  */
