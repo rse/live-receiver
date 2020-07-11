@@ -1104,7 +1104,7 @@ module.exports = {
         smallestSize () {
             if (this.fullscreened || this.maximized)
                 return
-            this.$emit("set-size", { w: 888, h: 500 })
+            this.$emit("set-size", { w: 980, h: 550 + 2*40 })
         },
         sourceSize () {
             if (this.fullscreened || this.maximized || this.inLogin)
