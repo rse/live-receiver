@@ -18,10 +18,10 @@
         </div>
         <div class="col-2-3">
             <a href="https://github.com/rse/live-receiver" v-on:click="openURL">LiVE Receiver</a>
-            is the trainee-side of the Open Source software solution
+            is the trainee-side of
             <a href="https://video-experience.live" v-on:click="openURL">Live Video Experience
-            (LiVE, video-experience.live)</a>, an opinionated setup for sending, relaying and
-            receiving up-front trainings as real-time video broadcasts over MQTTS/RTMPS event/video
+            (LiVE, video-experience.live)</a>, a solution for sending, relaying and
+            receiving semi-interactive up-front trainings as real-time Full-HD video broadcasts over MQTTS/RTMPS event/video
             stream network channels.
 
             <p/>
