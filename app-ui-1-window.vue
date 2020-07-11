@@ -1421,10 +1421,7 @@ module.exports = {
         })
         this.$on("voting-type", ({ type }) => {
             ui.log.info(`voting-type: ${type}`)
-            this.votingActive = true
-            this.votingChoice = ""
             this.votingType   = type
-            this.votingDone   = false
         })
         this.$on("voting-end", () => {
             ui.log.info("voting-end")
