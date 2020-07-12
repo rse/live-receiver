@@ -4,7 +4,7 @@ Version History
 
 | VERSION | DATE       | STATE       |
 | ------- | ---------- | ----------- |
-| 1.1.2   | 2020-07-10 | current     |
+| 1.1.2   | 2020-07-12 | current     |
 | 1.1.1   | 2020-07-09 | obsolete    |
 | 1.1.0   | 2020-07-01 | obsolete    |
 | 1.0.9   | 2020-06-17 | deprecated  |
