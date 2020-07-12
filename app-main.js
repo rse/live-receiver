@@ -23,7 +23,7 @@ const VideoStream  = require("./app-main-relay-videostream")
 const EventStream  = require("./app-main-relay-eventstream")
 
 /*  control run-time debugging (increase tracing or even avoid warnings)  */
-if (process.env.DEBUG)
+if (typeof process.env.DEBUG !== "undefined")
     process.traceProcessWarnings = true
 else
     process.noDeprecation = true
@@ -43,7 +43,7 @@ const app = electron.app
 
     /*  provide logging facility  */
     app.log = electronLog
-    if (process.env.DEBUG) {
+    if (typeof process.env.DEBUG !== "undefined") {
         app.log.transports.file.level    = "debug"
         app.log.transports.console.level = "debug"
     }
@@ -135,7 +135,7 @@ const app = electron.app
         app.x                    = settings.get("window-x",               100)
         app.y                    = settings.get("window-y",               100)
         app.w                    = settings.get("window-width",           980)
-        app.h                    = settings.get("window-height",          550 + 2*40)
+        app.h                    = settings.get("window-height",          550 + 2 * 40)
         app.personPortrait       = settings.get("person-portrait",        "")
         app.personName           = settings.get("person-name",            "")
         app.liveRelayServer      = settings.get("live-relay-server",      "")
@@ -158,7 +158,7 @@ const app = electron.app
             app.x = 100
             app.y = 100
             app.w = 980
-            app.h = 550 + 2*40
+            app.h = 550 + 2 * 40
         }
 
         /*  save back the settings once at startup  */
@@ -205,10 +205,10 @@ const app = electron.app
             width:           app.w,
             height:          app.h,
             minWidth:        980,
-            minHeight:       550 + 2*40,
+            minHeight:       550 + 2 * 40,
             resizable:       true,
             webPreferences: {
-                devTools:                process.env.DEBUG ? true : false,
+                devTools:                (typeof process.env.DEBUG !== "undefined"),
                 nodeIntegration:         true,
                 nodeIntegrationInWorker: true,
                 enableRemoteModule:      true,
@@ -216,9 +216,9 @@ const app = electron.app
             }
         })
         app.win.setHasShadow(true)
-        app.win.setContentProtection(process.env.DEBUG ? false : true)
+        app.win.setContentProtection(!(typeof process.env.DEBUG !== "undefined"))
         app.win.loadURL(`file://${__dirname}/app-ui.html`)
-        if (process.env.DEBUG) {
+        if (typeof process.env.DEBUG !== "undefined") {
             setTimeout(() => {
                 app.win.webContents.openDevTools()
             }, 1000)
