@@ -208,11 +208,12 @@ const app = electron.app
             minHeight:       550 + 2 * 40,
             resizable:       true,
             webPreferences: {
-                devTools:                (typeof process.env.DEBUG !== "undefined"),
-                nodeIntegration:         true,
-                nodeIntegrationInWorker: true,
-                enableRemoteModule:      true,
-                autoplayPolicy:          "no-user-gesture-required"
+                devTools:                   (typeof process.env.DEBUG !== "undefined"),
+                nodeIntegration:            true,
+                nodeIntegrationInWorker:    true,
+                worldSafeExecuteJavaScript: true,
+                enableRemoteModule:         true,
+                autoplayPolicy:             "no-user-gesture-required"
             }
         })
         app.win.setHasShadow(true)
