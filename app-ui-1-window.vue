@@ -247,7 +247,7 @@
                         <span class="choice-icon"><i class="fa fa-grin-stars"></i></span>+2
                     </div>
                 </div>
-                <div v-show="votingActive && votingType === 'choose'"
+                <div v-show="votingActive && (votingType === 'choose' || votingType === 'quiz')"
                     v-tooltip.bottom-center="{ content: 'Send a numeric choice to the trainer' }"
                     v-bind:class="{ 'choice-row': true, disabled: votingDone }">
                     <div v-bind:class="{ 'choice-box': true, active: votingChoice === 1 }"
