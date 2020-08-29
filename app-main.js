@@ -185,6 +185,19 @@ const app = electron.app
             return data
         })
 
+        /*  provide generic function bridge for renderer  */
+        const fnb = { electron }
+        const fns = [ "electron.dialog.showOpenDialog" ]
+        for (const fn of fns) {
+            const p = fn.split(".")
+            let f = fnb[p[0]]
+            for (let i = 1; i < p.length; i++)
+                f = f[p[i]]
+            app.ipc.handle(fn, (...args) => {
+                return f(...args)
+            })
+        }
+
         /*  redirect exception error boxes to the console  */
         electron.dialog.showErrorBox = (title, content) => {
             app.log.info(`main: UI: exception: ${title}: ${content}`)

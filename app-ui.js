@@ -45,9 +45,6 @@ ui = {}
         return ui.ipc.invoke("settings", ...args)
     }
 
-    /*  pass remote API to UI  */
-    ui.remote = electron.remote
-
     /*  external requirements  */
     ui.throttle     = require("throttle-debounce").throttle
     ui.debounce     = require("throttle-debounce").debounce
@@ -143,6 +140,15 @@ ui = {}
         if (!result.error)
             ui.root.$refs.win.$emit("state", "login")
     })
+
+    /*  provide generic function bridge to main thread  */
+    const fns = { "showOpenDialog": "electron.dialog.showOpenDialog" }
+    ui.bridge = {}
+    for (const fn of Object.keys(fns)) {
+        ui.bridge[fn] = function (...args) {
+            return ui.ipc.invoke(fns[fn], ...args)
+        }
+    }
 
     /*  pass-through events from renderer to main thread  */
     let events = [

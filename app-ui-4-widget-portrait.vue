@@ -222,7 +222,7 @@ module.exports = {
 
         /*  choose a custom portrait image  */
         chooseFile () {
-            ui.remote.dialog.showOpenDialog({
+            ui.bridge.showOpenDialog({
                 title:       "Choose Custom Portrait Image File",
                 properties:  [ "openFile" ],
                 filters:     [ { name: "Image", extensions: [ "png", "jpg", "gif", "svg" ] } ],
