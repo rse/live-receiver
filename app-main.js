@@ -31,9 +31,6 @@ else
 /*  enter an asynchronous environment in main process  */
 const app = electron.app
 ;(async () => {
-    /*   establish Electron application  */
-    app.allowRendererProcessReuse = true
-
     /*  initialize global information  */
     app.win       = null
     app.connected = false
@@ -212,6 +209,7 @@ const app = electron.app
                 nodeIntegration:            true,
                 nodeIntegrationInWorker:    true,
                 worldSafeExecuteJavaScript: true,
+                disableDialogs:             true,
                 enableRemoteModule:         true,
                 autoplayPolicy:             "no-user-gesture-required"
             }
