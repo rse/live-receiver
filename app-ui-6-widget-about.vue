@@ -25,7 +25,8 @@
             stream network channels.
 
             <p/>
-            <a href="https://github.com/rse/live-receiver" v-on:click="openURL">LiVE Receiver {{ pkg.version }}</a>
+            <a href="https://github.com/rse/live-receiver" v-on:click="openURL">LiVE Receiver</a>
+            <a v-bind:href="'https://github.com/rse/live-receiver/releases/tag/' + pkg.version" v-on:click="openURL">{{ pkg.version }}</a>
             is Copyright &copy; 2020 by
             <a href="https://engelschall.com" v-on:click="openURL">Dr. Ralf S. Engelschall</a>
             and licensed and distributed as Open Source software under the
