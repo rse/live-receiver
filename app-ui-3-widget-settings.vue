@@ -130,14 +130,13 @@
         <div class="col-2 notice">
         </div>
         <span class="footnote notice">
-            * Your portrait image and name are stored locally
-            in <i>LiVE Receiver</i> (trainee-side) and are
-            only transmitted to the <i>LiVE Relay</i>
-            (server-side) and <i>LiVE Sender</i> (trainer-side)
-            when you connect and send a message to the
-            trainer. Choose a standard avatar as your
-            portrait and an arbitrary nickname if you wish
-            to remain anonymous.
+            * Your portrait image and name are stored locally in <i>LiVE
+            Receiver</i> (trainee-side) and are only transmitted when
+            you connect to a LiVE session. The <i>LiVE Relay</i>
+            (server-side) does not keep it at all and <i>LiVE Sender</i>
+            (trainer-side) stores it in memory just temporarily. Choose
+            a standard avatar as your portrait and an arbitrary nickname
+            if you wish to remain anonymous.
         </span>
     </div>
 </template>
