@@ -6,7 +6,7 @@
 
 -   arch:     "x64"
     platform: "darwin"
-    name:     "FFmpeg 4.3.1 (macOS/x64, static) [68 MB]"
+    name:     "FFmpeg 4.3.1 (macOS/x64, static) [74 MB]"
     input:    "https://github.com/eugeneware/ffmpeg-static/releases/download/b4.3.1/darwin-x64"
     extract:  false
     output:   "app-main-relay-videostream.d/ffmpeg"
