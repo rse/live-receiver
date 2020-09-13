@@ -10,12 +10,12 @@
         "url":                           "http://engelschall.com/"
     },
     "devDependencies": {
-        "electron":                      "10.1.0",
+        "electron":                      "10.1.1",
         "electron-builder":              "22.8.0",
         "nodemon":                       "2.0.4",
         "shelljs":                       "0.8.4",
         "glob":                          "7.1.6",
-        "eslint":                        "7.7.0",
+        "eslint":                        "7.9.0",
         "eslint-config-standard":        "14.1.1",
         "eslint-plugin-standard":        "4.0.1",
         "eslint-plugin-promise":         "4.2.1",
@@ -38,7 +38,7 @@
         "vue":                           "2.6.12",
         "vue-multiselect":               "2.1.6",
         "v-tooltip":                     "2.0.3",
-        "cropperjs":                     "1.5.7",
+        "cropperjs":                     "1.5.9",
         "http-vue-loader":               "1.4.2",
         "less":                          "3.12.2",
         "@fortawesome/fontawesome-free": "5.14.0",
