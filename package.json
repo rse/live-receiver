@@ -117,8 +117,9 @@
         }
     },
     "scripts": {
-        "install":                       "npm-run-all -s install:fetch install:squeeze",
+        "install":                       "npm-run-all -s install:fetch install:fetch-post install:squeeze",
         "install:fetch":                 "npm-install-fetch --config npm-install.yaml",
+        "install:fetch-post":            "node npm-install.js",
         "install:squeeze":               "modclean -p . -r -P -n default:safe",
         "setup":                         "npm install --only-production --global-style",
         "lint":                          "eslint --config eslint.yaml --ext js,vue *.js *.vue",
