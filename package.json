@@ -10,8 +10,8 @@
         "url":                           "http://engelschall.com/"
     },
     "devDependencies": {
-        "electron":                      "10.1.1",
-        "electron-builder":              "22.8.0",
+        "electron":                      "10.1.2",
+        "electron-builder":              "22.8.1",
         "nodemon":                       "2.0.4",
         "shelljs":                       "0.8.4",
         "glob":                          "7.1.6",
@@ -33,7 +33,7 @@
         "jsonfile":                      "6.0.1",
         "syspath":                       "1.0.2",
         "execa":                         "4.0.3",
-        "moment":                        "2.27.0",
+        "moment":                        "2.29.0",
         "mousetrap":                     "1.6.5",
         "vue":                           "2.6.12",
         "vue-multiselect":               "2.1.6",
