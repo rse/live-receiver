@@ -287,6 +287,22 @@
                 <span class="title">Send Messages</span>
             </div>
 
+            <!-- send thumbs-up -->
+            <div class="box button message-send" v-on:click="feedback('thumbsup')"
+                v-tooltip.bottom-center="{ content: 'Send feedback by showing consent' }"
+                v-bind:class="{ disabled: inLogin || feedbackDisabled }">
+                <i class="icon fa fa-thumbs-up"></i>
+                <span class="title">Show Consent</span>
+            </div>
+
+            <!-- send thumbs-down -->
+            <div class="box button message-send" v-on:click="feedback('thumbsdn')"
+                v-tooltip.bottom-center="{ content: 'Send feedback by showing refusal' }"
+                v-bind:class="{ disabled: inLogin || feedbackDisabled }">
+                <i class="icon fa fa-thumbs-down"></i>
+                <span class="title">Show Refusal</span>
+            </div>
+
             <!-- send surprise -->
             <div class="box button message-send" v-on:click="feedback('surprise')"
                 v-tooltip.bottom-center="{ content: 'Send feedback by showing surprise' }"
