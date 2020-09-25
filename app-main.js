@@ -14,7 +14,7 @@ const electron     = require("electron")
 const electronLog  = require("electron-log")
 const imageDataURI = require("image-data-uri")
 const throttle     = require("throttle-debounce").throttle
-const moment       = require("moment")
+const luxon        = require("luxon")
 const UUID         = require("pure-uuid")
 
 /*  internal requirements  */
@@ -393,7 +393,7 @@ const app = electron.app
         app.ipc.handle("screenshot", async (event, rect) => {
             const nativeImage = await app.win.capturePage(rect)
             const buffer = nativeImage.toPNG()
-            const timestamp = moment().format("YYYY-MM-DD-HH-mm-ss")
+            const timestamp = luxon.DateTime.local().toFormat("yyyy-LL-dd-HH-mm-ss")
             const filename = path.join(app.getPath("pictures"),
                 `LiVE-Receiver-Screenshot-${timestamp}.png`)
             app.log.info(`saving screenshot ${rect.width}x${rect.height}@${rect.x}+${rect.y} to "${filename}"`)
