@@ -461,7 +461,7 @@
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
-        height: 44px;
+        height: 42px;
         .group-items {
             height: 38px;
             width: 100%;
@@ -470,7 +470,7 @@
         }
         .group-bar {
             width: 100%;
-            height: 4px;
+            height: 2px;
             display: block;
             background-color:        var(--color-std-bg-3);
             border-top:    1px solid var(--color-std-bg-5);
@@ -742,7 +742,7 @@
     /*  header area  */
     .header {
         width: 100vw;
-        height: 44px;
+        height: 42px;
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
@@ -800,7 +800,7 @@
     /*  footer area  */
     .footer {
         width: 100vw;
-        height: 44px;
+        height: 42px;
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
@@ -1220,7 +1220,7 @@ module.exports = {
         smallestSize () {
             if (this.fullscreened || this.maximized)
                 return
-            this.$emit("set-size", { w: 980, h: 550 + 2 * 40 })
+            this.$emit("set-size", { w: 975, h: 550 + 2 * 42 })
         },
         sourceSize () {
             if (this.fullscreened || this.maximized || this.inLogin)

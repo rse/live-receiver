@@ -131,8 +131,8 @@ const app = electron.app
         app.clientId             = settings.get("client-id",              clientId)
         app.x                    = settings.get("window-x",               100)
         app.y                    = settings.get("window-y",               100)
-        app.w                    = settings.get("window-width",           980)
-        app.h                    = settings.get("window-height",          550 + 2 * 40)
+        app.w                    = settings.get("window-width",           975)
+        app.h                    = settings.get("window-height",          550 + 2 * 42)
         app.personPortrait       = settings.get("person-portrait",        "")
         app.personName           = settings.get("person-name",            "")
         app.liveRelayServer      = settings.get("live-relay-server",      "")
@@ -154,8 +154,8 @@ const app = electron.app
         if (!visible) {
             app.x = 100
             app.y = 100
-            app.w = 980
-            app.h = 550 + 2 * 40
+            app.w = 975
+            app.h = 550 + 2 * 42
         }
 
         /*  save back the settings once at startup  */
@@ -214,8 +214,8 @@ const app = electron.app
             y:               app.y,
             width:           app.w,
             height:          app.h,
-            minWidth:        980,
-            minHeight:       550 + 2 * 40,
+            minWidth:        975,
+            minHeight:       550 + 2 * 42,
             resizable:       true,
             webPreferences: {
                 devTools:                   (typeof process.env.DEBUG !== "undefined"),
