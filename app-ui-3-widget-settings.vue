@@ -447,11 +447,30 @@ module.exports = {
             if (this.audioInputTestActive) {
                 /*  start recording  */
                 try {
+                    /*  get audio stream from audio input device  */
                     const stream = await navigator.mediaDevices.getUserMedia({
-                        audio: { deviceId: this.intAudioInputDevice.id },
+                        audio: {
+                            deviceId: this.intAudioInputDevice.id,
+                            echoCancellation: true,
+                            noiseSuppression: true
+                        },
                         video: false
                     })
-                    this.recorder = new MediaRecorder(stream, {
+
+                    /*  create audio graph  */
+                    const ac = new AudioContext()
+                    const src = ac.createMediaStreamSource(stream)
+                    const dst = ac.createMediaStreamDestination()
+
+                    /*  create Voice filter  */
+                    const voicefilter = new AudioNodeSuite.AudioNodeVoice(ac)
+
+                    /*  connect the audio graph nodes  */
+                    src.connect(voicefilter)
+                    voicefilter.connect(dst)
+
+                    /*  record the resulting audio stream  */
+                    this.recorder = new MediaRecorder(dst.stream, {
                         mimeType: "audio/webm; codecs=\"opus\"",
                         audioBitsPerSecond: 128000
                     })

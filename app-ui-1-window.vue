@@ -1184,7 +1184,11 @@ module.exports = {
                 try {
                     /*  get audio stream from audio input device  */
                     const stream = await navigator.mediaDevices.getUserMedia({
-                        audio: { deviceId: this.audioInputDevice },
+                        audio: {
+                            deviceId: this.audioInputDevice,
+                            echoCancellation: true,
+                            noiseSuppression: true
+                        },
                         video: false
                     })
 
@@ -1193,29 +1197,12 @@ module.exports = {
                     const src = ac.createMediaStreamSource(stream)
                     const dst = ac.createMediaStreamDestination()
 
-                    /*  add compressor filter to audio graph  */
-                    const compressor = ac.createDynamicsCompressor()
-                    compressor.threshold.value = -18
-                    compressor.knee.value      = 40
-                    compressor.ratio.value     = 10
-                    compressor.attack.value    = 0.006
-                    compressor.release.value   = 0.060
-
-                    /*  add noise reducing biquad filters to audio graph  */
-                    const biquad1 = ac.createBiquadFilter()
-                    const biquad2 = ac.createBiquadFilter()
-                    biquad1.type                = "highpass"
-                    biquad1.Q.value             = 1.0
-                    biquad1.frequency.value     = 144
-                    biquad2.type                = "notch"
-                    biquad2.Q.value             = 0.25
-                    biquad2.frequency.value     = 986
+                    /*  create Voice filter  */
+                    const voicefilter = new AudioNodeSuite.AudioNodeVoice(ac)
 
                     /*  connect the audio graph nodes  */
-                    src.connect(compressor)
-                    compressor.connect(biquad1)
-                    biquad1.connect(biquad2)
-                    biquad2.connect(dst)
+                    src.connect(voicefilter)
+                    voicefilter.connect(dst)
 
                     /*  record the resulting audio stream  */
                     this.recorder = new MediaRecorder(dst.stream, {
