@@ -39,6 +39,7 @@ globals:
     less:           true
     Vue:            true
     Mousetrap:      true
+    AudioNodeSuite: true
 
 rules:
     #   modified rules
@@ -75,4 +76,7 @@ rules:
     "vue/v-on-style":                    off
     "vue/attributes-order":              off
     "vue/name-property-casing":          off
+    "vue/component-tags-order":          off
+    "vue/custom-event-name-casing":      off
+    "vue/component-definition-name-casing": off
 
