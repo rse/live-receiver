@@ -135,6 +135,18 @@ ui = {}
         else
             ui.root.$refs.win.$emit("state", "video")
     })
+    ui.root.$refs.win.$on("relogin", async (info) => {
+        const result = await ui.ipc.invoke("logout")
+        if (result.error)
+            ui.root.$refs.win.$emit("login-error", result.error)
+        else {
+            const result = await ui.ipc.invoke("login", info)
+            if (result.error)
+                ui.root.$refs.win.$emit("login-error", result.error)
+            else
+                ui.root.$refs.win.$emit("state", "video")
+        }
+    })
     ui.root.$refs.win.$on("logout", async () => {
         const result = await ui.ipc.invoke("logout")
         if (!result.error)

@@ -19,6 +19,14 @@
                         <i class="icon fa fa-arrow-alt-circle-left"></i>
                         <span class="title">Disconnect</span>
                     </div>
+
+                    <!-- resconnect -->
+                    <div class="box button reconnect" v-on:click="relogin"
+                        v-tooltip.bottom-center="{ content: 'Reconnect to the LiVE Relay' }"
+                        v-bind:class="{ disabled: inLogin || !allowDisconnect }">
+                        <i class="icon fa fa-sync-alt"></i>
+                        <span class="title">Reconnect</span>
+                    </div>
                 </div>
                 <div class="group-bar">
                 </div>
@@ -1194,6 +1202,20 @@ module.exports = {
                 return
             this.allowDisconnect = false
             this.$emit("logout")
+        },
+        relogin () {
+            if (this.inLogin)
+                return
+            if (!this.allowDisconnect)
+                return
+            this.allowDisconnect = false
+            this.$emit("relogin", {
+                liveRelayServer:      this.liveRelayServer,
+                liveAccessToken:      this.liveAccessToken
+            })
+            setTimeout(() => {
+                this.sendFeeling()
+            }, 4 * 1000)
         },
         quit () {
             this.$emit("quit")
