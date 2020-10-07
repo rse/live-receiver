@@ -224,7 +224,8 @@ const app = electron.app
                 worldSafeExecuteJavaScript: true,
                 disableDialogs:             true,
                 enableRemoteModule:         true,
-                autoplayPolicy:             "no-user-gesture-required"
+                autoplayPolicy:             "no-user-gesture-required",
+                spellcheck:                 false
             }
         })
         app.win.setHasShadow(true)
