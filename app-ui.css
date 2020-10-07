@@ -7,10 +7,10 @@
 /*  global theme color definitions  */
 :root {
     --color-std-bg-1: #000000;
-    --color-std-bg-2: #111111;
-    --color-std-bg-3: #222222;
-    --color-std-bg-4: #333333;
-    --color-std-bg-5: #444444;
+    --color-std-bg-2: #0d0d0d;
+    --color-std-bg-3: #1a1a1a;
+    --color-std-bg-4: #272727;
+    --color-std-bg-5: #343434;
 
     --color-std-fg-1: #808080;
     --color-std-fg-2: #a0a0a0;
