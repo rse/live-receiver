@@ -72,6 +72,12 @@
                         <td class="product"><a href="https://howlerjs.com/" v-on:click="openURL">Howler.js</a></td>
                         <td class="version">{{ pkg.dependencies.howler }}</td>
                     </tr>
+                    <tr>
+                        <td class="product"><a href="https://npmjs.com/@rse/soundfx" v-on:click="openURL">SoundFX</a></td>
+                        <td class="version">{{ pkg.dependencies["@rse/soundfx"] }}</td>
+                        <td class="product"><a href="https://npmjs.com/audio-node-suite" v-on:click="openURL">Audio-Node-Suite</a></td>
+                        <td class="version">{{ pkg.dependencies["audio-node-suite"] }}</td>
+                    </tr>
                 </table>
             </div>
 
