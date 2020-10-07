@@ -22,7 +22,7 @@
 
                     <!-- resconnect -->
                     <div class="box button reconnect" v-on:click="relogin"
-                        v-tooltip.bottom-center="{ content: 'Reconnect to the LiVE Relay' }"
+                        v-tooltip.bottom-center="{ content: 'Reconnect to the LiVE Relay in order<br/>to re-synchronize the video stream and<br/>reduce the stream latency again.' }"
                         v-bind:class="{ disabled: inLogin || !allowDisconnect }">
                         <i class="icon fa fa-sync-alt"></i>
                         <span class="title">Reconnect</span>
