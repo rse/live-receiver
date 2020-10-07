@@ -800,7 +800,7 @@
     /*  footer area  */
     .footer {
         width: 100vw;
-        height: 42px;
+        height: 44px;
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
