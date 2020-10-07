@@ -43,8 +43,8 @@
                 <div class="group-items">
                     <!-- screenshot -->
                     <div class="box button screenshot" v-on:click="screenshot"
-                        v-tooltip.bottom-center="{ content: 'Saves a screenshot of the current video<br/>' +
-                            'stream to your personal <i>Picture</i> folder' }"
+                        v-tooltip.bottom-center="{ content: 'Saves a screenshot of the current video stream<br/>' +
+                            'to your personal <i>Picture</i> folder (shortcut: <span class=attention-boxed>CTRL+s</span>)' }"
                         v-bind:class="{ disabled: inLogin }">
                         <i class="icon fa fa-camera"></i>
                         <span class="title">Screenshot</span>
@@ -58,7 +58,7 @@
                 <div class="group-items">
                     <!-- audio mute -->
                     <div class="box button mute"
-                        v-tooltip.bottom-center="{ content: (volumeMute ? 'Unmute' : 'Mute') + ' the audio stream' }"
+                        v-tooltip.bottom-center="{ content: (volumeMute ? 'Unmute' : 'Mute') + ' the audio stream (shortcut: <span class=attention-boxed>CTRL+a</span>)' }"
                         v-on:click="toggleAudio"
                         v-bind:class="{ disabled: inLogin || volume === 0, active: volumeMute }">
                         <span v-show="volumeMute"><i class="icon fa fa-volume-mute"></i></span>
@@ -146,7 +146,7 @@
                     <!-- fullscreen -->
                     <div class="box button fullscreen" v-on:click="fullscreen"
                         v-tooltip.bottom-center="{ content: 'Switch to ' +
-                            (fullscreened ? 'normal window' : 'fullscreen') + ' mode' }"
+                            (fullscreened ? 'normal window' : 'fullscreen') + ' mode (shortcut: <span class=attention-boxed>CTRL+f</span>)' }"
                         v-bind:class="{ disabled: maximized, active: fullscreened }">
                         <i class="icon fa fa-expand-arrows-alt"></i>
                         <span class="title">Fullscreen</span>
@@ -160,7 +160,7 @@
                 <div class="group-items">
                     <!-- quit -->
                     <div class="box button quit" v-on:click="quit"
-                        v-tooltip.bottom-center="{ content: 'Quit application' }">
+                        v-tooltip.bottom-center="{ content: 'Quit application (shortcut: <span class=attention-boxed>CTRL+q</span>)' }">
                         <i class="icon fa fa-times"></i>
                         <span class="title">Quit</span>
                     </div>
@@ -246,7 +246,7 @@
                     <!-- enter message -->
                     <div class="box message-text" v-bind:class="{ disabled: inLogin, active: message !== '' }">
                         <span v-show="!votingActive || votingActive && votingType === 'propose'"
-                            v-tooltip.bottom-center="{ content: 'Send a textual message to the trainer' }">
+                            v-tooltip.bottom-center="{ content: 'Send a textual message to the trainer (shortcut: <span class=attention-boxed>CTRL+m</span>)' }">
                             <input
                                 v-bind:disabled="inLogin || (votingActive && votingDone)"
                                 ref="message"
@@ -341,7 +341,7 @@
                 <div class="group-items">
                     <!-- send thumbs-up -->
                     <div class="box button message-send" v-on:click="feedback('thumbsup')"
-                        v-tooltip.bottom-center="{ content: 'Send feedback by showing consent' }"
+                        v-tooltip.bottom-center="{ content: 'Send feedback by showing consent (shortcut: <span class=attention-boxed>CTRL+c</span>)' }"
                         v-bind:class="{ disabled: inLogin || feedbackDisabled }">
                         <i class="icon fa fa-thumbs-up"></i>
                         <span class="title">Show Consent</span>
@@ -349,7 +349,7 @@
 
                     <!-- send thumbs-down -->
                     <div class="box button message-send" v-on:click="feedback('thumbsdn')"
-                        v-tooltip.bottom-center="{ content: 'Send feedback by showing refusal' }"
+                        v-tooltip.bottom-center="{ content: 'Send feedback by showing refusal (shortcut: <span class=attention-boxed>CTRL+r</span>)' }"
                         v-bind:class="{ disabled: inLogin || feedbackDisabled }">
                         <i class="icon fa fa-thumbs-down"></i>
                         <span class="title">Show Refusal</span>
@@ -357,7 +357,7 @@
 
                     <!-- send surprise -->
                     <div class="box button message-send" v-on:click="feedback('surprise')"
-                        v-tooltip.bottom-center="{ content: 'Send feedback by showing surprise' }"
+                        v-tooltip.bottom-center="{ content: 'Send feedback by showing surprise (shortcut: <span class=attention-boxed>CTRL+o</span>)' }"
                         v-bind:class="{ disabled: inLogin || feedbackDisabled }">
                         <i class="icon fa fa-surprise"></i>
                         <span class="title">Show Surprise</span>
@@ -365,7 +365,7 @@
 
                     <!-- send smile -->
                     <div class="box button message-send" v-on:click="feedback('smile')"
-                        v-tooltip.bottom-center="{ content: 'Send feedback by showing smile' }"
+                        v-tooltip.bottom-center="{ content: 'Send feedback by showing smile/grin (shortcut: <span class=attention-boxed>CTRL+g</span>)' }"
                         v-bind:class="{ disabled: inLogin || feedbackDisabled }">
                         <i class="icon fa fa-grin-wink"></i>
                         <span class="title">Show Smile</span>
@@ -1536,10 +1536,15 @@ module.exports = {
         Mousetrap.bind("ctrl+s", () => this.screenshot())
         Mousetrap.bind("ctrl+a", () => this.toggleAudio())
         Mousetrap.bind("ctrl+f", () => this.fullscreen())
+        Mousetrap.bind("ctrl+q", () => this.quit())
         Mousetrap.bind("ctrl+m", (ev) => {
             this.$refs.message.focus()
             ev.preventDefault()
         })
+        Mousetrap.bind("ctrl+c", () => this.feedback("thumbsup"))
+        Mousetrap.bind("ctrl+r", () => this.feedback("thumbsdn"))
+        Mousetrap.bind("ctrl+o", () => this.feedback("surprise"))
+        Mousetrap.bind("ctrl+g", () => this.feedback("smile"))
     },
 
     /*  component destruction hook  */
