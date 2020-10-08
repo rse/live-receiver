@@ -459,6 +459,8 @@ const app = electron.app
                 }
                 if (message.event === "reconnect") {
                     await liveDisconnect()
+                    await new Promise((resolve) => setTimeout(resolve, 4 * 1000))
+                    await liveAuth()
                     await liveConnect()
                 }
                 else if (message.event === "disconnect") {
