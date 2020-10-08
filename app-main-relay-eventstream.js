@@ -11,13 +11,18 @@ const EventEmitter = require("events")
 const MQTTjs       = require("mqtt")
 const UUID         = require("pure-uuid")
 
+/*  internal requirements  */
+const pkg          = require("./package.json")
+
 /*  the exported API class  */
 module.exports = class EventStream extends EventEmitter {
     constructor (options = {}) {
         super()
         const id = (new UUID(1)).format("std")
+        const ua = `${pkg.name}/${pkg.version}`
         this.options = Object.assign({}, {
             client:   id,
+            agent:    ua,
             name:     "",
             image:    "",
             server:   "",
@@ -79,6 +84,7 @@ module.exports = class EventStream extends EventEmitter {
                         event: "attendance",
                         data: {
                             client: this.options.client,
+                            agent:  this.options.agent,
                             event:  "end"
                         }
                     })
@@ -167,6 +173,7 @@ module.exports = class EventStream extends EventEmitter {
                     event: "attendance",
                     data: {
                         client: this.options.client,
+                        agent:  this.options.agent,
                         event:  "begin",
                         data: {
                             name:  this.options.name,
@@ -184,6 +191,7 @@ module.exports = class EventStream extends EventEmitter {
                                 event: "attendance",
                                 data: {
                                     client: this.options.client,
+                                    agent:  this.options.agent,
                                     event:  "refresh"
                                 }
                             }).catch((err) => void (err))
@@ -213,6 +221,7 @@ module.exports = class EventStream extends EventEmitter {
                 event: "attendance",
                 data: {
                     client: this.options.client,
+                    agent:  this.options.agent,
                     event:  "end"
                 }
             })
