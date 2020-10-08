@@ -458,13 +458,13 @@ const app = electron.app
                     return
                 }
                 if (message.event === "reconnect") {
-                    await liveDisconnect()
-                    await new Promise((resolve) => setTimeout(resolve, 4 * 1000))
-                    await liveAuth()
-                    await liveConnect()
+                    app.win.webContents.send("relogin", {
+                        liveRelayServer:  app.liveRelayServer,
+                        liveAccessToken:  app.liveAccessToken
+                    })
                 }
                 else if (message.event === "disconnect") {
-                    await liveDisconnect()
+                    app.win.webContents.send("logout")
                 }
                 else if (message.event === "voting-begin")
                     app.win.webContents.send("voting-begin")
