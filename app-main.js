@@ -461,6 +461,9 @@ const app = electron.app
                     await liveDisconnect()
                     await liveConnect()
                 }
+                else if (message.event === "disconnect") {
+                    await liveDisconnect()
+                }
                 else if (message.event === "voting-begin")
                     app.win.webContents.send("voting-begin")
                 else if (message.event === "voting-type")
