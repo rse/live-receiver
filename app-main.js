@@ -21,6 +21,7 @@ const UUID         = require("pure-uuid")
 const Settings     = require("./app-main-settings")
 const VideoStream  = require("./app-main-relay-videostream")
 const EventStream  = require("./app-main-relay-eventstream")
+const pkg          = require("./package.json")
 
 /*  control run-time debugging (increase tracing or even avoid warnings)  */
 if (typeof process.env.DEBUG !== "undefined")
@@ -405,7 +406,8 @@ const app = electron.app
         app.es = null
         app.vs = null
         const credentials = {
-            client: app.clientId
+            client: app.clientId,
+            agent:  `${pkg.name}/${pkg.version}`
         }
         const liveAuth = async () => {
             app.log.info("main: LiVE-Relay: authenticate")
