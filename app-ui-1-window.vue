@@ -14,7 +14,7 @@
                 <div class="group-items">
                     <!-- disconnect -->
                     <div class="box button logout" v-on:click="logout"
-                        v-tooltip.bottom-center="{ content: 'Disconnect from the LiVE Relay' }"
+                        v-tooltip.bottom-center="{ content: 'Disconnect from the LiVE Relay.' }"
                         v-bind:class="{ disabled: inLogin || !allowDisconnect }">
                         <i class="icon fa fa-arrow-alt-circle-left"></i>
                         <span class="title">Disconnect</span>
@@ -22,7 +22,9 @@
 
                     <!-- resconnect -->
                     <div class="box button reconnect" v-on:click="relogin"
-                        v-tooltip.bottom-center="{ content: 'Reconnect to the LiVE Relay in order<br/>to re-synchronize the video stream and<br/>reduce the stream latency again.' }"
+                        v-tooltip.bottom-center="{ content: 'Reconnect to the LiVE Relay in order<br/>' +
+                            'to re-synchronize the video stream and<br/>' +
+                            'reduce the stream latency again.' }"
                         v-bind:class="{ disabled: inLogin || !allowDisconnect }">
                         <i class="icon fa fa-sync-alt"></i>
                         <span class="title">Reconnect</span>
@@ -37,7 +39,7 @@
                     <!-- bandwidth -->
                     <div class="box bandwidth"
                         v-tooltip.bottom-center="{ content: 'Shows the current bandwith usage of the<br/>' +
-                            'video stream in kilo-bit per second' }"
+                            'video stream in kilo-bit per second.' }"
                         v-bind:class="{ disabled: inLogin, active: !inLogin }">
                         <span class="word">{{ inLogin ? "---" : bandwidthText }}</span>
                         <span class="title">kbps</span>
@@ -52,7 +54,7 @@
                     <!-- screenshot -->
                     <div class="box button screenshot" v-on:click="screenshot"
                         v-tooltip.bottom-center="{ content: 'Saves a screenshot of the current video stream<br/>' +
-                            'to your personal <i>Picture</i> folder (shortcut: <span class=attention-boxed>CTRL+s</span>)' }"
+                            'to your personal <i>Picture</i> folder. &nbsp;<span class=attention-boxed>CTRL+s</span>' }"
                         v-bind:class="{ disabled: inLogin }">
                         <i class="icon fa fa-camera"></i>
                         <span class="title">Screenshot</span>
@@ -66,7 +68,8 @@
                 <div class="group-items">
                     <!-- audio mute -->
                     <div class="box button mute"
-                        v-tooltip.bottom-center="{ content: (volumeMute ? 'Unmute' : 'Mute') + ' the audio stream (shortcut: <span class=attention-boxed>CTRL+a</span>)' }"
+                        v-tooltip.bottom-center="{ content: (volumeMute ? 'Unmute' : 'Mute') +
+                            ' the audio stream. &nbsp;<span class=attention-boxed>CTRL+a</span>' }"
                         v-on:click="toggleAudio"
                         v-bind:class="{ disabled: inLogin || volume === 0, active: volumeMute }">
                         <span v-show="volumeMute"><i class="icon fa fa-volume-mute"></i></span>
@@ -78,7 +81,7 @@
                     <!-- audio volume -->
                     <div class="box slider volume"
                         v-tooltip.bottom-center="{ content: 'Change volume of the audio stream<br/>' +
-                            '(left: minimum, right: maximum)' }"
+                            '(left: minimum, right: maximum).' }"
                         v-bind:class="{ disabled: inLogin }">
                         <input ref="volume"
                             v-bind:disabled="inLogin"
@@ -97,7 +100,7 @@
                 <div class="group-items">
                     <!-- move window -->
                     <div class="box move"
-                        v-tooltip.bottom-center="{ content: 'Move window position on screen' }">
+                        v-tooltip.bottom-center="{ content: 'Move window position on screen.' }">
                         <div class="logo">
                             <img v-bind:src="logo" alt="LiVE"/>
                         </div>
@@ -119,7 +122,7 @@
                 <div class="group-items">
                     <!-- smallest size -->
                     <div class="box button fit" v-on:click="smallestSize"
-                        v-tooltip.bottom-center="{ content: 'Resize window to smallest possible size' }"
+                        v-tooltip.bottom-center="{ content: 'Resize window to smallest possible size.' }"
                         v-bind:class="{ disabled: isWinSmallest || fullscreened || maximized }">
                         <i class="icon fa fa-compress"></i>
                         <span class="title">Smallest Size</span>
@@ -128,7 +131,7 @@
                     <!-- source size -->
                     <div class="box button fit" v-on:click="sourceSize"
                         v-tooltip.bottom-center="{ content: 'Resize window to fit native (unscaled)<br/>' +
-                            'size of video stream' }"
+                            'size of video stream.' }"
                         v-bind:class="{ disabled: inLogin || fullscreened || maximized }">
                         <i class="icon fa fa-expand"></i>
                         <span class="title">Native Size</span>
@@ -136,7 +139,7 @@
 
                     <!-- minimize -->
                     <div class="box button minimize" v-on:click="minimize"
-                        v-tooltip.bottom-center="{ content: 'Minimize and hide window on screen' }"
+                        v-tooltip.bottom-center="{ content: 'Minimize and hide window on screen.' }"
                         v-bind:class="{ disabled: fullscreened || maximized }">
                         <i class="icon fa fa-window-minimize"></i>
                         <span class="title">Minimize</span>
@@ -145,7 +148,7 @@
                     <!-- maximize -->
                     <div class="box button maximize" v-on:click="maximize"
                         v-tooltip.bottom-center="{ content: (maximized ? 'Unmaximize' : 'Maximize') +
-                            ' window on screen' }"
+                            ' window on screen.' }"
                         v-bind:class="{ disabled: fullscreened, active: maximized }">
                         <i class="icon fa fa-window-maximize"></i>
                         <span class="title">Maximize</span>
@@ -154,7 +157,8 @@
                     <!-- fullscreen -->
                     <div class="box button fullscreen" v-on:click="fullscreen"
                         v-tooltip.bottom-center="{ content: 'Switch to ' +
-                            (fullscreened ? 'normal window' : 'fullscreen') + ' mode (shortcut: <span class=attention-boxed>CTRL+f</span>)' }"
+                            (fullscreened ? 'normal window' : 'fullscreen') +
+                            ' mode. &nbsp;<span class=attention-boxed>CTRL+f</span>' }"
                         v-bind:class="{ disabled: maximized, active: fullscreened }">
                         <i class="icon fa fa-expand-arrows-alt"></i>
                         <span class="title">Fullscreen</span>
@@ -168,7 +172,7 @@
                 <div class="group-items">
                     <!-- quit -->
                     <div class="box button quit" v-on:click="quit"
-                        v-tooltip.bottom-center="{ content: 'Quit application (shortcut: <span class=attention-boxed>CTRL+q</span>)' }">
+                        v-tooltip.bottom-center="{ content: 'Quit application &nbsp;<span class=attention-boxed>CTRL+q</span>' }">
                         <i class="icon fa fa-times"></i>
                         <span class="title">Quit</span>
                     </div>
@@ -254,19 +258,21 @@
                     <!-- enter message -->
                     <div class="box message-text" v-bind:class="{ disabled: inLogin, active: message !== '' }">
                         <span v-show="!votingActive || votingActive && votingType === 'propose'"
-                            v-tooltip.bottom-center="{ content: 'Send a textual message to the trainer (shortcut: <span class=attention-boxed>CTRL+m</span>)' }">
+                            v-tooltip.bottom-center="{ content: 'Send a textual message to the trainer.' +
+                                ' &nbsp;<span class=attention-boxed>CTRL+m</span>' }">
                             <input
                                 v-bind:disabled="inLogin || (votingActive && votingDone)"
                                 ref="message"
                                 type="text"
-                                v-bind:placeholder="(votingActive && votingDone) ? 'Thanks for voting' : (votingActive ? 'Type vote...' : 'Type message...')"
+                                v-bind:placeholder="(votingActive && votingDone) ? 'Thanks for voting' :
+                                    (votingActive ? 'Type vote...' : 'Type message...')"
                                 v-model="message"
                                 v-on:keyup.enter="sendMessage"
                                 v-on:keyup.escape="clearMessage(false)"
                             />
                         </span>
                         <div v-show="votingActive && votingType === 'judge'"
-                            v-tooltip.bottom-center="{ content: 'Send a boolean voting to the trainer' }"
+                            v-tooltip.bottom-center="{ content: 'Send a boolean voting to the trainer.' }"
                             v-bind:class="{ 'choice-row': true, disabled: votingDone }">
                             <div v-bind:class="{ 'choice-box': true, active: votingChoice === 1 }"
                                 v-on:click="sendChoice(1, 'yes')">
@@ -278,7 +284,7 @@
                             </div>
                         </div>
                         <div v-show="votingActive && votingType === 'evaluate'"
-                            v-tooltip.bottom-center="{ content: 'Send a numeric evaluation to the trainer' }"
+                            v-tooltip.bottom-center="{ content: 'Send a numeric evaluation to the trainer.' }"
                             v-bind:class="{ 'choice-row': true, disabled: votingDone }">
                             <div v-bind:class="{ 'choice-box': true, active: votingChoice === 1 }"
                                 v-on:click="sendChoice(1, '-2')">
@@ -302,7 +308,7 @@
                             </div>
                         </div>
                         <div v-show="votingActive && (votingType === 'choose' || votingType === 'quiz')"
-                            v-tooltip.bottom-center="{ content: 'Send a numeric choice to the trainer' }"
+                            v-tooltip.bottom-center="{ content: 'Send a numeric choice to the trainer.' }"
                             v-bind:class="{ 'choice-row': true, disabled: votingDone }">
                             <div v-bind:class="{ 'choice-box': true, active: votingChoice === 1 }"
                                  v-on:click="sendChoice(1, '1')">1</div>
@@ -327,7 +333,7 @@
 
                     <!-- clear message -->
                     <div class="box button message-clear" v-on:click="clearMessage(true)"
-                        v-tooltip.bottom-center="{ content: 'Clear audio and text messages' }"
+                        v-tooltip.bottom-center="{ content: 'Clear audio and text messages.' }"
                         v-bind:class="{ disabled: inLogin || (audioBlob === null && message === '') }">
                         <i class="icon fa fa-trash-alt"></i>
                         <span class="title">Clear Messages</span>
@@ -335,7 +341,7 @@
 
                     <!-- send message -->
                     <div class="box button message-send" v-on:click="sendMessage"
-                        v-tooltip.bottom-center="{ content: 'Send audio and text messages' }"
+                        v-tooltip.bottom-center="{ content: 'Send audio and text messages.' }"
                         v-bind:class="{ disabled: inLogin || (message === '' && audioBlob === null) }">
                         <i class="icon fa fa-share"></i>
                         <span class="title">Send Messages</span>
@@ -349,7 +355,8 @@
                 <div class="group-items">
                     <!-- send thumbs-up -->
                     <div class="box button message-send" v-on:click="feedback('thumbsup')"
-                        v-tooltip.bottom-center="{ content: 'Send feedback by showing consent (shortcut: <span class=attention-boxed>CTRL+c</span>)' }"
+                        v-tooltip.bottom-center="{ content: 'Send feedback by showing consent.' +
+                            ' &nbsp; <span class=attention-boxed>CTRL+c</span>' }"
                         v-bind:class="{ disabled: inLogin || feedbackDisabled }">
                         <i class="icon fa fa-thumbs-up"></i>
                         <span class="title">Show Consent</span>
@@ -357,7 +364,8 @@
 
                     <!-- send thumbs-down -->
                     <div class="box button message-send" v-on:click="feedback('thumbsdn')"
-                        v-tooltip.bottom-center="{ content: 'Send feedback by showing refusal (shortcut: <span class=attention-boxed>CTRL+r</span>)' }"
+                        v-tooltip.bottom-center="{ content: 'Send feedback by showing refusal.' +
+                            ' &nbsp;<span class=attention-boxed>CTRL+r</span>' }"
                         v-bind:class="{ disabled: inLogin || feedbackDisabled }">
                         <i class="icon fa fa-thumbs-down"></i>
                         <span class="title">Show Refusal</span>
@@ -365,7 +373,8 @@
 
                     <!-- send surprise -->
                     <div class="box button message-send" v-on:click="feedback('surprise')"
-                        v-tooltip.bottom-center="{ content: 'Send feedback by showing surprise (shortcut: <span class=attention-boxed>CTRL+o</span>)' }"
+                        v-tooltip.bottom-center="{ content: 'Send feedback by showing surprise.' +
+                            ' &nbsp;<span class=attention-boxed>CTRL+o</span>' }"
                         v-bind:class="{ disabled: inLogin || feedbackDisabled }">
                         <i class="icon fa fa-surprise"></i>
                         <span class="title">Show Surprise</span>
@@ -373,7 +382,8 @@
 
                     <!-- send smile -->
                     <div class="box button message-send" v-on:click="feedback('smile')"
-                        v-tooltip.bottom-center="{ content: 'Send feedback by showing smile/grin (shortcut: <span class=attention-boxed>CTRL+g</span>)' }"
+                        v-tooltip.bottom-center="{ content: 'Send feedback by showing smile/grin.' +
+                            ' &nbsp;<span class=attention-boxed>CTRL+g</span>' }"
                         v-bind:class="{ disabled: inLogin || feedbackDisabled }">
                         <i class="icon fa fa-grin-wink"></i>
                         <span class="title">Show Smile</span>
@@ -381,7 +391,7 @@
 
                     <!-- send frown -->
                     <div class="box button message-send" v-on:click="feedback('frown')"
-                        v-tooltip.bottom-center="{ content: 'Send feedback by showing frown' }"
+                        v-tooltip.bottom-center="{ content: 'Send feedback by showing frown.' }"
                         v-bind:class="{ disabled: inLogin || feedbackDisabled }">
                         <i class="icon fa fa-angry"></i>
                         <span class="title">Show Frown</span>
@@ -389,7 +399,7 @@
 
                     <!-- send sadness -->
                     <div class="box button message-send" v-on:click="feedback('sadness')"
-                        v-tooltip.bottom-center="{ content: 'Send feedback by showing sadness' }"
+                        v-tooltip.bottom-center="{ content: 'Send feedback by showing sadness.' }"
                         v-bind:class="{ disabled: inLogin || feedbackDisabled }">
                         <i class="icon fa fa-sad-tear"></i>
                         <span class="title">Show Sadness</span>
@@ -433,7 +443,7 @@
                 <div class="group-items">
                     <!-- move window -->
                     <div class="box move"
-                        v-tooltip.bottom-center="{ content: 'Move window position on screen' }">
+                        v-tooltip.bottom-center="{ content: 'Move window position on screen.' }">
                         <div class="grab-container">
                             <span class="grab grab-1"></span>
                             <span class="grab grab-2"></span>
