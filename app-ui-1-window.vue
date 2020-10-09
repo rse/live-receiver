@@ -30,7 +30,8 @@
                         <span class="title">Reconnect</span>
                     </div>
                 </div>
-                <div class="group-bar">
+                <div class="group-bar"
+                    v-bind:class="{ disabled: inLogin || !allowDisconnect }">
                 </div>
             </div>
 
@@ -60,7 +61,8 @@
                         <span class="title">Screenshot</span>
                     </div>
                 </div>
-                <div class="group-bar">
+                <div class="group-bar"
+                     v-bind:class="{ disabled: inLogin }">
                 </div>
             </div>
 
@@ -92,7 +94,8 @@
                         <span class="title">Audio Volume</span>
                     </div>
                 </div>
-                <div class="group-bar">
+                <div class="group-bar"
+                     v-bind:class="{ disabled: inLogin }">
                 </div>
             </div>
 
@@ -231,7 +234,8 @@
         <!-- ---- FOOTER ---- -->
         <div ref="footer" class="footer">
             <div class="group grow">
-                <div class="group-bar">
+                <div class="group-bar"
+                    v-bind:class="{ disabled: inLogin }">
                 </div>
                 <div class="group-items">
                     <!-- audio record -->
@@ -350,7 +354,8 @@
             </div>
 
             <div class="group">
-                <div class="group-bar">
+                <div class="group-bar"
+                    v-bind:class="{ disabled: inLogin || feedbackDisabled }">
                 </div>
                 <div class="group-items">
                     <!-- send thumbs-up -->
@@ -408,7 +413,8 @@
             </div>
 
             <div class="group">
-                <div class="group-bar">
+                <div class="group-bar"
+                    v-bind:class="{ disabled: inLogin }">
                 </div>
                 <div class="group-items">
                     <!-- challenge -->
@@ -495,6 +501,13 @@
             border-left:   1px solid var(--color-std-bg-5);
             border-right:  1px solid var(--color-std-bg-1);
             border-bottom: 1px solid var(--color-std-bg-1);
+            &.active {
+                background-color:        var(--color-acc-bg-3);
+                border-top:    1px solid var(--color-acc-bg-5);
+                border-left:   1px solid var(--color-acc-bg-5);
+                border-right:  1px solid var(--color-acc-bg-1);
+                border-bottom: 1px solid var(--color-acc-bg-1);
+            }
         }
     }
     .group:hover {
