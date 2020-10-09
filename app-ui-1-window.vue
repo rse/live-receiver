@@ -512,11 +512,11 @@
     }
     .group:hover {
         .group-bar {
-            background-color:        var(--color-sig-bg-3);
-            border-top:    1px solid var(--color-sig-bg-5);
-            border-left:   1px solid var(--color-sig-bg-5);
-            border-right:  1px solid var(--color-sig-bg-1);
-            border-bottom: 1px solid var(--color-sig-bg-1);
+            background-color:        var(--color-acc-bg-3);
+            border-top:    1px solid var(--color-acc-bg-5);
+            border-left:   1px solid var(--color-acc-bg-5);
+            border-right:  1px solid var(--color-acc-bg-1);
+            border-bottom: 1px solid var(--color-acc-bg-1);
             &.disabled {
                 background-color:        var(--color-std-bg-3);
                 border-top:    1px solid var(--color-std-bg-5);
