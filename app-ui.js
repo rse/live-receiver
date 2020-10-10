@@ -140,7 +140,7 @@ ui = {}
         if (result.error)
             ui.root.$refs.win.$emit("login-error", result.error)
         else {
-            await ui.delay(4000)
+            await ui.delay(5000)
             const result = await ui.ipc.invoke("login", info)
             if (result.error)
                 ui.root.$refs.win.$emit("login-error", result.error)
