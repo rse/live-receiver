@@ -183,7 +183,7 @@ ui = {}
         "maximized", "fullscreened",
         "stream-begin", "stream-data", "stream-reset", "stream-end",
         "voting-begin", "voting-type", "voting-end",
-        "deep-link"
+        "deep-link", "relogin", "logout"
     ]
     for (const event of events) {
         ui.ipc.on(event, (ev, ...args) => {
