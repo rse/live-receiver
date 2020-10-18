@@ -20,7 +20,7 @@
                         <span class="title">Disconnect</span>
                     </div>
 
-                    <!-- resconnect -->
+                    <!-- reconnect -->
                     <div class="box button reconnect" v-on:click="relogin"
                         v-tooltip.bottom-center="{ content: 'Reconnect to the LiVE Relay in order<br/>' +
                             'to re-synchronize the video stream and<br/>' +
