@@ -1629,7 +1629,6 @@ module.exports = {
         this.$on("update-versions", (versions) => {
             ui.log.info(`update-versions: ${JSON.stringify(versions)}`)
             this.$refs.update.$emit("update-versions", versions)
-            this.$refs.login.$emit("blink-update", true)
         })
         this.$on("update-progress", (progress) => {
             ui.log.info(`update-progress: ${JSON.stringify(progress)}`)
