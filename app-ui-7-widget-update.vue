@@ -412,7 +412,11 @@ module.exports = {
             this.versions.running     = versions.running     ? versions.running     : {}
             this.versions.current     = versions.current     ? versions.current     : {}
             this.versions.forthcoming = versions.forthcoming ? versions.forthcoming : {}
-            if (versions.running && versions.current && versions.running.version !== versions.current.version)
+            if (this.versions.running
+                && this.versions.running.version
+                && this.versions.current
+                && this.versions.current.version
+                && this.versions.running.version !== this.versions.current.version)
                 this.$emit("update-notify", true)
             else
                 this.$emit("update-notify", false)
