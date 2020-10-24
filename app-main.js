@@ -677,7 +677,6 @@ const app = electron.app
         })
 
         /*  cleanup from old update  */
-        app.log.info(`update: ${process.env.UPDATE_HELPER_CLEANUP_DIR}`)
         await app.update.cleanup()
     })
 })().catch((err) => {
