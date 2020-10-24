@@ -231,7 +231,7 @@ const app = electron.app
         })
         app.win.setHasShadow(true)
         app.win.setContentProtection(!(typeof process.env.DEBUG !== "undefined"))
-        app.win.loadURL(`file://${__dirname}/app-ui.html`)
+        app.win.loadURL("file://" + path.join(__dirname, "app-ui.html"))
         if (typeof process.env.DEBUG !== "undefined") {
             setTimeout(() => {
                 app.win.webContents.openDevTools()
