@@ -111,20 +111,27 @@
         <p/>
         <div class="hint">
             <span v-if="updateable">
-                <b>Hint:</b> Congratulations, your
+                <b>Hint:</b> Your
                 <a href="https://github.com/rse/live-receiver" v-on:click="openURL">LiVE Receiver</a>
-                is automatically updateable. Just press the "<b>Update
-                to version!</b>" button for updating to the particular version,
-                please!
+                is automatically updateable from this dialog.
+                <span v-if="versions.current.version !== versions.running.version">
+                    Just press the "<b>Update to version!</b>" button above
+                    for updating to the particular version, please!
+                </span>
             </span>
             <span v-if="!updateable">
-                <b>Hint</b>: Sorry, your
+                <b>Hint</b>: Your
                 <a href="https://github.com/rse/live-receiver" v-on:click="openURL">LiVE Receiver</a>
-                is <u>not</u> automatically updateable, because you are <u>not</u>
+                unfortunately is <u>not</u> automatically updateable from this dialog, because you are <u>not</u>
                 running a packaged version or the application files can
                 <u>not</u> be overwritten with the current user permissions.
-                Hence, please press the "<b>Download version!</b>" button
-                and then perform the update manually, please!
+                <span v-if="versions.current.version !== versions.running.version">
+                    For updating, either re-start
+                    <a href="https://github.com/rse/live-receiver" v-on:click="openURL">LiVE Receiver</a>
+                    with elevated user privileges or press the "<b>Download version!</b>" button
+                    above to just open the updated version in your Browser and then perform the
+                    download and update manually, please!
+                </span>
             </span>
         </div>
         <p/>
@@ -136,7 +143,7 @@
         </div>
         <p/>
         <div class="progress" v-if="progress !== null">
-            <b>Update Progress:</b>
+            <b>Progress:</b>
             <div class="spinner">
                 <i class="fa fa-spinner fa-spin"></i>
             </div>
@@ -148,7 +155,7 @@
             </div>
         </div>
         <div class="progress" v-if="progress === null">
-            <b>Update Progress:</b>
+            <b>Progress:</b>
             none
             <div class="completion">
                 <div class="total disabled"></div>
