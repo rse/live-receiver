@@ -234,7 +234,7 @@ module.exports = class Update {
             source:   from,
             target:   this.app,
             [os.platform() === "darwin" ? "open" : "execute"]: this.app,
-            cleanup:  tmpdir.name,
+            cleanup:  [ tmpdir.name ],
             progress: progress
         })
         await updateHelper.update()
