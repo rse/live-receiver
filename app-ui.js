@@ -170,7 +170,8 @@ ui = {}
         "minimize", "maximize", "fullscreen",
         "resize", "set-size", "quit",
         "message", "feedback", "feeling",
-        "screenshot"
+        "screenshot",
+        "update-check", "update-to-version"
     ]
     for (const event of events) {
         ui.root.$refs.win.$on(event, async (...args) => {
@@ -183,7 +184,8 @@ ui = {}
         "maximized", "fullscreened",
         "stream-begin", "stream-data", "stream-reset", "stream-end",
         "voting-begin", "voting-type", "voting-end",
-        "deep-link", "relogin", "logout"
+        "deep-link", "relogin", "logout",
+        "update-updateable", "update-versions", "update-progress"
     ]
     for (const event of events) {
         ui.ipc.on(event, (ev, ...args) => {
@@ -194,6 +196,12 @@ ui = {}
     /*  finally signal main thread we are ready  */
     ui.log.info("ui: UI ready")
     ui.ipc.invoke("ui-ready")
+
+    /*  finally once trigger an update check
+        (after a second to give update dialog a chance to be created)  */
+    setTimeout(() => {
+        ui.ipc.invoke("update-check")
+    }, 1000)
 })().catch((err) => {
     ui.log.error(`ui: ERROR: ${err}`)
 })

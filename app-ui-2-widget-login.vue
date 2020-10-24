@@ -73,7 +73,11 @@
         </div>
 
         <div class="col-2 settings">
-            <div class="box button" v-on:click="settings">
+            <div v-bind:class="{ box: true, button: true, active: activeUpdate }" v-on:click="update">
+                <i class="icon fa fa-cloud-download-alt"></i>
+                <div class="title">Updates</div>
+            </div>
+            <div v-bind:class="{ box: true, button: true, active: activeSettings }" v-on:click="settings">
                 <i class="icon fa fa-user-cog"></i>
                 <div class="title">Settings</div>
             </div>
@@ -208,7 +212,7 @@
     .notice {
         margin-top: 10px;
         .button {
-            width: calc(100% - 60px);
+            width: calc(100% - 50px);
             background-color: var(--color-std-bg-4);
             border-radius: 5px;
             padding: 10px 10px 5px 10px;
@@ -234,13 +238,19 @@
         }
     }
     .settings {
+        display: flex;
+        flex-direction: row;
         .button {
             margin-top: 10px;
-            width: calc(100% - 50px);
+            margin-right: 8px;
+            width: 50px;
             height: 55px;
             padding-left: 10px;
             background-color: var(--color-std-bg-4);
             border-radius: 5px;
+            &.active {
+                background-color: var(--color-acc-bg-3);
+            }
             &:hover {
                 background-color: var(--color-sig-bg-4);
             }
@@ -271,7 +281,11 @@ module.exports = {
             allowConnect:            true,
             logo:                    ui.logo,
             version:                 ui.pkg.version,
-            error:                   ""
+            error:                   "",
+            blinkUpdate:             false,
+            activeUpdate:            false,
+            blinkSettings:           false,
+            activeSettings:          false
         }
     },
 
@@ -301,6 +315,11 @@ module.exports = {
         /*  handle settings  */
         settings () {
             this.$emit("settings")
+        },
+
+        /*  handle update check  */
+        update () {
+            this.$emit("update")
         },
 
         /*  handle login  */
@@ -350,6 +369,32 @@ module.exports = {
         })
         this.$on("disable", () => {
             animation.pause()
+        })
+
+        /*  support blinking update button  */
+        let timerUpdate = null
+        this.$on("blink-update", (enable) => {
+            this.blinkUpdate = enable
+            if (this.blinkUpdate && !timerUpdate)
+                timerUpdate = setInterval(() => { this.activeUpdate = !this.activeUpdate }, 1000)
+            else if (!this.blinkUpdate && timerUpdate) {
+                clearTimeout(timerUpdate)
+                timerUpdate = null
+                this.activeUpdate = false
+            }
+        })
+
+        /*  support blinking settings button  */
+        let timerSettings = null
+        this.$on("blink-settings", (enable) => {
+            this.blinkSettings = enable
+            if (this.blinkSettings && !timerSettings)
+                timerSettings = setInterval(() => { this.activeSettings = !this.activeSettings }, 1000)
+            else if (!this.blinkSettings && timerSettings) {
+                clearTimeout(timerSettings)
+                timerSettings = null
+                this.activeSettings = false
+            }
         })
     }
 }

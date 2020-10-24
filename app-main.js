@@ -21,6 +21,7 @@ const UUID         = require("pure-uuid")
 const Settings     = require("./app-main-settings")
 const VideoStream  = require("./app-main-relay-videostream")
 const EventStream  = require("./app-main-relay-eventstream")
+const Update       = require("./app-main-update")
 const pkg          = require("./package.json")
 
 /*  control run-time debugging (increase tracing or even avoid warnings)  */
@@ -125,6 +126,9 @@ const app = electron.app
 
     /*  start startup procedure once Electron is ready  */
     app.on("ready", async () => {
+        /*  establish update process  */
+        app.update = new Update()
+
         /*  establish settings and their default values  */
         const clientId = (new UUID(1)).format("std")
         const settings = new Settings({ appId: "LiVE-Receiver", flushAfter: 1 * 1000 })
@@ -646,6 +650,35 @@ const app = electron.app
                 }
             })
         })
+
+        /*  handle update check request from UI  */
+        app.ipc.handle("update-check", async () => {
+            /*  check whether we are updateable at all  */
+            const updateable = await app.update.updateable()
+            app.win.webContents.send("update-updateable", updateable)
+
+            /*  check for update versions  */
+            const versions = await app.update.check(throttle(1000 / 60, (task, completed) => {
+                app.win.webContents.send("update-progress", { task, completed })
+            }))
+            setTimeout(() => {
+                app.win.webContents.send("update-progress", null)
+            }, 2 * (1000 / 60))
+            app.win.webContents.send("update-versions", versions)
+        })
+
+        /*  handle update request from UI  */
+        app.ipc.handle("update-to-version", (event, version) => {
+            app.update.update(version, throttle(1000 / 60, (task, completed) => {
+                app.win.webContents.send("update-progress", { task, completed })
+            })).catch((err) => {
+                app.log.error(`update: ERROR: ${err}`)
+            })
+        })
+
+        /*  cleanup from old update  */
+        app.log.info(`update: ${process.env.UPDATE_HELPER_CLEANUP_DIR}`)
+        await app.update.cleanup()
     })
 })().catch((err) => {
     if (app.log)

@@ -198,12 +198,13 @@
             </div>
 
             <!-- login dialog -->
-            <div v-show="inLogin && !inSettings && !inAbout" class="login">
+            <div v-show="inLogin && !inSettings && !inAbout && !inUpdate" class="login">
                 <login
                     ref="login"
                     v-bind:live-relay-server.sync="liveRelayServer"
                     v-bind:live-access-token.sync="liveAccessToken"
                     v-on:settings="settingsOpen"
+                    v-on:update="updateOpen"
                     v-on:about="aboutOpen"
                     v-on:login="login"
                 />
@@ -227,6 +228,17 @@
                 <about
                     ref="about"
                     v-on:close="aboutClose"
+                />
+            </div>
+
+            <!-- update dialog -->
+            <div v-show="inUpdate" class="update">
+                <update
+                    ref="update"
+                    v-on:close="updateClose"
+                    v-on:update-check="updateCheck"
+                    v-on:update-to-version="updateToVersion"
+                    v-on:update-notify="updateNotify"
                 />
             </div>
         </div>
@@ -992,6 +1004,7 @@ module.exports = {
         inLogin:               true,
         inSettings:            false,
         inAbout:               false,
+        inUpdate:              false,
         allowDisconnect:       true,
         personPortrait:        "",
         personName:            "",
@@ -1019,6 +1032,7 @@ module.exports = {
         videoSize:             { w: 0, h: 0 },
         timer1:                null,
         timer2:                null,
+        timer3:                null,
         isWinSmallest:         false,
         feedbackDisabled:      false,
         votingActive:          false,
@@ -1113,7 +1127,8 @@ module.exports = {
         "login":       "url:app-ui-2-widget-login.vue",
         "settings":    "url:app-ui-3-widget-settings.vue",
         "videostream": "url:app-ui-5-widget-videostream.vue",
-        "about":       "url:app-ui-6-widget-about.vue"
+        "about":       "url:app-ui-6-widget-about.vue",
+        "update":      "url:app-ui-7-widget-update.vue"
     },
 
     /*  component methods  */
@@ -1194,7 +1209,7 @@ module.exports = {
 
         /*  about handling */
         aboutOpen () {
-            if (!this.inLogin || this.inSettings || this.inAbout)
+            if (!this.inLogin || this.inAbout)
                 return
             this.inAbout = true
         },
@@ -1202,6 +1217,18 @@ module.exports = {
             if (!this.inAbout)
                 return
             this.inAbout = false
+        },
+
+        /*  update handling */
+        updateOpen () {
+            if (!this.inLogin || this.inUpdate)
+                return
+            this.inUpdate = true
+        },
+        updateClose () {
+            if (!this.inUpdate)
+                return
+            this.inUpdate = false
         },
 
         /*  login/connect and logout/disconnect handling  */
@@ -1217,6 +1244,7 @@ module.exports = {
             if (this.personPortrait      === "") { missingSettings("Personal Portrait");      return }
             if (this.personName          === "") { missingSettings("Personal Name");          return }
             if (this.liveStreamBuffering === 0)  { missingSettings("Video Stream Buffering"); return }
+            if (this.audioOutputDevice   === "") { missingSettings("Audio Output Device");    return }
             this.$emit("login", {
                 liveRelayServer:      this.liveRelayServer,
                 liveAccessToken:      this.liveAccessToken
@@ -1440,6 +1468,15 @@ module.exports = {
             width  = Math.floor(width)
             height = Math.floor(height)
             this.$emit("screenshot", { x, y, width, height })
+        },
+        updateCheck () {
+            this.$emit("update-check")
+        },
+        updateToVersion (version) {
+            this.$emit("update-to-version", version)
+        },
+        updateNotify (available) {
+            this.$refs.login.$emit("blink-update", available)
         }
     },
 
@@ -1584,6 +1621,21 @@ module.exports = {
             this.votingDone   = false
         })
 
+        /*  update support  */
+        this.$on("update-updateable", (updateable) => {
+            ui.log.info(`update-updateable: ${updateable ? "yes" : "no"}`)
+            this.$refs.update.$emit("update-updateable", updateable)
+        })
+        this.$on("update-versions", (versions) => {
+            ui.log.info(`update-versions: ${JSON.stringify(versions)}`)
+            this.$refs.update.$emit("update-versions", versions)
+            this.$refs.login.$emit("blink-update", true)
+        })
+        this.$on("update-progress", (progress) => {
+            ui.log.info(`update-progress: ${JSON.stringify(progress)}`)
+            this.$refs.update.$emit("update-progress", progress)
+        })
+
         /*  hotkey support  */
         Mousetrap.bind("ctrl+s", () => this.screenshot())
         Mousetrap.bind("ctrl+a", () => this.toggleAudio())
@@ -1597,6 +1649,17 @@ module.exports = {
         Mousetrap.bind("ctrl+r", () => this.feedback("thumbsdn"))
         Mousetrap.bind("ctrl+o", () => this.feedback("surprise"))
         Mousetrap.bind("ctrl+g", () => this.feedback("smile"))
+
+        /*  support blinking settings button  */
+        this.timer3 = setInterval(() => {
+            const blink = (
+                this.personPortrait === ""
+                || this.personName === ""
+                || this.liveStreamBuffering === 0
+                || this.audioOutputDevice === ""
+            )
+            this.$refs.login.$emit("blink-settings", blink)
+        }, 1000)
     },
 
     /*  component destruction hook  */
@@ -1606,6 +1669,8 @@ module.exports = {
             clearTimeout(this.timer1)
         if (this.timer2 !== null)
             clearTimeout(this.timer2)
+        if (this.timer3 !== null)
+            clearTimeout(this.timer3)
     }
 }
 </script>

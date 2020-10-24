@@ -147,6 +147,7 @@
         padding-bottom: 4px;
         &:hover {
             background-color: var(--color-sig-bg-4);
+            color: var(--color-sig-fg-4);
         }
     }
     a, a:hover, a:visited {
