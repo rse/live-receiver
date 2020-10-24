@@ -10,12 +10,12 @@
         "url":                           "http://engelschall.com/"
     },
     "devDependencies": {
-        "electron":                      "10.1.4",
+        "electron":                      "10.1.5",
         "electron-builder":              "22.9.1",
         "nodemon":                       "2.0.6",
         "shelljs":                       "0.8.4",
         "glob":                          "7.1.6",
-        "eslint":                        "7.11.0",
+        "eslint":                        "7.12.0",
         "eslint-config-standard":        "15.0.0",
         "eslint-plugin-standard":        "4.0.2",
         "eslint-plugin-promise":         "4.2.1",
@@ -33,7 +33,7 @@
         "jsonfile":                      "6.0.1",
         "syspath":                       "1.0.3",
         "execa":                         "4.0.3",
-        "dayjs":                         "1.9.3",
+        "dayjs":                         "1.9.4",
         "mousetrap":                     "1.6.5",
         "vue":                           "2.6.12",
         "vue-multiselect":               "2.1.6",
