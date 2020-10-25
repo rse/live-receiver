@@ -103,7 +103,7 @@
                 <b>{{ versions.current.version }}</b></a>!<br/>
             </span>
             <span v-if="versions.forthcoming.version">
-                At your option and risk, you can even already upgrade to the <b>forthcoming</b> version
+                At your option, you can already upgrade to the <b>forthcoming</b> version
                 <a v-bind:href="'https://github.com/rse/live-receiver/releases/tag/' + versions.forthcoming.version">
                 <b>{{ versions.forthcoming.version }}</b></a>.<br/>
             </span>
