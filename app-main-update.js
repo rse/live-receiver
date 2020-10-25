@@ -188,7 +188,9 @@ module.exports = class Update {
             /*  determine directory path and automatically create missing directories  */
             const dirPath = entry.isDirectory ? filePath : path.dirname(filePath)
             if (!dirCreated[dirPath]) {
-                await mkdirp(dirPath)
+                const mode = fs.constants.S_IRUSR | fs.constants.S_IWUSR | fs.constants.S_IXUSR |
+                    fs.constants.S_IRGRP | fs.constants.S_IXGRP | fs.constants.S_IROTH | fs.constants.S_IXOTH
+                await mkdirp(dirPath, { mode })
                 dirCreated[dirPath] = true
             }
 
@@ -197,14 +199,24 @@ module.exports = class Update {
                 /*  case 1: symbolic link  */
                 const target = zip.readFile(entry).toString()
                 await fs.promises.symlink(target, filePath)
-                if (os.platform() === "darwin")
-                    await fs.promises.lchmod(filePath, (entry.attr >> 16) & 0x1ff)
+                try {
+                    const mode = fs.constants.S_IRUSR | fs.constants.S_IWUSR |
+                        fs.constants.S_IRGRP | fs.constants.S_IROTH
+                    await fs.promises.lchmod(filePath, mode)
+                }
+                catch (ex) {
+                    /*  nop  */
+                }
             }
             else if (!entry.isDirectory) {
                 /*  case 2: regular file  */
                 const data = zip.readFile(entry)
                 await fs.promises.writeFile(filePath, data, { encoding: null })
-                await fs.promises.chmod(filePath, (entry.attr >> 16) & 0x1ff)
+                let mode = fs.constants.S_IRUSR | fs.constants.S_IWUSR |
+                    fs.constants.S_IRGRP | fs.constants.S_IROTH
+                if ((entry.attr >> 16) & fs.constants.S_IXUSR)
+                    mode |= fs.constants.S_IXUSR | fs.constants.S_IXGRP | fs.constants.S_IXOTH
+                await fs.promises.chmod(filePath, mode)
             }
         }
         if (progress)

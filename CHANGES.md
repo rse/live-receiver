@@ -2,6 +2,8 @@
 Changes
 =======
 
+- 1.4.3
+
 - 1.4.2
     - IMPROVEMENT: improved appearance of hover effects on login dialog
     - UPGRADE: upgraded to new Update Helper 1.0.1
