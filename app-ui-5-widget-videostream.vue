@@ -18,10 +18,10 @@
         <div class="overlay"
             v-show="state !== 'playing'">
             <div ref="overlayIcon" class="icon">
-                <div v-show="state === 'started'"><i class="icon fa fa-play-circle" ></i></div>
-                <div v-show="state === 'stalled'"><i class="icon fa fa-pause-circle"></i></div>
-                <div v-show="state === 'stopped'"><i class="icon fa fa-stop-circle" ></i></div>
-                <div v-show="state === 'error'"  ><i class="icon fa fa-times-circle"></i></div>
+                <div v-show="state === 'started'"><i class="icon fas fa-play-circle" ></i></div>
+                <div v-show="state === 'stalled'"><i class="icon fas fa-pause-circle"></i></div>
+                <div v-show="state === 'stopped'"><i class="icon fas fa-stop-circle" ></i></div>
+                <div v-show="state === 'error'"  ><i class="icon fas fa-times-circle"></i></div>
             </div>
             <div class="text">
                 <div v-show="state === 'started'">

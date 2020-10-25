@@ -16,7 +16,7 @@
         </div>
 
         <!-- LiVE Relay Server -->
-        <i class="icon fa fa-globe"></i>
+        <i class="icon fas fa-globe"></i>
         <div class="label">LiVE Relay Server</div>
         <input
             ref="liveRelayServer"
@@ -28,7 +28,7 @@
         />
 
         <!-- LiVE Access Token -->
-        <i class="icon fa fa-key"></i>
+        <i class="icon fas fa-key"></i>
         <div class="label">LiVE Access Token</div>
         <input
             ref="liveAccessToken"
@@ -74,11 +74,11 @@
 
         <div class="col-2 settings">
             <div v-bind:class="{ box: true, button: true, active: activeUpdate }" v-on:click="update">
-                <i class="icon fa fa-cloud-download-alt"></i>
+                <i class="icon fas fa-cloud-download-alt"></i>
                 <div class="title">Updates</div>
             </div>
             <div v-bind:class="{ box: true, button: true, active: activeSettings }" v-on:click="settings">
-                <i class="icon fa fa-user-cog"></i>
+                <i class="icon fas fa-user-cog"></i>
                 <div class="title">Settings</div>
             </div>
         </div>

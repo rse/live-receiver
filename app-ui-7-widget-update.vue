@@ -145,7 +145,7 @@
         <div class="progress" v-if="progress !== null">
             <b>Progress:</b>
             <div class="spinner">
-                <i class="fa fa-spinner fa-spin"></i>
+                <i class="fas fa-spinner fa-spin"></i>
             </div>
             {{ progress.task }}
             <div class="completion">

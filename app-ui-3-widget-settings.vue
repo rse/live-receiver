@@ -16,7 +16,7 @@
         </div>
 
         <!-- Your Portrait -->
-        <i class="icon fa fa-portrait"></i>
+        <i class="icon fas fa-portrait"></i>
         <div class="label">Your Portrait <span class="footnote">*</span></div>
         <portrait
             ref="personPortrait"
@@ -24,7 +24,7 @@
         ></portrait>
 
         <!-- Your Name -->
-        <i class="icon fa fa-file-signature"></i>
+        <i class="icon fas fa-file-signature"></i>
         <div class="label">Your Name <span class="footnote">*</span></div>
         <input
             ref="personName"
@@ -37,7 +37,7 @@
 
         <!-- Video Stream Buffering -->
         <!--
-        <i class="icon fa fa-clock"></i>
+        <i class="icon fas fa-clock"></i>
         <div class="label">Video Stream Buffering (ms)</div>
         <div class="selbox-container">
             <div class="selbox"
@@ -74,7 +74,7 @@
         -->
 
         <!-- Audio Input Device -->
-        <i class="icon fa fa-microphone-alt"></i>
+        <i class="icon fas fa-microphone-alt"></i>
         <div class="label">Audio Input Device</div>
         <div class="selbox-container">
             <v-multiselect
@@ -90,13 +90,13 @@
             <div class="selbox"
                 v-on:click="audioInputTest"
                 v-bind:class="{ disabled: intAudioInputDevice === null, active: audioInputTestActive }">
-                <span v-show="!audioInputTestActive" class="icon"><i class="fa fa-microphone-alt"></i></span>
-                <span v-show="audioInputTestActive"  class="icon"><i class="fa fa-microphone-alt-slash"></i></span>
+                <span v-show="!audioInputTestActive" class="icon"><i class="fas fa-microphone-alt"></i></span>
+                <span v-show="audioInputTestActive"  class="icon"><i class="fas fa-microphone-alt-slash"></i></span>
             </div>
         </div>
 
         <!-- Audio Output Device -->
-        <i class="icon fa fa-volume-up"></i>
+        <i class="icon fas fa-volume-up"></i>
         <div class="label">Audio Output Device</div>
         <div class="selbox-container">
             <v-multiselect
@@ -112,8 +112,8 @@
             <div class="selbox"
                 v-on:click="audioOutputTest"
                 v-bind:class="{ disabled: intAudioOutputDevice === null || audioBlob === null, active: audioOutputTestActive }">
-                <span v-show="!audioOutputTestActive" class="icon"><i class="fa fa-play-circle"></i></span>
-                <span v-show="audioOutputTestActive" class="icon"><i class="fa fa-stop-circle"></i></span>
+                <span v-show="!audioOutputTestActive" class="icon"><i class="fas fa-play-circle"></i></span>
+                <span v-show="audioOutputTestActive" class="icon"><i class="fas fa-stop-circle"></i></span>
             </div>
         </div>
 

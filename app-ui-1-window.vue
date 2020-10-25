@@ -16,7 +16,7 @@
                     <div class="box button logout" v-on:click="logout"
                         v-tooltip.bottom-center="{ content: 'Disconnect from the LiVE Relay.' }"
                         v-bind:class="{ disabled: inLogin || !allowDisconnect }">
-                        <i class="icon fa fa-arrow-alt-circle-left"></i>
+                        <i class="icon fas fa-arrow-alt-circle-left"></i>
                         <span class="title">Disconnect</span>
                     </div>
 
@@ -26,7 +26,7 @@
                             'to re-synchronize the video stream and<br/>' +
                             'reduce the stream latency again.' }"
                         v-bind:class="{ disabled: inLogin || !allowDisconnect }">
-                        <i class="icon fa fa-sync-alt"></i>
+                        <i class="icon fas fa-sync-alt"></i>
                         <span class="title">Reconnect</span>
                     </div>
                 </div>
@@ -57,7 +57,7 @@
                         v-tooltip.bottom-center="{ content: 'Saves a screenshot of the current video stream<br/>' +
                             'to your personal <i>Picture</i> folder. &nbsp;<span class=attention-boxed>CTRL+s</span>' }"
                         v-bind:class="{ disabled: inLogin }">
-                        <i class="icon fa fa-camera"></i>
+                        <i class="icon fas fa-camera"></i>
                         <span class="title">Screenshot</span>
                     </div>
                 </div>
@@ -74,9 +74,9 @@
                             ' the audio stream. &nbsp;<span class=attention-boxed>CTRL+a</span>' }"
                         v-on:click="toggleAudio"
                         v-bind:class="{ disabled: inLogin || volume === 0, active: volumeMute }">
-                        <span v-show="volumeMute"><i class="icon fa fa-volume-mute"></i></span>
-                        <span v-show="!volumeMute && volume < 30"><i class="icon fa fa-volume-down"></i></span>
-                        <span v-show="!volumeMute && volume >= 30"><i class="icon fa fa-volume-up"></i></span>
+                        <span v-show="volumeMute"><i class="icon fas fa-volume-mute"></i></span>
+                        <span v-show="!volumeMute && volume < 30"><i class="icon fas fa-volume-down"></i></span>
+                        <span v-show="!volumeMute && volume >= 30"><i class="icon fas fa-volume-up"></i></span>
                         <span class="title">Audio Mute</span>
                     </div>
 
@@ -127,7 +127,7 @@
                     <div class="box button fit" v-on:click="smallestSize"
                         v-tooltip.bottom-center="{ content: 'Resize window to smallest possible size.' }"
                         v-bind:class="{ disabled: isWinSmallest || fullscreened || maximized }">
-                        <i class="icon fa fa-compress"></i>
+                        <i class="icon fas fa-compress"></i>
                         <span class="title">Smallest Size</span>
                     </div>
 
@@ -136,7 +136,7 @@
                         v-tooltip.bottom-center="{ content: 'Resize window to fit native (unscaled)<br/>' +
                             'size of video stream.' }"
                         v-bind:class="{ disabled: inLogin || fullscreened || maximized }">
-                        <i class="icon fa fa-expand"></i>
+                        <i class="icon fas fa-expand"></i>
                         <span class="title">Native Size</span>
                     </div>
 
@@ -144,7 +144,7 @@
                     <div class="box button minimize" v-on:click="minimize"
                         v-tooltip.bottom-center="{ content: 'Minimize and hide window on screen.' }"
                         v-bind:class="{ disabled: fullscreened || maximized }">
-                        <i class="icon fa fa-window-minimize"></i>
+                        <i class="icon fas fa-window-minimize"></i>
                         <span class="title">Minimize</span>
                     </div>
 
@@ -153,7 +153,7 @@
                         v-tooltip.bottom-center="{ content: (maximized ? 'Unmaximize' : 'Maximize') +
                             ' window on screen.' }"
                         v-bind:class="{ disabled: fullscreened, active: maximized }">
-                        <i class="icon fa fa-window-maximize"></i>
+                        <i class="icon fas fa-window-maximize"></i>
                         <span class="title">Maximize</span>
                     </div>
 
@@ -163,7 +163,7 @@
                             (fullscreened ? 'normal window' : 'fullscreen') +
                             ' mode. &nbsp;<span class=attention-boxed>CTRL+f</span>' }"
                         v-bind:class="{ disabled: maximized, active: fullscreened }">
-                        <i class="icon fa fa-expand-arrows-alt"></i>
+                        <i class="icon fas fa-expand-arrows-alt"></i>
                         <span class="title">Fullscreen</span>
                     </div>
                 </div>
@@ -176,7 +176,7 @@
                     <!-- quit -->
                     <div class="box button quit" v-on:click="quit"
                         v-tooltip.bottom-center="{ content: 'Quit application &nbsp;<span class=attention-boxed>CTRL+q</span>' }">
-                        <i class="icon fa fa-times"></i>
+                        <i class="icon fas fa-times"></i>
                         <span class="title">Quit</span>
                     </div>
                 </div>
@@ -261,10 +261,10 @@
                             disabled: inLogin || audioInputDevice === '' || audioOutputDevice === '' || votingActive,
                             active: audioRecording || audioPlaying || audioBlob !== null
                         }">
-                        <span v-show="!audioRecording && audioBlob === null"><i class="icon fa fa-microphone-alt"></i></span>
-                        <span v-show=" audioRecording && audioBlob === null"><i class="icon fa fa-microphone-alt-slash"></i></span>
-                        <span v-show="!audioPlaying   && audioBlob !== null"><i class="icon fa fa-play-circle"></i></span>
-                        <span v-show=" audioPlaying   && audioBlob !== null"><i class="icon fa fa-stop-circle"></i></span>
+                        <span v-show="!audioRecording && audioBlob === null"><i class="icon fas fa-microphone-alt"></i></span>
+                        <span v-show=" audioRecording && audioBlob === null"><i class="icon fas fa-microphone-alt-slash"></i></span>
+                        <span v-show="!audioPlaying   && audioBlob !== null"><i class="icon fas fa-play-circle"></i></span>
+                        <span v-show=" audioPlaying   && audioBlob !== null"><i class="icon fas fa-stop-circle"></i></span>
                         <span v-show="!audioRecording && audioBlob === null" class="title">Record Message</span>
                         <span v-show=" audioRecording && audioBlob === null" class="title">Stop Recording</span>
                         <span v-show="!audioPlaying   && audioBlob !== null" class="title">Play Message</span>
@@ -292,11 +292,11 @@
                             v-bind:class="{ 'choice-row': true, disabled: votingDone }">
                             <div v-bind:class="{ 'choice-box': true, active: votingChoice === 1 }"
                                 v-on:click="sendChoice(1, 'yes')">
-                                <span class="choice-icon"><i class="fa fa-thumbs-up"></i></span>Yes
+                                <span class="choice-icon"><i class="fas fa-thumbs-up"></i></span>Yes
                             </div>
                             <div v-bind:class="{ 'choice-box': true, active: votingChoice === 2 }"
                                 v-on:click="sendChoice(2, 'no')">
-                                <span class="choice-icon"><i class="fa fa-thumbs-down"></i></span>No
+                                <span class="choice-icon"><i class="fas fa-thumbs-down"></i></span>No
                             </div>
                         </div>
                         <div v-show="votingActive && votingType === 'evaluate'"
@@ -304,23 +304,23 @@
                             v-bind:class="{ 'choice-row': true, disabled: votingDone }">
                             <div v-bind:class="{ 'choice-box': true, active: votingChoice === 1 }"
                                 v-on:click="sendChoice(1, '-2')">
-                                <span class="choice-icon"><i class="fa fa-sad-cry"></i></span>-2
+                                <span class="choice-icon"><i class="fas fa-sad-cry"></i></span>-2
                             </div>
                             <div v-bind:class="{ 'choice-box': true, active: votingChoice === 2 }"
                                 v-on:click="sendChoice(2, '-1')">
-                                <span class="choice-icon"><i class="fa fa-frown"></i></span>-1
+                                <span class="choice-icon"><i class="fas fa-frown"></i></span>-1
                             </div>
                             <div v-bind:class="{ 'choice-box': true, active: votingChoice === 3 }"
                                 v-on:click="sendChoice(3, '0')">
-                                <span class="choice-icon"><i class="fa fa-meh"></i></span>0
+                                <span class="choice-icon"><i class="fas fa-meh"></i></span>0
                             </div>
                             <div v-bind:class="{ 'choice-box': true, active: votingChoice === 4 }"
                                 v-on:click="sendChoice(4, '+1')">
-                                <span class="choice-icon"><i class="fa fa-smile"></i></span>+1
+                                <span class="choice-icon"><i class="fas fa-smile"></i></span>+1
                             </div>
                             <div v-bind:class="{ 'choice-box': true, active: votingChoice === 5 }"
                                 v-on:click="sendChoice(5, '+2')">
-                                <span class="choice-icon"><i class="fa fa-grin-stars"></i></span>+2
+                                <span class="choice-icon"><i class="fas fa-grin-stars"></i></span>+2
                             </div>
                         </div>
                         <div v-show="votingActive && (votingType === 'choose' || votingType === 'quiz')"
@@ -351,7 +351,7 @@
                     <div class="box button message-clear" v-on:click="clearMessage(true)"
                         v-tooltip.bottom-center="{ content: 'Clear audio and text messages.' }"
                         v-bind:class="{ disabled: inLogin || (audioBlob === null && message === '') }">
-                        <i class="icon fa fa-trash-alt"></i>
+                        <i class="icon fas fa-trash-alt"></i>
                         <span class="title">Clear Messages</span>
                     </div>
 
@@ -359,7 +359,7 @@
                     <div class="box button message-send" v-on:click="sendMessage"
                         v-tooltip.bottom-center="{ content: 'Send audio and text messages.' }"
                         v-bind:class="{ disabled: inLogin || (message === '' && audioBlob === null) }">
-                        <i class="icon fa fa-share"></i>
+                        <i class="icon fas fa-share"></i>
                         <span class="title">Send Messages</span>
                     </div>
                 </div>
@@ -375,7 +375,7 @@
                         v-tooltip.bottom-center="{ content: 'Send feedback by showing consent.' +
                             ' &nbsp; <span class=attention-boxed>CTRL+c</span>' }"
                         v-bind:class="{ disabled: inLogin || feedbackDisabled }">
-                        <i class="icon fa fa-thumbs-up"></i>
+                        <i class="icon fas fa-thumbs-up"></i>
                         <span class="title">Show Consent</span>
                     </div>
 
@@ -384,7 +384,7 @@
                         v-tooltip.bottom-center="{ content: 'Send feedback by showing refusal.' +
                             ' &nbsp;<span class=attention-boxed>CTRL+r</span>' }"
                         v-bind:class="{ disabled: inLogin || feedbackDisabled }">
-                        <i class="icon fa fa-thumbs-down"></i>
+                        <i class="icon fas fa-thumbs-down"></i>
                         <span class="title">Show Refusal</span>
                     </div>
 
@@ -393,7 +393,7 @@
                         v-tooltip.bottom-center="{ content: 'Send feedback by showing surprise.' +
                             ' &nbsp;<span class=attention-boxed>CTRL+o</span>' }"
                         v-bind:class="{ disabled: inLogin || feedbackDisabled }">
-                        <i class="icon fa fa-surprise"></i>
+                        <i class="icon fas fa-surprise"></i>
                         <span class="title">Show Surprise</span>
                     </div>
 
@@ -402,7 +402,7 @@
                         v-tooltip.bottom-center="{ content: 'Send feedback by showing smile/grin.' +
                             ' &nbsp;<span class=attention-boxed>CTRL+g</span>' }"
                         v-bind:class="{ disabled: inLogin || feedbackDisabled }">
-                        <i class="icon fa fa-grin-wink"></i>
+                        <i class="icon fas fa-grin-wink"></i>
                         <span class="title">Show Smile</span>
                     </div>
 
@@ -410,7 +410,7 @@
                     <div class="box button message-send" v-on:click="feedback('frown')"
                         v-tooltip.bottom-center="{ content: 'Send feedback by showing frown.' }"
                         v-bind:class="{ disabled: inLogin || feedbackDisabled }">
-                        <i class="icon fa fa-angry"></i>
+                        <i class="icon fas fa-angry"></i>
                         <span class="title">Show Frown</span>
                     </div>
 
@@ -418,7 +418,7 @@
                     <div class="box button message-send" v-on:click="feedback('sadness')"
                         v-tooltip.bottom-center="{ content: 'Send feedback by showing sadness.' }"
                         v-bind:class="{ disabled: inLogin || feedbackDisabled }">
-                        <i class="icon fa fa-sad-tear"></i>
+                        <i class="icon fas fa-sad-tear"></i>
                         <span class="title">Show Sadness</span>
                     </div>
                 </div>
