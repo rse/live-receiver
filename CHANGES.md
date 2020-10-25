@@ -40,6 +40,8 @@ Changes
     - IMPROVEMENT: group header/footer buttons through an optical bar
     - IMPROVEMENT: use my new Audio-Node-Suite package for the microphone
 
+- [...]
+
 Legend
 ------
 
