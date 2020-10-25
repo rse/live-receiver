@@ -43,7 +43,7 @@ Version History
 Legend
 ------
 
-- forthcoming: new alpha or beta version
+- forthcoming: new release (before being considered stable enough)
 - current:     current release
 - obsolete:    old release, still working
 - deprecated:  old release, no longer working at all
