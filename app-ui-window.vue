@@ -1124,11 +1124,11 @@ module.exports = {
 
     /*  component sub-components  */
     components: {
-        "login":       "url:app-ui-2-widget-login.vue",
-        "settings":    "url:app-ui-3-widget-settings.vue",
-        "videostream": "url:app-ui-5-widget-videostream.vue",
-        "about":       "url:app-ui-6-widget-about.vue",
-        "update":      "url:app-ui-7-widget-update.vue"
+        "login":       "url:app-ui-widget-login.vue",
+        "settings":    "url:app-ui-widget-settings.vue",
+        "videostream": "url:app-ui-widget-videostream.vue",
+        "about":       "url:app-ui-widget-about.vue",
+        "update":      "url:app-ui-widget-update.vue"
     },
 
     /*  component methods  */

@@ -323,7 +323,7 @@ module.exports = {
 
     /*  component sub-components  */
     components: {
-        "portrait": "url:app-ui-3-widget-portrait.vue"
+        "portrait": "url:app-ui-widget-portrait.vue"
     },
 
     /*  component methods  */

@@ -121,7 +121,7 @@ ui = {}
     Vue.use(VTooltip)
 
     /*  start DOM rendering with the outmost <win> component  */
-    ui.root = new Vue({ el: "#ui", name: "ui", components: { "win": "url:app-ui-1-window.vue" } })
+    ui.root = new Vue({ el: "#ui", name: "ui", components: { "win": "url:app-ui-window.vue" } })
 
     /*  ensure the <win> element is available  */
     while (!(typeof ui.root.$refs === "object" && ui.root.$refs.win !== undefined))
