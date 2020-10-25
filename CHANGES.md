@@ -3,6 +3,9 @@ Changes
 =======
 
 - 1.4.3
+    - BUGFIX: fix unpacking of update distribution files
+    - UPGRADE: upgraded to Update Helper 1.0.3
+    - UPGRADE: upgraded to Howler 2.2.1
 
 - 1.4.2
     - IMPROVEMENT: improved appearance of hover effects on login dialog
