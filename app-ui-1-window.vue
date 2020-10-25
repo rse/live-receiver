@@ -1013,7 +1013,7 @@ module.exports = {
         liveStreamBuffering:   0,
         audioInputDevice:      "",
         audioOutputDevice:     "",
-        logo:                  ui.logo,
+        logo:                  ui.logo1,
         audioBlob:             null,
         audioBlobChunks:       [],
         audioRecording:        false,

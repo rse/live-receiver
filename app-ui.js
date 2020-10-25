@@ -95,7 +95,8 @@ ui = {}
     ui.avatar.woman = await ui.ipc.invoke("imageEncodeFromFile", "app-res-avatar-woman.svg")
 
     /*  load logo images  */
-    ui.logo = await ui.ipc.invoke("imageEncodeFromFile", "app-res-logo-white.svg")
+    ui.logo1 = await ui.ipc.invoke("imageEncodeFromFile", "app-res-logo-white.svg")
+    ui.logo2 = await ui.ipc.invoke("imageEncodeFromFile", "app-res-logo-brown.svg")
 
     /*  ensure the DOM is now finally available  */
     while (!ui.domReady || !document.getElementById("ui"))

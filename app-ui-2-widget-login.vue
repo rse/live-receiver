@@ -59,7 +59,8 @@
         <div class="col-2 notice">
             <div class="box button" v-on:click="about">
                 <div ref="logo" class="logo-container">
-                    <img v-bind:src="logo" class="logo" alt="LiVE"/>
+                    <img v-bind:src="logo1" class="logo logo1" alt="LiVE"/>
+                    <img v-bind:src="logo2" class="logo logo2" alt="LiVE"/>
                 </div>
                 <div class="version">Receiver {{ version }}</div>
             </div>
@@ -72,7 +73,7 @@
             through an external URL like <tt>live://live.example.com/example-XXXX-XXXX</tt>.
         </div>
 
-        <div class="col-2 settings">
+        <div class="col-2 updates-and-settings">
             <div v-bind:class="{ box: true, button: true, active: activeUpdate }" v-on:click="update">
                 <i class="icon fas fa-cloud-download-alt"></i>
                 <div class="title">Updates</div>
@@ -216,9 +217,6 @@
             background-color: var(--color-std-bg-4);
             border-radius: 5px;
             padding: 10px 10px 5px 10px;
-            &:hover {
-                background-color: var(--color-sig-bg-4);
-            }
             .logo-container {
                 perspective: 0px;
                 width: 80px;
@@ -227,6 +225,26 @@
                     transform-origin: 50% 50%;
                     transform-style:  preserve-3d;
                     width: 80px;
+                    &.logo1 {
+                        display: block;
+                    }
+                    &.logo2 {
+                        display: none;
+                    }
+                }
+            }
+            &:hover {
+                background-color: var(--color-sig-bg-4);
+                color: var(--color-sig-fg-3);
+                .logo-container {
+                    .logo {
+                        &.logo1 {
+                            display: none;
+                        }
+                        &.logo2 {
+                            display: block;
+                        }
+                    }
                 }
             }
             .version {
@@ -237,7 +255,7 @@
             }
         }
     }
-    .settings {
+    .updates-and-settings {
         display: flex;
         flex-direction: row;
         .button {
@@ -250,9 +268,11 @@
             border-radius: 5px;
             &.active {
                 background-color: var(--color-acc-bg-3);
+                color: var(--color-acc-fg-3);
             }
             &:hover {
                 background-color: var(--color-sig-bg-4);
+                color: var(--color-sig-fg-3);
             }
             .icon {
                 margin-top: 4px;
@@ -279,7 +299,8 @@ module.exports = {
             intLiveRelayServer:      this.liveRelayServer,
             intLiveAccessToken:      this.liveAccessToken,
             allowConnect:            true,
-            logo:                    ui.logo,
+            logo1:                   ui.logo1,
+            logo2:                   ui.logo2,
             version:                 ui.pkg.version,
             error:                   "",
             blinkUpdate:             false,

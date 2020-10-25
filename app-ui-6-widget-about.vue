@@ -170,7 +170,7 @@ module.exports = {
     /*  component variable properties  */
     data: function () {
         return {
-            logo:     ui.logo,
+            logo:     ui.logo1,
             pkg:      ui.pkg,
             versions: process.versions
         }
