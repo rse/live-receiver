@@ -2,6 +2,9 @@
 Changes
 =======
 
+- 1.4.4
+    - UPGRADE: upgrade minor dependencies
+
 - 1.4.3
     - BUGFIX: fix unpacking of update distribution files
     - UPGRADE: upgraded to Update Helper 1.0.3
