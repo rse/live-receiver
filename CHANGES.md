@@ -4,6 +4,7 @@ Changes
 
 - 1.4.4
     - UPGRADE: upgrade minor dependencies
+    - BUGFIX: try to circumvent timing issue on video element feeding
 
 - 1.4.3
     - BUGFIX: fix unpacking of update distribution files
