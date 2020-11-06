@@ -305,7 +305,7 @@ module.exports = {
                                 we have to wait a little bit (think: race condition!), or the second
                                 addSourceBuffer() of the MediaSource (see below) raised an exception!  */
                             if (this.sb[data.id].buffered.length === 0)
-                                await new Promise((resolve) => setTimeout(resolve, 50))
+                                await new Promise((resolve) => setTimeout(resolve, 150))
 
                             /*  track updating on our own, too */
                             updating[data.id] = true
