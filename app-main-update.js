@@ -108,14 +108,6 @@ module.exports = class Update {
         /*  determine information about forthcoming version  */
         this.versionForthcoming = this.versions.find((v) => v.type === "forthcoming")
 
-        /*  ensure the current version is newer or same than the running version  */
-        if (this.versionCurrent && this.versionRunning) {
-            const d1 = dayjs(this.versionCurrent.date)
-            const d2 = dayjs(this.versionRunning.date)
-            if (d1.isBefore(d2))
-                this.versionCurrent = this.versionRunning
-        }
-
         /*  ensure the forthcoming version is newer or same than the current version  */
         if (this.versionForthcoming && this.versionCurrent) {
             const d1 = dayjs(this.versionForthcoming.date)
