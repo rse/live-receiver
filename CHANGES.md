@@ -2,6 +2,9 @@
 Changes
 =======
 
+- 1.5.1
+    - IMPROVEMENT: improve update dialog
+
 - 1.5.0
     - EXTENSION: support person privacy levels
     - UPGRADE: upgrade minor dependencies
