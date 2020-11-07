@@ -40,16 +40,19 @@
         <div class="label">Your Privacy Level <span class="footnote">*</span></div>
         <div class="selbox-container">
             <div class="selbox"
+                v-tooltip.bottom-center="{ content: 'Your attendee identity (portrait and name) is disclosed<br/>in all types of audiences, including<br/>public/open-group kind of audiences.' }"
                 v-bind:class="{ active: intPersonPrivacy === 'public' }"
                 v-on:click="intPersonPrivacy = 'public'">
                 Public
             </div>
             <div class="selbox"
+                v-tooltip.bottom-center="{ content: 'Your attendee identity (portrait and name) is disclosed<br/>in private/closed-group kind of audiences only.' }"
                 v-bind:class="{ active: intPersonPrivacy === 'private' }"
                 v-on:click="intPersonPrivacy = 'private'">
                 Private
             </div>
             <div class="selbox"
+                v-tooltip.bottom-center="{ content: 'Your attendee identity (portrait and name) is never disclosed.' }"
                 v-bind:class="{ active: intPersonPrivacy === 'anonymous' }"
                 v-on:click="intPersonPrivacy = 'anonymous'">
                 Anonymous
@@ -151,15 +154,10 @@
         <div class="col-2 notice">
         </div>
         <span class="footnote notice">
-            * Your portrait and name are locally stored and
-            transmitted when you connect to a LiVE session. Set your
-            privacy level to either stay completely anonymous to
-            everyone, be visible at least in private/closed-group
-            sessions or even be visible also in public/open-group
-            sessions. If you <i>really</i> wish to <i>not</i> disclose
-            your identity at all, choose an avatar as your
-            portrait, an arbitrary nickname as your name and select
-            the anonymous privacy level.
+            * Your portrait and name are locally stored and transmitted
+            when you connect to a <b>LiVE</b> session. Set your maximum
+            privacy level to indicate up to (and including) which level
+            your attendee identity is disclosed to the audience.
         </span>
     </div>
 </template>
