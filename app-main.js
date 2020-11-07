@@ -140,6 +140,7 @@ const app = electron.app
         app.h                    = settings.get("window-height",          550 + 2 * 42)
         app.personPortrait       = settings.get("person-portrait",        "")
         app.personName           = settings.get("person-name",            "")
+        app.personPrivacy        = settings.get("person-privacy",         "private")
         app.liveRelayServer      = settings.get("live-relay-server",      "")
         app.liveAccessToken      = settings.get("live-access-token",      "")
         app.liveStreamBuffering  = settings.get("live-stream-buffering",  2000)
@@ -171,6 +172,7 @@ const app = electron.app
         settings.set("window-height",          app.h)
         settings.set("person-portrait",        app.personPortrait)
         settings.set("person-name",            app.personName)
+        settings.set("person-privacy",         app.personPrivacy)
         settings.set("live-relay-server",      app.liveRelayServer)
         settings.set("live-access-token",      app.liveAccessToken)
         settings.set("live-stream-buffering",  app.liveStreamBuffering)
@@ -442,9 +444,10 @@ const app = electron.app
             /*  connect to LiVE Relay EventStream  */
             const es = new EventStream({
                 ...credentials,
-                name:  app.personName,
-                image: app.personPortrait,
-                log:   (level, message) => { app.log[level](message) }
+                image:   app.personPortrait,
+                name:    app.personName,
+                privacy: app.personPrivacy,
+                log:     (level, message) => { app.log[level](message) }
             })
             let result = await es.start().then(() => ({ success: true })).catch((err) => {
                 return { error: `EventStream: MQTTS: start: ${err}` }
@@ -554,17 +557,19 @@ const app = electron.app
             return { success: true }
         }
         app.ipc.handle("save-settings", async (event, {
-            personPortrait, personName, liveStreamBuffering,
+            personPortrait, personName, personPrivacy, liveStreamBuffering,
             audioInputDevice, audioOutputDevice
         }) => {
             /*  take login parameters  */
             app.personPortrait       = personPortrait
             app.personName           = personName
+            app.personPrivacy        = personPrivacy
             app.liveStreamBuffering  = liveStreamBuffering
             app.audioInputDevice     = audioInputDevice
             app.audioOutputDevice    = audioOutputDevice
             settings.set("person-portrait",        app.personPortrait)
             settings.set("person-name",            app.personName)
+            settings.set("person-privacy",         app.personPrivacy)
             settings.set("live-stream-buffering",  app.liveStreamBuffering)
             settings.set("audio-input-device",     app.audioInputDevice)
             settings.set("audio-output-device",    app.audioOutputDevice)

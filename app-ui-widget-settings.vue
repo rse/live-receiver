@@ -35,6 +35,27 @@
             v-on:keyup.enter="$refs.liveRelayServer.focus()"
         />
 
+        <!-- Data Privacy -->
+        <i class="icon fas fa-user-shield"></i>
+        <div class="label">Your Privacy Level <span class="footnote">*</span></div>
+        <div class="selbox-container">
+            <div class="selbox"
+                v-bind:class="{ active: intPersonPrivacy === 'public' }"
+                v-on:click="intPersonPrivacy = 'public'">
+                Public
+            </div>
+            <div class="selbox"
+                v-bind:class="{ active: intPersonPrivacy === 'private' }"
+                v-on:click="intPersonPrivacy = 'private'">
+                Private
+            </div>
+            <div class="selbox"
+                v-bind:class="{ active: intPersonPrivacy === 'anonymous' }"
+                v-on:click="intPersonPrivacy = 'anonymous'">
+                Anonymous
+            </div>
+        </div>
+
         <!-- Video Stream Buffering -->
         <!--
         <i class="icon fas fa-clock"></i>
@@ -130,13 +151,15 @@
         <div class="col-2 notice">
         </div>
         <span class="footnote notice">
-            * Your portrait image and name are stored locally in <b>LiVE
-            Receiver</b> (trainee-side) and are only transmitted when
-            you connect to a LiVE session. The <b>LiVE Relay</b>
-            (server-side) does not keep it at all and <b>LiVE Sender</b>
-            (trainer-side) stores it in memory just temporarily. Choose
-            a standard avatar as your portrait and an arbitrary nickname
-            if you wish to remain anonymous.
+            * Your portrait and name are locally stored and
+            transmitted when you connect to a LiVE session. Set your
+            privacy level to either stay completely anonymous to
+            everyone, be visible at least in private/closed-group
+            sessions or even be visible also in public/open-group
+            sessions. If you <i>really</i> wish to <i>not</i> disclose
+            your identity at all, choose an avatar as your
+            portrait, an arbitrary nickname as your name and select
+            the anonymous privacy level.
         </span>
     </div>
 </template>
@@ -181,6 +204,7 @@
     }
     >.selbox-container {
         display: flex;
+        justify-content: flex-start;
         .multiselect {
             width: 250px;
             min-width: 250px;
@@ -192,7 +216,7 @@
         .selbox {
             display: flex;
             margin-left: 5px;
-            width: 46px;
+            flex-grow: 1;
             justify-content: center;
             .icon {
                 padding-top: 3px;
@@ -336,6 +360,7 @@ module.exports = {
     props: {
         personPortrait:       { type: String, default: "" },
         personName:           { type: String, default: "" },
+        personPrivacy:        { type: String, default: "" },
         liveStreamBuffering:  { type: Number, default: 2000 },
         audioInputDevice:     { type: String, default: "" },
         audioOutputDevice:    { type: String, default: "" }
@@ -346,6 +371,7 @@ module.exports = {
         return {
             intPersonPortrait:       this.personPortrait,
             intPersonName:           this.personName,
+            intPersonPrivacy:        this.personPrivacy,
             intLiveStreamBuffering:  this.liveStreamBuffering,
             intAudioInputDevice:     null,
             intAudioOutputDevice:    null,
@@ -368,6 +394,7 @@ module.exports = {
     watch: {
         intPersonPortrait:       function (v) { this.$emit("update:person-portrait", v) },
         intPersonName:           function (v) { this.$emit("update:person-name", v) },
+        intPersonPrivacy:        function (v) { this.$emit("update:person-privacy", v) },
         intLiveStreamBuffering:  function (v) { this.$emit("update:live-stream-buffering", v) },
         intAudioInputDevice:     function (v) { this.$emit("update:audio-input-device",  this.deviceObj2Id(v)) },
         intAudioOutputDevice:    function (v) { this.$emit("update:audio-output-device", this.deviceObj2Id(v)) }

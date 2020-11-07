@@ -2,7 +2,8 @@
 Changes
 =======
 
-- 1.4.4
+- 1.5.0
+    - EXTENSION: support person privacy levels
     - UPGRADE: upgrade minor dependencies
     - BUGFIX: try to circumvent timing issue on video element feeding
 

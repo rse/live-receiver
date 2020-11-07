@@ -216,6 +216,7 @@
                     ref="settings"
                     v-bind:person-portrait.sync="personPortrait"
                     v-bind:person-name.sync="personName"
+                    v-bind:person-privacy.sync="personPrivacy"
                     v-bind:live-stream-buffering.sync="liveStreamBuffering"
                     v-bind:audio-input-device.sync="audioInputDevice"
                     v-bind:audio-output-device.sync="audioOutputDevice"
@@ -1111,6 +1112,7 @@ module.exports = {
         mood:      ui.debounce(2000, function (v) { this.sendFeeling() }),
         personPortrait:       function (v) { ui.settings("person-portrait", v) },
         personName:           function (v) { ui.settings("person-name", v) },
+        personPrivacy:        function (v) { ui.settings("person-privacy", v) },
         liveRelayServer:      function (v) { ui.settings("live-relay-server", v) },
         liveAccessToken:      function (v) { ui.settings("live-access-token", v) },
         liveStreamBuffering:  function (v) { ui.settings("live-stream-buffering", v) },
@@ -1201,6 +1203,7 @@ module.exports = {
             this.$emit("save-settings", {
                 personPortrait:       this.personPortrait,
                 personName:           this.personName,
+                personPrivacy:        this.personPrivacy,
                 liveStreamBuffering:  this.liveStreamBuffering,
                 audioInputDevice:     this.audioInputDevice,
                 audioOutputDevice:    this.audioOutputDevice
@@ -1241,8 +1244,9 @@ module.exports = {
                     "in the <b>Settings</b> dialog first."
                 )
             }
-            if (this.personPortrait      === "") { missingSettings("Personal Portrait");      return }
-            if (this.personName          === "") { missingSettings("Personal Name");          return }
+            if (this.personPortrait      === "") { missingSettings("Person Portrait");        return }
+            if (this.personName          === "") { missingSettings("Person Name");            return }
+            if (this.personPrivacy       === "") { missingSettings("Person Privacy");         return }
             if (this.liveStreamBuffering === 0)  { missingSettings("Video Stream Buffering"); return }
             if (this.audioOutputDevice   === "") { missingSettings("Audio Output Device");    return }
             this.$emit("login", {
@@ -1485,6 +1489,7 @@ module.exports = {
         /*  load settings  */
         this.personPortrait       = await ui.settings("person-portrait")
         this.personName           = await ui.settings("person-name")
+        this.personPrivacy        = await ui.settings("person-privacy")
         this.liveRelayServer      = await ui.settings("live-relay-server")
         this.liveAccessToken      = await ui.settings("live-access-token")
         this.liveStreamBuffering  = await ui.settings("live-stream-buffering")
@@ -1654,6 +1659,7 @@ module.exports = {
             const blink = (
                 this.personPortrait === ""
                 || this.personName === ""
+                || this.personPrivacy === ""
                 || this.liveStreamBuffering === 0
                 || this.audioOutputDevice === ""
             )

@@ -24,6 +24,7 @@ module.exports = class EventStream extends EventEmitter {
             client:   id,
             agent:    ua,
             name:     "",
+            privacy:  "",
             image:    "",
             server:   "",
             channel: " ",
@@ -176,8 +177,9 @@ module.exports = class EventStream extends EventEmitter {
                         agent:  this.options.agent,
                         event:  "begin",
                         data: {
-                            name:  this.options.name,
-                            image: this.options.image
+                            name:    this.options.name,
+                            image:   this.options.image,
+                            privacy: this.options.privacy
                         }
                     }
                 })
