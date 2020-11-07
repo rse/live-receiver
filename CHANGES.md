@@ -5,6 +5,7 @@ Changes
 - 1.5.0
     - EXTENSION: support person privacy levels
     - UPGRADE: upgrade minor dependencies
+    - UPGRADE: upgrade update-helper tool
     - BUGFIX: try to circumvent timing issue on video element feeding
 
 - 1.4.3
