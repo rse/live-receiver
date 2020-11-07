@@ -256,8 +256,10 @@ module.exports = {
                 const img = await jimp.read(data)
 
                 /*  optionally resize image  */
-                if (img.bitmap.width > 300 && img.bitmap.height > 300)
-                    img.resize(300, 300, jimp.RESIZE_BILINEAR)
+                if (img.bitmap.width > 300)
+                    img.resize(300, jimp.AUTO, jimp.RESIZE_BILINEAR)
+                if (img.bitmap.height > 300)
+                    img.resize(jimp.AUTO, 300, jimp.RESIZE_BILINEAR)
 
                 /*  export Jimp image as a JPEG Data-URI  */
                 img.quality(80)
