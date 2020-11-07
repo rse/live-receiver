@@ -28,13 +28,13 @@
                 <div class="col-3 date">{{ versions.forthcoming.date }}</div>
                 <div class="col-4 action box button"
                     v-if="updateable"
-                    v-show="progress === null"
+                    v-show="progress === null && versions.forthcoming.version !== versions.running.version"
                     v-on:click="updateToVersion(versions.forthcoming.version)">
                     Update to version!
                 </div>
                 <div class="col-4 action box button"
                     v-if="!updateable"
-                    v-show="progress === null">
+                    v-show="progress === null && versions.forthcoming.version !== versions.running.version">
                     <a v-bind:href="'https://github.com/rse/live-receiver/releases/tag/' + versions.forthcoming.version"
                         v-on:click="openURL">
                         Download version!
@@ -92,18 +92,22 @@
             <a href="https://github.com/rse/live-receiver" v-on:click="openURL">LiVE Receiver</a> version
             <a v-bind:href="'https://github.com/rse/live-receiver/releases/tag/' + versions.running.version">
             <b>{{ versions.running.version ? versions.running.version : "N.A." }}</b></a>.<br/>
+            <span v-if="versions.forthcoming.version === versions.running.version">
+                This <b>running</b> version is already the <b>forthcoming</b> version.<br/>
+                Currently, there is still no update necessary.<br/>
+            </span>
             <span v-if="versions.current.version === versions.running.version">
                 This <b>running</b> version is still the <b>current</b> version.<br/>
                 Currently, there is still no update necessary.<br/>
             </span>
             <span v-if="versions.current.version !== versions.running.version">
-                This <b>running</b> version is already in state <b>{{ versions.running.type ? versions.running.type : "N.A." }}</b>.<br/>
-                Please upgrade to the <b>current</b> version
+                This <b>running</b> version is in state <b>{{ versions.running.type ? versions.running.type : "N.A." }}</b>.<br/>
+                Please switch to the <b>current</b> version
                 <a v-bind:href="'https://github.com/rse/live-receiver/releases/tag/' + versions.current.version">
                 <b>{{ versions.current.version }}</b></a>!<br/>
             </span>
-            <span v-if="versions.forthcoming.version">
-                At your option, you can already upgrade to the <b>forthcoming</b> version
+            <span v-if="versions.forthcoming.version && versions.forthcoming.version !== versions.running.version">
+                At your option, you can even switch to the <b>forthcoming</b> version
                 <a v-bind:href="'https://github.com/rse/live-receiver/releases/tag/' + versions.forthcoming.version">
                 <b>{{ versions.forthcoming.version }}</b></a>.<br/>
             </span>
