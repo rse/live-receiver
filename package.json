@@ -52,7 +52,7 @@
         "mp4box":                        "0.3.20",
         "pure-uuid":                     "1.6.1",
         "image-data-uri":                "2.0.1",
-        "update-helper":                 "1.0.3",
+        "update-helper":                 "1.0.4",
         "mqtt":                          "4.2.4",
         "got":                           "11.8.0",
         "adm-zip":                       "0.4.16",
