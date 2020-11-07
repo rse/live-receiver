@@ -246,11 +246,23 @@ module.exports = {
         },
 
         /*  fixate the portrait image  */
-        fixateImage () {
+        async fixateImage () {
             this.editing = false
-            const data = this.cropper.getCroppedCanvas()
-            if (data !== null)
-                this.imageData = data.toDataURL()
+            let data = this.cropper.getCroppedCanvas()
+            if (data !== null) {
+                /*  import canvas element into Jimp image  */
+                data = await new Promise((resolve) => data.toBlob(resolve))
+                data = await data.arrayBuffer()
+                const img = await jimp.read(data)
+
+                /*  optionally resize image  */
+                if (img.bitmap.width > 300 && img.bitmap.height > 300)
+                    img.resize(300, 300, jimp.RESIZE_BILINEAR)
+
+                /*  export Jimp image as a JPEG Data-URI  */
+                img.quality(80)
+                this.imageData = await img.getBase64Async(jimp.MIME_JPEG)
+            }
             this.$emit("input", this.imageData)
         }
     },
