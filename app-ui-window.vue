@@ -373,8 +373,8 @@
                 <div class="group-items">
                     <!-- send thumbs-up -->
                     <div class="box button message-send" v-on:click="feedback('thumbsup')"
-                        v-tooltip.bottom-center="{ content: 'Send feedback by showing consent.' +
-                            ' &nbsp; <span class=attention-boxed>CTRL+c</span>' }"
+                        v-tooltip.bottom-center="{ content: 'Send feedback by showing consent with a thumbs-up.' +
+                            ' &nbsp; <span class=attention-boxed>CTRL+u</span>' }"
                         v-bind:class="{ disabled: inLogin || feedbackDisabled }">
                         <i class="icon fas fa-thumbs-up"></i>
                         <span class="title">Show Consent</span>
@@ -382,8 +382,8 @@
 
                     <!-- send thumbs-down -->
                     <div class="box button message-send" v-on:click="feedback('thumbsdn')"
-                        v-tooltip.bottom-center="{ content: 'Send feedback by showing refusal.' +
-                            ' &nbsp;<span class=attention-boxed>CTRL+r</span>' }"
+                        v-tooltip.bottom-center="{ content: 'Send feedback by showing refusal with a thumbs-down.' +
+                            ' &nbsp;<span class=attention-boxed>CTRL+d</span>' }"
                         v-bind:class="{ disabled: inLogin || feedbackDisabled }">
                         <i class="icon fas fa-thumbs-down"></i>
                         <span class="title">Show Refusal</span>
@@ -1031,6 +1031,7 @@ module.exports = {
         bandwidthBytes:        0,
         bandwidthText:         "",
         videoSize:             { w: 0, h: 0 },
+        videoBlank:            false,
         timer1:                null,
         timer2:                null,
         timer3:                null,
@@ -1473,6 +1474,12 @@ module.exports = {
             height = Math.floor(height)
             this.$emit("screenshot", { x, y, width, height })
         },
+        toggleVideoClosure () {
+            if (this.inLogin)
+                return
+            this.videoClosure = !this.videoClosure
+            this.$refs.videostream.$emit("closure", this.videoClosure)
+        },
         updateCheck () {
             this.$emit("update-check")
         },
@@ -1649,10 +1656,11 @@ module.exports = {
             this.$refs.message.focus()
             ev.preventDefault()
         })
-        Mousetrap.bind("ctrl+c", () => this.feedback("thumbsup"))
-        Mousetrap.bind("ctrl+r", () => this.feedback("thumbsdn"))
+        Mousetrap.bind("ctrl+u", () => this.feedback("thumbsup"))
+        Mousetrap.bind("ctrl+d", () => this.feedback("thumbsdn"))
         Mousetrap.bind("ctrl+o", () => this.feedback("surprise"))
         Mousetrap.bind("ctrl+g", () => this.feedback("smile"))
+        Mousetrap.bind("ctrl+c", () => this.toggleVideoClosure())
 
         /*  support blinking settings button  */
         this.timer3 = setInterval(() => {

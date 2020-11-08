@@ -17,28 +17,44 @@
         <!-- video overlay -->
         <div class="overlay"
             v-show="state !== 'playing'">
-            <div ref="overlayIcon" class="icon">
-                <div v-show="state === 'started'"><i class="icon fas fa-play-circle" ></i></div>
-                <div v-show="state === 'stalled'"><i class="icon fas fa-pause-circle"></i></div>
-                <div v-show="state === 'stopped'"><i class="icon fas fa-stop-circle" ></i></div>
-                <div v-show="state === 'error'"  ><i class="icon fas fa-times-circle"></i></div>
+            <div class="overlay-canvas">
+                <div ref="overlayIcon" class="icon">
+                    <div v-show="state === 'started'"><i class="icon fas fa-play-circle" ></i></div>
+                    <div v-show="state === 'stalled'"><i class="icon fas fa-pause-circle"></i></div>
+                    <div v-show="state === 'stopped'"><i class="icon fas fa-stop-circle" ></i></div>
+                    <div v-show="state === 'error'"  ><i class="icon fas fa-times-circle"></i></div>
+                </div>
+                <div class="text">
+                    <div v-show="state === 'started'">
+                        Video-Stream Started<br/>
+                        <div class="sub">(awaiting to receive stream data)</div>
+                    </div>
+                    <div v-show="state === 'stalled'">
+                        Video-Stream Stalled<br/>
+                        <div class="sub">(awaiting to receive stream data again)</div>
+                    </div>
+                    <div v-show="state === 'stopped'">
+                        Video-Stream Stopped<br/>
+                        <div class="sub">(awaiting internal shutdown)</div>
+                    </div>
+                    <div v-show="state === 'error'">
+                        Video-Stream Failed<br/>
+                        <div class="sub">(awaiting internal recovery)</div>
+                    </div>
+                </div>
             </div>
-            <div class="text">
-                <div v-show="state === 'started'">
-                    Video-Stream Started<br/>
-                    <div class="sub">(awaiting to receive stream data)</div>
+        </div>
+
+        <!-- video closure -->
+        <div class="closure"
+            v-show="closure">
+            <div class="closure-canvas">
+                <div ref="closureIcon" class="icon">
+                    <div><i class="icon fas fa-times-circle"></i></div>
                 </div>
-                <div v-show="state === 'stalled'">
-                    Video-Stream Stalled<br/>
-                    <div class="sub">(awaiting to receive stream data again)</div>
-                </div>
-                <div v-show="state === 'stopped'">
-                    Video-Stream Stopped<br/>
-                    <div class="sub">(awaiting internal shutdown)</div>
-                </div>
-                <div v-show="state === 'error'">
-                    Video-Stream Failed<br/>
-                    <div class="sub">(awaiting internal recovery)</div>
+                <div class="text">
+                    Video-Stream Closure Activated<br/>
+                    <div class="sub">(manual deactivation required)</div>
                 </div>
             </div>
         </div>
@@ -76,20 +92,61 @@
 
     /*  video overlay  */
     .overlay {
-        text-align: center;
-        perspective: 0px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
         opacity: 0.9;
-        .icon {
-            transform-origin: 50% 50%;
-            transform-style:  preserve-3d;
-            color: var(--color-sig-bg-5);
-            font-size: 100pt;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .overlay-canvas {
+            text-align: center;
+            perspective: 0px;
+            .icon {
+                transform-origin: 50% 50%;
+                transform-style:  preserve-3d;
+                color: var(--color-sig-bg-5);
+                font-size: 100pt;
+            }
+            .text {
+                color: var(--color-std-fg-3);
+                font-size: 16pt;
+                .sub {
+                    font-weight: 200;
+                }
+            }
         }
-        .text {
-            color: var(--color-std-fg-3);
-            font-size: 16pt;
-            .sub {
-                font-weight: 200;
+    }
+
+    /*  video closure  */
+    .closure {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 1.0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #000000;
+        .closure-canvas {
+            text-align: center;
+            perspective: 0px;
+            .icon {
+                transform-origin: 50% 50%;
+                transform-style:  preserve-3d;
+                color: var(--color-std-bg-5);
+                font-size: 100pt;
+            }
+            .text {
+                color: var(--color-std-fg-1);
+                font-size: 16pt;
+                .sub {
+                    font-weight: 200;
+                }
             }
         }
     }
@@ -113,7 +170,8 @@ module.exports = {
             state:     "stalled",
             intVolume: this.volume ? this.volume : 100,
             intMuted:  this.muted  ? this.muted  : false,
-            intDevice: this.device ? this.device : ""
+            intDevice: this.device ? this.device : "",
+            closure:   false
         }
     },
 
@@ -155,7 +213,7 @@ module.exports = {
             this.intDevice = device
         })
 
-        /*  animate the icon  */
+        /*  animate the icons  */
         anime({
             targets:  this.$refs.overlayIcon,
             duration: 5000,
@@ -163,6 +221,15 @@ module.exports = {
             autoplay: true,
             loop:     true,
             delay:    1000,
+            rotateY:  [ 0, 360 ]
+        })
+        anime({
+            targets:  this.$refs.closureIcon,
+            duration: 5000,
+            easing:   "easeInOutQuad",
+            autoplay: true,
+            loop:     true,
+            delay:    5000,
             rotateY:  [ 0, 360 ]
         })
 
@@ -427,6 +494,11 @@ module.exports = {
             await streamBegin().catch(() => true)
             this.streaming = true
             ui.log.info("ui: stream-reboot: end")
+        })
+
+        /*  allow closure to be toggled  */
+        this.$on("closure", async (enabled) => {
+            this.closure = enabled
         })
     }
 }

@@ -2,6 +2,9 @@
 Changes
 =======
 
+- 1.5.2
+    - EXTENSION: add video stream closure for demonstration purposes
+
 - 1.5.1
     - IMPROVEMENT: improve update dialog
 
