@@ -84,10 +84,11 @@
             </div>
         </div>
         <div class="footnote notice">
-            At first use of <b>LiVE Receiver</b>, or at least before you are connecting
-            the first time, please ensure that you have configured your personal name
-            and local audio devices in the user settings correctly. Please open the
-            <b>Settings</b> dialog with the button on the left side for this.
+            At first use of, or at least before you
+            are connecting the first time, please ensure that you have
+            configured your identity, privacy level, and
+            local audio devices in the user settings correctly. For this, please
+            open the <b>Settings</b> dialog with the button on the left side.
         </div>
     </div>
 </template>
