@@ -40,6 +40,7 @@ globals:
     Vue:            true
     Mousetrap:      true
     AudioNodeSuite: true
+    jimp:           true
 
 rules:
     #   modified rules
