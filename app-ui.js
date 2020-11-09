@@ -48,6 +48,7 @@ ui = {}
     /*  external requirements  */
     ui.throttle     = require("throttle-debounce").throttle
     ui.debounce     = require("throttle-debounce").debounce
+    ui.dayjs        = require("dayjs")
     ui.imageDataURI = require("image-data-uri")
     ui.pkg          = require("./package.json")
 
