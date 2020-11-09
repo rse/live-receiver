@@ -62,7 +62,7 @@
         <!-- video debug console -->
         <div class="debug"
             v-if="debug">
-            <div v-for="item of debugLog" v-bind:key="item.time" v-bind:class="[ 'debug-item', 'debug-item-' + item.type ]">
+            <div v-for="item of debugLog" v-bind:key="item.id" v-bind:class="[ 'debug-item', 'debug-item-' + item.type ]">
                 [{{ item.time }}]: {{ item.type.toUpperCase() }}: {{ item.text }}
             </div>
         </div>
@@ -209,6 +209,7 @@ module.exports = {
             intDevice: this.device ? this.device : "",
             closure:   false,
             debug:     false,
+            debugId:   0,
             debugLog:  []
         }
     },
@@ -240,7 +241,7 @@ module.exports = {
             if (this.debugLog.length > 50)
                 this.debugLog.unshift()
             const time = ui.dayjs().format("HH:mm:ss.SSS")
-            this.debugLog.push({ time, type, text })
+            this.debugLog.push({ id: this.debugId++, time, type, text })
         }
     },
 
@@ -441,7 +442,7 @@ module.exports = {
                             updating[data.id] = true
 
                             /*  now finally feed the data into the SourceBuiffer  */
-                            this.log("info", `streamData: sourcebuffer: appendBuffer (length: ${data.buffer.byteLength}`)
+                            this.log("info", `streamData: sourcebuffer: appendBuffer (length: ${data.buffer.byteLength})`)
                             try {
                                 this.sb[data.id].appendBuffer(data.buffer)
                             }
