@@ -2,6 +2,9 @@
 Changes
 =======
 
+- 1.5.4
+    - IMPROVEMENT: make keystrokes of internal debugs less invasive
+
 - 1.5.3
     - BUGFIX: fixed the video element feeding by starting buffer transfer only once both audio/video buffers exist
     - IMPROVEMENT: add debug console to video element

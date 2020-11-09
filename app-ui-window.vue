@@ -1667,8 +1667,8 @@ module.exports = {
         Mousetrap.bind("ctrl+d", () => this.feedback("thumbsdn"))
         Mousetrap.bind("ctrl+o", () => this.feedback("surprise"))
         Mousetrap.bind("ctrl+g", () => this.feedback("smile"))
-        Mousetrap.bind("ctrl+c", () => this.toggleVideoClosure())
-        Mousetrap.bind("ctrl+x", () => this.toggleVideoDebug())
+        Mousetrap.bind("ctrl+x c", () => this.toggleVideoClosure())
+        Mousetrap.bind("ctrl+x d", () => this.toggleVideoDebug())
 
         /*  support blinking settings button  */
         this.timer3 = setInterval(() => {
