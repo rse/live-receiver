@@ -1031,7 +1031,8 @@ module.exports = {
         bandwidthBytes:        0,
         bandwidthText:         "",
         videoSize:             { w: 0, h: 0 },
-        videoBlank:            false,
+        videoClosure:          false,
+        videoDebug:            false,
         timer1:                null,
         timer2:                null,
         timer3:                null,
@@ -1480,6 +1481,12 @@ module.exports = {
             this.videoClosure = !this.videoClosure
             this.$refs.videostream.$emit("closure", this.videoClosure)
         },
+        toggleVideoDebug () {
+            if (this.inLogin)
+                return
+            this.videoDebug = !this.videoDebug
+            this.$refs.videostream.$emit("debug", this.videoDebug)
+        },
         updateCheck () {
             this.$emit("update-check")
         },
@@ -1661,6 +1668,7 @@ module.exports = {
         Mousetrap.bind("ctrl+o", () => this.feedback("surprise"))
         Mousetrap.bind("ctrl+g", () => this.feedback("smile"))
         Mousetrap.bind("ctrl+c", () => this.toggleVideoClosure())
+        Mousetrap.bind("ctrl+x", () => this.toggleVideoDebug())
 
         /*  support blinking settings button  */
         this.timer3 = setInterval(() => {

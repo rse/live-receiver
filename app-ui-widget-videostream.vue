@@ -58,6 +58,14 @@
                 </div>
             </div>
         </div>
+
+        <!-- video debug console -->
+        <div class="debug"
+            v-if="debug">
+            <div v-for="item of debugLog" v-bind:key="item.time" v-bind:class="[ 'debug-item', 'debug-item-' + item.type ]">
+                [{{ item.time }}]: {{ item.type.toUpperCase() }}: {{ item.text }}
+            </div>
+        </div>
     </div>
 </template>
 
@@ -150,6 +158,34 @@
             }
         }
     }
+
+    /*  video debug console  */
+    .debug {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 70%;
+        opacity: 0.9;
+        background-color: #000000;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        .debug-item {
+            color: var(--color-std-fg-3);
+            font-family: "TypoPRO Source Code Pro";
+            font-size: 7pt;
+            &.debug-item-error {
+                color: var(--color-sig-fg-3);
+            }
+            &.debug-item-warning {
+                color: var(--color-acc-fg-3);
+            }
+            &.debug-item-info {
+            }
+        }
+    }
 }
 </style>
 
@@ -171,7 +207,9 @@ module.exports = {
             intVolume: this.volume ? this.volume : 100,
             intMuted:  this.muted  ? this.muted  : false,
             intDevice: this.device ? this.device : "",
-            closure:   false
+            closure:   false,
+            debug:     false,
+            debugLog:  []
         }
     },
 
@@ -193,6 +231,16 @@ module.exports = {
         intDevice: function (v) {
             if (this.ve !== null && v !== "")
                 this.ve.setSinkId(v)
+        }
+    },
+
+    /*  internal methods  */
+    methods: {
+        log (type, text) {
+            if (this.debugLog.length > 50)
+                this.debugLog.unshift()
+            const time = ui.dayjs().format("HH:mm:ss.SSS")
+            this.debugLog.push({ time, type, text })
         }
     },
 
@@ -263,31 +311,39 @@ module.exports = {
             if (this.device !== "")
                 ve.setSinkId(this.device)
             ve.addEventListener("loadeddata", () => {
+                this.log("info", "event: videoelement: loadeddata")
                 ui.log.debug("ui: videoelement: loadeddata")
             })
             ve.addEventListener("canplay", () => {
+                this.log("info", "event: videoelement: canplay")
                 ui.log.debug("ui: videoelement: canplay")
             })
             ve.addEventListener("progress", () => {
+                this.log("info", "event: videoelement: progress")
                 ui.log.debug("ui: videoelement: progress")
             })
             ve.addEventListener("playing", () => {
+                this.log("info", "event: videoelement: playing")
                 ui.log.debug("ui: videoelement: playing")
                 this.state = "playing"
             })
             ve.addEventListener("stalled", () => {
+                this.log("info", "event: videoelement: stalled")
                 ui.log.debug("ui: videoelement: stalled")
                 this.state = "stalled"
             })
             ve.addEventListener("waiting", () => {
+                this.log("info", "event: videoelement: waiting")
                 ui.log.debug("ui: videoelement: waiting")
                 this.state = "stalled"
             })
             ve.addEventListener("ended", () => {
+                this.log("info", "event: videoelement: ended")
                 ui.log.debug("ui: videoelement: ended")
                 this.state = "stopped"
             })
             ve.addEventListener("error", (ev) => {
+                this.log("error", `event: videoelement: ${ev}`)
                 this.$emit("error", `HTMLMediaElement: ${ev}`)
                 ui.log.debug("ui: videoelement: error", ev)
                 this.state = "error"
@@ -299,15 +355,19 @@ module.exports = {
             const ms = new MediaSource()
             ve.src = window.URL.createObjectURL(ms)
             ms.addEventListener("sourceopen", (ev) => {
+                this.log("info", "event: mediasource: sourceopen")
                 ui.log.debug("ui: mediasource: sourceopen")
             })
             ms.addEventListener("sourceended", (ev) => {
+                this.log("info", "event: mediasource: sourceended")
                 ui.log.debug("ui: mediasource: sourceended")
             })
             ms.addEventListener("sourceclose", (ev) => {
+                this.log("info", "event: mediasource: sourceclose")
                 ui.log.debug("ui: mediasource: sourceclose")
             })
             ms.addEventListener("error", (ev) => {
+                this.log("error", `event: MediaSource: ${ev}`)
                 this.$emit("error", `MediaSource: ${ev}`)
                 ui.log.debug(`ui: mediasource: error: ${ev}`)
                 this.state = "error"
@@ -345,6 +405,7 @@ module.exports = {
             const transfer = async () => {
                 /*  ensure we are handling just one transfer per time  */
                 if (transferProgress) {
+                    this.log("info", "streamData: transfer still in progress (waiting & repeating)")
                     timer = setTimeout(transfer, 1000 / 60 /* = 1s/60fps */)
                     return
                 }
@@ -359,9 +420,11 @@ module.exports = {
                 /*  act only if there is still data
                     (notice the repeat timer)  */
                 if (queue.length > 0) {
+                    this.log("info", `streamData: pending segment in queue (queue length: ${queue.length})`)
                     const id = queue[0].id
                     if (this.sb[id] !== undefined && (updating[id] || this.sb[id].updating)) {
                         /*  the <video> element is still updating, so repeat  */
+                        this.log("info", "streamData: video element still updating (waiting & repeating)")
                         timer = setTimeout(transfer, 1000 / 60 /* = 1s/60fps */)
                     }
                     else if (this.sb[id] !== undefined && queue.length > 0) {
@@ -378,14 +441,18 @@ module.exports = {
                             updating[data.id] = true
 
                             /*  now finally feed the data into the SourceBuiffer  */
+                            this.log("info", `streamData: sourcebuffer: appendBuffer (length: ${data.buffer.byteLength}`)
                             try {
                                 this.sb[data.id].appendBuffer(data.buffer)
                             }
                             catch (err) {
+                                this.log("error", `streamData: sourcebuffer: appendBuffer: exception: ${err}`)
                                 ui.log.error(`ui: sourcebuffer: appendBuffer: exception: ${err}`)
                                 this.$emit("error", `SourceBuffer: ${err}`)
                             }
                         }
+                        else
+                            this.log("warning", "streamData: sourcebuffer: not streaming (skipping data)")
                     }
                 }
                 transferProgress = false
@@ -393,10 +460,14 @@ module.exports = {
 
             /*  on-the-fly create SourceBuffer  */
             if (this.sb[data.id] === undefined) {
-                if (!MediaSource.isTypeSupported(data.user.mimeCodec))
+                this.log("info", "streamData: on-the-fly creating sourcebufffer")
+                if (!MediaSource.isTypeSupported(data.user.mimeCodec)) {
+                    this.log("error", `unknown codec "${data.user.mimeCodec}" -- ignoring stream data`)
                     this.$emit("error", `unknown codec "${data.user.mimeCodec}" -- ignoring stream data`)
+                }
                 else {
                     try {
+                        this.log("info", "streamData: mediasource: addSourceBuffer")
                         const sb = this.ms.addSourceBuffer(data.user.mimeCodec)
                         this.sb[data.id] = sb
                         this.sb[data.id].addEventListener("updatestart", () => {
@@ -409,17 +480,20 @@ module.exports = {
                             transfer()
                         })
                         this.sb[data.id].addEventListener("abort", () => {
+                            this.log("error", "event: sourcebuffer: abort")
                             ui.log.debug("ui: sourcebuffer: abort")
                             this.$emit("error", "SourceBuffer: abort")
                             updating[data.id] = false
                         })
                         this.sb[data.id].addEventListener("error", (event, err) => {
+                            this.log("error", `event: sourcebuffer: error: ${err}`)
                             ui.log.error(`ui: sourcebuffer: error: ${err}`)
                             this.$emit("error", `SourceBuffer: ${err}`)
                             updating[data.id] = false
                         })
                     }
                     catch (err) {
+                        this.log("error", `mediasource: addSourceBuffer: exception: ${err}`)
                         ui.log.debug(`ui: mediasource: addSourceBuffer: exception: ${err}`)
                         this.$emit("error", `SourceBuffer: ${err}`)
                     }
@@ -455,44 +529,58 @@ module.exports = {
 
         /*  provide event entry hooks  */
         this.$on("stream-begin", async () => {
+            this.log("info", "event: stream-begin: begin")
             ui.log.info("ui: stream-begin: begin")
             if (!this.streaming) {
                 await streamBegin().catch(() => true)
                 this.streaming = true
             }
             this.$emit("stream-begin:done")
+            this.log("info", "event: stream-begin: end")
             ui.log.info("ui: stream-begin: end")
         })
         this.$on("stream-data", async (data) => {
+            this.log("info", `event: stream-data (num: ${data.num}, id: ${data.id}, ` +
+                `codec: ${data.user.mimeCodec}, size: ${data.buffer.byteLength})`)
             if (this.streaming)
                 streamData(data)
+            else
+                this.log("warning", "event: stream-data: not streaming (skipping data)")
         })
         this.$on("stream-reset", async () => {
             if (this.streaming) {
+                this.log("info", "event: stream-reset: begin")
                 ui.log.info("ui: stream-reset: begin")
                 this.streaming = false
                 await streamReset()
                 this.streaming = true
+                this.log("info", "event: stream-reset: end")
                 ui.log.info("ui: stream-reset: end")
             }
+            else
+                this.log("warning", "event: stream-reset: not streaming (skipping event)")
         })
         this.$on("stream-end", async () => {
+            this.log("info", "event: stream-end: begin")
             ui.log.info("ui: stream-end: begin")
             if (this.streaming) {
                 this.streaming = false
                 await streamEnd().catch(() => true)
             }
             this.$emit("stream-end:done")
+            this.log("info", "event: stream-end: end")
             ui.log.info("ui: stream-end: end")
         })
 
         /*  allow rebooting on Video element or MediaSource errors  */
         this.$on("stream-reboot", async () => {
+            this.log("info", "event: stream-reboot: begin")
             ui.log.info("ui: stream-reboot: begin")
             this.streaming = false
             await streamEnd().catch(() => true)
             await streamBegin().catch(() => true)
             this.streaming = true
+            this.log("info", "event: stream-reboot: end")
             ui.log.info("ui: stream-reboot: end")
         })
 
@@ -500,6 +588,12 @@ module.exports = {
         this.$on("closure", async (enabled) => {
             this.closure = enabled
         })
+
+        /*  allow debug console to be toggled  */
+        this.$on("debug", async (enabled) => {
+            this.debug = enabled
+        })
+        this.log("info", "video stream element created")
     }
 }
 </script>
