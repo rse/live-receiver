@@ -2,6 +2,9 @@
 Changes
 =======
 
+- 1.5.3
+    - IMPROVEMENT: add debug console to video element
+
 - 1.5.2
     - EXTENSION: add video stream closure for demonstration purposes
     - IMPROVEMENT: polish some UI texts
