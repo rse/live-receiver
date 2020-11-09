@@ -499,7 +499,7 @@ const app = electron.app
                 if (num <= numLast)
                     app.win.webContents.send("stream-reset")
                 numLast = num
-                app.win.webContents.send("stream-data", { id, user, buffer })
+                app.win.webContents.send("stream-data", { num, id, user, buffer })
             })
             vs.on("error", (err) => {
                 if (!app.connected)
