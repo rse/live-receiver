@@ -4,10 +4,11 @@ Version History
 
 | VERSION | DATE       | STATE       |
 | ------- | ---------- | ----------- |
-| 1.5.3   | 2020-11-09 | current     |
-| 1.5.2   | 2020-11-08 | obsolete    |
-| 1.5.1   | 2020-11-07 | obsolete    |
-| 1.5.0   | 2020-11-07 | obsolete    |
+| 1.5.4   | 2020-11-09 | current     |
+| 1.5.3   | 2020-11-09 | obsolete    |
+| 1.5.2   | 2020-11-08 | deprecated  |
+| 1.5.1   | 2020-11-07 | deprecated  |
+| 1.5.0   | 2020-11-07 | deprecated  |
 | 1.4.3   | 2020-10-25 | deprecated  |
 | 1.4.2   | 2020-10-25 | deprecated  |
 | 1.4.1   | 2020-10-24 | deprecated  |
