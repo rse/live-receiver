@@ -238,6 +238,8 @@ module.exports = {
     /*  internal methods  */
     methods: {
         log (type, text) {
+            if (!this.debug)
+                return
             if (this.debugLog.length > 50)
                 this.debugLog.unshift()
             const time = ui.dayjs().format("HH:mm:ss.SSS")
