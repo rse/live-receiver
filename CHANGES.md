@@ -3,6 +3,7 @@ Changes
 =======
 
 - 1.5.3
+    - BUGFIX: fixed the video element feeding by starting buffer transfer only once both audio/video buffers exist
     - IMPROVEMENT: add debug console to video element
 
 - 1.5.2
