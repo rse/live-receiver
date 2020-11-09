@@ -4,6 +4,7 @@ Changes
 
 - 1.5.4
     - IMPROVEMENT: make keystrokes of internal debugs less invasive
+    - IMPROVEMENT: log debug information of video stream only if debug is enabled
 
 - 1.5.3
     - BUGFIX: fixed the video element feeding by starting buffer transfer only once both audio/video buffers exist
