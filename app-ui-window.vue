@@ -1255,9 +1255,6 @@ module.exports = {
                 liveRelayServer:      this.liveRelayServer,
                 liveAccessToken:      this.liveAccessToken
             })
-            setTimeout(() => {
-                this.sendFeeling()
-            }, 4 * 1000)
         },
         logout () {
             if (this.inLogin)
@@ -1277,9 +1274,6 @@ module.exports = {
                 liveRelayServer:      this.liveRelayServer,
                 liveAccessToken:      this.liveAccessToken
             })
-            setTimeout(() => {
-                this.sendFeeling()
-            }, 4 * 1000)
         },
         quit () {
             this.$emit("quit")
@@ -1536,6 +1530,7 @@ module.exports = {
             else if (state === "video") {
                 this.inLogin = false
                 this.$refs.login.$emit("disable")
+                this.sendFeeling()
             }
         })
         this.$on("deep-link", (credentials) => {

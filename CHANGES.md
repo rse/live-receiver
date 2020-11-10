@@ -2,6 +2,9 @@
 Changes
 =======
 
+- 1.5.5
+    - BUGFIX: resend current feeling on each reconnect, even if caused remotely by the trainer
+
 - 1.5.4
     - IMPROVEMENT: make keystrokes of internal debugs less invasive
     - IMPROVEMENT: log debug information of video stream only if debug is enabled
