@@ -513,6 +513,10 @@ const app = electron.app
                 app.log.error(`main: LiVE-Relay: RTMPS: ERROR: ${err}`)
                 app.win.webContents.send("stream-end")
             })
+            vs.on("fatal", (err) => {
+                app.log.error(`main: LiVE-Relay: VideoStream: FATAL: ${err}`)
+                app.win.webContents.send("fatal-error", err)
+            })
             result = await vs.start().then(() => ({ success: true })).catch((err) => {
                 return { error: `VideoStream: RTMPS: start: ${err}` }
             })

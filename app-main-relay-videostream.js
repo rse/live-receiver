@@ -180,6 +180,13 @@ module.exports = class VideoStream extends EventEmitter {
                     await this.stop()
                     this.start()
                 }
+                else {
+                    /*  no chance, we have to tell the user that we need a system-native FFmpeg  */
+                    this.emit("fatal", "sorry, the embedded FFmpeg program unfortunately crashes under " +
+                        "your particular operating system. Please install a native FFmpeg in your system, " +
+                        "ensure that the executable \"ffmpeg\" is in your $PATH and then restart this " +
+                        "LiVE Receiver application again, please.")
+                }
             }
         })
 

@@ -247,6 +247,17 @@
             <div v-show="stealthMode" class="stealth-mode">
                 <i class="fas fa-eye-slash"></i>
             </div>
+
+            <!-- fatal error message -->
+            <div v-show="fatalError !== null" class="fatal-error">
+                <div class="icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="text">
+                    <b>FATAL ERROR:</b><br/>
+                    {{ fatalError }}
+                </div>
+            </div>
         </div>
 
         <!-- ---- FOOTER ---- -->
@@ -860,6 +871,31 @@
             font-size: 32pt;
             opacity: 0.8;
         }
+        .fatal-error {
+            opacity: 0.9;
+            position: absolute;
+            top: 30%;
+            left: 0;
+            width: 100%;
+            height: auto;
+            background-color: var(--color-sig-bg-3);
+            color: var(--color-sig-fg-3);
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-items: center;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            .icon {
+                font-size: 80pt;
+                margin-left: 50px;
+                margin-right: 50px;
+            }
+            .text {
+                font-size: 14pt;
+                margin-right: 50px;
+            }
+        }
     }
 
     /*  footer area  */
@@ -1055,7 +1091,8 @@ module.exports = {
         votingType:            "propose",
         votingDone:            false,
         votingChoice:          "",
-        stealthMode:           false
+        stealthMode:           false,
+        fatalError:            null
     }),
 
     /*  component computed properties  */
@@ -1683,6 +1720,12 @@ module.exports = {
             )
             this.$refs.login.$emit("blink-settings", blink)
         }, 1000)
+
+        /*  support fatal error reporting  */
+        this.$on("fatal-error", (err) => {
+            ui.log.error(`fatal-error: ${err}`)
+            this.fatalError = err
+        })
     },
 
     /*  component destruction hook  */
