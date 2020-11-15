@@ -24,12 +24,9 @@ if (os.platform() === "win32")
 else if (os.platform() === "darwin")
     ffmpeg = path.resolve(path.join(app.getAppPath(), "app-main-relay-videostream.d", "ffmpeg")
         .replace("app.asar", "app.asar.unpacked"))
-else if (os.platform() === "linux") {
-    ffmpeg = which.sync("ffmpeg", { nothrow: true })
-    if (ffmpeg === null)
-        ffmpeg = path.resolve(path.join(app.getAppPath(), "app-main-relay-videostream.d", "ffmpeg")
-            .replace("app.asar", "app.asar.unpacked"))
-}
+else if (os.platform() === "linux")
+    ffmpeg = path.resolve(path.join(app.getAppPath(), "app-main-relay-videostream.d", "ffmpeg")
+        .replace("app.asar", "app.asar.unpacked"))
 else
     throw new Error(`operating system platform ${os.platform()} not supported`)
 
@@ -164,6 +161,22 @@ module.exports = class VideoStream extends EventEmitter {
         })
         this.proc.stderr.on("data", (line) => {
             this.emit("error", `videostream: FFmpeg: ${line.toString()}`)
+        })
+
+        /*  process exit of ffmpeg(1) subprocess  */
+        let workaround = false
+        this.proc.on("exit", async (code, signal) => {
+            /*  just log the information  */
+            this.options.log("error", `videostream: FFmpeg: exit (code: ${code}, signal: ${signal})`)
+
+            /*  workaround: on some platforms (e.g. Ubuntu 20.10) the statically built
+                ffmpeg(1) executable segfaults, so at least once try to use an external ffmpeg(1)  */
+            if (code === null && signal === "SIGSEGV" && !workaround) {
+                workaround = true
+                this.options.ffmpeg = which.sync("ffmpeg", { nothrow: true })
+                await this.stop()
+                this.start()
+            }
         })
 
         this.processing = false
