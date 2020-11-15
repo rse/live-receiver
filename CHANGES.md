@@ -2,6 +2,9 @@
 Changes
 =======
 
+- 1.6.1
+    - IMPROVEMENT: raise a fatal error message in the UI in case ffmpeg crashes and a system one is not available
+
 - 1.6.0
     - IMPROVEMENT: finally also provide Linux/x64 support
     - IMPROVEMENT: simplify audio recording by removing the 1/2/3 countdown
