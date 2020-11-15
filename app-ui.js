@@ -173,7 +173,8 @@ ui = {}
         "resize", "set-size", "quit",
         "message", "feedback", "feeling",
         "screenshot",
-        "update-check", "update-to-version"
+        "update-check", "update-to-version",
+        "stealth-mode"
     ]
     for (const event of events) {
         ui.root.$refs.win.$on(event, async (...args) => {

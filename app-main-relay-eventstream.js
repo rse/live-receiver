@@ -33,9 +33,10 @@ module.exports = class EventStream extends EventEmitter {
             interval: 10 * 60 * 1000,
             log:      (level, msg) => {}
         }, options)
-        this.broker = null
-        this.timer  = null
-        this.url    = `mqtts://${this.options.token1}:${this.options.token2}@${this.options.server}`
+        this.broker    = null
+        this.timer     = null
+        this.inStealth = false
+        this.url       = `mqtts://${this.options.token1}:${this.options.token2}@${this.options.server}`
     }
 
     /*  pre-authenticate at the LiVE relay service
@@ -169,35 +170,12 @@ module.exports = class EventStream extends EventEmitter {
                     this.broker = broker
 
                 /*  begin attendance (initially)  */
-                this.send({
-                    id:    "live-sender",
-                    event: "attendance",
-                    data: {
-                        client: this.options.client,
-                        agent:  this.options.agent,
-                        event:  "begin",
-                        data: {
-                            name:    this.options.name,
-                            image:   this.options.image,
-                            privacy: this.options.privacy
-                        }
-                    }
-                })
+                this.attendance("begin")
 
                 /*  refresh attendance (regularly)  */
                 if (firstConnect) {
                     this.timer = setInterval(() => {
-                        if (this.broker !== null && this.broker.connected) {
-                            this.send({
-                                id:    "live-sender",
-                                event: "attendance",
-                                data: {
-                                    client: this.options.client,
-                                    agent:  this.options.agent,
-                                    event:  "refresh"
-                                }
-                            }).catch((err) => void (err))
-                        }
+                        this.attendance("refresh")
                     }, this.options.interval)
                 }
 
@@ -217,16 +195,7 @@ module.exports = class EventStream extends EventEmitter {
             this.timer = null
         }
         if (this.broker !== null) {
-            /*  end attendance (explicitly)  */
-            await this.send({
-                id:    "live-sender",
-                event: "attendance",
-                data: {
-                    client: this.options.client,
-                    agent:  this.options.agent,
-                    event:  "end"
-                }
-            })
+            this.attendance("end")
             this.broker.end()
             this.broker = null
         }
@@ -251,6 +220,40 @@ module.exports = class EventStream extends EventEmitter {
                 }
             })
         })
+    }
+
+    /*  send attendance information  */
+    async attendance (event, force = false) {
+        if (this.broker !== null && this.broker.connected && (!this.inStealth || force)) {
+            this.options.log("info", `eventstream: attendance: send "${event}" event`)
+            const data = {
+                client: this.options.client,
+                agent:  this.options.agent,
+                event:  event
+            }
+            if (event === "begin") {
+                /*  send extra data only on begin  */
+                data.data = {
+                    name:    this.options.name,
+                    image:   this.options.image,
+                    privacy: this.options.privacy
+                }
+            }
+            this.send({
+                id:    "live-sender",
+                event: "attendance",
+                data:  data
+            }).catch((err) => void (err))
+        }
+    }
+
+    /*  toggle stealth mode  */
+    async stealth (enabled) {
+        this.inStealth = enabled
+        if (this.inStealth)
+            this.attendance("end", true)
+        else
+            this.attendance("begin", true)
     }
 }
 

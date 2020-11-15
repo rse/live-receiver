@@ -242,6 +242,11 @@
                     v-on:update-notify="updateNotify"
                 />
             </div>
+
+            <!-- stealth mode indicator -->
+            <div v-show="stealthMode" class="stealth-mode">
+                <i class="fas fa-eye-slash"></i>
+            </div>
         </div>
 
         <!-- ---- FOOTER ---- -->
@@ -846,6 +851,15 @@
         justify-content: center;
         align-items: center;
         overflow: hidden;
+        position: relative;
+        .stealth-mode {
+            position: absolute;
+            bottom: -10px;
+            right: 10px;
+            color: var(--color-sig-bg-5);
+            font-size: 32pt;
+            opacity: 0.8;
+        }
     }
 
     /*  footer area  */
@@ -1041,7 +1055,8 @@ module.exports = {
         votingActive:          false,
         votingType:            "propose",
         votingDone:            false,
-        votingChoice:          ""
+        votingChoice:          "",
+        stealthMode:           false
     }),
 
     /*  component computed properties  */
@@ -1262,6 +1277,7 @@ module.exports = {
             if (!this.allowDisconnect)
                 return
             this.allowDisconnect = false
+            this.stealthMode = false
             this.$emit("logout")
         },
         relogin () {
@@ -1481,6 +1497,12 @@ module.exports = {
             this.videoDebug = !this.videoDebug
             this.$refs.videostream.$emit("debug", this.videoDebug)
         },
+        toggleStealthMode () {
+            if (this.inLogin)
+                return
+            this.stealthMode = !this.stealthMode
+            this.$emit("stealth-mode", this.stealthMode)
+        },
         updateCheck () {
             this.$emit("update-check")
         },
@@ -1664,6 +1686,7 @@ module.exports = {
         Mousetrap.bind("ctrl+g", () => this.feedback("smile"))
         Mousetrap.bind("ctrl+x c", () => this.toggleVideoClosure())
         Mousetrap.bind("ctrl+x d", () => this.toggleVideoDebug())
+        Mousetrap.bind("ctrl+x s", () => this.toggleStealthMode())
 
         /*  support blinking settings button  */
         this.timer3 = setInterval(() => {

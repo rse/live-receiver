@@ -688,6 +688,12 @@ const app = electron.app
 
         /*  cleanup from old update  */
         await app.update.cleanup()
+
+        /*  handle stealth-mode  */
+        app.ipc.handle("stealth-mode", (event, enabled) => {
+            if (app.es !== null)
+                app.es.stealth(enabled)
+        })
     })
 })().catch((err) => {
     if (app.log)
