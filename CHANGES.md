@@ -2,7 +2,8 @@
 Changes
 =======
 
-- 1.5.5
+- 1.6.0
+    - IMPROVEMENT: finally also provide Linux/x64 support
     - BUGFIX: resend current feeling on each reconnect, even if caused remotely by the trainer
 
 - 1.5.4
