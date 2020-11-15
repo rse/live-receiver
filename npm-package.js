@@ -57,6 +57,20 @@ const zip   = require("cross-zip")
             path.join(__dirname, "dist/LiVE-Receiver-mac-x64.zip")
         )
     }
+    else if (os.platform() === "linux") {
+        /*  run Electron-Builder to package the application  */
+        console.log("++ packaging App as an Electron distribution for Linux platform")
+        execa.sync(electronbuilder, [],
+            { stdin: "inherit", stdout: "inherit", stderr: "inherit" })
+
+        /*  pack application into a distribution archive  */
+        console.log("++ packing App into ZIP distribution archive")
+        shell.mv("dist/LiVE-Receiver-*.AppImage", "dist/LiVE-Receiver")
+        zip.zipSync(
+            path.join(__dirname, "dist/LiVE-Receiver"),
+            path.join(__dirname, "dist/LiVE-Receiver-lnx-x64.zip")
+        )
+    }
 })().catch((err) => {
     console.log(`** package: ERROR: ${err}`)
 })

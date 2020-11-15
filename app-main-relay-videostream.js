@@ -12,6 +12,7 @@ const EventEmitter = require("events")
 /*  external requirements  */
 const { app }      = require("electron")
 const execa        = require("execa")
+const which        = require("which")
 const UUID         = require("pure-uuid")
 const MP4Box       = require("mp4box")
 
@@ -23,6 +24,12 @@ if (os.platform() === "win32")
 else if (os.platform() === "darwin")
     ffmpeg = path.resolve(path.join(app.getAppPath(), "app-main-relay-videostream.d", "ffmpeg")
         .replace("app.asar", "app.asar.unpacked"))
+else if (os.platform() === "linux") {
+    ffmpeg = which.sync("ffmpeg", { nothrow: true })
+    if (ffmpeg === null)
+        ffmpeg = path.resolve(path.join(app.getAppPath(), "app-main-relay-videostream.d", "ffmpeg")
+            .replace("app.asar", "app.asar.unpacked"))
+}
 else
     throw new Error(`operating system platform ${os.platform()} not supported`)
 

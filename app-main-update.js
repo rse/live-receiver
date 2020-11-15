@@ -43,6 +43,10 @@ module.exports = class Update {
                     actual embedded executable "Contents/MacOS/LiVE-Receiver"  */
                 this.app = path.resolve(path.join(electron.app.getPath("exe"), "..", "..", ".."))
             }
+            else if (os.platform() === "linux") {
+                /*  under Linux we are a standard executable "LiVE-Receiver"  */
+                this.app = path.resolve(electron.app.getPath("exe"))
+            }
         }
 
         /*  initialize with unknown available versions  */
@@ -137,6 +141,8 @@ module.exports = class Update {
             sys = "win"
         else if (os.platform() === "darwin")
             sys = "mac"
+        else if (os.platform() === "linux")
+            sys = "lnx"
         const url = this.options.urlDist
             .replace(/%V/g, version)
             .replace(/%S/g, sys)
@@ -225,6 +231,8 @@ module.exports = class Update {
             from = path.join(tmpdir.name, "LiVE-Receiver.exe")
         else if (os.platform() === "darwin")
             from = path.join(tmpdir.name, "LiVE-Receiver.app")
+        else if (os.platform() === "linux")
+            from = path.join(tmpdir.name, "LiVE-Receiver")
         const accessible = await fs.promises.access(from, fs.constants.F_OK | fs.constants.R_OK)
             .then(() => true).catch(() => false)
         if (!accessible)

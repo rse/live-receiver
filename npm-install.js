@@ -7,7 +7,7 @@
 const os = require("os")
 const fs = require("fs")
 
-if (os.platform() === "darwin")
+if (os.platform() === "darwin" || os.platform() === "linux")
     fs.chmodSync("app-main-relay-videostream.d/ffmpeg", 0o755)
 else if (os.platform() === "win32")
     fs.chmodSync("app-main-relay-videostream.d/ffmpeg.exe", 0o755)

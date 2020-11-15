@@ -124,6 +124,11 @@ const app = electron.app
     if (os.platform() === "win32" && process.argv.length > 0)
         deepLinkURL(process.argv[process.argv.length - 1])
 
+    /*  under Linux prevent trouble by disabling
+        the hardware acceleration through the GPU  */
+    if (os.platform() === "linux")
+        app.disableHardwareAcceleration()
+
     /*  start startup procedure once Electron is ready  */
     app.on("ready", async () => {
         /*  establish update process  */
