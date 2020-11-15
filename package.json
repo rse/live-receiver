@@ -146,9 +146,10 @@
         }
     },
     "scripts": {
-        "install":                       "npm-run-all -s install:fetch install:fetch-post install:squeeze",
+        "install":                       "npm-run-all -s install:fetch-prolog install:fetch install:fetch-epilog install:squeeze",
+        "install:fetch-prolog":          "node npm-install.js prolog",
         "install:fetch":                 "npm-install-fetch --config npm-install.yaml",
-        "install:fetch-post":            "node npm-install.js",
+        "install:fetch-epilog":          "node npm-install.js epilog",
         "install:squeeze":               "modclean -p . -r -P -n default:safe",
         "setup":                         "npm install --only-production --global-style",
         "lint":                          "eslint --config eslint.yaml --ext js,vue *.js *.vue",
