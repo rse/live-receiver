@@ -169,13 +169,17 @@ module.exports = class VideoStream extends EventEmitter {
             /*  just log the information  */
             this.options.log("error", `videostream: FFmpeg: exit (code: ${code}, signal: ${signal})`)
 
-            /*  workaround: on some platforms (e.g. Ubuntu 20.10) the statically built
-                ffmpeg(1) executable segfaults, so at least once try to use an external ffmpeg(1)  */
+            /*  NASTY WORKAROUND: on some Linux platforms (e.g. Ubuntu 20.10) the statically built
+                ffmpeg(1) executable (built under Debian AFAIK) unfortunately segfaults, so at
+                least once try to use an externally installed "native" ffmpeg(1) of the system  */
             if (code === null && signal === "SIGSEGV" && !workaround) {
                 workaround = true
-                this.options.ffmpeg = which.sync("ffmpeg", { nothrow: true })
-                await this.stop()
-                this.start()
+                const ffmpeg = which.sync("ffmpeg", { nothrow: true })
+                if (ffmpeg !== null) {
+                    this.options.ffmpeg = ffmpeg
+                    await this.stop()
+                    this.start()
+                }
             }
         })
 
