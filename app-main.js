@@ -217,6 +217,7 @@ const app = electron.app
 
         /*  create application window  */
         app.win = new electron.BrowserWindow({
+            icon:            path.join(__dirname, "app-res-icon.png"),
             backgroundColor: "#222222",
             useContentSize:  true,
             frame:           false,
