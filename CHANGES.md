@@ -6,6 +6,7 @@ Changes
     - IMPROVEMENT: finally also provide Linux/x64 support
     - EXTENSION: added stealth mode for the trainer monitoring session to not confuse the trainees
     - BUGFIX: resend current feeling on each reconnect, even if caused remotely by the trainer
+    - UPGRADE: upgrade minor dependencies
 
 - 1.5.4
     - IMPROVEMENT: make keystrokes of internal debugs less invasive
