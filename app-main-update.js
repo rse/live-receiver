@@ -44,8 +44,9 @@ module.exports = class Update {
                 this.app = path.resolve(path.join(electron.app.getPath("exe"), "..", "..", ".."))
             }
             else if (os.platform() === "linux") {
-                /*  under Linux we are a standard executable "LiVE-Receiver"  */
-                this.app = path.resolve(electron.app.getPath("exe"))
+                /*  under Linux we are an AppImage executable "LiVE-Receiver"
+                    and the AppImage stub provides us the direct path to it  */
+                this.app = path.resolve(process.env.APPIMAGE)
             }
         }
 
@@ -64,7 +65,9 @@ module.exports = class Update {
             return false
         if (this.app === "")
             return false
-        if (!this.app.match(/^(.+)\.(exe|app)$/))
+        if (!(   (os.platform() === "win32"  && this.app.match(/^(.+)\.exe/))
+              || (os.platform() === "darwin" && this.app.match(/^(.+)\.app$/))
+              || (os.platform() === "linux"  && this.app.match(/^(.+)$/))     ))
             return false
         const accessible = await fs.promises.access(this.app, fs.constants.W_OK)
             .then(() => true).catch(() => false)
