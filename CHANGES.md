@@ -4,6 +4,7 @@ Changes
 
 - 1.6.0
     - IMPROVEMENT: finally also provide Linux/x64 support
+    - IMPROVEMENT: simplify audio recording by removing the 1/2/3 countdown
     - EXTENSION: added stealth mode for the trainer monitoring session to not confuse the trainees
     - BUGFIX: resend current feeling on each reconnect, even if caused remotely by the trainer
     - UPGRADE: upgrade minor dependencies

@@ -1039,7 +1039,6 @@ module.exports = {
         maximized:             false,
         volume:                100,
         volumeMute:            false,
-        recordState:           0,
         mood:                  3,
         challenge:             3,
         bandwidthBytes:        0,
@@ -1065,27 +1064,18 @@ module.exports = {
         recordText () {
             let html
             if (this.audioBlob === null) {
-                if (this.recordState === 0 && this.audioBlob !== null)
-                    html = "Press to record your<br/>audio message again."
-                else if (this.recordState === 0 && this.audioBlob === null)
-                    html = "Press to record your<br/>audio message."
-                else if (this.recordState === 1)
-                    html = "<b>PLEASE WAIT</b> &mdash; audio output soon will be muted<br/>" +
-                        "and recording your message starts in <b class='attention-boxed'>3</b> seconds..."
-                else if (this.recordState === 2)
-                    html = "<b>PLEASE WAIT</b> &mdash; audio output soon will be muted<br/>" +
-                        "and recording your message starts in <b class='attention-boxed'>2</b> seconds..."
-                else if (this.recordState === 3)
-                    html = "<b>PLEASE WAIT</b> &mdash; audio output soon will be muted<br/>" +
-                        "and recording your message starts in <b class='attention-boxed'>1</b> second..."
-                else if (this.recordState === 4)
-                    html = "<span class='attention-boxed'>NOW PLEASE SPEAK!</span> &mdash; Press again<br/>to stop your message recording."
+                if (!this.audioRecording && this.audioBlob !== null)
+                    html = "Press to temporarily mute trainer audio<br/>and record your audio message again."
+                else if (!this.audioRecording && this.audioBlob === null)
+                    html = "Press to temporarily mute trainer audio<br/>and record your audio message."
+                else if (this.audioRecording)
+                    html = "<span class='attention-boxed'> NOW PLEASE SPEAK! </span><br/>Press again to stop your recording."
             }
             else {
                 if (this.audioPlaying)
                     html = "Press to stop playing<br/>your audio message."
                 else
-                    html = "Press to play and check<br/>your recorded audio message.<br/>" +
+                    html = "Press to temporarily mute trainer audio<br/>and play and check your recorded audio message.<br/>" +
                         `(duration: <b class='attention-boxed'>${this.audioDuration.toFixed(1)}</b> seconds)`
             }
             return html
@@ -1370,13 +1360,8 @@ module.exports = {
                 return
             if (!this.audioRecording) {
                 /*  start recording  */
-                ui.soundfx.play("chime3")
-                this.recordState = 0
-                for (let i = 1; i <= 3; i++) {
-                    this.recordState++
-                    await new Promise((resolve) => setTimeout(resolve, 1000))
-                }
-                this.recordState++
+                ui.soundfx.play("beep1")
+                await new Promise((resolve) => setTimeout(resolve, 200))
                 try {
                     /*  get audio stream from audio input device  */
                     const stream = await navigator.mediaDevices.getUserMedia({
@@ -1435,8 +1420,7 @@ module.exports = {
                 this.recorder.stop()
                 this.audioRecording = false
                 this.volumeMute = false
-                ui.soundfx.playAndWait("chime3")
-                this.recordState = 0
+                ui.soundfx.playAndWait("beep1")
             }
         },
         audioPlay () {
