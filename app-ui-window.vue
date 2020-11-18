@@ -1345,12 +1345,13 @@ module.exports = {
                 return
             this.$emit("set-size", { w: 975, h: 550 + 2 * 42 })
         },
-        sourceSize () {
+        async sourceSize () {
             if (this.fullscreened || this.maximized || this.inLogin)
                 return
+            const ssf = await ui.screenScaleFactor()
             const res = { w: 1920, h: 1080 } /* FIXME: hardcoded */
-            let w = res.w
-            let h = res.h
+            let w = res.w / ssf
+            let h = res.h / ssf
             h += this.$refs.header.clientHeight
             h += this.$refs.footer.clientHeight
             w += 2 * 20

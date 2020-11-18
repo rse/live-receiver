@@ -45,6 +45,11 @@ ui = {}
         return ui.ipc.invoke("settings", ...args)
     }
 
+    /*  screen scale factor determination  */
+    ui.screenScaleFactor = async () => {
+        return ui.ipc.invoke("screen-scale-factor")
+    }
+
     /*  external requirements  */
     ui.throttle     = require("throttle-debounce").throttle
     ui.debounce     = require("throttle-debounce").debounce

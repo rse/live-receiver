@@ -196,6 +196,10 @@ const app = electron.app
             const data = await imageDataURI.encodeFromFile(path.resolve(__dirname, filename))
             return data
         })
+        app.ipc.handle("screen-scale-factor", async (event) => {
+            const display = electron.screen.getPrimaryDisplay()
+            return display.scaleFactor
+        })
 
         /*  provide generic function bridge for renderer  */
         const fnb = { electron }

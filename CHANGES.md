@@ -4,6 +4,7 @@ Changes
 
 - 1.6.2
     - UPGRADE: upgrade to Electron 11.0.1
+    - IMPROVEMENT: take screen scale factor (pixels vs. dots) into account for native window resizing
 
 - 1.6.1
     - IMPROVEMENT: raise a fatal error message in the UI in case ffmpeg crashes and a system one is not available
