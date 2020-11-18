@@ -2,6 +2,9 @@
 Changes
 =======
 
+- 1.6.2
+    - UPGRADE: upgrade to Electron 11.0.1
+
 - 1.6.1
     - IMPROVEMENT: raise a fatal error message in the UI in case ffmpeg crashes and a system one is not available
 

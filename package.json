@@ -10,13 +10,13 @@
         "url":                           "http://engelschall.com/"
     },
     "devDependencies": {
-        "electron":                      "10.1.5",
+        "electron":                      "11.0.1",
         "electron-builder":              "22.9.1",
         "nodemon":                       "2.0.6",
         "shelljs":                       "0.8.4",
         "glob":                          "7.1.6",
         "eslint":                        "7.13.0",
-        "eslint-config-standard":        "16.0.1",
+        "eslint-config-standard":        "16.0.2",
         "eslint-plugin-standard":        "4.1.0",
         "eslint-plugin-promise":         "4.2.1",
         "eslint-plugin-import":          "2.22.1",

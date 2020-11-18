@@ -234,6 +234,7 @@ const app = electron.app
                 devTools:                   (typeof process.env.DEBUG !== "undefined"),
                 nodeIntegration:            true,
                 nodeIntegrationInWorker:    true,
+                contextIsolation:           false,
                 worldSafeExecuteJavaScript: true,
                 disableDialogs:             true,
                 enableRemoteModule:         true,
