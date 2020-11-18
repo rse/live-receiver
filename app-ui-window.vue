@@ -135,7 +135,7 @@
                     <div class="box button fit" v-on:click="sourceSize"
                         v-tooltip.bottom-center="{ content: 'Resize window to fit native (unscaled)<br/>' +
                             'size of video stream.' }"
-                        v-bind:class="{ disabled: inLogin || fullscreened || maximized }">
+                        v-bind:class="{ disabled: inLogin || fullscreened || maximized || streamSize.w === 0 || streamSize.h === 0 }">
                         <i class="icon fas fa-expand"></i>
                         <span class="title">Native Size</span>
                     </div>
@@ -194,6 +194,7 @@
                 class="video">
                 <videostream
                     ref="videostream"
+                    v-on:stream-video-size="streamVideoSize"
                 />
             </div>
 
@@ -1079,6 +1080,7 @@ module.exports = {
         challenge:             3,
         bandwidthBytes:        0,
         bandwidthText:         "",
+        streamSize:            { w: 0, h: 0 },
         videoSize:             { w: 0, h: 0 },
         videoClosure:          false,
         videoDebug:            false,
@@ -1346,12 +1348,11 @@ module.exports = {
             this.$emit("set-size", { w: 975, h: 550 + 2 * 42 })
         },
         async sourceSize () {
-            if (this.fullscreened || this.maximized || this.inLogin)
+            if (this.fullscreened || this.maximized || this.inLogin || this.streamSize.w === 0 || this.streamSize.h === 0)
                 return
             const ssf = await ui.screenScaleFactor()
-            const res = { w: 1920, h: 1080 } /* FIXME: hardcoded */
-            let w = res.w / ssf
-            let h = res.h / ssf
+            let w = this.streamSize.w / ssf
+            let h = this.streamSize.h / ssf
             h += this.$refs.header.clientHeight
             h += this.$refs.footer.clientHeight
             w += 2 * 20
@@ -1533,6 +1534,10 @@ module.exports = {
         },
         updateNotify (available) {
             this.$refs.login.$emit("blink-update", available)
+        },
+        streamVideoSize (size) {
+            this.streamSize.w = size.width
+            this.streamSize.h = size.height
         }
     },
 

@@ -314,8 +314,11 @@ module.exports = {
             if (this.device !== "")
                 ve.setSinkId(this.device)
             ve.addEventListener("loadeddata", () => {
-                this.log("info", "event: videoelement: loadeddata")
-                ui.log.debug("ui: videoelement: loadeddata")
+                const width  = ve.videoWidth
+                const height = ve.videoHeight
+                this.log("info", `event: videoelement: loadeddata (width=${width} height=${height})`)
+                ui.log.debug(`ui: videoelement: loadeddata (width=${width} height=${height})`)
+                this.$emit("stream-video-size", { width, height })
             })
             ve.addEventListener("canplay", () => {
                 this.log("info", "event: videoelement: canplay")
