@@ -8,6 +8,7 @@ Changes
     - IMPROVEMENT: take screen scale factor (pixels vs. dots) into account for native window resizing
     - IMPROVEMENT: do not hard-code stream video size to 1920x1080 and instead figure it out for "source size" button
     - IMPROVEMENT: improve the popup texts
+    - IMPROVEMENT: throttle sending messages to avoid too much messages per time range
     - UPGRADE: upgrade to Electron 11.0.1
 
 - 1.6.1

@@ -289,7 +289,7 @@
                             autoHide: false
                         }"
                         v-bind:class="{
-                            disabled: inLogin || audioInputDevice === '' || audioOutputDevice === '' || votingActive,
+                            disabled: inLogin || messageThrottle || audioInputDevice === '' || audioOutputDevice === '' || votingActive,
                             active: audioRecording || audioPlaying || audioBlob !== null
                         }">
                         <span v-show="!audioRecording && audioBlob === null"><i class="icon fas fa-microphone-alt"></i></span>
@@ -303,13 +303,13 @@
                     </div>
 
                     <!-- enter message -->
-                    <div class="box message-text" v-bind:class="{ disabled: inLogin, active: message !== '' }">
+                    <div class="box message-text" v-bind:class="{ disabled: inLogin || messageThrottle, active: message !== '' }">
                         <span v-show="!votingActive || votingActive && votingType === 'propose'"
                             v-tooltip.bottom-center="{ content: 'Type a textual <u>m</u>essage to be<br/>sent to the trainer.' +
                                 ' &nbsp;<span class=attention-boxed>CTRL+m</span><br/>' +
                                 ' (Enter <span class=attention-boxed>RETURN</span> to immediately send it.)' }">
                             <input
-                                v-bind:disabled="inLogin || (votingActive && votingDone)"
+                                v-bind:disabled="inLogin || messageThrottle || (votingActive && votingDone)"
                                 ref="message"
                                 type="text"
                                 v-bind:placeholder="(votingActive && votingDone) ? 'Thanks for voting' :
@@ -382,7 +382,7 @@
                     <!-- clear message -->
                     <div class="box button message-clear" v-on:click="clearMessage(true)"
                         v-tooltip.bottom-center="{ content: 'Clear audio and text messages.' }"
-                        v-bind:class="{ disabled: inLogin || (audioBlob === null && message === '') }">
+                        v-bind:class="{ disabled: inLogin || messageThrottle || (audioBlob === null && message === '') }">
                         <i class="icon fas fa-trash-alt"></i>
                         <span class="title">Clear Messages</span>
                     </div>
@@ -390,7 +390,7 @@
                     <!-- send message -->
                     <div class="box button message-send" v-on:click="sendMessage"
                         v-tooltip.bottom-center="{ content: 'Send audio and text messages.' }"
-                        v-bind:class="{ disabled: inLogin || (message === '' && audioBlob === null) }">
+                        v-bind:class="{ disabled: inLogin || messageThrottle || (message === '' && audioBlob === null) }">
                         <i class="icon fas fa-share"></i>
                         <span class="title">Send Messages</span>
                     </div>
@@ -1116,7 +1116,8 @@ module.exports = {
         stealthMode:           false,
         fatalError:            null,
         recordingThrottle:     false,
-        screenshotThrottle:    false
+        screenshotThrottle:    false,
+        messageThrottle:       false
     }),
 
     /*  component computed properties  */
@@ -1210,7 +1211,7 @@ module.exports = {
     methods: {
         /*  message handling  */
         async sendChoice (activate, choice) {
-            if (this.votingDone)
+            if (this.votingDone || this.messageThrottle)
                 return
             this.message = choice
             this.sendMessage()
@@ -1218,7 +1219,7 @@ module.exports = {
             this.votingDone = true
         },
         async sendMessage () {
-            if (this.votingDone)
+            if (this.votingDone || this.messageThrottle)
                 return
             if (this.message !== "" || this.audioBlob !== null) {
                 const data = { text: this.message }
@@ -1236,11 +1237,15 @@ module.exports = {
                 this.audioBlob = null
                 if (this.votingActive)
                     this.votingDone = true
+                this.messageThrottle = true
+                setTimeout(() => {
+                    this.messageThrottle = false
+                }, 10 * 1000)
             }
             this.$refs.message.blur()
         },
         clearMessage (withAudio) {
-            if (!(this.message !== "" || this.audioBlob !== null))
+            if (this.messageThrottle || !(this.message !== "" || this.audioBlob !== null))
                 return
             this.message = ""
             if (withAudio)
@@ -1419,6 +1424,8 @@ module.exports = {
         },
 
         async audioRecordOrPlay () {
+            if (this.messageThrottle)
+                return
             if (this.audioBlob === null)
                 return this.audioRecord()
             else
