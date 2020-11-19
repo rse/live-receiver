@@ -15,6 +15,7 @@ const execa        = require("execa")
 const which        = require("which")
 const UUID         = require("pure-uuid")
 const MP4Box       = require("mp4box")
+const MP4Frag      = require("mp4frag")
 
 /*  determine path to embedded ffmpeg(1) executable  */
 let ffmpeg
@@ -54,6 +55,8 @@ module.exports = class VideoStream extends EventEmitter {
         this.timer      = null
         this.proc       = null
         this.processing = false
+        this.mp4box     = null
+        this.mp4frag    = null
     }
     async start () {
         this.processing = true
@@ -108,6 +111,13 @@ module.exports = class VideoStream extends EventEmitter {
         this.timer = setTimeout(onTimeout, this.options.timeout)
 
         /*  establish segmentation of the bytestream into MP4 boxes
+            (reason: keeping the recent segments for snapshotting)  */
+        this.mp4frag = new MP4Frag({ segmentCount: 5 })
+        this.mp4frag.onError = (err) => {
+            this.emit("error", `videostream: mp4frag: ${err}`)
+        }
+
+        /*  establish segmentation of the bytestream into MP4 boxes
             (reason: the <video> element later accepts only valid and complete MP4 segments)  */
         this.mp4box = MP4Box.createFile()
         this.mp4box.onReady = (info) => {
@@ -151,10 +161,15 @@ module.exports = class VideoStream extends EventEmitter {
         /*  process output of ffmpeg(1) subprocess  */
         let offset = 0
         this.proc.stdout.on("data", (chunk) => {
+            /*  feed into MP4Box  */
             const ab = chunk.buffer
             ab.fileStart = offset
             offset = this.mp4box.appendBuffer(ab)
             this.mp4box.flush()
+
+            /*  feed into MP4Frag  */
+            try { this.mp4frag.write(Buffer.from(chunk.buffer)) }
+            catch (ex) {}
         })
         this.proc.stdout.on("end", () => {
             this.emit("end")
@@ -215,8 +230,47 @@ module.exports = class VideoStream extends EventEmitter {
             this.proc = null
         }
 
+        /*  remove state  */
+        this.mp4box  = null
+        this.mp4frag = null
+
         this.processing = false
         return Promise.resolve(true)
+    }
+    async record (filename) {
+        if (this.mp4frag === null || this.mp4frag.buffer === null)
+            return
+
+        /*  start ffmpeg(1) re-muxing sub-process  */
+        const options = [
+            /*  top-level options  */
+            "-loglevel",      "0",
+
+            /*  input options  */
+            "-f",             "mp4",
+            "-i",             "pipe:0",
+
+            /*  output options  */
+            "-threads",       "4",
+            "-c:a",           "copy",     /*  no re-encoding */
+            "-c:v",           "copy",     /*  no re-encoding */
+            "-f",             "mp4",
+            "-y",
+            filename
+        ]
+        this.options.log("info", `videostream: starting FFmpeg process: ${this.options.ffmpeg} ${options.join(" ")}`)
+        const proc = execa(this.options.ffmpeg, options, {
+            stdio: [ "pipe", "inherit", "inherit" ]
+        })
+        proc.stdin.on("error", (err) => {
+            this.emit("error", `videostream: recording: FFmpeg process: ERROR: ${err}`)
+        })
+
+        /*  send down the buffered MP4 fragment  */
+        const buffer = this.mp4frag.buffer
+        await new Promise((resolve) => proc.stdin.write(buffer, null, resolve))
+        await new Promise((resolve) => proc.stdin.end(resolve))
+        await proc
     }
 }
 

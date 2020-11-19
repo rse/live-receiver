@@ -419,6 +419,17 @@ const app = electron.app
             await fs.promises.writeFile(filename, buffer, { encoding: null })
         })
 
+        /*  handle recording creation  */
+        app.ipc.handle("recording", async (event) => {
+            if (app.vs === null)
+                return
+            const timestamp = dayjs().subtract(20, "second").format("YYYY-MM-DD-HH-mm-ss")
+            const filename = path.join(app.getPath("videos"),
+                `LiVE-Receiver-Recording-${timestamp}.m4v`)
+            app.log.info(`saving last video recording to "${filename}"`)
+            await app.vs.record(filename)
+        })
+
         /*  the LiVE Relay VideoStream/EventStream communication establishment  */
         app.es = null
         app.vs = null

@@ -52,11 +52,20 @@
 
             <div class="group group-below">
                 <div class="group-items">
+                    <!-- recording -->
+                    <div class="box button recording" v-on:click="recording"
+                        v-tooltip.bottom-center="{ content: 'Saves a recording of the last 10s of the current video stream in MP4 format<br/>' +
+                            'to your personal <i>Videos</i> folder. This is allowed once per 30s only. &nbsp;<span class=attention-boxed>CTRL+r</span>' }"
+                        v-bind:class="{ disabled: inLogin || recordingThrottle }">
+                        <i class="icon fas fa-video"></i>
+                        <span class="title">Recording</span>
+                    </div>
+
                     <!-- screenshot -->
                     <div class="box button screenshot" v-on:click="screenshot"
-                        v-tooltip.bottom-center="{ content: 'Saves a screenshot of the current video stream<br/>' +
-                            'to your personal <i>Picture</i> folder. &nbsp;<span class=attention-boxed>CTRL+s</span>' }"
-                        v-bind:class="{ disabled: inLogin }">
+                        v-tooltip.bottom-center="{ content: 'Saves a screenshot of the current video stream in PNG format<br/>' +
+                            'to your personal <i>Picture</i> folder. This is allowed once per 3s only. &nbsp;<span class=attention-boxed>CTRL+s</span>' }"
+                        v-bind:class="{ disabled: inLogin || screenshotThrottle }">
                         <i class="icon fas fa-camera"></i>
                         <span class="title">Screenshot</span>
                     </div>
@@ -562,7 +571,7 @@
 
     /*  header/footer box  */
     .box {
-        width: 58px;
+        width: 54px;
         position: relative;
         background-color:        var(--color-std-bg-3);
         border-top:    1px solid var(--color-std-bg-5);
@@ -648,7 +657,7 @@
 
     /*  slider widget  */
     .slider {
-        width: 100px;
+        width: 80px;
         position: relative;
         &:hover {
             background-color:        var(--color-sig-bg-3);
@@ -1094,7 +1103,9 @@ module.exports = {
         votingDone:            false,
         votingChoice:          "",
         stealthMode:           false,
-        fatalError:            null
+        fatalError:            null,
+        recordingThrottle:     false,
+        screenshotThrottle:    false
     }),
 
     /*  component computed properties  */
@@ -1497,8 +1508,18 @@ module.exports = {
             if (this.volume > 0)
                 this.volumeMute = !this.volumeMute
         },
+        recording () {
+            if (this.inLogin || this.recordingThrottle)
+                return
+            ui.soundfx.playAndWait("throw2")
+            this.$emit("recording")
+
+            /*  throttle action  */
+            this.recordingThrottle = true
+            setTimeout(() => { this.recordingThrottle = false }, 30 * 1000)
+        },
         screenshot () {
-            if (this.inLogin)
+            if (this.inLogin || this.screenshotThrottle)
                 return
             ui.soundfx.playAndWait("throw2")
             let { x, y, width, height } = this.$refs.video.getBoundingClientRect()
@@ -1507,6 +1528,10 @@ module.exports = {
             width  = Math.floor(width)
             height = Math.floor(height)
             this.$emit("screenshot", { x, y, width, height })
+
+            /*  throttle action  */
+            this.screenshotThrottle = true
+            setTimeout(() => { this.screenshotThrottle = false }, 3 * 1000)
         },
         toggleVideoClosure () {
             if (this.inLogin)
@@ -1699,6 +1724,7 @@ module.exports = {
         })
 
         /*  hotkey support  */
+        Mousetrap.bind("ctrl+r", () => this.recording())
         Mousetrap.bind("ctrl+s", () => this.screenshot())
         Mousetrap.bind("ctrl+a", () => this.toggleAudio())
         Mousetrap.bind("ctrl+f", () => this.fullscreen())

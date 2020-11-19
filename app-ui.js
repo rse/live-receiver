@@ -177,7 +177,7 @@ ui = {}
         "minimize", "maximize", "fullscreen",
         "resize", "set-size", "quit",
         "message", "feedback", "feeling",
-        "screenshot",
+        "recording", "screenshot",
         "update-check", "update-to-version",
         "stealth-mode"
     ]

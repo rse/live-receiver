@@ -2,10 +2,11 @@
 Changes
 =======
 
-- 1.6.2
-    - UPGRADE: upgrade to Electron 11.0.1
+- 1.7.0
+    - EXTENSION: add capability to save the last 10s of the video stream as an MP4 file
     - IMPROVEMENT: take screen scale factor (pixels vs. dots) into account for native window resizing
     - IMPROVEMENT: do not hard-code stream video size to 1920x1080 and instead figure it out for "source size" button
+    - UPGRADE: upgrade to Electron 11.0.1
 
 - 1.6.1
     - IMPROVEMENT: raise a fatal error message in the UI in case ffmpeg crashes and a system one is not available

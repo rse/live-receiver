@@ -1,6 +1,6 @@
 {
     "name":                              "LiVE-Receiver",
-    "version":                           "1.6.1",
+    "version":                           "1.7.0",
     "description":                       "Live Video Experience (LiVE) Receiver",
     "keywords":                          [ "live", "video", "experience", "receiver" ],
     "license":                           "GPL-3.0-only",
@@ -51,6 +51,7 @@
         "@rse/soundfx":                  "1.1.0",
         "throttle-debounce":             "3.0.1",
         "mp4box":                        "0.3.20",
+        "mp4frag":                       "https://github.com/kevinGodell/mp4frag#65ad7e6",
         "pure-uuid":                     "1.6.1",
         "image-data-uri":                "2.0.1",
         "update-helper":                 "1.0.4",
