@@ -48,7 +48,7 @@
                         <span class="title">{{ meterTypeNames[meterType] }}</span>
                     </div>
                 </div>
-                <div class="group-bar" v-bind:class="{ active: !(inLogin || inSettings || inAbout || inUpdate) }">
+                <div class="group-bar" v-bind:class="{ active: !inLogin }">
                 </div>
             </div>
 
