@@ -54,8 +54,9 @@
                 <div class="group-items">
                     <!-- recording -->
                     <div class="box button recording" v-on:click="recording"
-                        v-tooltip.bottom-center="{ content: 'Saves a recording of the last 10s of the current video stream in MP4 format<br/>' +
-                            'to your personal <i>Videos</i> folder. This is allowed once per 30s only. &nbsp;<span class=attention-boxed>CTRL+r</span>' }"
+                        v-tooltip.bottom-center="{ content: 'Save the last 10s of the current video stream<br/>' +
+                            'in MP4 format to your personal <i>Videos</i> folder.<br/>' +
+                            'Allowed once every 30s only. &nbsp;<span class=attention-boxed>CTRL+r</span>' }"
                         v-bind:class="{ disabled: inLogin || recordingThrottle }">
                         <i class="icon fas fa-video"></i>
                         <span class="title">Recording</span>
@@ -63,8 +64,9 @@
 
                     <!-- screenshot -->
                     <div class="box button screenshot" v-on:click="screenshot"
-                        v-tooltip.bottom-center="{ content: 'Saves a screenshot of the current video stream in PNG format<br/>' +
-                            'to your personal <i>Picture</i> folder. This is allowed once per 3s only. &nbsp;<span class=attention-boxed>CTRL+s</span>' }"
+                        v-tooltip.bottom-center="{ content: 'Save a screenshot of the current video stream<br/>' +
+                            'in PNG format to your personal <i>Picture</i> folder.<br/>' +
+                            'Allowed once every 3s only. &nbsp;<span class=attention-boxed>CTRL+s</span>' }"
                         v-bind:class="{ disabled: inLogin || screenshotThrottle }">
                         <i class="icon fas fa-camera"></i>
                         <span class="title">Screenshot</span>
