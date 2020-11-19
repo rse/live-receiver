@@ -1259,7 +1259,7 @@ module.exports = {
             this.feedbackDisabled = true
             setTimeout(() => {
                 this.feedbackDisabled = false
-            }, 60 * 1000)
+            }, 30 * 1000)
         },
         sendFeeling () {
             this.$emit("feeling", {
