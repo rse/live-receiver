@@ -54,7 +54,7 @@
                 <div class="group-items">
                     <!-- recording -->
                     <div class="box button recording" v-on:click="recording"
-                        v-tooltip.bottom-center="{ content: 'Save the last 10s of the current video stream<br/>' +
+                        v-tooltip.bottom-center="{ content: 'Save the last <u>r</u>ecorded 10s of the current video stream<br/>' +
                             'in MP4 format to your personal <i>Videos</i> folder.<br/>' +
                             'Allowed once every 30s only. &nbsp;<span class=attention-boxed>CTRL+r</span>' }"
                         v-bind:class="{ disabled: inLogin || recordingThrottle }">
@@ -64,7 +64,7 @@
 
                     <!-- screenshot -->
                     <div class="box button screenshot" v-on:click="screenshot"
-                        v-tooltip.bottom-center="{ content: 'Save a screenshot of the current video stream<br/>' +
+                        v-tooltip.bottom-center="{ content: 'Save a <u>s</u>creenshot of the current video stream<br/>' +
                             'in PNG format to your personal <i>Picture</i> folder.<br/>' +
                             'Allowed once every 3s only. &nbsp;<span class=attention-boxed>CTRL+s</span>' }"
                         v-bind:class="{ disabled: inLogin || screenshotThrottle }">
@@ -82,7 +82,7 @@
                     <!-- audio mute -->
                     <div class="box button mute"
                         v-tooltip.bottom-center="{ content: (volumeMute ? 'Unmute' : 'Mute') +
-                            ' the audio stream. &nbsp;<span class=attention-boxed>CTRL+a</span>' }"
+                            ' the <u>a</u>udio stream. &nbsp;<span class=attention-boxed>CTRL+a</span>' }"
                         v-on:click="toggleAudio"
                         v-bind:class="{ disabled: inLogin || volume === 0, active: volumeMute }">
                         <span v-show="volumeMute"><i class="icon fas fa-volume-mute"></i></span>
@@ -171,7 +171,7 @@
                     <!-- fullscreen -->
                     <div class="box button fullscreen" v-on:click="fullscreen"
                         v-tooltip.bottom-center="{ content: 'Switch to ' +
-                            (fullscreened ? 'normal window' : 'fullscreen') +
+                            (fullscreened ? 'normal window' : '<u>f</u>ullscreen') +
                             ' mode. &nbsp;<span class=attention-boxed>CTRL+f</span>' }"
                         v-bind:class="{ disabled: maximized, active: fullscreened }">
                         <i class="icon fas fa-expand-arrows-alt"></i>
@@ -186,7 +186,7 @@
                 <div class="group-items">
                     <!-- quit -->
                     <div class="box button quit" v-on:click="quit"
-                        v-tooltip.bottom-center="{ content: 'Quit application &nbsp;<span class=attention-boxed>CTRL+q</span>' }">
+                        v-tooltip.bottom-center="{ content: '<u>Q</u>uit application &nbsp;<span class=attention-boxed>CTRL+q</span>' }">
                         <i class="icon fas fa-times"></i>
                         <span class="title">Quit</span>
                     </div>
@@ -303,8 +303,9 @@
                     <!-- enter message -->
                     <div class="box message-text" v-bind:class="{ disabled: inLogin, active: message !== '' }">
                         <span v-show="!votingActive || votingActive && votingType === 'propose'"
-                            v-tooltip.bottom-center="{ content: 'Send a textual message to the trainer.' +
-                                ' &nbsp;<span class=attention-boxed>CTRL+m</span>' }">
+                            v-tooltip.bottom-center="{ content: 'Type a textual <u>m</u>essage to be<br/>sent to the trainer.' +
+                                ' &nbsp;<span class=attention-boxed>CTRL+m</span><br/>' +
+                                ' (Enter <span class=attention-boxed>RETURN</span> to immediately send it.)' }">
                             <input
                                 v-bind:disabled="inLogin || (votingActive && votingDone)"
                                 ref="message"
@@ -401,7 +402,7 @@
                 <div class="group-items">
                     <!-- send thumbs-up -->
                     <div class="box button message-send" v-on:click="feedback('thumbsup')"
-                        v-tooltip.bottom-center="{ content: 'Send feedback by showing consent with a thumbs-up.' +
+                        v-tooltip.bottom-center="{ content: 'Send feedback by showing<br/>consent with a thumbs-<u>u</u>p.' +
                             ' &nbsp; <span class=attention-boxed>CTRL+u</span>' }"
                         v-bind:class="{ disabled: inLogin || feedbackDisabled }">
                         <i class="icon fas fa-thumbs-up"></i>
@@ -410,7 +411,7 @@
 
                     <!-- send thumbs-down -->
                     <div class="box button message-send" v-on:click="feedback('thumbsdn')"
-                        v-tooltip.bottom-center="{ content: 'Send feedback by showing refusal with a thumbs-down.' +
+                        v-tooltip.bottom-center="{ content: 'Send feedback by showing<br/>refusal with a thumbs-<u>d</u>own.' +
                             ' &nbsp;<span class=attention-boxed>CTRL+d</span>' }"
                         v-bind:class="{ disabled: inLogin || feedbackDisabled }">
                         <i class="icon fas fa-thumbs-down"></i>
@@ -419,7 +420,7 @@
 
                     <!-- send surprise -->
                     <div class="box button message-send" v-on:click="feedback('surprise')"
-                        v-tooltip.bottom-center="{ content: 'Send feedback by showing surprise.' +
+                        v-tooltip.bottom-center="{ content: 'Send feedback by showing<br/>surprise (<u>o</u>ohh).' +
                             ' &nbsp;<span class=attention-boxed>CTRL+o</span>' }"
                         v-bind:class="{ disabled: inLogin || feedbackDisabled }">
                         <i class="icon fas fa-surprise"></i>
@@ -428,7 +429,7 @@
 
                     <!-- send smile -->
                     <div class="box button message-send" v-on:click="feedback('smile')"
-                        v-tooltip.bottom-center="{ content: 'Send feedback by showing smile/grin.' +
+                        v-tooltip.bottom-center="{ content: 'Send feedback by<br/>showing smile/<u>g</u>rin.' +
                             ' &nbsp;<span class=attention-boxed>CTRL+g</span>' }"
                         v-bind:class="{ disabled: inLogin || feedbackDisabled }">
                         <i class="icon fas fa-grin-wink"></i>
@@ -437,7 +438,7 @@
 
                     <!-- send frown -->
                     <div class="box button message-send" v-on:click="feedback('frown')"
-                        v-tooltip.bottom-center="{ content: 'Send feedback by showing frown.' }"
+                        v-tooltip.bottom-center="{ content: 'Send feedback by<br/>showing frown.' }"
                         v-bind:class="{ disabled: inLogin || feedbackDisabled }">
                         <i class="icon fas fa-angry"></i>
                         <span class="title">Show Frown</span>
@@ -445,7 +446,7 @@
 
                     <!-- send sadness -->
                     <div class="box button message-send" v-on:click="feedback('sadness')"
-                        v-tooltip.bottom-center="{ content: 'Send feedback by showing sadness.' }"
+                        v-tooltip.bottom-center="{ content: 'Send feedback by<br/>showing sadness.' }"
                         v-bind:class="{ disabled: inLogin || feedbackDisabled }">
                         <i class="icon fas fa-sad-tear"></i>
                         <span class="title">Show Sadness</span>
