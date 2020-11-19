@@ -4,6 +4,7 @@ Changes
 
 - 1.7.0
     - EXTENSION: add capability to save the last 10s of the video stream as an MP4 file
+    - EXTENSION: add capability to toggle meter between kbps/duration/clock
     - IMPROVEMENT: take screen scale factor (pixels vs. dots) into account for native window resizing
     - IMPROVEMENT: do not hard-code stream video size to 1920x1080 and instead figure it out for "source size" button
     - IMPROVEMENT: improve the popup texts

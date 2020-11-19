@@ -41,6 +41,7 @@ globals:
     Mousetrap:      true
     AudioNodeSuite: true
     jimp:           true
+    dayjs:          true
 
 rules:
     #   modified rules

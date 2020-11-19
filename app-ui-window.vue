@@ -37,13 +37,15 @@
 
             <div class="group">
                 <div class="group-items">
-                    <!-- bandwidth -->
-                    <div class="box bandwidth"
+                    <!-- meter -->
+                    <div class="box meter" v-on:click="meterToggle"
                         v-tooltip.bottom-center="{ content: 'Shows the current bandwith usage of the<br/>' +
-                            'video stream in kilo-bit per second.' }"
+                            'video stream in kilo-bit per second, the<br/>' +
+                            'current session duration in hours/minutes or the<br/>' +
+                            'current time. Press to toggle the display type.' }"
                         v-bind:class="{ disabled: inLogin, active: !inLogin }">
-                        <span class="word">{{ inLogin ? "---" : bandwidthText }}</span>
-                        <span class="title">kbps</span>
+                        <span class="word">{{ inLogin ? "---" : meterText }}</span>
+                        <span class="title">{{ meterTypeNames[meterType] }}</span>
                     </div>
                 </div>
                 <div class="group-bar disabled">
@@ -1090,8 +1092,13 @@ module.exports = {
         volumeMute:            false,
         mood:                  3,
         challenge:             3,
+        meterType:             0,
+        meterTypeNames:        [ "kbps", "Duration", "Clock" ],
         bandwidthBytes:        0,
         bandwidthText:         "",
+        durationStart:         0,
+        durationText:          "",
+        timeText:              "",
         streamSize:            { w: 0, h: 0 },
         videoSize:             { w: 0, h: 0 },
         videoClosure:          false,
@@ -1099,6 +1106,7 @@ module.exports = {
         timer1:                null,
         timer2:                null,
         timer3:                null,
+        timer4:                null,
         isWinSmallest:         false,
         feedbackDisabled:      false,
         votingActive:          false,
@@ -1114,6 +1122,11 @@ module.exports = {
     /*  component computed properties  */
     computed: {
         style: ui.vueprop2cssvar(),
+        meterText () {
+            if      (this.meterType === 0) return this.bandwidthText
+            else if (this.meterType === 1) return this.durationText
+            else if (this.meterType === 2) return this.timeText
+        },
         recordText () {
             let html
             if (this.audioBlob === null) {
@@ -1336,6 +1349,11 @@ module.exports = {
         },
         quit () {
             this.$emit("quit")
+        },
+
+        /*  toggle meter type  */
+        meterToggle () {
+            this.meterType = (this.meterType + 1) % this.meterTypeNames.length
         },
 
         /*  window resize handling  */
@@ -1651,6 +1669,7 @@ module.exports = {
             /*  calculate average bandwidth  */
             kbpsList = []
             kbpsPos  = 0
+            this.bandwidthText = 0
             this.timer2 = setInterval(() => {
                 const kbps = Math.ceil((this.bandwidthBytes * 8) / 1024 / 2)
                 kbpsList[kbpsPos] = kbps
@@ -1658,6 +1677,15 @@ module.exports = {
                 this.bandwidthBytes = 0
                 kbpsPos = (kbpsPos + 1) % kbpsLen
             }, 1000 * 2)
+
+            /*  calculate time meter  */
+            this.durationStart = dayjs()
+            this.timer4 = setInterval(() => {
+                const now = dayjs()
+                const duration = now.diff(this.durationStart)
+                this.durationText = dayjs.utc(duration).format("HH:mm")
+                this.timeText = now.format("HH:mm")
+            }, 1000)
         })
         setTimeout(() => {
             this.$refs.videostream.$on("stream-begin:done", () => {
@@ -1772,6 +1800,8 @@ module.exports = {
             clearTimeout(this.timer2)
         if (this.timer3 !== null)
             clearTimeout(this.timer3)
+        if (this.timer4 !== null)
+            clearTimeout(this.timer4)
     }
 }
 </script>
