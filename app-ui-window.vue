@@ -654,9 +654,9 @@
             border-left:   1px solid var(--color-std-bg-5);
             border-right:  1px solid var(--color-std-bg-1);
             border-bottom: 1px solid var(--color-std-bg-1);
-            .icon  { color:          var(--color-std-fg-1); }
-            .word  { color:          var(--color-std-fg-1); }
-            .title { color:          var(--color-std-fg-1); }
+            .icon  { color:          var(--color-std-fg-0); }
+            .word  { color:          var(--color-std-fg-0); }
+            .title { color:          var(--color-std-fg-0); }
         }
     }
 
