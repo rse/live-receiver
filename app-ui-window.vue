@@ -571,7 +571,7 @@
 
     /*  header/footer box  */
     .box {
-        width: 54px;
+        width: 56px;
         position: relative;
         background-color:        var(--color-std-bg-3);
         border-top:    1px solid var(--color-std-bg-5);
