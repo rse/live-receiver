@@ -1673,7 +1673,7 @@ module.exports = {
             this.$refs.videostream.$emit("stream-begin")
             this.allowDisconnect = false
 
-            /*  calculate average bandwidth  */
+            /*  determine average bandwidth meter  */
             kbpsList = []
             kbpsPos  = 0
             this.bandwidthText = 0
@@ -1685,13 +1685,30 @@ module.exports = {
                 kbpsPos = (kbpsPos + 1) % kbpsLen
             }, 1000 * 2)
 
-            /*  calculate time meter  */
+            /*  determine duration and clock meter and also auto-toggle meter display  */
             this.durationStart = dayjs()
+            let meterAutoToggleCount = 0
+            const meterAutoToggleEvery  = 60
+            const meterAutoToggleWait   = 3
+            const meterAutoToggleAmount = this.meterTypeNames.length
             this.timer4 = setInterval(() => {
+                /*  determine duration meter  */
                 const now = dayjs()
                 const duration = now.diff(this.durationStart)
                 this.durationText = dayjs.utc(duration).format("HH:mm")
+
+                /*  determine clock meter  */
                 this.timeText = now.format("HH:mm")
+
+                /*  auto-toggle meter display  */
+                meterAutoToggleCount++
+                if (meterAutoToggleCount >= meterAutoToggleEvery
+                    && meterAutoToggleCount < (meterAutoToggleEvery + meterAutoToggleWait * meterAutoToggleAmount)) {
+                    if ((meterAutoToggleCount - meterAutoToggleEvery) % meterAutoToggleWait === 0)
+                        this.meterToggle()
+                }
+                else if (meterAutoToggleCount >= meterAutoToggleEvery + meterAutoToggleWait * meterAutoToggleAmount)
+                    meterAutoToggleCount = 0
             }, 1000)
         })
         setTimeout(() => {
