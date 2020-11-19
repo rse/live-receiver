@@ -582,7 +582,7 @@
         border-bottom: 1px solid var(--color-std-bg-1);
         .icon {
             position: absolute;
-            font-size: 16pt;
+            font-size: 15pt;
             width: 100%;
             text-align: center;
             left: 0;
