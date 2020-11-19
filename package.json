@@ -10,7 +10,7 @@
         "url":                           "http://engelschall.com/"
     },
     "devDependencies": {
-        "electron":                      "11.0.1",
+        "electron":                      "11.0.2",
         "electron-builder":              "22.9.1",
         "nodemon":                       "2.0.6",
         "shelljs":                       "0.8.4",
@@ -57,7 +57,7 @@
         "update-helper":                 "1.0.4",
         "mqtt":                          "4.2.5",
         "got":                           "11.8.0",
-        "adm-zip":                       "0.4.16",
+        "adm-zip":                       "0.5.0",
         "tmp":                           "0.2.1",
         "mkdirp":                        "1.0.4"
     },

@@ -9,7 +9,7 @@ Changes
     - IMPROVEMENT: do not hard-code stream video size to 1920x1080 and instead figure it out for "source size" button
     - IMPROVEMENT: improve the popup texts
     - IMPROVEMENT: throttle sending messages to avoid too much messages per time range
-    - UPGRADE: upgrade to Electron 11.0.1
+    - UPGRADE: upgrade to Electron 11.0.2
 
 - 1.6.1
     - IMPROVEMENT: raise a fatal error message in the UI in case ffmpeg crashes and a system one is not available
