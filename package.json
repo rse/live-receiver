@@ -17,7 +17,7 @@
         "nodemon":                       "2.0.6",
         "shelljs":                       "0.8.4",
         "glob":                          "7.1.6",
-        "eslint":                        "7.13.0",
+        "eslint":                        "7.14.0",
         "eslint-config-standard":        "16.0.2",
         "eslint-plugin-standard":        "4.1.0",
         "eslint-plugin-promise":         "4.2.1",
@@ -29,10 +29,9 @@
         "npm-install-fetch":             "1.2.6",
         "npm-run-all":                   "4.1.5",
         "modclean":                      "3.0.0-beta.1",
+        "prompt-password":               "1.2.0",
         "json":                          "10.0.0",
-        "vpg":                           "0.9.3",
-        "prompt-base":                   "5.0.0",
-        "prompt-password":               "1.2.0"
+        "vpg":                           "0.9.3"
     },
     "dependencies": {
         "electron-log":                  "4.3.0",
@@ -60,13 +59,13 @@
         "mp4frag":                       "kevinGodell/mp4frag#65ad7e6",
         "pure-uuid":                     "1.6.1",
         "image-data-uri":                "2.0.1",
-        "update-helper":                 "1.1.1",
+        "update-helper":                 "1.1.2",
         "mqtt":                          "4.2.5",
         "got":                           "11.8.0",
         "adm-zip":                       "0.5.0",
         "tmp":                           "0.2.1",
         "mkdirp":                        "1.0.4",
-        "dsig":                          "1.1.4"
+        "dsig":                          "1.1.5"
     },
     "main":                              "./app-main.js",
     "build": {

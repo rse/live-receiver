@@ -13,7 +13,6 @@ const shell     = require("shelljs")
 const execa     = require("execa")
 const zip       = require("cross-zip")
 const DSIG      = require("dsig")
-const Prompt    = require("prompt-base")
 const PromptPW  = require("prompt-password")
 
 /*  establish asynchronous environment  */
