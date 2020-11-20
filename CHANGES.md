@@ -2,6 +2,9 @@
 Changes
 =======
 
+- 1.7.1
+    - IMPROVEMENT: show update errors on update dialog
+
 - 1.7.0
     - EXTENSION: add capability to save the last 10s of the video stream as an MP4 file
     - EXTENSION: add capability to toggle meter between kbps/duration/clock
