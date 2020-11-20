@@ -15,6 +15,7 @@ const tmp          = require("tmp")
 const dayjs        = require("dayjs")
 const mkdirp       = require("mkdirp")
 const UpdateHelper = require("update-helper")
+const DSIG         = require("dsig")
 
 /*  internal requirements  */
 const pjson        = require("./package.json")
@@ -146,12 +147,12 @@ module.exports = class Update {
             sys = "mac"
         else if (os.platform() === "linux")
             sys = "lnx"
-        const url = this.options.urlDist
+        let url = this.options.urlDist
             .replace(/%V/g, version)
             .replace(/%S/g, sys)
         if (progress)
-            progress("downloading application distribution", 0.0)
-        const req = got({
+            progress("downloading application distribution archive", 0.0)
+        let req = got({
             method:       "GET",
             url:          url,
             headers:      { "User-Agent": `${pjson.name}/${pjson.version}` },
@@ -162,18 +163,52 @@ module.exports = class Update {
                 let completed = p.transferred / p.total
                 if (isNaN(completed))
                     completed = 0
-                progress("downloading application distribution", completed)
+                progress("downloading application distribution archive", completed)
             })
         }
-        const response = await req
+        let response = await req
+        const payload = response.body
         const tmpfile = tmp.fileSync()
-        await fs.promises.writeFile(tmpfile.name, response.body, { encoding: null })
+        await fs.promises.writeFile(tmpfile.name, payload, { encoding: null })
         if (progress)
-            progress("downloading application distribution", 1.0)
+            progress("downloading application distribution archive", 1.0)
+
+        /*  download signature  */
+        url = url.replace(/\.zip$/, ".sig")
+        if (progress)
+            progress("downloading application distribution signature", 0.0)
+        req = got({
+            method:       "GET",
+            url:          url,
+            headers:      { "User-Agent": `${pjson.name}/${pjson.version}` },
+            responseType: "buffer"
+        })
+        if (progress) {
+            req.on("downloadProgress", (p) => {
+                let completed = p.transferred / p.total
+                if (isNaN(completed))
+                    completed = 0
+                progress("downloading application distribution signature", completed)
+            })
+        }
+        response = await req
+        const signature = response.body.toString()
+        if (progress)
+            progress("downloading application distribution signature", 1.0)
+
+        /*  read public key and verify signature
+            (throws an exception if not valid)  */
+        if (progress)
+            progress("verifying application distribution signature", 0.0)
+        const publicKey = await fs.promises.readFile(
+            path.join(__dirname, "npm-package.pk"), { encoding: "utf8" })
+        await DSIG.verify(payload, signature, publicKey)
+        if (progress)
+            progress("verifying application distribution signature", 1.0)
 
         /*  extract application distribution ZIP archive  */
         if (progress)
-            progress("extracting application distribution", 0.0)
+            progress("extracting application distribution archive", 0.0)
         const tmpdir = tmp.dirSync()
         const zip = new AdmZip(tmpfile.name)
         const dirCreated = {}
@@ -182,7 +217,7 @@ module.exports = class Update {
         for (let i = 0; i < entries.length; i++) {
             const entry = entries[i]
             if (progress)
-                progress("extracting application distribution", i / entries.length)
+                progress("extracting application distribution archive", i / entries.length)
 
             /*  determine result file path on filesystem  */
             const filePath = path.join(tmpdir.name, entry.entryName)
@@ -221,7 +256,7 @@ module.exports = class Update {
             }
         }
         if (progress)
-            progress("extracting application distribution", 1.0)
+            progress("extracting application distribution archive", 1.0)
         tmpfile.removeCallback()
 
         /*  start background process to update application executable  */
@@ -239,7 +274,7 @@ module.exports = class Update {
         const accessible = await fs.promises.access(from, fs.constants.F_OK | fs.constants.R_OK)
             .then(() => true).catch(() => false)
         if (!accessible)
-            throw new Error("cannot find application executable in downloaded content")
+            throw new Error("cannot find application executable in distribution content")
 
         /*  kill/replace/restart ourself  */
         const updateHelper = new UpdateHelper({

@@ -3,6 +3,7 @@ Changes
 =======
 
 - 1.7.1
+    - EXTENSION: verify digital signature of distribution archive on all updates
     - IMPROVEMENT: show update errors on update dialog
 
 - 1.7.0
