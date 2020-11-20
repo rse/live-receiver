@@ -165,6 +165,10 @@
                 <div class="total disabled"></div>
             </div>
         </div>
+        <div class="error" v-if="error !== null">
+            <b>ERROR:</b>
+            {{ error }}
+        </div>
     </div>
 </template>
 
@@ -304,6 +308,14 @@
             }
         }
     }
+    .error {
+        margin-top: 20px;
+        color: var(--color-sig-fg-3);
+        border-radius: 5px;
+        border: 1px solid var(--color-sig-bg-3);
+        padding: 8px 10px 12px 10px;
+        position: relative;
+    }
     .buttons {
         width: 100%;
         display: flex;
@@ -382,7 +394,8 @@ module.exports = {
     data: () => ({
         updateable: false,
         versions: { running: {}, current: {}, forthcoming: {} },
-        progress: null
+        progress: null,
+        error:    null
     }),
 
     /*  component methods  */
@@ -434,6 +447,14 @@ module.exports = {
         })
         this.$on("update-progress", (progress) => {
             this.progress = progress
+        })
+        this.$on("update-error", (err) => {
+            this.progress = null
+            this.error = err.toString()
+            setTimeout(() => {
+                this.error = null
+                this.progress = null
+            }, 5000)
         })
     }
 }

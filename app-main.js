@@ -703,6 +703,7 @@ const app = electron.app
             app.update.update(version, throttle(1000 / 60, (task, completed) => {
                 app.win.webContents.send("update-progress", { task, completed })
             })).catch((err) => {
+                app.win.webContents.send("update-error", err)
                 app.log.error(`update: ERROR: ${err}`)
             })
         })

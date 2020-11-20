@@ -1777,6 +1777,10 @@ module.exports = {
             ui.log.info(`update-progress: ${JSON.stringify(progress)}`)
             this.$refs.update.$emit("update-progress", progress)
         })
+        this.$on("update-error", (err) => {
+            ui.log.info(`update-error: ${JSON.stringify(err)}`)
+            this.$refs.update.$emit("update-error", err)
+        })
 
         /*  hotkey support  */
         Mousetrap.bind("ctrl+r", () => this.recording())
