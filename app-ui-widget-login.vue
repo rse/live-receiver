@@ -346,7 +346,7 @@ module.exports = {
 
         /*  handle login  */
         login () {
-            if (this.intLiveRelayServer === '' || this.intLiveAccessToken === '' || !this.allowConnect)
+            if (this.intLiveRelayServer === "" || this.intLiveAccessToken === "" || !this.allowConnect)
                 return
 
             /*  prevent hammering connect button  */
