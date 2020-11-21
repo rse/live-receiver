@@ -48,7 +48,7 @@
                         <span class="title">{{ meterTypeNames[meterType] }}</span>
                     </div>
                 </div>
-                <div class="group-bar" v-bind:class="{ active: !inLogin }">
+                <div class="group-bar" v-bind:class="{ disabled: inLogin, active: !inLogin }">
                 </div>
             </div>
 
@@ -633,6 +633,16 @@
             .icon  { color:          var(--color-acc-fg-3); }
             .word  { color:          var(--color-acc-fg-3); }
             .title { color:          var(--color-acc-fg-1); }
+        }
+        &.disabled {
+            background-color:        var(--color-std-bg-3);
+            border-top:    1px solid var(--color-std-bg-5);
+            border-left:   1px solid var(--color-std-bg-5);
+            border-right:  1px solid var(--color-std-bg-1);
+            border-bottom: 1px solid var(--color-std-bg-1);
+            .icon  { color:          var(--color-std-fg-0); }
+            .word  { color:          var(--color-std-fg-0); }
+            .title { color:          var(--color-std-fg-0); }
         }
     }
 
@@ -1369,6 +1379,8 @@ module.exports = {
 
         /*  toggle meter type  */
         meterToggle () {
+            if (this.inLogin)
+                return
             this.meterType = (this.meterType + 1) % this.meterTypeNames.length
         },
 
