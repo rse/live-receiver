@@ -2,6 +2,9 @@
 Changes
 =======
 
+- 1.7.2
+    - BUGFIX: optically better grey out meter and sliders on login
+
 - 1.7.1
     - EXTENSION: verify digital signature of distribution archive on all updates
     - IMPROVEMENT: show update errors on update dialog
