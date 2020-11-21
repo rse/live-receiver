@@ -87,7 +87,7 @@
             </div>
         </div>
         <p/>
-        <div class="desc">
+        <div class="desc" v-if="versions.running.type">
             You are currently running
             <a href="https://github.com/rse/live-receiver" v-on:click="openURL">LiVE Receiver</a> version
             <a v-bind:href="'https://github.com/rse/live-receiver/releases/tag/' + versions.running.version">
@@ -111,6 +111,12 @@
                 <a v-bind:href="'https://github.com/rse/live-receiver/releases/tag/' + versions.forthcoming.version">
                 <b>{{ versions.forthcoming.version }}</b></a>.<br/>
             </span>
+        </div>
+        <div class="desc" v-if="!versions.running.type">
+            There is still no information available about the
+            running, current and optionally forthcoming version.
+            Please wait for the information to be gathered automatically
+            once at program start or manually trigger an update check!
         </div>
         <p/>
         <div class="hint">
