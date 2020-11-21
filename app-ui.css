@@ -105,6 +105,9 @@ html, body {
     margin-top: 0;
     margin-bottom: 0;
 }
+.tooltip u {
+    color: var(--color-acc-fg-3);
+}
 
 /*  multi-select/drop-down field  */
 .multiselect {
