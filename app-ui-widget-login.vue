@@ -50,7 +50,7 @@
             ref="login"
             v-on:click="login"
             v-on:keyup.enter="login">
-            Connect <span class="login-button-icon"><i class="fas fa-arrow-alt-circle-right"></i></span>
+            <b>CONNECT</b> <span class="login-button-icon"><i class="fas fa-arrow-alt-circle-right"></i></span>
         </div>
 
         <!-- Optional Error -->
