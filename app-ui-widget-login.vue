@@ -40,21 +40,18 @@
                 'like <tt>example-XXXX-XXXX</tt>' }"
             v-model="intLiveAccessToken"
             v-on:keyup.escape="intLiveAccessToken = ''"
-            v-on:keyup.enter="$refs.login.focus()"
+            v-on:keyup.enter="login"
         />
 
         <!-- Connect -->
-        <input class="col-3"
-            v-bind:disabled="
-                intLiveRelayServer === '' ||
-                intLiveAccessToken === '' ||
-                !allowConnect"
+        <div class="col-3 box button login-button"
+            v-bind:class="{ disabled: intLiveRelayServer === '' || intLiveAccessToken === '' || !allowConnect }"
             v-tooltip.left="{ content: 'Please press to connect to your<br/>intended <b>LiVE Session</b>!' }"
             ref="login"
-            type="submit"
-            value="Connect"
             v-on:click="login"
-        />
+            v-on:keyup.enter="login">
+            Connect <span class="login-button-icon"><i class="fas fa-arrow-alt-circle-right"></i></span>
+        </div>
 
         <!-- Optional Error -->
         <div v-show="error !== ''" class="col-3 error" v-html="error">
@@ -161,16 +158,20 @@
     }
 
     /*  submit button  */
-    input[type="submit"] {
+    .box.button.login-button {
+        margin-top: 2px;
+        width: calc(100% - 20px);
+        height: 30px;
         color:            var(--color-std-fg-3);
         background-color: var(--color-std-bg-4);
         border-top:    1px solid var(--color-std-bg-5);
         border-left:   1px solid var(--color-std-bg-5);
         border-right:  1px solid var(--color-std-bg-1);
         border-bottom: 1px solid var(--color-std-bg-1);
-        font-size: 12pt;
+        font-size: 16pt;
         padding: 5px 10px 5px 10px;
         border-radius: 5px;
+        text-align: center;
         &:focus {
             border: 0;
             outline: none;
@@ -189,7 +190,7 @@
             border-right:  1px solid var(--color-sig-bg-1);
             border-bottom: 1px solid var(--color-sig-bg-1);
         }
-        &:disabled {
+        &.disabled {
             color:            var(--color-std-fg-1);
             background-color: var(--color-std-bg-4);
             border-top:    1px solid var(--color-std-bg-5);
@@ -197,13 +198,18 @@
             border-right:  1px solid var(--color-std-bg-1);
             border-bottom: 1px solid var(--color-std-bg-1);
         }
+        .login-button-icon {
+            position: relative;
+            top: 1px;
+            padding-left: 10px;
+        }
     }
     .error {
         font-size: 12pt;
         padding: 5px 10px 5px 10px;
         color: var(--color-sig-fg-1);
         border: 1px solid var(--color-sig-bg-5);
-        width: calc(300px - 20px);
+        width: calc(260px - 20px);
     }
     .footnote {
         font-size: 8pt;
@@ -340,6 +346,9 @@ module.exports = {
 
         /*  handle login  */
         login () {
+            if (this.intLiveRelayServer === '' || this.intLiveAccessToken === '' || !this.allowConnect)
+                return
+
             /*  prevent hammering connect button  */
             this.allowConnect = false
             setTimeout(() => {
