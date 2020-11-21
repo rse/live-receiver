@@ -17,7 +17,17 @@
 
         <!-- Your Portrait -->
         <i class="icon fas fa-portrait"></i>
-        <div class="label">Your Portrait <span class="footnote">*</span></div>
+        <div class="label">
+            <div>
+                Your Portrait: <span class="footnote">*</span>
+            </div>
+            <div class="footnote notice">
+                * Privacy Notice: Your portrait and name are transmitted
+                when you connect to a <b>LiVE Session</b>. Set your maximum
+                privacy level below to indicate up to (and including) which level
+                your attendee identity is disclosed to the audience.
+            </div>
+        </div>
         <portrait
             ref="personPortrait"
             v-model="intPersonPortrait"
@@ -25,7 +35,9 @@
 
         <!-- Your Name -->
         <i class="icon fas fa-file-signature"></i>
-        <div class="label">Your Name <span class="footnote">*</span></div>
+        <div class="label">
+            <div>Your Name: <span class="footnote">*</span></div>
+        </div>
         <input
             ref="personName"
             type="text"
@@ -38,7 +50,11 @@
 
         <!-- Data Privacy -->
         <i class="icon fas fa-user-shield"></i>
-        <div class="label">Your Privacy Level <span class="footnote">*</span></div>
+        <div class="label">
+            <div>
+                Your Privacy Level: <span class="footnote">*</span>
+            </div>
+        </div>
         <div class="selbox-container">
             <div class="selbox"
                 v-tooltip.top="{ content: 'Your attendee identity (portrait and name) is disclosed<br/>in all types of audiences, including<br/>public/open-group kind of audiences.' }"
@@ -100,7 +116,7 @@
 
         <!-- Audio Input Device -->
         <i class="icon fas fa-microphone-alt"></i>
-        <div class="label">Audio Input Device</div>
+        <div class="label">Audio Input Device:</div>
         <div class="selbox-container">
             <v-multiselect
                 v-bind:options="audioInputDevices"
@@ -125,7 +141,7 @@
 
         <!-- Audio Output Device -->
         <i class="icon fas fa-volume-up"></i>
-        <div class="label">Audio Output Device</div>
+        <div class="label">Audio Output Device:</div>
         <div class="selbox-container">
             <v-multiselect
                 v-bind:options="audioOutputDevices"
@@ -162,12 +178,6 @@
         <!-- Logo & GDPR Notice -->
         <div class="col-2 notice">
         </div>
-        <span class="footnote notice">
-            * Your portrait and name are locally stored and transmitted
-            when you connect to a <b>LiVE</b> session. Set your maximum
-            privacy level to indicate up to (and including) which level
-            your attendee identity is disclosed to the audience.
-        </span>
     </div>
 </template>
 
@@ -182,7 +192,7 @@
     border-radius: 5px;
     display: grid;
     grid-template-columns: 30px 200px 300px;
-    row-gap: 4px;
+    row-gap: 6px;
     font-size: 12pt;
 
     >.icon {
@@ -191,9 +201,7 @@
     }
     .label {
         display: flex;
-        &:after {
-            content: ':';
-        }
+        flex-direction: column;
     }
     >.col-2 {
         grid-column-start: 2;

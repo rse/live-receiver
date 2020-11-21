@@ -101,7 +101,7 @@
     padding: 20px 30px 20px 30px;
     border-radius: 5px;
     display: grid;
-    grid-template-columns: 120px 80px 300px;
+    grid-template-columns: 120px 80px 350px;
     column-gap: 20px;
     row-gap: 0px;
     font-family: "TypoPRO Source Sans Pro";
