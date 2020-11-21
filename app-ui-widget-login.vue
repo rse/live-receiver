@@ -22,6 +22,8 @@
             ref="liveRelayServer"
             type="text"
             placeholder="Enter your LiVE relay server FQDN..."
+            v-tooltip.left="{ content: 'Please enter the received <b>LiVE Relay Server</b><br/>' +
+                'Fully Qualified Domain Name (FQDN),<br/>like <tt>live.example.com</tt>' }"
             v-model="intLiveRelayServer"
             v-on:keyup.escape="intLiveRelayServer = ''"
             v-on:keyup.enter="$refs.liveAccessToken.focus()"
@@ -34,6 +36,8 @@
             ref="liveAccessToken"
             type="text"
             placeholder="Enter your LiVE access token..."
+            v-tooltip.left="{ content: 'Please enter the received <b>LiVE Access Token</b><br/>' +
+                'like <tt>example-XXXX-XXXX</tt>' }"
             v-model="intLiveAccessToken"
             v-on:keyup.escape="intLiveAccessToken = ''"
             v-on:keyup.enter="$refs.login.focus()"
@@ -45,6 +49,7 @@
                 intLiveRelayServer === '' ||
                 intLiveAccessToken === '' ||
                 !allowConnect"
+            v-tooltip.left="{ content: 'Please press to connect to your<br/>intended <b>LiVE Session</b>!' }"
             ref="login"
             type="submit"
             value="Connect"
@@ -55,41 +60,34 @@
         <div v-show="error !== ''" class="col-3 error" v-html="error">
         </div>
 
-        <!-- Logo & GDPR Notice -->
-        <div class="col-2 notice">
-            <div class="box button" v-on:click="about">
+        <!-- About, Settings, Update -->
+        <div class="col-3 button-row">
+            <div class="box button settings"
+                v-bind:class="{ active: activeSettings }"
+                v-tooltip.bottom="{ content: 'Please configure your <b>identity</b>, <b>privacy level</b>,<br/>' +
+                    'and local <b>audio devices</b> here.' }"
+                v-on:click="settings">
+                <i class="icon fas fa-user-cog"></i>
+                <div class="title">Settings</div>
+            </div>
+            <div class="box button logo"
+                v-tooltip.bottom="{ content: 'Find out details of your<br/><b>LiVE Receiver</b> here.' }"
+                v-on:click="about">
                 <div ref="logo" class="logo-container">
                     <img v-bind:src="logo1" class="logo logo1" alt="LiVE"/>
                     <img v-bind:src="logo2" class="logo logo2" alt="LiVE"/>
                 </div>
-                <div class="version">Receiver {{ version }}</div>
+                <div class="title">Receiver {{ version }}</div>
             </div>
-        </div>
-        <div class="footnote notice">
-            Please enter the received <b>LiVE Relay Server</b> Fully Qualified
-            Domain Name (FQDN), like <tt>live.example.com</tt>, and
-            the <b>LiVE Access Token</b>, like <tt>example-XXXX-XXXX</tt>.
-            Alternatively, you can deep-link into this dialog of <b>LiVE Receiver</b>
-            through an external URL like <tt>live://live.example.com/example-XXXX-XXXX</tt>.
-        </div>
-
-        <div class="col-2 updates-and-settings">
-            <div v-bind:class="{ box: true, button: true, active: activeUpdate }" v-on:click="update">
+            <div class="box button update"
+                v-bind:class="{ active: activeUpdate }"
+                v-tooltip.bottom="{ content: 'Update your <b>LiVE Receiver</b><br/>executable here.' }"
+                v-on:click="update">
                 <i class="icon fas fa-cloud-download-alt"></i>
                 <div class="title">Updates</div>
             </div>
-            <div v-bind:class="{ box: true, button: true, active: activeSettings }" v-on:click="settings">
-                <i class="icon fas fa-user-cog"></i>
-                <div class="title">Settings</div>
-            </div>
         </div>
-        <div class="footnote notice">
-            At first use of, or at least before you
-            are connecting the first time, please ensure that you have
-            configured your identity, privacy level, and
-            local audio devices in the user settings correctly. For this, please
-            open the <b>Settings</b> dialog with the button on the left side.
-        </div>
+
     </div>
 </template>
 
@@ -103,7 +101,7 @@
     padding: 20px;
     border-radius: 5px;
     display: grid;
-    grid-template-columns: 30px 160px 300px;
+    grid-template-columns: 30px 160px 270px;
     row-gap: 4px;
     font-size: 12pt;
 
@@ -211,21 +209,29 @@
         font-size: 8pt;
         color: var(--color-std-fg-1);
     }
-    .notice {
-        margin-top: 10px;
-        .button {
-            width: calc(100% - 50px);
+    .button-row {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 15px;
+        .button.logo {
+            width: 80px;
+            height: 60px;
             background-color: var(--color-std-bg-4);
             border-radius: 5px;
-            padding: 10px 10px 5px 10px;
+            position: relative;
             .logo-container {
+                position: absolute;
+                left: 10px;
                 perspective: 0px;
-                width: 80px;
-                margin-left: 10px;
+                width: 60px;
+                margin-top: 10px;
+                margin-left: 0px;
                 .logo {
                     transform-origin: 50% 50%;
                     transform-style:  preserve-3d;
-                    width: 80px;
+                    width: 60px;
                     &.logo1 {
                         display: block;
                     }
@@ -248,23 +254,11 @@
                     }
                 }
             }
-            .version {
-                width: 100%;
-                font-weight: 200;
-                font-size: 10pt;
-                text-align: center;
-            }
         }
-    }
-    .updates-and-settings {
-        display: flex;
-        flex-direction: row;
-        .button {
-            margin-top: 10px;
-            margin-right: 8px;
-            width: 50px;
-            height: 55px;
-            padding-left: 10px;
+        .button.update,
+        .button.settings {
+            width: 80px;
+            height: 60px;
             background-color: var(--color-std-bg-4);
             border-radius: 5px;
             &.active {
@@ -277,7 +271,7 @@
             }
             .icon {
                 margin-top: 4px;
-                font-size: 24pt;
+                font-size: 28pt;
             }
         }
     }
