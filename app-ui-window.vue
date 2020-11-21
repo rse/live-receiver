@@ -1153,9 +1153,9 @@ module.exports = {
             let html
             if (this.audioBlob === null) {
                 if (!this.audioRecording && this.audioBlob !== null)
-                    html = "Press to temporarily mute trainer audio<br/>and record your audio message again."
+                    html = "Press to temporarily mute trainer audio and<br/>record your audio message to be send to the trainer again."
                 else if (!this.audioRecording && this.audioBlob === null)
-                    html = "Press to temporarily mute trainer audio<br/>and record your audio message."
+                    html = "Press to temporarily mute trainer audio and<br/>record your audio message to be send to the trainer."
                 else if (this.audioRecording)
                     html = "<span class='attention-boxed'> NOW PLEASE SPEAK! </span><br/>Press again to stop your recording."
             }
@@ -1163,7 +1163,7 @@ module.exports = {
                 if (this.audioPlaying)
                     html = "Press to stop playing<br/>your audio message."
                 else
-                    html = "Press to temporarily mute trainer audio<br/>and play and check your recorded audio message.<br/>" +
+                    html = "Press to temporarily mute trainer audio and<br/>play and check your recorded audio message.<br/>" +
                         `(duration: <b class='attention-boxed'>${this.audioDuration.toFixed(1)}</b> seconds)`
             }
             return html
