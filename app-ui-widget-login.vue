@@ -220,7 +220,7 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        margin-top: 15px;
+        margin-top: 2px;
         .button.logo {
             width: 80px;
             height: 60px;
