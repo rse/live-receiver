@@ -9,7 +9,7 @@
 <template>
     <div class="update">
         <div class="title">
-            Your LiVE Receiver Update Check
+            Your LiVE Receiver Updates
         </div>
         <div class="versions">
             <div class="versions-row headline">
