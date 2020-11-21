@@ -4,6 +4,7 @@ Changes
 
 - 1.7.3
     - IMPROVEMENT: optically improve connect button on login dialog
+    - IMPROVEMENT: optically improve update dialog on checking new version
 
 - 1.7.2
     - BUGFIX: optically better grey out meter and sliders on login
