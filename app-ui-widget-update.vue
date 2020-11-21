@@ -409,9 +409,6 @@ module.exports = {
             if (this.progress !== null)
                 return
             this.progress = { task: "starting update check", completion: 0.0 }
-            this.versions.running = {}
-            this.versions.current = {}
-            this.versions.fortcoming = {}
             this.$emit("update-check")
         },
         updateToVersion (version) {
