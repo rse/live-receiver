@@ -82,7 +82,11 @@
             </div>
 
             <p/>
-            <div class="box button close" v-on:click="$emit('close')">Close</div>
+            <div class="box button close" v-on:click="$emit('close')">
+                <i class="fas fa-times-circle"></i>
+                &nbsp;
+                Close Dialog
+            </div>
         </div>
     </div>
 </template>
