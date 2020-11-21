@@ -11,7 +11,9 @@
         <div class="portrait-row">
             <div class="portrait-col portrait">
                 <!-- portrait -->
-                <div v-bind:class="{ border: true, editing: editing }">
+                <div
+                    v-tooltip.left="{ content: 'Press to edit the portrait picture.' }"
+                    v-bind:class="{ border: true, editing: editing }">
                     <div v-show="!editing" class="preview-wrap">
                         <!-- preview -->
                         <img
@@ -39,6 +41,7 @@
                         <img ref="avatar-man"
                             class="avatar avatar-man"
                             v-bind:src="avatarMan"
+                            v-tooltip.left="{ content: 'Press to choose a male avatar<br/>as your portrait picture.' }"
                             v-on:click="chooseAvatar('man')"
                             alt="Avatar Man"
                         />
@@ -47,6 +50,7 @@
                         <img ref="avatar-woman"
                             class="avatar avatar-woman"
                             v-bind:src="avatarWoman"
+                            v-tooltip.right="{ content: 'Press to choose a female avatar<br/>as your portrait picture.' }"
                             v-on:click="chooseAvatar('woman')"
                             alt="Avatar Man"
                         />
@@ -57,6 +61,7 @@
                     <button v-show="!editing"
                         class="choose"
                         type="button"
+                        v-tooltip.top="{ content: 'Press to load your portrait<br/>picture from a local file.' }"
                         v-on:click="chooseFile">
                         Choose Custom<br/>
                         Portrait Image
@@ -64,6 +69,7 @@
                     <button v-show="editing"
                         class="fixate"
                         type="button"
+                        v-tooltip.top="{ content: 'Press to fixate your<br/>portrait picture.' }"
                         v-on:click="fixateImage">
                         Fixate Edited<br/>
                         Portrait Image

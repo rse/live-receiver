@@ -30,6 +30,7 @@
             ref="personName"
             type="text"
             placeholder="Enter your personal name..."
+            v-tooltip.left="{ content: 'Your personal name. It is disclosed<br/>according to the privacy level below.' }"
             v-model="intPersonName"
             v-on:keyup.escape="intPersonName = ''"
             v-on:keyup.enter="$refs.liveRelayServer.focus()"
@@ -40,19 +41,19 @@
         <div class="label">Your Privacy Level <span class="footnote">*</span></div>
         <div class="selbox-container">
             <div class="selbox"
-                v-tooltip.bottom-center="{ content: 'Your attendee identity (portrait and name) is disclosed<br/>in all types of audiences, including<br/>public/open-group kind of audiences.' }"
+                v-tooltip.top="{ content: 'Your attendee identity (portrait and name) is disclosed<br/>in all types of audiences, including<br/>public/open-group kind of audiences.' }"
                 v-bind:class="{ active: intPersonPrivacy === 'public' }"
                 v-on:click="intPersonPrivacy = 'public'">
                 Public
             </div>
             <div class="selbox"
-                v-tooltip.bottom-center="{ content: 'Your attendee identity (portrait and name) is disclosed<br/>in private/closed-group kind of audiences only.' }"
+                v-tooltip.top="{ content: 'Your attendee identity (portrait and name) is disclosed<br/>in private/closed-group kind of audiences only.' }"
                 v-bind:class="{ active: intPersonPrivacy === 'private' }"
                 v-on:click="intPersonPrivacy = 'private'">
                 Private
             </div>
             <div class="selbox"
-                v-tooltip.bottom-center="{ content: 'Your attendee identity (portrait and name) is never disclosed.' }"
+                v-tooltip.top="{ content: 'Your attendee identity (portrait and name) is never disclosed.' }"
                 v-bind:class="{ active: intPersonPrivacy === 'anonymous' }"
                 v-on:click="intPersonPrivacy = 'anonymous'">
                 Anonymous
@@ -107,12 +108,15 @@
                 track-by="id"
                 label="name"
                 placeholder="Select audio input device..."
+                v-tooltip.left="{ content: 'Your local audio input device (microphone).<br/>' +
+                    'Use the record button to the right for testing the device.' }"
                 v-bind:searchable="false"
                 v-bind:allow-empty="true"
                 v-bind:open-direction="'below'"
             ></v-multiselect>
             <div class="selbox"
                 v-on:click="audioInputTest"
+                v-tooltip.right="{ content: 'Press to record a test message.' }"
                 v-bind:class="{ disabled: intAudioInputDevice === null, active: audioInputTestActive }">
                 <span v-show="!audioInputTestActive" class="icon"><i class="fas fa-microphone-alt"></i></span>
                 <span v-show="audioInputTestActive"  class="icon"><i class="fas fa-microphone-alt-slash"></i></span>
@@ -129,12 +133,15 @@
                 track-by="id"
                 label="name"
                 placeholder="Select audio output device..."
+                v-tooltip.left="{ content: 'Your local audio output device (speaker).<br/>' +
+                    'Use the play button to the right for testing the device.' }"
                 v-bind:searchable="false"
                 v-bind:allow-empty="true"
                 v-bind:open-direction="'bottom'"
             ></v-multiselect>
             <div class="selbox"
                 v-on:click="audioOutputTest"
+                v-tooltip.right="{ content: 'Press to play a previously<br/>recorded test message.' }"
                 v-bind:class="{ disabled: intAudioOutputDevice === null || audioBlob === null, active: audioOutputTestActive }">
                 <span v-show="!audioOutputTestActive" class="icon"><i class="fas fa-play-circle"></i></span>
                 <span v-show="audioOutputTestActive" class="icon"><i class="fas fa-stop-circle"></i></span>
@@ -147,6 +154,7 @@
             ref="save"
             type="submit"
             value="Save & Close"
+            v-tooltip.bottom="{ content: 'Press to save your settings<br/>and close the dialog.' }"
             v-on:click="save"
         />
 
