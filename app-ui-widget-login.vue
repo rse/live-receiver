@@ -101,7 +101,7 @@
     padding: 20px;
     border-radius: 5px;
     display: grid;
-    grid-template-columns: 30px 160px 270px;
+    grid-template-columns: 30px 160px 260px;
     row-gap: 4px;
     font-size: 12pt;
 
