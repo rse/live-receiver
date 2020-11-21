@@ -819,6 +819,17 @@
         &.challenge {
             width: 70px;
         }
+        &.disabled {
+            input[type="range"] {
+                &::-webkit-slider-thumb {
+                    background-color:        var(--color-std-fg-0) !important;
+                    border-top:    1px solid var(--color-std-bg-5) !important;
+                    border-left:   1px solid var(--color-std-bg-5) !important;
+                    border-right:  1px solid var(--color-std-bg-3) !important;
+                    border-bottom: 1px solid var(--color-std-bg-3) !important;
+                }
+            }
+        }
     }
 
     /*  header area  */
