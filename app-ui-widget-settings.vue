@@ -149,14 +149,15 @@
         </div>
 
         <!-- Save -->
-        <input class="col-3"
-            v-bind:disabled="!allowSave"
+        <div class="col-3 box button button-save"
+            v-bind:class="{ disabled: !allowSave }"
             ref="save"
-            type="submit"
-            value="Save & Close"
             v-tooltip.bottom="{ content: 'Press to save your settings<br/>and close the dialog.' }"
-            v-on:click="save"
-        />
+            v-on:click="save">
+            <i class="fas fa-times-circle"></i>
+            &nbsp;
+            Close Dialog
+        </div>
 
         <!-- Logo & GDPR Notice -->
         <div class="col-2 notice">
@@ -273,7 +274,8 @@
     }
 
     /*  submit button  */
-    input[type="submit"] {
+    .box.button.button-save {
+        width: calc(100% - 20px);
         color:            var(--color-std-fg-3);
         background-color: var(--color-std-bg-4);
         border-top:    1px solid var(--color-std-bg-5);
@@ -283,6 +285,7 @@
         font-size: 12pt;
         padding: 5px 10px 5px 10px;
         border-radius: 5px;
+        text-align: center;
         &:focus {
             border: 0;
             outline: none;
@@ -301,7 +304,7 @@
             border-right:  1px solid var(--color-sig-bg-1);
             border-bottom: 1px solid var(--color-sig-bg-1);
         }
-        &:disabled {
+        &.disabled {
             color:            var(--color-std-fg-1);
             background-color: var(--color-std-bg-4);
             border-top:    1px solid var(--color-std-bg-5);
@@ -416,10 +419,12 @@ module.exports = {
         /*  handle save  */
         save () {
             /*  prevent hammering connect button  */
+            if (!this.allowSave)
+                return
             this.allowSave = false
             setTimeout(() => {
                 this.allowSave = true
-            }, 2 * 1000)
+            }, 1 * 1000)
 
             /*  raise login event  */
             this.$emit("save")
