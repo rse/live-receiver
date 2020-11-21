@@ -10,7 +10,7 @@
     <div class="about">
         <div class="col-2-3">
             <div class="title">
-                About LiVE Receiver
+                About Your LiVE Receiver
             </div>
         </div>
         <div class="col-1">
