@@ -30,6 +30,8 @@
                     v-if="updateable"
                     v-show="progress === null && versions.forthcoming.version !== versions.running.version"
                     v-on:click="updateToVersion(versions.forthcoming.version)">
+                    <i class="fas fa-cloud-download-alt"></i>
+                    &nbsp;
                     Update to version!
                 </div>
                 <div class="col-4 action box button"
@@ -37,6 +39,8 @@
                     v-show="progress === null && versions.forthcoming.version !== versions.running.version">
                     <a v-bind:href="'https://github.com/rse/live-receiver/releases/tag/' + versions.forthcoming.version"
                         v-on:click="openURL">
+                        <i class="fas fa-external-link-alt"></i>
+                        &nbsp;
                         Download version!
                     </a>
                 </div>
@@ -54,6 +58,8 @@
                     v-if="updateable"
                     v-show="progress === null && versions.current.version !== versions.running.version"
                     v-on:click="updateToVersion(versions.current.version)">
+                    <i class="fas fa-cloud-download-alt"></i>
+                    &nbsp;
                     Update to version!
                 </div>
                 <div class="col-4 action box button"
@@ -61,6 +67,8 @@
                     v-show="progress === null && versions.current.version !== versions.running.version">
                     <a v-bind:href="'https://github.com/rse/live-receiver/releases/tag/' + versions.current.version"
                         v-on:click="openURL">
+                        <i class="fas fa-external-link-alt"></i>
+                        &nbsp;
                         Download version!
                     </a>
                 </div>
@@ -146,10 +154,18 @@
         </div>
         <p/>
         <div class="buttons">
-            <div v-bind:class="{ box: true, button: true, check: true, disabled: progress !== null }"
-                v-on:click="updateCheck">Check for Updates</div>
-            <div v-bind:class="{ box: true, button: true, close: true, disabled: progress !== null }"
-                v-on:click="updateClose">Stay &amp; Close</div>
+            <div class="box button check" v-bind:class="{ disabled: progress !== null }"
+                v-on:click="updateCheck">
+                <i class="fas fa-sync-alt"></i>
+                &nbsp;
+                Check for Updates
+            </div>
+            <div class="box button check" v-bind:class="{ disabled: progress !== null }"
+                v-on:click="updateClose">
+                <i class="fas fa-times-circle"></i>
+                &nbsp;
+                Close Dialog
+            </div>
         </div>
         <p/>
         <div class="progress" v-if="progress !== null">
@@ -206,7 +222,7 @@
     }
     .versions-row {
         display: grid;
-        grid-template-columns: 80px 60px 90px 130px;
+        grid-template-columns: 80px 60px 90px 180px;
         column-gap: 20px;
         row-gap: 0px;
         .col-1 {
@@ -233,7 +249,7 @@
     }
     .box.button.action {
         border-radius: 5px;
-        width: 100%;
+        width: calc(100% - 20px);
         text-align: center;
         color:                   var(--color-acc-fg-3);
         background-color:        var(--color-acc-bg-3);
@@ -242,8 +258,7 @@
         border-right:  1px solid var(--color-acc-bg-1);
         border-bottom: 1px solid var(--color-acc-bg-1);
         font-size: 12pt;
-        padding-top: 0px;
-        padding-bottom: 0px;
+        padding: 0px 10px 0px 10px;
         &:hover {
             color:                   var(--color-sig-fg-4);
             background-color:        var(--color-sig-bg-4);
