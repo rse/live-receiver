@@ -2,6 +2,9 @@
 Changes
 =======
 
+- 1.7.4
+    - UPGRADE: upgrade to Electron 11.0.3
+
 - 1.7.3
     - IMPROVEMENT: optically improve connect button on login dialog
     - IMPROVEMENT: optically improve update dialog on checking new version
