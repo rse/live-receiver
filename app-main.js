@@ -17,6 +17,7 @@ const throttle     = require("throttle-debounce").throttle
 const dayjs        = require("dayjs")
 const syspath      = require("syspath")
 const UUID         = require("pure-uuid")
+const mkdirp       = require("mkdirp")
 
 /*  internal requirements  */
 const Settings     = require("./app-main-settings")
@@ -436,8 +437,10 @@ const app = electron.app
 
         /*  establish recording mechanism  */
         const { dataDir } = syspath({ appName: "LiVE-Receiver" })
+        const basedir = path.join(dataDir, "recordings")
+        await mkdirp(basedir, { mode: 0o755 })
         const recording = new Recording({
-            basedir: path.join(dataDir, "recordings"),
+            basedir: basedir,
             log: (level, message) => { app.log[level](`recording: ${message}`) }
         })
         app.ipc.handle("recordings", async (event) => {
