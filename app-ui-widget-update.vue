@@ -429,13 +429,13 @@ module.exports = {
         updateCheck () {
             if (this.progress !== null)
                 return
-            this.progress = { task: "starting update check", completion: 0.0 }
+            this.progress = { task: "starting update check", completed: 0.0 }
             this.$emit("update-check")
         },
         updateToVersion (version) {
             if (this.progress !== null)
                 return
-            this.progress = { task: "starting update process", completion: 0.0 }
+            this.progress = { task: "starting update process", completed: 0.0 }
             this.$emit("update-to-version", version)
         },
         updateClose () {
