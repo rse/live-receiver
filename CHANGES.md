@@ -2,6 +2,9 @@
 Changes
 =======
 
+- 1.8.1
+    - IMPROVEMENT: do not notify updates on login dialog if forthcoming version is already used
+
 - 1.8.0
     - EXTENSION: allow streams to be recorded and replayed within a short amount of time
 
