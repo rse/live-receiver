@@ -4,16 +4,16 @@ Version History
 
 | VERSION | DATE       | STATE       |
 | ------- | ---------- | ----------- |
-| 1.8.2   | 2020-11-27 | forthcoming |
-| 1.8.1   | 2020-11-26 | obsolete    |
-| 1.8.0   | 2020-11-26 | obsolete    |
-| 1.7.4   | 2020-11-26 | current     |
-| 1.7.3   | 2020-11-21 | obsolete    |
-| 1.7.2   | 2020-11-21 | obsolete    |
-| 1.7.1   | 2020-11-20 | obsolete    |
-| 1.7.0   | 2020-11-19 | obsolete    |
-| 1.6.1   | 2020-11-15 | obsolete    |
-| 1.6.0   | 2020-11-15 | obsolete    |
+| 1.8.2   | 2020-11-27 | current     |
+| 1.8.1   | 2020-11-26 | deprecated  |
+| 1.8.0   | 2020-11-26 | deprecated  |
+| 1.7.4   | 2020-11-26 | obsolete    |
+| 1.7.3   | 2020-11-21 | deprecated  |
+| 1.7.2   | 2020-11-21 | deprecated  |
+| 1.7.1   | 2020-11-20 | deprecated  |
+| 1.7.0   | 2020-11-19 | deprecated  |
+| 1.6.1   | 2020-11-15 | deprecated  |
+| 1.6.0   | 2020-11-15 | deprecated  |
 | 1.5.4   | 2020-11-09 | obsolete    |
 | 1.5.3   | 2020-11-09 | deprecated  |
 | 1.5.2   | 2020-11-08 | deprecated  |
