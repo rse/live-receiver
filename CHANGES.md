@@ -4,6 +4,7 @@ Changes
 
 - 1.8.1
     - IMPROVEMENT: do not notify updates on login dialog if forthcoming version is already used
+    - BUGFIX: extra safe-guard for total percentage calculation to not show a NaN
 
 - 1.8.0
     - EXTENSION: allow streams to be recorded and replayed within a short amount of time

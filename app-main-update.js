@@ -91,7 +91,7 @@ module.exports = class Update {
         })
         if (progress) {
             req.on("downloadProgress", (p) => {
-                let completed = p.transferred / p.total
+                let completed = p.total > 0 ? p.transferred / p.total : 0
                 if (isNaN(completed))
                     completed = 0
                 progress("downloading application version information", completed)
@@ -160,7 +160,7 @@ module.exports = class Update {
         })
         if (progress) {
             req.on("downloadProgress", (p) => {
-                let completed = p.transferred / p.total
+                let completed = p.total > 0 ? p.transferred / p.total : 0
                 if (isNaN(completed))
                     completed = 0
                 progress("downloading application distribution archive", completed)
@@ -185,7 +185,7 @@ module.exports = class Update {
         })
         if (progress) {
             req.on("downloadProgress", (p) => {
-                let completed = p.transferred / p.total
+                let completed = p.total > 0 ? p.transferred / p.total : 0
                 if (isNaN(completed))
                     completed = 0
                 progress("downloading application distribution signature", completed)
