@@ -42,6 +42,7 @@ globals:
     AudioNodeSuite: true
     jimp:           true
     dayjs:          true
+    Hls:            true
 
 rules:
     #   modified rules

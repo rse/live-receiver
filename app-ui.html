@@ -14,7 +14,7 @@
         <!-- general meta-information -->
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-        <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' 'unsafe-eval';"/>
+        <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; worker-src 'self' 'unsafe-inline' 'unsafe-eval' blob:;"/>
 
         <!-- load dependency: VueJS -->
         <script type="text/javascript" src="node_modules/vue/dist/vue.js"></script>
@@ -53,6 +53,9 @@
 
         <!-- load dependency: Jimp -->
         <script type="text/javascript" src="node_modules/jimp/browser/lib/jimp.js"></script>
+
+        <!-- load dependency: HLS.js -->
+        <script type="text/javascript" src="node_modules/hls.js/dist/hls.min.js"></script>
 
         <!-- load dependency: DayJS -->
         <script type="text/javascript" src="node_modules/dayjs/dayjs.min.js"></script>

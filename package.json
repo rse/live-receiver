@@ -45,6 +45,7 @@
         "v-tooltip":                     "2.0.3",
         "cropperjs":                     "1.5.9",
         "jimp":                          "0.16.1",
+        "hls.js":                        "0.14.16",
         "http-vue-loader":               "1.4.2",
         "less":                          "3.12.2",
         "@fortawesome/fontawesome-free": "5.15.1",
@@ -56,6 +57,7 @@
         "throttle-debounce":             "3.0.1",
         "mp4box":                        "0.3.20",
         "mp4frag":                       "kevinGodell/mp4frag#65ad7e6",
+        "m3u8-parser":                   "4.5.0",
         "pure-uuid":                     "1.6.1",
         "image-data-uri":                "2.0.1",
         "update-helper":                 "1.1.2",
@@ -64,7 +66,9 @@
         "adm-zip":                       "0.5.0",
         "tmp":                           "0.2.1",
         "mkdirp":                        "1.0.4",
-        "dsig":                          "1.1.5"
+        "dsig":                          "1.1.5",
+        "hostid":                        "1.0.24",
+        "rimraf":                        "3.0.2"
     },
     "main":                              "./app-main.js",
     "build": {

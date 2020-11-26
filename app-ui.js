@@ -50,6 +50,14 @@ ui = {}
         return ui.ipc.invoke("screen-scale-factor")
     }
 
+    /*  support recordings  */
+    ui.recordings = async (...args) => {
+        return ui.ipc.invoke("recordings", ...args)
+    }
+    ui.recordingArtifact = async (...args) => {
+        return ui.ipc.invoke("recording-artifact", ...args)
+    }
+
     /*  external requirements  */
     ui.throttle     = require("throttle-debounce").throttle
     ui.debounce     = require("throttle-debounce").debounce
@@ -140,7 +148,7 @@ ui = {}
         if (result.error)
             ui.root.$refs.win.$emit("login-error", result.error)
         else
-            ui.root.$refs.win.$emit("state", "video")
+            ui.root.$refs.win.$emit("state", "video-stream")
     })
     ui.root.$refs.win.$on("relogin", async (info) => {
         const result = await ui.ipc.invoke("logout")
@@ -152,13 +160,24 @@ ui = {}
             if (result.error)
                 ui.root.$refs.win.$emit("login-error", result.error)
             else
-                ui.root.$refs.win.$emit("state", "video")
+                ui.root.$refs.win.$emit("state", "video-stream")
         }
     })
     ui.root.$refs.win.$on("logout", async () => {
         const result = await ui.ipc.invoke("logout")
         if (!result.error)
             ui.root.$refs.win.$emit("state", "login")
+    })
+    ui.root.$refs.win.$on("recording-play", async (recording) => {
+        await ui.ipc.invoke("recording-play", recording)
+        ui.root.$refs.win.$emit("state", "video-play")
+    })
+    ui.root.$refs.win.$on("recording-unplay", async () => {
+        await ui.ipc.invoke("recording-unplay")
+        ui.root.$refs.win.$emit("state", "login")
+    })
+    ui.root.$refs.win.$on("recording-delete", async (recording) => {
+        await ui.ipc.invoke("recording-delete", recording)
     })
 
     /*  provide generic function bridge to main thread  */
@@ -191,10 +210,12 @@ ui = {}
     events = [
         "maximized", "fullscreened",
         "stream-begin", "stream-data", "stream-reset", "stream-end",
+        "play-begin", "play-end",
         "voting-begin", "voting-type", "voting-end",
         "deep-link", "relogin", "logout",
         "update-updateable", "update-versions", "update-progress",
-        "update-error", "fatal-error"
+        "update-error", "fatal-error",
+        "recordings-update", "recordings-renew"
     ]
     for (const event of events) {
         ui.ipc.on(event, (ev, ...args) => {

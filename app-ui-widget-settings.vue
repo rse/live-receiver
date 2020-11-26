@@ -114,6 +114,36 @@
         </div>
         -->
 
+        <!-- Stream Recording -->
+        <i class="icon fas fa-user-shield"></i>
+        <div class="label">
+            <div>
+                Your Stream Recordings:
+            </div>
+        </div>
+        <div class="selbox-container">
+            <div class="selbox"
+                v-tooltip.top="{ content: 'Your streams will be stored locally<br/>in order to be replayed within 48 hours.<br/>' +
+                    'Please ensure that your free disk space<br/>allows storing about 1 GB/hour.' }"
+                v-bind:class="{ active: intRecordingHours === 48 }"
+                v-on:click="intRecordingHours = 48">
+                48 Hours
+            </div>
+            <div class="selbox"
+                v-tooltip.top="{ content: 'Your streams will be stored locally<br/>in order to be replayed within 24 hours.<br/>' +
+                    'Please ensure that your free disk space<br/>allows storing about 1 GB/hour.' }"
+                v-bind:class="{ active: intRecordingHours === 24 }"
+                v-on:click="intRecordingHours = 24">
+                24 Hours
+            </div>
+            <div class="selbox"
+                v-tooltip.top="{ content: 'Your streams will not be stored locally.<br/>You will not be able to replay them.' }"
+                v-bind:class="{ active: intRecordingHours === 0 }"
+                v-on:click="intRecordingHours = 0">
+                None
+            </div>
+        </div>
+
         <!-- Audio Input Device -->
         <i class="icon fas fa-microphone-alt"></i>
         <div class="label">Audio Input Device:</div>
@@ -233,6 +263,7 @@
             margin-left: 5px;
             flex-grow: 1;
             justify-content: center;
+            width: 15%;
             .icon {
                 padding-top: 3px;
                 width: 100%;
@@ -379,6 +410,7 @@ module.exports = {
         personName:           { type: String, default: "" },
         personPrivacy:        { type: String, default: "" },
         liveStreamBuffering:  { type: Number, default: 2000 },
+        recordingHours:       { type: Number, default: 0 },
         audioInputDevice:     { type: String, default: "" },
         audioOutputDevice:    { type: String, default: "" }
     },
@@ -390,6 +422,7 @@ module.exports = {
             intPersonName:           this.personName,
             intPersonPrivacy:        this.personPrivacy,
             intLiveStreamBuffering:  this.liveStreamBuffering,
+            intRecordingHours:       this.recordingHours,
             intAudioInputDevice:     null,
             intAudioOutputDevice:    null,
             audioInputDevices:       [],
@@ -413,6 +446,7 @@ module.exports = {
         intPersonName:           function (v) { this.$emit("update:person-name", v) },
         intPersonPrivacy:        function (v) { this.$emit("update:person-privacy", v) },
         intLiveStreamBuffering:  function (v) { this.$emit("update:live-stream-buffering", v) },
+        intRecordingHours:       function (v) { this.$emit("update:recording-hours", v) },
         intAudioInputDevice:     function (v) { this.$emit("update:audio-input-device",  this.deviceObj2Id(v)) },
         intAudioOutputDevice:    function (v) { this.$emit("update:audio-output-device", this.deviceObj2Id(v)) }
     },

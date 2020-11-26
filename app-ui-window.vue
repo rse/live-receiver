@@ -25,7 +25,7 @@
                         v-tooltip.bottom-center="{ content: 'Reconnect to the LiVE Relay in order<br/>' +
                             'to re-synchronize the video stream and<br/>' +
                             'reduce the stream latency again.' }"
-                        v-bind:class="{ disabled: inLogin || !allowDisconnect }">
+                        v-bind:class="{ disabled: inLogin || !allowDisconnect || inVideoPlay }">
                         <i class="icon fas fa-sync-alt"></i>
                         <span class="title">Reconnect</span>
                     </div>
@@ -43,12 +43,12 @@
                             'video stream in kilo-bit per second, the<br/>' +
                             'current session duration in hours/minutes or the<br/>' +
                             'current time. Press to toggle the display type.' }"
-                        v-bind:class="{ disabled: inLogin, active: !inLogin }">
-                        <span class="word">{{ inLogin ? "---" : meterText }}</span>
+                        v-bind:class="{ disabled: inLogin || inVideoPlay, active: !inLogin && !inVideoPlay }">
+                        <span class="word">{{ (inLogin || inVideoPlay) ? "---" : meterText }}</span>
                         <span class="title">{{ meterTypeNames[meterType] }}</span>
                     </div>
                 </div>
-                <div class="group-bar" v-bind:class="{ disabled: inLogin, active: !inLogin }">
+                <div class="group-bar" v-bind:class="{ disabled: inLogin || inVideoPlay, active: !inLogin && !inVideoPlay }">
                 </div>
             </div>
 
@@ -59,7 +59,7 @@
                         v-tooltip.bottom-center="{ content: 'Save the last <u>r</u>ecorded 10s of the current video stream<br/>' +
                             'in MP4 format to your personal <i>Videos</i> folder.<br/>' +
                             'Allowed once every 30s only. &nbsp;<span class=attention-boxed>CTRL+r</span>' }"
-                        v-bind:class="{ disabled: inLogin || recordingThrottle }">
+                        v-bind:class="{ disabled: inLogin || recordingThrottle || inVideoPlay }">
                         <i class="icon fas fa-video"></i>
                         <span class="title">Recording</span>
                     </div>
@@ -69,13 +69,13 @@
                         v-tooltip.bottom-center="{ content: 'Save a <u>s</u>creenshot of the current video stream<br/>' +
                             'in PNG format to your personal <i>Picture</i> folder.<br/>' +
                             'Allowed once every 3s only. &nbsp;<span class=attention-boxed>CTRL+s</span>' }"
-                        v-bind:class="{ disabled: inLogin || screenshotThrottle }">
+                        v-bind:class="{ disabled: inLogin || screenshotThrottle || inVideoPlay }">
                         <i class="icon fas fa-camera"></i>
                         <span class="title">Screenshot</span>
                     </div>
                 </div>
                 <div class="group-bar"
-                     v-bind:class="{ disabled: inLogin }">
+                     v-bind:class="{ disabled: inLogin || inVideoPlay }">
                 </div>
             </div>
 
@@ -203,10 +203,21 @@
             <!-- video stream -->
             <div ref="video"
                 v-bind:style="{ width: videoSize.w + 'px', height: videoSize.h + 'px'}"
-                v-show="!inLogin && !inSettings"
-                class="video">
+                v-show="!inLogin && !inSettings && !inVideoPlay"
+                class="video video-stream">
                 <videostream
                     ref="videostream"
+                    v-on:stream-video-size="streamVideoSize"
+                />
+            </div>
+
+            <!-- video play -->
+            <div ref="video2"
+                v-bind:style="{ width: videoSize.w + 'px', height: videoSize.h + 'px'}"
+                v-show="!inLogin && !inSettings && inVideoPlay"
+                class="video video-play">
+                <videoplay
+                    ref="videoplay"
                     v-on:stream-video-size="streamVideoSize"
                 />
             </div>
@@ -221,6 +232,8 @@
                     v-on:update="updateOpen"
                     v-on:about="aboutOpen"
                     v-on:login="login"
+                    v-on:recording-play="recordingPlay"
+                    v-on:recording-delete="recordingDelete"
                 />
             </div>
 
@@ -232,6 +245,7 @@
                     v-bind:person-name.sync="personName"
                     v-bind:person-privacy.sync="personPrivacy"
                     v-bind:live-stream-buffering.sync="liveStreamBuffering"
+                    v-bind:recording-hours.sync="recordingHours"
                     v-bind:audio-input-device.sync="audioInputDevice"
                     v-bind:audio-output-device.sync="audioOutputDevice"
                     v-on:save="settingsClose"
@@ -278,7 +292,7 @@
         <div ref="footer" class="footer">
             <div class="group grow">
                 <div class="group-bar"
-                    v-bind:class="{ disabled: inLogin }">
+                    v-bind:class="{ disabled: inLogin || inVideoPlay }">
                 </div>
                 <div class="group-items">
                     <!-- audio record -->
@@ -289,7 +303,7 @@
                             autoHide: false
                         }"
                         v-bind:class="{
-                            disabled: inLogin || messageThrottle || audioInputDevice === '' || audioOutputDevice === '' || votingActive,
+                            disabled: inLogin || messageThrottle || audioInputDevice === '' || audioOutputDevice === '' || votingActive || inVideoPlay,
                             active: audioRecording || audioPlaying || audioBlob !== null
                         }">
                         <span v-show="!audioRecording && audioBlob === null"><i class="icon fas fa-microphone-alt"></i></span>
@@ -303,13 +317,13 @@
                     </div>
 
                     <!-- enter message -->
-                    <div class="box message-text" v-bind:class="{ disabled: inLogin || messageThrottle, active: message !== '' }">
+                    <div class="box message-text" v-bind:class="{ disabled: inLogin || messageThrottle || inVideoPlay, active: message !== '' }">
                         <span v-show="!votingActive || votingActive && votingType === 'propose'"
                             v-tooltip.bottom-center="{ content: 'Type a textual <u>m</u>essage to be<br/>sent to the trainer.' +
                                 ' &nbsp;<span class=attention-boxed>CTRL+m</span><br/>' +
                                 ' (Enter <span class=attention-boxed>RETURN</span> to immediately send it.)' }">
                             <input
-                                v-bind:disabled="inLogin || messageThrottle || (votingActive && votingDone)"
+                                v-bind:disabled="inLogin || messageThrottle || (votingActive && votingDone) || inVideoPlay"
                                 ref="message"
                                 type="text"
                                 v-bind:placeholder="(votingActive && votingDone) ? 'Thanks for voting' :
@@ -382,7 +396,7 @@
                     <!-- clear message -->
                     <div class="box button message-clear" v-on:click="clearMessage(true)"
                         v-tooltip.bottom-center="{ content: 'Clear audio and text messages.' }"
-                        v-bind:class="{ disabled: inLogin || messageThrottle || (audioBlob === null && message === '') }">
+                        v-bind:class="{ disabled: inLogin || messageThrottle || (audioBlob === null && message === '') || inVideoPlay }">
                         <i class="icon fas fa-trash-alt"></i>
                         <span class="title">Clear Messages</span>
                     </div>
@@ -390,7 +404,7 @@
                     <!-- send message -->
                     <div class="box button message-send" v-on:click="sendMessage"
                         v-tooltip.bottom-center="{ content: 'Send audio and text messages.' }"
-                        v-bind:class="{ disabled: inLogin || messageThrottle || (message === '' && audioBlob === null) }">
+                        v-bind:class="{ disabled: inLogin || messageThrottle || (message === '' && audioBlob === null) || inVideoPlay }">
                         <i class="icon fas fa-share"></i>
                         <span class="title">Send Messages</span>
                     </div>
@@ -399,14 +413,14 @@
 
             <div class="group">
                 <div class="group-bar"
-                    v-bind:class="{ disabled: inLogin || feedbackDisabled }">
+                    v-bind:class="{ disabled: inLogin || feedbackDisabled || inVideoPlay }">
                 </div>
                 <div class="group-items">
                     <!-- send thumbs-up -->
                     <div class="box button message-send" v-on:click="feedback('thumbsup')"
                         v-tooltip.bottom-center="{ content: 'Send feedback by showing<br/>consent with a thumbs-<u>u</u>p.' +
                             ' &nbsp; <span class=attention-boxed>CTRL+u</span>' }"
-                        v-bind:class="{ disabled: inLogin || feedbackDisabled }">
+                        v-bind:class="{ disabled: inLogin || feedbackDisabled || inVideoPlay }">
                         <i class="icon fas fa-thumbs-up"></i>
                         <span class="title">Show Consent</span>
                     </div>
@@ -415,7 +429,7 @@
                     <div class="box button message-send" v-on:click="feedback('thumbsdn')"
                         v-tooltip.bottom-center="{ content: 'Send feedback by showing<br/>refusal with a thumbs-<u>d</u>own.' +
                             ' &nbsp;<span class=attention-boxed>CTRL+d</span>' }"
-                        v-bind:class="{ disabled: inLogin || feedbackDisabled }">
+                        v-bind:class="{ disabled: inLogin || feedbackDisabled || inVideoPlay }">
                         <i class="icon fas fa-thumbs-down"></i>
                         <span class="title">Show Refusal</span>
                     </div>
@@ -424,7 +438,7 @@
                     <div class="box button message-send" v-on:click="feedback('surprise')"
                         v-tooltip.bottom-center="{ content: 'Send feedback by showing<br/>surprise (<u>o</u>ohh).' +
                             ' &nbsp;<span class=attention-boxed>CTRL+o</span>' }"
-                        v-bind:class="{ disabled: inLogin || feedbackDisabled }">
+                        v-bind:class="{ disabled: inLogin || feedbackDisabled || inVideoPlay }">
                         <i class="icon fas fa-surprise"></i>
                         <span class="title">Show Surprise</span>
                     </div>
@@ -433,7 +447,7 @@
                     <div class="box button message-send" v-on:click="feedback('smile')"
                         v-tooltip.bottom-center="{ content: 'Send feedback by<br/>showing smile/<u>g</u>rin.' +
                             ' &nbsp;<span class=attention-boxed>CTRL+g</span>' }"
-                        v-bind:class="{ disabled: inLogin || feedbackDisabled }">
+                        v-bind:class="{ disabled: inLogin || feedbackDisabled || inVideoPlay }">
                         <i class="icon fas fa-grin-wink"></i>
                         <span class="title">Show Smile</span>
                     </div>
@@ -441,7 +455,7 @@
                     <!-- send frown -->
                     <div class="box button message-send" v-on:click="feedback('frown')"
                         v-tooltip.bottom-center="{ content: 'Send feedback by<br/>showing frown.' }"
-                        v-bind:class="{ disabled: inLogin || feedbackDisabled }">
+                        v-bind:class="{ disabled: inLogin || feedbackDisabled || inVideoPlay }">
                         <i class="icon fas fa-angry"></i>
                         <span class="title">Show Frown</span>
                     </div>
@@ -449,7 +463,7 @@
                     <!-- send sadness -->
                     <div class="box button message-send" v-on:click="feedback('sadness')"
                         v-tooltip.bottom-center="{ content: 'Send feedback by<br/>showing sadness.' }"
-                        v-bind:class="{ disabled: inLogin || feedbackDisabled }">
+                        v-bind:class="{ disabled: inLogin || feedbackDisabled || inVideoPlay }">
                         <i class="icon fas fa-sad-tear"></i>
                         <span class="title">Show Sadness</span>
                     </div>
@@ -458,15 +472,15 @@
 
             <div class="group">
                 <div class="group-bar"
-                    v-bind:class="{ disabled: inLogin }">
+                    v-bind:class="{ disabled: inLogin || inVideoPlay }">
                 </div>
                 <div class="group-items">
                     <!-- challenge -->
-                    <div class="box slider challenge" v-bind:class="{ disabled: inLogin }"
+                    <div class="box slider challenge" v-bind:class="{ disabled: inLogin || inVideoPlay }"
                         v-tooltip.top-center="{ content: challengeText, hideOnTargetClick: false }">
                         <input ref="challenge"
                             v-bind:class="[ 'challenge', 'range' + challenge ]"
-                            v-bind:disabled="inLogin"
+                            v-bind:disabled="inLogin || inVideoPlay"
                             type="range"
                             min="1" max="5" step="1"
                             v-model.number="challenge"/>
@@ -474,11 +488,11 @@
                     </div>
 
                     <!-- mood -->
-                    <div class="box slider mood" v-bind:class="{ disabled: inLogin }"
+                    <div class="box slider mood" v-bind:class="{ disabled: inLogin || inVideoPlay }"
                         v-tooltip.top-center="{ content: moodText, hideOnTargetClick: false }">
                         <input ref="mood"
                             v-bind:class="[ 'mood', 'range' + mood ]"
-                            v-bind:disabled="inLogin"
+                            v-bind:disabled="inLogin || inVideoPlay"
                             type="range"
                             min="1" max="5" step="1"
                             v-model.number="mood"/>
@@ -692,7 +706,7 @@
             border-bottom: 1px solid var(--color-std-bg-1);
             .icon  { color:          var(--color-std-fg-1); }
             .word  { color:          var(--color-std-fg-1); }
-            .title { color:          var(--color-std-fg-1); }
+            .title { color:          var(--color-std-fg-0); }
         }
         input[type="range"] {
             position: absolute;
@@ -1092,12 +1106,14 @@ module.exports = {
         inSettings:            false,
         inAbout:               false,
         inUpdate:              false,
+        inVideoPlay:           false,
         allowDisconnect:       true,
         personPortrait:        "",
         personName:            "",
         liveRelayServer:       "",
         liveAccessToken:       "",
         liveStreamBuffering:   0,
+        recordingHours:        0,
         audioInputDevice:      "",
         audioOutputDevice:     "",
         logo:                  ui.logo1,
@@ -1198,10 +1214,12 @@ module.exports = {
     watch: {
         volume: function (v) {
             this.$refs.videostream.$emit("volume", v)
+            this.$refs.videoplay.$emit("volume", v)
             this.volumeMute = (v === 0)
         },
         volumeMute: function (v) {
             this.$refs.videostream.$emit("mute", v)
+            this.$refs.videoplay.$emit("mute", v)
         },
         challenge: ui.debounce(2000, function (v) { this.sendFeeling() }),
         mood:      ui.debounce(2000, function (v) { this.sendFeeling() }),
@@ -1211,11 +1229,14 @@ module.exports = {
         liveRelayServer:      function (v) { ui.settings("live-relay-server", v) },
         liveAccessToken:      function (v) { ui.settings("live-access-token", v) },
         liveStreamBuffering:  function (v) { ui.settings("live-stream-buffering", v) },
+        recordingHours:       function (v) { ui.settings("recording-hours", v) },
         audioInputDevice:     function (v) { ui.settings("audio-input-device", v) },
         audioOutputDevice:    function (v) {
             ui.settings("audio-output-device", v)
-            if (this.$refs.videostream)
+            if (this.$refs.videostream) {
                 this.$refs.videostream.$emit("device", v)
+                this.$refs.videoplay.$emit("device", v)
+            }
         }
     },
 
@@ -1224,6 +1245,7 @@ module.exports = {
         "login":       "url:app-ui-widget-login.vue",
         "settings":    "url:app-ui-widget-settings.vue",
         "videostream": "url:app-ui-widget-videostream.vue",
+        "videoplay":   "url:app-ui-widget-videoplay.vue",
         "about":       "url:app-ui-widget-about.vue",
         "update":      "url:app-ui-widget-update.vue"
     },
@@ -1232,7 +1254,7 @@ module.exports = {
     methods: {
         /*  message handling  */
         async sendChoice (activate, choice) {
-            if (this.votingDone || this.messageThrottle)
+            if (this.votingDone || this.messageThrottle || this.inVideoPlay)
                 return
             this.message = choice
             this.sendMessage()
@@ -1240,7 +1262,7 @@ module.exports = {
             this.votingDone = true
         },
         async sendMessage () {
-            if (this.votingDone || this.messageThrottle)
+            if (this.votingDone || this.messageThrottle || this.inVideoPlay)
                 return
             if (this.message !== "" || this.audioBlob !== null) {
                 const data = { text: this.message }
@@ -1266,7 +1288,7 @@ module.exports = {
             this.$refs.message.blur()
         },
         clearMessage (withAudio) {
-            if (this.messageThrottle || !(this.message !== "" || this.audioBlob !== null))
+            if (this.messageThrottle || !(this.message !== "" || this.audioBlob !== null) || this.inVideoPlay)
                 return
             this.message = ""
             if (withAudio)
@@ -1274,7 +1296,7 @@ module.exports = {
             this.$refs.message.blur()
         },
         feedback (type) {
-            if (this.feedbackDisabled)
+            if (this.feedbackDisabled || this.inVideoPlay)
                 return
             this.$emit("feedback", type)
             this.feedbackDisabled = true
@@ -1283,6 +1305,8 @@ module.exports = {
             }, 30 * 1000)
         },
         sendFeeling () {
+            if (this.inVideoPlay)
+                return
             this.$emit("feeling", {
                 challenge: this.challenge,
                 mood:      this.mood
@@ -1304,6 +1328,7 @@ module.exports = {
                 personName:           this.personName,
                 personPrivacy:        this.personPrivacy,
                 liveStreamBuffering:  this.liveStreamBuffering,
+                recordingHours:       this.recordingHours,
                 audioInputDevice:     this.audioInputDevice,
                 audioOutputDevice:    this.audioOutputDevice
             })
@@ -1358,12 +1383,18 @@ module.exports = {
                 return
             if (!this.allowDisconnect)
                 return
-            this.allowDisconnect = false
             this.stealthMode = false
-            this.$emit("logout")
+            if (this.inVideoPlay) {
+                this.allowDisconnect = true
+                this.$emit("recording-unplay")
+            }
+            else {
+                this.allowDisconnect = false
+                this.$emit("logout")
+            }
         },
         relogin () {
-            if (this.inLogin)
+            if (this.inLogin || this.inVideoPlay)
                 return
             if (!this.allowDisconnect)
                 return
@@ -1373,13 +1404,23 @@ module.exports = {
                 liveAccessToken:      this.liveAccessToken
             })
         },
+        recordingPlay (recording) {
+            if (!this.inLogin)
+                return
+            this.$emit("recording-play", recording)
+        },
+        recordingDelete (recording) {
+            if (!this.inLogin)
+                return
+            this.$emit("recording-delete", recording)
+        },
         quit () {
             this.$emit("quit")
         },
 
         /*  toggle meter type  */
         meterToggle () {
-            if (this.inLogin)
+            if (this.inLogin || this.inVideoPlay)
                 return
             this.meterType = (this.meterType + 1) % this.meterTypeNames.length
         },
@@ -1447,7 +1488,7 @@ module.exports = {
         },
 
         async audioRecordOrPlay () {
-            if (this.messageThrottle)
+            if (this.messageThrottle || this.inVideoPlay)
                 return
             if (this.audioBlob === null)
                 return this.audioRecord()
@@ -1560,7 +1601,7 @@ module.exports = {
                 this.volumeMute = !this.volumeMute
         },
         recording () {
-            if (this.inLogin || this.recordingThrottle)
+            if (this.inLogin || this.recordingThrottle || this.inVideoPlay)
                 return
             ui.soundfx.playAndWait("throw2")
             this.$emit("recording")
@@ -1570,7 +1611,7 @@ module.exports = {
             setTimeout(() => { this.recordingThrottle = false }, 30 * 1000)
         },
         screenshot () {
-            if (this.inLogin || this.screenshotThrottle)
+            if (this.inLogin || this.screenshotThrottle || this.inVideoPlay)
                 return
             ui.soundfx.playAndWait("throw2")
             let { x, y, width, height } = this.$refs.video.getBoundingClientRect()
@@ -1626,6 +1667,7 @@ module.exports = {
         this.liveRelayServer      = await ui.settings("live-relay-server")
         this.liveAccessToken      = await ui.settings("live-access-token")
         this.liveStreamBuffering  = await ui.settings("live-stream-buffering")
+        this.recordingHours       = await ui.settings("recording-hours")
         this.audioInputDevice     = await ui.settings("audio-input-device")
         this.audioOutputDevice    = await ui.settings("audio-output-device")
 
@@ -1650,12 +1692,22 @@ module.exports = {
         this.$on("state", (state) => {
             if (state === "login") {
                 this.inLogin = true
+                this.inVideoPlay = false
+                this.allowDisconnect = false
                 this.$refs.login.$emit("enable")
             }
-            else if (state === "video") {
+            else if (state === "video-stream") {
                 this.inLogin = false
+                this.inVideoPlay = false
+                this.allowDisconnect = true
                 this.$refs.login.$emit("disable")
                 this.sendFeeling()
+            }
+            else if (state === "video-play") {
+                this.inLogin = false
+                this.inVideoPlay = true
+                this.allowDisconnect = true
+                this.$refs.login.$emit("disable")
             }
         })
         this.$on("deep-link", (credentials) => {
@@ -1757,6 +1809,14 @@ module.exports = {
             }
         })
 
+        /*  play handling  */
+        this.$on("play-begin", (info) => {
+            this.$refs.videoplay.$emit("play-begin", info)
+        })
+        this.$on("play-end", () => {
+            this.$refs.videoplay.$emit("play-end")
+        })
+
         /*  window resize tracking  */
         this.$on("maximized", (value) => {
             this.maximized = value
@@ -1803,6 +1863,16 @@ module.exports = {
         this.$on("update-error", (err) => {
             ui.log.info(`update-error: ${JSON.stringify(err)}`)
             this.$refs.update.$emit("update-error", err)
+        })
+
+        /*  recordings change  */
+        this.$on("recordings-update", () => {
+            ui.log.info("recordings-update")
+            this.$refs.login.$emit("recordings-update")
+        })
+        this.$on("recordings-renew", () => {
+            ui.log.info("recordings-renew")
+            this.$refs.login.$emit("recordings-renew")
         })
 
         /*  hotkey support  */

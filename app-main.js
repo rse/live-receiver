@@ -15,12 +15,14 @@ const electronLog  = require("electron-log")
 const imageDataURI = require("image-data-uri")
 const throttle     = require("throttle-debounce").throttle
 const dayjs        = require("dayjs")
+const syspath      = require("syspath")
 const UUID         = require("pure-uuid")
 
 /*  internal requirements  */
 const Settings     = require("./app-main-settings")
 const VideoStream  = require("./app-main-relay-videostream")
 const EventStream  = require("./app-main-relay-eventstream")
+const Recording    = require("./app-main-recording")
 const Update       = require("./app-main-update")
 const pkg          = require("./package.json")
 
@@ -149,6 +151,7 @@ const app = electron.app
         app.liveRelayServer      = settings.get("live-relay-server",      "")
         app.liveAccessToken      = settings.get("live-access-token",      "")
         app.liveStreamBuffering  = settings.get("live-stream-buffering",  2000)
+        app.recordingHours       = settings.get("recording-hours",        0)
         app.audioInputDevice     = settings.get("audio-input-device",     "")
         app.audioOutputDevice    = settings.get("audio-output-device",    "")
 
@@ -181,6 +184,7 @@ const app = electron.app
         settings.set("live-relay-server",      app.liveRelayServer)
         settings.set("live-access-token",      app.liveAccessToken)
         settings.set("live-stream-buffering",  app.liveStreamBuffering)
+        settings.set("recording-hours",        app.recordingHours)
         settings.set("audio-input-device",     app.audioInputDevice)
         settings.set("audio-output-device",    app.audioOutputDevice)
         settings.save()
@@ -430,6 +434,39 @@ const app = electron.app
             await app.vs.record(filename)
         })
 
+        /*  establish recording mechanism  */
+        const { dataDir } = syspath({ appName: "LiVE-Receiver" })
+        const recording = new Recording({
+            basedir: path.join(dataDir, "recordings"),
+            log: (level, message) => { app.log[level](`recording: ${message}`) }
+        })
+        app.ipc.handle("recordings", async (event) => {
+            return recording.recordings()
+        })
+        app.ipc.handle("recording-play", async (event, id) => {
+            app.log.info(`begin playing recording "${id}"`)
+            const url = recording.url(id)
+            app.win.webContents.send("play-begin", { recording: id, url })
+        })
+        app.ipc.handle("recording-unplay", async (event) => {
+            app.log.info("stop playing recording")
+            app.win.webContents.send("play-end")
+        })
+        app.ipc.handle("recording-delete", async (event, id) => {
+            app.log.info(`delete recording "${id}"`)
+            await recording.delete(id)
+            app.win.webContents.send("recordings-renew")
+        })
+        app.ipc.handle("recording-artifact", async (event, id, file, type) => {
+            return recording.load(id, file, type)
+        })
+        setInterval(async () => {
+            await recording.prune(app.recordingHours)
+            app.win.webContents.send("recordings-update")
+        }, 1 * 60 * 60 * 1000)
+        await recording.prune(app.recordingHours)
+        app.win.webContents.send("recordings-renew")
+
         /*  the LiVE Relay VideoStream/EventStream communication establishment  */
         app.es = null
         app.vs = null
@@ -523,6 +560,10 @@ const app = electron.app
                 numLast = num
                 app.win.webContents.send("stream-data", { num, id, user, buffer })
             })
+            vs.on("fragment", (fragment) => {
+                if (app.recordingHours > 0)
+                    recording.store(fragment)
+            })
             vs.on("error", (err) => {
                 if (!app.connected)
                     return
@@ -577,6 +618,10 @@ const app = electron.app
             app.win.webContents.send("stream-end")
             await new Promise((resolve) => setTimeout(resolve, 1 * 1000))
 
+            /*  prune to free space (just in case) and especially update UI for new recording  */
+            await recording.prune(app.recordingHours)
+            app.win.webContents.send("recordings-renew")
+
             /*  indicate success  */
             app.connected = false
             app.log.info("main: LiVE Relay: disconnect (end)")
@@ -584,21 +629,27 @@ const app = electron.app
         }
         app.ipc.handle("save-settings", async (event, {
             personPortrait, personName, personPrivacy, liveStreamBuffering,
-            audioInputDevice, audioOutputDevice
+            recordingHours, audioInputDevice, audioOutputDevice
         }) => {
-            /*  take login parameters  */
+            /*  take parameters  */
             app.personPortrait       = personPortrait
             app.personName           = personName
             app.personPrivacy        = personPrivacy
             app.liveStreamBuffering  = liveStreamBuffering
+            app.recordingHours       = recordingHours
             app.audioInputDevice     = audioInputDevice
             app.audioOutputDevice    = audioOutputDevice
             settings.set("person-portrait",        app.personPortrait)
             settings.set("person-name",            app.personName)
             settings.set("person-privacy",         app.personPrivacy)
             settings.set("live-stream-buffering",  app.liveStreamBuffering)
+            settings.set("recording-hours",        app.recordingHours)
             settings.set("audio-input-device",     app.audioInputDevice)
             settings.set("audio-output-device",    app.audioOutputDevice)
+
+            /*  prune in case the recording hours were changed  */
+            recording.prune(app.recordingHours)
+            app.win.webContents.send("recordings-renew")
         })
         app.ipc.handle("login", async (event, {
             liveRelayServer, liveAccessToken

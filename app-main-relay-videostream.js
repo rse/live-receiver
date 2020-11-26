@@ -110,12 +110,33 @@ module.exports = class VideoStream extends EventEmitter {
         }
         this.timer = setTimeout(onTimeout, this.options.timeout)
 
-        /*  establish segmentation of the bytestream into MP4 boxes
-            (reason: keeping the recent segments for snapshotting)  */
+        /*  establish fragmentation of the bytestream into MP4 fragments
+            (reason: keeping the recent fragments for snapshotting and recording)  */
         this.mp4frag = new MP4Frag({ segmentCount: 5 })
-        this.mp4frag.onError = (err) => {
+        this.mp4frag.on("error", (err) => {
             this.emit("error", `videostream: mp4frag: ${err}`)
-        }
+        })
+        const started = Date.now()
+        this.mp4frag.on("initialized", (init) => {
+            this.emit("fragment", {
+                type:     "init",
+                started:  started,
+                channel:  this.options.channel,
+                sequence: -1,
+                duration: -1,
+                buffer:   init.initialization
+            })
+        })
+        this.mp4frag.on("segment", (segment) => {
+            this.emit("fragment", {
+                type:     "segment",
+                started:  started,
+                channel:  this.options.channel,
+                sequence: segment.sequence,
+                duration: parseInt(segment.duration),
+                buffer:   segment.segment
+            })
+        })
 
         /*  establish segmentation of the bytestream into MP4 boxes
             (reason: the <video> element later accepts only valid and complete MP4 segments)  */
@@ -160,15 +181,15 @@ module.exports = class VideoStream extends EventEmitter {
 
         /*  process output of ffmpeg(1) subprocess  */
         let offset = 0
-        this.proc.stdout.on("data", (chunk) => {
-            /*  feed into MP4Box  */
-            const ab = chunk.buffer
+        this.proc.stdout.on("data", (data) => {
+            /*  feed into MP4Box for segmentation  */
+            const ab = data.buffer
             ab.fileStart = offset
             offset = this.mp4box.appendBuffer(ab)
             this.mp4box.flush()
 
-            /*  feed into MP4Frag  */
-            try { this.mp4frag.write(Buffer.from(chunk.buffer)) }
+            /*  feed into MP4Frag for fragmentation  */
+            try { this.mp4frag.write(Buffer.from(data.buffer)) }
             catch (ex) {}
         })
         this.proc.stdout.on("end", () => {

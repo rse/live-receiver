@@ -2,6 +2,9 @@
 Changes
 =======
 
+- 1.8.0
+    - EXTENSION: allow streams to be recorded and replayed within a short amount of time
+
 - 1.7.4
     - UPGRADE: upgrade to Electron 11.0.3
 
