@@ -20,6 +20,7 @@
         <div class="label">LiVE Relay Server</div>
         <input
             ref="liveRelayServer"
+            class="input-field"
             type="text"
             placeholder="Enter your LiVE relay server FQDN..."
             v-tooltip.left="{ content: 'Please enter the received <b>LiVE Relay Server</b><br/>' +
@@ -34,6 +35,7 @@
         <div class="label">LiVE Access Token</div>
         <input
             ref="liveAccessToken"
+            class="input-field"
             type="text"
             placeholder="Enter your LiVE access token..."
             v-tooltip.left="{ content: 'Please enter the received <b>LiVE Access Token</b><br/>' +
@@ -67,8 +69,10 @@
                     label="name"
                     placeholder="Select recording..."
                     v-tooltip.left="{ content: 'Select a particular recording<br/>to either play or delete.' }"
+                    v-bind:searchable="false"
                     v-bind:allow-empty="true"
-                    v-bind:open-direction="'below'"
+                    v-bind:open-direction="'bottom'"
+                    v-bind:max-height="200"
                 ></v-multiselect>
             </div>
             <div class="recordings-button-play box button"
@@ -157,7 +161,7 @@
     }
 
     /*  text input field  */
-    input[type="text"] {
+    .input-field {
         color:            var(--color-std-fg-3);
         background-color: var(--color-std-bg-4);
         border-top:    1px solid var(--color-std-bg-1);

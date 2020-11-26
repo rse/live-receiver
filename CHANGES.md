@@ -2,6 +2,9 @@
 Changes
 =======
 
+- 1.8.2
+    - BUGFIX: fix optical appearance of recording popup list
+
 - 1.8.1
     - IMPROVEMENT: do not notify updates on login dialog if forthcoming version is already used
     - BUGFIX: extra safe-guard for total percentage calculation to not show a NaN

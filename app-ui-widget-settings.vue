@@ -158,7 +158,7 @@
                     'Use the record button to the right for testing the device.' }"
                 v-bind:searchable="false"
                 v-bind:allow-empty="true"
-                v-bind:open-direction="'below'"
+                v-bind:open-direction="'bottom'"
             ></v-multiselect>
             <div class="selbox"
                 v-on:click="audioInputTest"
