@@ -144,6 +144,7 @@
     }
     .label {
         display: flex;
+        font-weight: 300;
         &:after {
             content: ':';
         }
@@ -157,7 +158,7 @@
     .headline {
         margin-bottom: 10px;
         font-size: 18pt;
-        font-weight: 200;
+        font-weight: 300;
     }
 
     /*  text input field  */

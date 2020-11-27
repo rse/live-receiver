@@ -232,6 +232,7 @@
     .label {
         display: flex;
         flex-direction: column;
+        font-weight: 300;
     }
     >.col-2 {
         grid-column-start: 2;
@@ -242,7 +243,7 @@
     .title {
         margin-bottom: 10px;
         font-size: 18pt;
-        font-weight: 200;
+        font-weight: 300;
     }
     .notice {
         margin-top: 6px;

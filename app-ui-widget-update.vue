@@ -209,7 +209,7 @@
     .title {
         margin-bottom: 10px;
         font-size: 18pt;
-        font-weight: 200;
+        font-weight: 300;
     }
     .desc {
         color: var(--color-acc-fg-3);
