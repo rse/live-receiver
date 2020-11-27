@@ -77,7 +77,7 @@
             </div>
             <div class="recordings-button-play box button"
                 v-on:click="recordingPlay"
-                v-tooltip.right="{ content: 'Press to play selected recording.' }"
+                v-tooltip.bottom="{ content: 'Press to play<br/>selected recording.' }"
                 v-bind:class="{ disabled: recording === null }">
                 <div class="icon">
                     <i class="fas fa-play-circle"></i>
@@ -85,7 +85,7 @@
             </div>
             <div class="recordings-button-delete box button"
                 v-on:click="recordingDelete"
-                v-tooltip.right="{ content: 'Press to delete selected recording.' }"
+                v-tooltip.right="{ content: 'Press to delete<br/>selected recording.' }"
                 v-bind:class="{ disabled: recording === null }">
                 <div class="icon">
                     <i class="fas fa-trash-alt"></i>
