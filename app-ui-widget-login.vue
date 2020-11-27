@@ -260,7 +260,7 @@
         margin-top: 2px;
         .button.logo {
             width: 94px;
-            height: 60px;
+            height: 62px;
             background-color: var(--color-std-bg-4);
             border-radius: 5px;
             position: relative;
@@ -301,7 +301,7 @@
         .button.update,
         .button.settings {
             width: 94px;
-            height: 60px;
+            height: 62px;
             background-color: var(--color-std-bg-4);
             border-radius: 5px;
             &.active {
@@ -316,6 +316,9 @@
                 margin-top: 4px;
                 font-size: 28pt;
             }
+        }
+        .button .title {
+            font-size: 8pt;
         }
     }
 
