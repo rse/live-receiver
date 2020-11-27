@@ -2,6 +2,9 @@
 Changes
 =======
 
+- 1.8.4
+    - IMPROVEMENT: improve optical appearance of tooltips
+
 - 1.8.3
     - IMPROVEMENT: improve optical appearance of titles and labels
     - IMPROVEMENT: improve optical appearance of dialogs

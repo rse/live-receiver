@@ -57,6 +57,7 @@ html, body {
 .tooltip {
     display: block;
     z-index: 10000;
+    box-shadow: 0px 5px 20px var(--color-std-bg-2);
 }
 .tooltip-inner {
     color:                   var(--color-std-fg-3);
