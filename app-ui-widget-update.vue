@@ -201,6 +201,7 @@
     border-left:   1px solid var(--color-std-bg-5);
     border-right:  1px solid var(--color-std-bg-1);
     border-bottom: 1px solid var(--color-std-bg-1);
+    box-shadow: 0px 5px 20px var(--color-std-bg-2);
     padding: 20px 20px 20px 20px;
     border-radius: 5px;
     font-family: "TypoPRO Source Sans Pro";
