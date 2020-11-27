@@ -4,6 +4,8 @@ Changes
 
 - 1.8.3
     - IMPROVEMENT: improve optical appearance of titles and labels
+    - IMPROVEMENT: improve optical appearance of dialogs
+    - UPDATE: update dependencies
 
 - 1.8.2
     - BUGFIX: fix optical appearance of recording popup list
