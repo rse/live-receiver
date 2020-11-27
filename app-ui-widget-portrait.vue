@@ -41,7 +41,7 @@
                         <img ref="avatar-man"
                             class="avatar avatar-man"
                             v-bind:src="avatarMan"
-                            v-tooltip.left="{ content: 'Press to choose a male avatar<br/>as your portrait picture.' }"
+                            v-tooltip.left="{ content: 'Press to choose a <span class=attention-boxed>male</span> avatar<br/>as your portrait picture.' }"
                             v-on:click="chooseAvatar('man')"
                             alt="Avatar Man"
                         />
@@ -50,7 +50,7 @@
                         <img ref="avatar-woman"
                             class="avatar avatar-woman"
                             v-bind:src="avatarWoman"
-                            v-tooltip.right="{ content: 'Press to choose a female avatar<br/>as your portrait picture.' }"
+                            v-tooltip.right="{ content: 'Press to choose a <span class=attention-boxed>female</span> avatar<br/>as your portrait picture.' }"
                             v-on:click="chooseAvatar('woman')"
                             alt="Avatar Man"
                         />

@@ -12,7 +12,7 @@
         <div class="col-2 notice">
         </div>
         <div class="headline">
-            Your LiVE Session Connection
+            Your LiVE Session
         </div>
 
         <!-- LiVE Relay Server -->

@@ -2,6 +2,9 @@
 Changes
 =======
 
+- 1.8.5
+    - IMPROVEMENT: further improve optical appearance of tooltips and headlines
+
 - 1.8.4
     - IMPROVEMENT: improve optical appearance of tooltips
 

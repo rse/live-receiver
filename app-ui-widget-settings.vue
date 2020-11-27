@@ -12,7 +12,7 @@
         <div class="col-2 notice">
         </div>
         <div class="title">
-            Your LiVE Receiver Settings
+            Your LiVE Settings
         </div>
 
         <!-- Your Portrait -->
@@ -57,19 +57,19 @@
         </div>
         <div class="selbox-container">
             <div class="selbox"
-                v-tooltip.top="{ content: 'Your attendee identity (portrait and name) is disclosed<br/>in all types of audiences, including<br/>public/open-group kind of audiences.' }"
+                v-tooltip.top="{ content: 'Your attendee identity (portrait and name) is disclosed<br/>in all types of audiences, including<br/><span class=attention-boxed>public/open-group</span> kind of audiences.' }"
                 v-bind:class="{ active: intPersonPrivacy === 'public' }"
                 v-on:click="intPersonPrivacy = 'public'">
                 Public
             </div>
             <div class="selbox"
-                v-tooltip.top="{ content: 'Your attendee identity (portrait and name) is disclosed<br/>in private/closed-group kind of audiences only.' }"
+                v-tooltip.top="{ content: 'Your attendee identity (portrait and name) is disclosed<br/>in <span class=attention-boxed>private/closed-group</span> kind of audiences only.' }"
                 v-bind:class="{ active: intPersonPrivacy === 'private' }"
                 v-on:click="intPersonPrivacy = 'private'">
                 Private
             </div>
             <div class="selbox"
-                v-tooltip.top="{ content: 'Your attendee identity (portrait and name) is never disclosed.' }"
+                v-tooltip.top="{ content: 'Your attendee identity (portrait and name)<br/>is <span class=attention-boxed>never</span> disclosed at all.' }"
                 v-bind:class="{ active: intPersonPrivacy === 'anonymous' }"
                 v-on:click="intPersonPrivacy = 'anonymous'">
                 Anonymous
@@ -123,14 +123,14 @@
         </div>
         <div class="selbox-container">
             <div class="selbox"
-                v-tooltip.top="{ content: 'Your streams will be stored locally<br/>in order to be replayed within 48 hours.<br/>' +
+                v-tooltip.top="{ content: 'Your streams will be stored locally<br/>in order to be replayed within <span class=attention-boxed>48</span> hours.<br/>' +
                     'Please ensure that your free disk space<br/>allows storing about 1 GB/hour.' }"
                 v-bind:class="{ active: intRecordingHours === 48 }"
                 v-on:click="intRecordingHours = 48">
                 48 Hours
             </div>
             <div class="selbox"
-                v-tooltip.top="{ content: 'Your streams will be stored locally<br/>in order to be replayed within 24 hours.<br/>' +
+                v-tooltip.top="{ content: 'Your streams will be stored locally<br/>in order to be replayed within <span class=attention-boxed>24</span> hours.<br/>' +
                     'Please ensure that your free disk space<br/>allows storing about 1 GB/hour.' }"
                 v-bind:class="{ active: intRecordingHours === 24 }"
                 v-on:click="intRecordingHours = 24">
