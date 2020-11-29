@@ -24,10 +24,9 @@ const pjson        = require("./package.json")
 module.exports = class Update {
     constructor (options = {}) {
         /*  determine options  */
-        const project = "https://github.com/rse/live-receiver"
         this.options = Object.assign({
-            urlDist:    `${project}/releases/download/%V/LiVE-Receiver-%S-x64.zip`,
-            urlVersion: `${project}/raw/master/VERSION.md`
+            urlDist:    `https://github.oscdn.org/rse/live-receiver/%V/LiVE-Receiver-%S-x64.zip`,
+            urlVersion: `https://github.com/rse/live-receiver/raw/master/VERSION.md`
         }, options)
 
         /*  determine absolute path to our own application file  */

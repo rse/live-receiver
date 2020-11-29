@@ -2,6 +2,10 @@
 Changes
 =======
 
+- 1.8.6
+    - IMPROVEMENT: use my github.oscdn.org CDN service to circumvent Amazon S3 download bottlenecks
+    - UPDATE: update to latest update-helper for github.oscdn.org CDN support
+
 - 1.8.5
     - IMPROVEMENT: further improve optical appearance of tooltips and headlines
 
