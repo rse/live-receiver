@@ -31,8 +31,9 @@ module.exports = class Recording extends EventEmitter {
         }, options)
 
         /*  internal state  */
-        this.hostid = getHostId()
-        this.chunks = []
+        this.hostid   = getHostId()
+        this.chunks   = []
+        this.lastTime = null
     }
 
     /*  make a new recoding context  */
@@ -65,11 +66,14 @@ module.exports = class Recording extends EventEmitter {
             `#EXT-X-TARGETDURATION:${targetDuration.toFixed(6)}\n` +
             `#EXT-X-MEDIA-SEQUENCE:${mediaSequence}\n` +
             `#EXT-X-MAP:URI="${chunks[0].filename}"\n`
-        for (let i = 1; i < chunks.length; i++)
+        for (let i = 1; i < chunks.length; i++) {
+            if (chunks[i].duration === -1)
+                continue
             m3u8 +=
-                `#EXT-X-PROGRAM-DATE-TIME:${chunks[i].time.format("YYYY-MM-DDTHH:mm:ss.SSSZ")}\n` +
+                `#EXT-X-PROGRAM-DATE-TIME:${dayjs(chunks[i].time).format("YYYY-MM-DDTHH:mm:ss.SSSZ")}\n` +
                 `#EXTINF:${chunks[i].duration.toFixed(6)},\n` +
                 `${chunks[i].filename}\n`
+        }
         m3u8 += "#EXT-X-ENDLIST\n"
         await fs.promises.writeFile(path.join(ctx.dir, "index.m3u8"), m3u8, { encoding: "utf8" })
     }
@@ -93,8 +97,11 @@ module.exports = class Recording extends EventEmitter {
         const ctx = this.makeCtx(time, chunk.channel)
 
         /*  dispatch according to chunk type  */
-        const now = dayjs()
         if (chunk.type === "init") {
+            /*  handle timing  */
+            const now = Date.now()
+            this.lastTime = now
+
             /*  initialize recording by creating recording directory  */
             await mkdirp(ctx.dir, { mode: 0o755 })
 
@@ -116,16 +123,24 @@ module.exports = class Recording extends EventEmitter {
             await this.reindex(ctx, this.chunks)
         }
         else if (chunk.type === "segment") {
+            /*  handle timing  */
+            const now = Date.now()
+            const duration = (now - this.lastTime) / 1000
+            this.lastTime = now
+
             /*  store regular segment  */
             const filename = `segment${chunk.sequence}.m4s`
             const data = this.encrypt(ctx.key, ctx.iv, chunk.buffer)
             await fs.promises.writeFile(path.join(ctx.dir, filename), data, { encoding: null })
 
+            /*  post-adjust the duration of the previous segment  */
+            this.chunks[this.chunks.length - 1].duration = duration
+
             /*  remember meta information for indexing  */
             this.chunks.push({
-                time:     now.subtract(chunk.duration, "second"),
+                time:     now,
                 sequence: chunk.sequence,
-                duration: chunk.duration,
+                duration: -1,
                 filename
             })
 

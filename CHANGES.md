@@ -2,6 +2,9 @@
 Changes
 =======
 
+- 1.8.7
+    - BUGFIX: fix HLS/m3u8 based recording by using a more robust and correct timing
+
 - 1.8.6
     - IMPROVEMENT: use my github.oscdn.org CDN service to circumvent Amazon S3 peering bottlenecks
     - UPDATE: update to latest update-helper for github.oscdn.org CDN support
