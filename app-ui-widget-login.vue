@@ -24,7 +24,8 @@
             type="text"
             placeholder="Enter your LiVE relay server FQDN..."
             v-tooltip.left="{ content: 'Please enter the received <b>LiVE Relay Server</b><br/>' +
-                'Fully Qualified Domain Name (FQDN),<br/>like <tt>live.example.com</tt>' }"
+                'Fully Qualified Domain Name (FQDN),<br/>' +
+                'like <tt>live.example.com</tt>' }"
             v-model="intLiveRelayServer"
             v-on:keyup.escape="intLiveRelayServer = ''"
             v-on:keyup.enter="$refs.liveAccessToken.focus()"
@@ -38,7 +39,7 @@
             class="input-field"
             type="text"
             placeholder="Enter your LiVE access token..."
-            v-tooltip.left="{ content: 'Please enter the received <b>LiVE Access Token</b><br/>' +
+            v-tooltip.left="{ content: 'Please enter the received <b>LiVE Access Token</b>,<br/>' +
                 'like <tt>example-XXXX-XXXX</tt>' }"
             v-model="intLiveAccessToken"
             v-on:keyup.escape="intLiveAccessToken = ''"
