@@ -57,6 +57,9 @@ ui = {}
     ui.recordingArtifact = async (...args) => {
         return ui.ipc.invoke("recording-artifact", ...args)
     }
+    ui.recordingInfo = async (...args) => {
+        return ui.ipc.invoke("recording-info", ...args)
+    }
 
     /*  external requirements  */
     ui.throttle     = require("throttle-debounce").throttle

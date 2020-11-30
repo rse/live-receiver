@@ -183,6 +183,16 @@ module.exports = class Recording extends EventEmitter {
         return recordings
     }
 
+    /*  determine information about a recording  */
+    async info (recording) {
+        const m = recording.match(/^(\d{4}-\d{2}-\d{2})-(\d{2})-(\d{2})-(\d{2})-(.+)$/)
+        if (m === null)
+            throw new Error("invalid recording name")
+        const time    = `${m[1]} ${m[2]}:${m[3]}:${m[4]}`
+        const channel = m[5]
+        return { time, channel }
+    }
+
     /*  load a recording artifact  */
     async load (recording, filename, type) {
         this.options.log("info", `loading artifact: recording="${recording}" filename="${filename}" type="${type}"`)

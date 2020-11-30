@@ -463,6 +463,9 @@ const app = electron.app
         app.ipc.handle("recording-artifact", async (event, id, file, type) => {
             return recording.load(id, file, type)
         })
+        app.ipc.handle("recording-info", async (event, id) => {
+            return recording.info(id)
+        })
         setInterval(async () => {
             await recording.prune(app.recordingHours)
             app.win.webContents.send("recordings-update")

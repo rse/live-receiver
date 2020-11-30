@@ -28,7 +28,7 @@
 
                     <!--  timing information  -->
                     <div class="timing">
-                        {{ timeDuration }} / {{ timeTotal }}
+                        {{ timeWhen }} &nbsp;&nbsp; {{ timeDuration }} / {{ timeTotal }}
                     </div>
 
                     <!--  playrate button row  -->
@@ -228,6 +228,7 @@ module.exports = {
             intMuted:  this.muted  ? this.muted  : false,
             intDevice: this.device ? this.device : "",
             paused: false,
+            timeWhen: "0000-00-00 00:00:00",
             timeDuration: "00:00",
             timeTotal: "00:00",
             playrate: 1.00,
@@ -325,6 +326,9 @@ module.exports = {
 
         /*  start playing  */
         this.$on("play-begin", async (info) => {
+            /*  determine information  */
+            const { time } = await ui.recordingInfo(info.recording)
+
             /*  configure <video> element  */
             const ve = this.$refs.video
             ve.disablePictureInPicture = true
@@ -333,9 +337,6 @@ module.exports = {
 
             /*  provide a custom Hls.js loader  */
             class CustomLoader extends Hls.DefaultConfig.loader {
-                constructor (config) {
-                    super(config)
-                }
                 load (context, config, callbacks) {
                     /*  determine recording id and artifact name   */
                     const m = context.url.match(/^app:\/\/-\/([^/]+)\/(.+)$/)
@@ -387,13 +388,14 @@ module.exports = {
 
             /*  track <video> element informations  */
             ve.addEventListener("timeupdate", () => {
-                this.timeDuration = dayjs.utc(ve.currentTime * 1000).format("mm:ss")
+                this.timeWhen = dayjs(time).add(ve.currentTime, "second").format("YYYY-MM-DD HH:mm")
+                this.timeDuration = dayjs.utc(ve.currentTime * 1000).format("HH:mm:ss")
                 const percent = (100 * (ve.currentTime / ve.duration)) + "%"
                 this.$refs.timelineDuration.style.width = percent
                 this.$refs.timelineCursor.style.left = percent
             })
             ve.addEventListener("durationchange", () => {
-                this.timeTotal = dayjs.utc(ve.duration * 1000).format("mm:ss")
+                this.timeTotal = dayjs.utc(ve.duration * 1000).format("HH:mm:ss")
             })
             ve.addEventListener("ended", () => {
                 this.paused = true

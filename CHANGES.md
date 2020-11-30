@@ -4,6 +4,7 @@ Changes
 
 - 1.8.8
     - IMPROVEMENT: provide more speed decrease/increase options on replay
+    - IMPROVEMENT: show recording wall-clock time during replay
 
 - 1.8.7
     - BUGFIX: fix HLS/m3u8 based recording by using a more robust and correct timing
