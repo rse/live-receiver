@@ -5,6 +5,7 @@ Changes
 - 1.8.7
     - BUGFIX: fix HLS/m3u8 based recording by using a more robust and correct timing
     - BUGFIX: make HLS/m3u8 based playing more robust by using HLS.js API more correct
+    - IMPROVEMENT: optically improve recording list on login dialog
 
 - 1.8.6
     - IMPROVEMENT: use my github.oscdn.org CDN service to circumvent Amazon S3 peering bottlenecks

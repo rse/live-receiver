@@ -333,6 +333,9 @@
             .multiselect__single {
                 font-size: 10pt;
             }
+            .multiselect__option {
+                font-size: 10pt;
+            }
         }
         .recordings-button-play,
         .recordings-button-delete {
