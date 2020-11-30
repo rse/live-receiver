@@ -9,7 +9,7 @@
 <template>
     <div v-bind:style="style" class="videoplay">
         <!-- <video> container -->
-        <video ref="video" class="video" autoplay></video>
+        <video ref="video" class="video"></video>
 
         <!-- control overlay -->
         <div class="control-layer">
@@ -305,6 +305,9 @@ module.exports = {
 
             /*  provide a custom Hls.js loader  */
             class CustomLoader extends Hls.DefaultConfig.loader {
+                constructor (config) {
+                    super(config)
+                }
                 load (context, config, callbacks) {
                     /*  determine recording id and artifact name   */
                     const m = context.url.match(/^app:\/\/-\/([^/]+)\/(.+)$/)
@@ -314,10 +317,15 @@ module.exports = {
                     const artifact  = m[2]
 
                     /*  load the artifact via IPC  */
+                    const now = Date.now()
+                    const stats = { trequest: now, tfirst: now }
                     ui.recordingArtifact(recording, artifact, context.responseType).then((result) => {
-                        callbacks.onSuccess({ url: context.url, data: result.data }, {}, context, null)
+                        stats.tload  = Date.now()
+                        stats.loaded = result.data.length
+                        stats.total  = result.data.length
+                        callbacks.onSuccess({ url: context.url, data: result.data }, stats, context, null)
                     }).catch((err) => {
-                        callbacks.onError(err, context, null)
+                        callbacks.onError({ code: 500, text: err.toString() }, context, null)
                     })
                 }
                 abort   () {}
@@ -325,7 +333,11 @@ module.exports = {
             }
 
             /*  create a new Hls.js instance and attach it to the <video> element  */
-            hls = new Hls({ loader: CustomLoader })
+            hls = new Hls({
+                loader: CustomLoader,
+                autoStartLoad: true,
+                debug: false
+            })
             hls.attachMedia(ve)
             hls.on(Hls.Events.ERROR, (ev, data) => {
                 let err = ""
