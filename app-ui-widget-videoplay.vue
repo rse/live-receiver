@@ -11,6 +11,11 @@
         <!-- <video> container -->
         <video ref="video" class="video"></video>
 
+        <!-- info overlay -->
+        <div ref="info" class="info-layer">
+            <i class="fas fa-circle"></i> &nbsp; REPLAY
+        </div>
+
         <!-- control overlay -->
         <div class="control-layer">
             <div class="control-bar">
@@ -78,6 +83,20 @@
             width: 100%;
             height: 100%;
         }
+    }
+
+    /*  info element  */
+    .info-layer {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        text-align: center;
+        color: #ff0000;
+        font-weight: bold;
+        border: 2px solid #ff0000;
+        border-radius: 4px;
+        padding: 2px 8px 2px 8px;
+        opacity: 0.80;
     }
 
     /*  playrate element  */
@@ -294,8 +313,11 @@ module.exports = {
             this.intDevice = device
         })
 
-        /*  start playing  */
+        /*  local state  */
         let hls = null
+        let animation = null
+
+        /*  start playing  */
         this.$on("play-begin", async (info) => {
             /*  configure <video> element  */
             const ve = this.$refs.video
@@ -370,6 +392,18 @@ module.exports = {
             ve.addEventListener("ended", () => {
                 this.paused = true
             })
+
+            /*  animate info layer  */
+            animation = anime({
+                targets:   this.$refs.info,
+                duration:  2 * 1000,
+                easing:    "easeInOutQuad",
+                autoplay:  true,
+                loop:      true,
+                delay:     0,
+                direction: "alternate",
+                opacity:   [ 0, 1 ]
+            })
         })
 
         /*  end playing  */
@@ -378,6 +412,8 @@ module.exports = {
             ve.pause()
             if (hls !== null)
                 hls.destroy()
+            if (animation !== null)
+                animation.pause()
         })
     }
 }
