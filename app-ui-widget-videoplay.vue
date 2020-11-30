@@ -33,11 +33,17 @@
 
                     <!--  playrate button row  -->
                     <div class="playrate">
-                        <div class="playrate-button" v-bind:class="{ active: playrate === 0.50 }" v-on:click="playrate = 0.50">0.50x</div>
-                        <div class="playrate-button" v-bind:class="{ active: playrate === 0.75 }" v-on:click="playrate = 0.75">0.75x</div>
-                        <div class="playrate-button" v-bind:class="{ active: playrate === 1.00 }" v-on:click="playrate = 1.00">1.00x</div>
-                        <div class="playrate-button" v-bind:class="{ active: playrate === 1.25 }" v-on:click="playrate = 1.25">1.25x</div>
-                        <div class="playrate-button" v-bind:class="{ active: playrate === 1.50 }" v-on:click="playrate = 1.50">1.50x</div>
+                        <div class="playrate-button" v-bind:class="{ active: playrate === 0.5 }" v-on:click="playrate = 0.5">0.5x</div>
+                        <div class="playrate-button" v-bind:class="{ active: playrate === 0.6 }" v-on:click="playrate = 0.6">0.6x</div>
+                        <div class="playrate-button" v-bind:class="{ active: playrate === 0.7 }" v-on:click="playrate = 0.7">0.7x</div>
+                        <div class="playrate-button" v-bind:class="{ active: playrate === 0.8 }" v-on:click="playrate = 0.8">0.8x</div>
+                        <div class="playrate-button" v-bind:class="{ active: playrate === 0.9 }" v-on:click="playrate = 0.9">0.9x</div>
+                        <div class="playrate-button" v-bind:class="{ active: playrate === 1.0 }" v-on:click="playrate = 1.0">1.0x</div>
+                        <div class="playrate-button" v-bind:class="{ active: playrate === 1.1 }" v-on:click="playrate = 1.1">1.1x</div>
+                        <div class="playrate-button" v-bind:class="{ active: playrate === 1.2 }" v-on:click="playrate = 1.2">1.2x</div>
+                        <div class="playrate-button" v-bind:class="{ active: playrate === 1.3 }" v-on:click="playrate = 1.3">1.3x</div>
+                        <div class="playrate-button" v-bind:class="{ active: playrate === 1.4 }" v-on:click="playrate = 1.4">1.4x</div>
+                        <div class="playrate-button" v-bind:class="{ active: playrate === 1.5 }" v-on:click="playrate = 1.5">1.5x</div>
                     </div>
                 </div>
                 <div class="control-row">
