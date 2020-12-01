@@ -344,6 +344,10 @@
                                 v-on:click="sendChoice(2, 'no')">
                                 <span class="choice-icon"><i class="fas fa-thumbs-down"></i></span>No
                             </div>
+                            <div v-bind:class="{ 'choice-box': true, 'choice-cmd': true, active: votingChoice === 0 }"
+                                v-on:click="sendChoice(0, 'abstain')">
+                                <span class="choice-icon"><i class="fas fa-ban"></i></span>abstain
+                            </div>
                         </div>
                         <div v-show="votingActive && votingType === 'evaluate'"
                             v-tooltip.bottom-center="{ content: 'Send a numeric evaluation to the trainer.' }"
@@ -368,8 +372,12 @@
                                 v-on:click="sendChoice(5, '+2')">
                                 <span class="choice-icon"><i class="fas fa-grin-stars"></i></span>+2
                             </div>
+                            <div v-bind:class="{ 'choice-box': true, 'choice-cmd': true, active: votingChoice === 0 }"
+                                v-on:click="sendChoice(0, 'abstain')">
+                                <span class="choice-icon"><i class="fas fa-ban"></i></span>abstain
+                            </div>
                         </div>
-                        <div v-show="votingActive && (votingType === 'choose' || votingType === 'quiz')"
+                        <div v-show="votingActive && votingType === 'choose'"
                             v-tooltip.bottom-center="{ content: 'Send a numeric choice to the trainer.' }"
                             v-bind:class="{ 'choice-row': true, disabled: votingDone }">
                             <div v-bind:class="{ 'choice-box': true, active: votingChoice === 1 }"
@@ -390,6 +398,36 @@
                                  v-on:click="sendChoice(8, '8')">8</div>
                             <div v-bind:class="{ 'choice-box': true, active: votingChoice === 9 }"
                                  v-on:click="sendChoice(9, '9')">9</div>
+                            <div v-bind:class="{ 'choice-box': true, 'choice-cmd': true, active: votingChoice === 0 }"
+                                v-on:click="sendChoice(0, 'abstain')">
+                                <span class="choice-icon"><i class="fas fa-ban"></i></span>abstain
+                            </div>
+                        </div>
+                        <div v-show="votingActive && votingType === 'quiz'"
+                            v-tooltip.bottom-center="{ content: 'Send a quiz answer to the trainer.' }"
+                            v-bind:class="{ 'choice-row': true, disabled: votingDone }">
+                            <div v-bind:class="{ 'choice-box': true, active: votingChoice === 1 }"
+                                 v-on:click="sendChoice(1, '1')">1</div>
+                            <div v-bind:class="{ 'choice-box': true, active: votingChoice === 2 }"
+                                 v-on:click="sendChoice(2, '2')">2</div>
+                            <div v-bind:class="{ 'choice-box': true, active: votingChoice === 3 }"
+                                 v-on:click="sendChoice(3, '3')">3</div>
+                            <div v-bind:class="{ 'choice-box': true, active: votingChoice === 4 }"
+                                 v-on:click="sendChoice(4, '4')">4</div>
+                            <div v-bind:class="{ 'choice-box': true, active: votingChoice === 5 }"
+                                 v-on:click="sendChoice(5, '5')">5</div>
+                            <div v-bind:class="{ 'choice-box': true, active: votingChoice === 6 }"
+                                 v-on:click="sendChoice(6, '6')">6</div>
+                            <div v-bind:class="{ 'choice-box': true, active: votingChoice === 7 }"
+                                 v-on:click="sendChoice(7, '7')">7</div>
+                            <div v-bind:class="{ 'choice-box': true, active: votingChoice === 8 }"
+                                 v-on:click="sendChoice(8, '8')">8</div>
+                            <div v-bind:class="{ 'choice-box': true, active: votingChoice === 9 }"
+                                 v-on:click="sendChoice(9, '9')">9</div>
+                            <div v-bind:class="{ 'choice-box': true, 'choice-cmd': true, active: votingChoice === 0 }"
+                                v-on:click="sendChoice(0, 'abstain')">
+                                <span class="choice-icon"><i class="fas fa-ban"></i></span>abstain
+                            </div>
                         </div>
                     </div>
 
@@ -1024,6 +1062,7 @@
                 height: 100%;
                 width:  100%;
                 margin-left: 4px;
+                overflow: hidden;
                 .choice-box {
                     color:                   var(--color-std-fg-3);
                     background-color:        var(--color-std-bg-3);
@@ -1032,15 +1071,19 @@
                     border-right:  1px solid var(--color-std-bg-1);
                     border-bottom: 1px solid var(--color-std-bg-1);
                     border-radius: 5px;
-                    padding: 0px 12px 0px 12px;
+                    padding: 0px 10px 0px 10px;
                     margin-right: 2px;
                     font-family: "TypoPRO Source Sans Pro";
                     font-size: 14pt;
                     font-weight: bold;
+                    white-space: nowrap;
                     .choice-icon {
                         font-size: 12pt;
                         color: var(--color-std-fg-1);
-                        padding-right: 5px;
+                        padding-right: 4px;
+                    }
+                    &.choice-cmd {
+                        font-weight: 300;
                     }
                     &.active {
                         color:                   var(--color-acc-fg-3);

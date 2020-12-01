@@ -2,6 +2,9 @@
 Changes
 =======
 
+- 1.9.0
+    - IMPROVEMENT: support "abstain" as an answer on votings
+
 - 1.8.8
     - IMPROVEMENT: provide more speed decrease/increase options on replay
     - IMPROVEMENT: show recording wall-clock time during replay
