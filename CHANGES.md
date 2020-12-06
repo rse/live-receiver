@@ -2,6 +2,9 @@
 Changes
 =======
 
+- 1.9.1
+    - UPDATE: update dependencies
+
 - 1.9.0
     - IMPROVEMENT: support "abstain" as an answer on votings
 
