@@ -15,6 +15,10 @@
         </div>
         <div class="col-1">
             <img v-bind:src="logo" class="logo" alt="LiVE"/>
+            <div class="logo-title">
+                <a href="https://github.com/rse/live-receiver" v-on:click="openURL">Receiver</a>
+                <a v-bind:href="'https://github.com/rse/live-receiver/releases/tag/' + pkg.version" v-on:click="openURL">{{ pkg.version }}</a>
+            </div>
         </div>
         <div class="col-2-3">
             <a href="https://github.com/rse/live-receiver" v-on:click="openURL">LiVE Receiver</a>
@@ -127,6 +131,14 @@
     }
     .logo {
         width: 90%;
+    }
+    .logo-title {
+        margin-left: 4px;
+        a {
+            font-size: 13pt;
+            font-weight: 300;
+            color: var(--color-std-fg-3);
+        }
     }
     .versions {
         font-weight: 200;
