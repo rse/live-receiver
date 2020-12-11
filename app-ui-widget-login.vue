@@ -384,7 +384,7 @@ module.exports = {
             logo2:                   ui.logo2,
             version:                 ui.pkg.version,
             error:                   "",
-            blinkUpdate:             false,
+            blinkUpdate:             "none",
             activeUpdate:            false,
             blinkSettings:           false,
             activeSettings:          false,
@@ -528,11 +528,12 @@ module.exports = {
 
         /*  support blinking update button  */
         let timerUpdate = null
-        this.$on("blink-update", (enable) => {
-            this.blinkUpdate = enable
-            if (this.blinkUpdate && !timerUpdate)
-                timerUpdate = setInterval(() => { this.activeUpdate = !this.activeUpdate }, 1000)
-            else if (!this.blinkUpdate && timerUpdate) {
+        this.$on("blink-update", (type) => {
+            this.blinkUpdate = type
+            if (this.blinkUpdate !== "none" && !timerUpdate)
+                timerUpdate = setInterval(() => { this.activeUpdate = !this.activeUpdate },
+                    this.blinkUpdate === "soft" ? 1200 : 300)
+            else if (this.blinkUpdate === "none" && timerUpdate) {
                 clearTimeout(timerUpdate)
                 timerUpdate = null
                 this.activeUpdate = false

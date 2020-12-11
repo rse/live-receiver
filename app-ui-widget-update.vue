@@ -462,10 +462,14 @@ module.exports = {
                             && this.versions.running.version === this.versions.current.version)
                         || (   this.versions.forthcoming
                             && this.versions.forthcoming.version
-                            && this.versions.running.version === this.versions.forthcoming.version))))
-                this.$emit("update-notify", true)
+                            && this.versions.running.version === this.versions.forthcoming.version)))) {
+                if (this.versions.running.type === "deprecated")
+                    this.$emit("update-notify", "hard")
+                else
+                    this.$emit("update-notify", "soft")
+            }
             else
-                this.$emit("update-notify", false)
+                this.$emit("update-notify", "none")
         })
         this.$on("update-progress", (progress) => {
             this.progress = progress

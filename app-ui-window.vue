@@ -1692,8 +1692,8 @@ module.exports = {
         updateToVersion (version) {
             this.$emit("update-to-version", version)
         },
-        updateNotify (available) {
-            this.$refs.login.$emit("blink-update", available)
+        updateNotify (type) {
+            this.$refs.login.$emit("blink-update", type)
         },
         streamVideoSize (size) {
             this.streamSize.w = size.width

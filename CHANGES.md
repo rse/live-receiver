@@ -3,10 +3,11 @@ Changes
 =======
 
 - 1.9.1
+    - IMPROVEMENT: show version number more prominent on about dialog
+    - IMPROVEMENT: blink faster in case updates are available and a deprecated version is running
     - UPDATE: upgrade to Electron 11.0.5
     - UPDATE: upgrade to mp4box.js 0.4.1
     - UPDATE: upgrade minor dependencies
-    - IMPROVEMENT: show version number more prominent on about dialog
 
 - 1.9.0
     - IMPROVEMENT: support "abstain" as an answer on votings
