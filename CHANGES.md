@@ -3,7 +3,9 @@ Changes
 =======
 
 - 1.9.1
-    - UPDATE: update dependencies
+    - UPDATE: upgrade to Electron 11.0.5
+    - UPDATE: upgrade to mp4box.js 0.4.1
+    - UPDATE: upgrade minor dependencies
     - IMPROVEMENT: show version number more prominent on about dialog
 
 - 1.9.0
