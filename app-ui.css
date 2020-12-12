@@ -113,6 +113,7 @@ html, body {
 /*  multi-select/drop-down field  */
 .multiselect {
     background-color: inherit;
+    cursor: pointer;
 }
 .multiselect__tags {
     color:            var(--color-std-fg-3);

@@ -2,6 +2,9 @@
 Changes
 =======
 
+- 1.9.2
+    - IMPROVEMENT: use a pointer cursor on all remaining clickable areas
+
 - 1.9.1
     - IMPROVEMENT: show version number more prominent on about dialog
     - IMPROVEMENT: blink faster in case updates are available and a deprecated version is running
