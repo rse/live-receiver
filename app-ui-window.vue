@@ -59,7 +59,7 @@
                         v-tooltip.bottom-center="{ content: 'Save the last <u>r</u>ecorded 10s of the current video stream<br/>' +
                             'in MP4 format to your personal <i>Videos</i> folder.<br/>' +
                             'Allowed once every 30s only. &nbsp;<span class=attention-boxed>CTRL+r</span>' }"
-                        v-bind:class="{ disabled: inLogin || recordingThrottle || inVideoPlay }">
+                        v-bind:class="{ disabled: inLogin || recordingThrottle || inVideoPlay || streamBytes === 0 }">
                         <i class="icon fas fa-video"></i>
                         <span class="title">Recording</span>
                     </div>
@@ -69,13 +69,13 @@
                         v-tooltip.bottom-center="{ content: 'Save a <u>s</u>creenshot of the current video stream<br/>' +
                             'in PNG format to your personal <i>Picture</i> folder.<br/>' +
                             'Allowed once every 3s only. &nbsp;<span class=attention-boxed>CTRL+s</span>' }"
-                        v-bind:class="{ disabled: inLogin || screenshotThrottle || inVideoPlay }">
+                        v-bind:class="{ disabled: inLogin || screenshotThrottle || inVideoPlay || streamBytes === 0 }">
                         <i class="icon fas fa-camera"></i>
                         <span class="title">Screenshot</span>
                     </div>
                 </div>
                 <div class="group-bar"
-                     v-bind:class="{ disabled: inLogin || inVideoPlay }">
+                     v-bind:class="{ disabled: inLogin || inVideoPlay || streamBytes === 0 }">
                 </div>
             </div>
 
@@ -1179,6 +1179,7 @@ module.exports = {
         durationStart:         0,
         durationText:          "",
         timeText:              "",
+        streamBytes:           0,
         streamSize:            { w: 0, h: 0 },
         videoSize:             { w: 0, h: 0 },
         videoClosure:          false,
@@ -1790,6 +1791,7 @@ module.exports = {
             this.$refs.videostream.$emit("volume", this.volume)
             this.$refs.videostream.$emit("stream-begin")
             this.allowDisconnect = false
+            this.streamBytes = 0
 
             /*  determine average bandwidth meter  */
             kbpsList = []
@@ -1836,15 +1838,18 @@ module.exports = {
         }, 400)
         this.$on("stream-data", (data) => {
             this.bandwidthBytes += data.buffer.byteLength
+            this.streamBytes += data.buffer.byteLength
             this.$refs.videostream.$emit("stream-data", data)
         })
         this.$on("stream-reset", () => {
+            this.streamBytes = 0
             kbpsList = []
             kbpsPos  = 0
             this.$refs.videostream.$emit("stream-reset")
         })
         this.$on("stream-end", () => {
             this.allowDisconnect = false
+            this.streamBytes = 0
             this.$refs.videostream.$emit("stream-end")
             if (this.timer2 !== null) {
                 clearTimeout(this.timer2)

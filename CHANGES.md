@@ -4,6 +4,7 @@ Changes
 
 - 1.9.2
     - IMPROVEMENT: use a pointer cursor on all remaining clickable areas
+    - IMPROVEMENT: disable recording/snapshot buttons unless content was really received
 
 - 1.9.1
     - IMPROVEMENT: show version number more prominent on about dialog
