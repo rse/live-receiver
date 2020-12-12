@@ -40,7 +40,7 @@
                     <!-- meter -->
                     <div class="box meter" v-on:click="meterToggle"
                         v-tooltip.bottom-center="{ content: 'Shows the current bandwith usage of the<br/>' +
-                            'video stream in kilo-bit per second, the<br/>' +
+                            'video stream in kilo-bit per second (kbps), the<br/>' +
                             'current session duration in hours/minutes or the<br/>' +
                             'current time. Press to toggle the display type.' }"
                         v-bind:class="{ disabled: inLogin || inVideoPlay, active: !inLogin && !inVideoPlay }">
