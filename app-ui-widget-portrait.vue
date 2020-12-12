@@ -113,6 +113,9 @@
             height: 130px;
             margin: 7px;
             border: 3px solid transparent;
+            &:hover {
+                border: 3px solid var(--color-sig-bg-3);
+            }
             &.editing {
                 border: 3px solid var(--color-acc-bg-3);
             }
