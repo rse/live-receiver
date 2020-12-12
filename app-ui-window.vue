@@ -117,16 +117,16 @@
                     <!-- move window -->
                     <div class="box move"
                         v-tooltip.bottom-center="{ content: 'Move window position on screen.' }">
-                        <div class="logo">
-                            <img v-bind:src="logo" alt="LiVE"/>
-                        </div>
                         <div class="grab-container">
                             <span class="grab grab-1"></span>
                             <span class="grab grab-2"></span>
                             <span class="grab grab-3"></span>
                             <span class="grab grab-4"></span>
                             <span class="grab grab-5"></span>
-                            <span class="title">Move Window</span>
+                        </div>
+                        <span class="title">Move Window</span>
+                        <div class="logo">
+                            <img v-bind:src="logo" alt="LiVE"/>
                         </div>
                     </div>
                 </div>
@@ -920,8 +920,6 @@
             }
         }
         .grab-container {
-             -webkit-app-region: drag;
-             -webkit-user-select: none;
             .grab {
                 height: 1px;
                 width: calc(100% - 20px);
@@ -930,9 +928,10 @@
                 border-top:    1px solid var(--color-std-bg-1);
                 border-bottom: 1px solid var(--color-std-bg-5);
             }
-            &:hover {
-                cursor: grab;
-            }
+        }
+        -webkit-app-region: drag;
+        &:hover {
+            cursor: grab;
         }
     }
     .header .move {
