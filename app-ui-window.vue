@@ -700,6 +700,7 @@
 
     /*  button widget  */
     .button {
+        cursor: pointer;
         &:hover {
             background-color:        var(--color-sig-bg-3);
             border-top:    1px solid var(--color-sig-bg-5);

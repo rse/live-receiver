@@ -266,6 +266,7 @@
             flex-grow: 1;
             justify-content: center;
             width: 15%;
+            cursor: pointer;
             .icon {
                 padding-top: 3px;
                 width: 100%;

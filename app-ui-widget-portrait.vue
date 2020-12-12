@@ -117,6 +117,7 @@
                 border: 3px solid var(--color-acc-bg-3);
             }
             .preview-wrap {
+                cursor: pointer;
                 width:  100%;
                 height: 100%;
                 .preview {
@@ -147,6 +148,7 @@
             &:hover {
                 border: 2px solid var(--color-sig-bg-3);
             }
+            cursor: pointer;
         }
         .choose {
             width: 100%;
@@ -160,6 +162,7 @@
             border-bottom: 1px solid var(--color-std-bg-1);
             border-radius: 5px;
             outline: none;
+            cursor: pointer;
             &:hover {
                 color:                   var(--color-sig-fg-3);
                 background-color:        var(--color-sig-bg-4);
@@ -181,6 +184,7 @@
             border-bottom: 1px solid var(--color-acc-bg-1);
             border-radius: 5px;
             outline: none;
+            cursor: pointer;
             &:hover {
                 color:                   var(--color-sig-fg-3);
                 background-color:        var(--color-sig-bg-4);
