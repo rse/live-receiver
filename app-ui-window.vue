@@ -931,7 +931,7 @@
         }
         -webkit-app-region: drag;
         &:hover {
-            cursor: grab;
+            cursor: pointer;
         }
     }
     .header .move {
