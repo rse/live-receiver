@@ -271,16 +271,19 @@
     }
     .progress {
         margin-top: 20px;
-        color: var(--color-acc-fg-3);
+        color: var(--color-std-fg-3);
         border-radius: 5px;
-        border: 1px solid var(--color-acc-bg-3);
+        background-color:        var(--color-std-bg-4);
+        border-top:    1px solid var(--color-std-bg-1);
+        border-left:   1px solid var(--color-std-bg-1);
+        border-right:  1px solid var(--color-std-bg-5);
+        border-bottom: 1px solid var(--color-std-bg-5);
         padding: 8px 10px 12px 10px;
         position: relative;
         .spinner {
             position: absolute;
             top: 6px;
             right: 12px;
-            font-color: var(--color-acc-fg-5);
         }
         .completion {
             margin-top: 4px;
@@ -294,17 +297,17 @@
                 top: 0;
                 left: 0;
                 border-radius: 5px;
-                background-color:        var(--color-acc-bg-2);
-                border-top:    1px solid var(--color-acc-bg-3);
-                border-left:   1px solid var(--color-acc-bg-3);
-                border-right:  1px solid var(--color-acc-bg-1);
-                border-bottom: 1px solid var(--color-acc-bg-1);
+                background-color:        var(--color-std-bg-3);
+                border-top:    1px solid var(--color-std-bg-1);
+                border-left:   1px solid var(--color-std-bg-1);
+                border-right:  1px solid var(--color-std-bg-5);
+                border-bottom: 1px solid var(--color-std-bg-5);
                 &.disabled {
-                    background-color:        var(--color-acc-bg-1);
-                    border-top:    1px solid var(--color-acc-bg-1);
-                    border-left:   1px solid var(--color-acc-bg-1);
-                    border-right:  1px solid var(--color-acc-bg-1);
-                    border-bottom: 1px solid var(--color-acc-bg-1);
+                    background-color:        var(--color-std-bg-3);
+                    border-top:    1px solid var(--color-std-bg-1);
+                    border-left:   1px solid var(--color-std-bg-1);
+                    border-right:  1px solid var(--color-std-bg-5);
+                    border-bottom: 1px solid var(--color-std-bg-5);
                 }
             }
             .completed {
@@ -313,11 +316,11 @@
                 top: 0;
                 left: 0;
                 border-radius: 5px;
-                background-color:        var(--color-acc-bg-4);
+                background-color:        var(--color-acc-bg-3);
                 border-top:    1px solid var(--color-acc-bg-5);
                 border-left:   1px solid var(--color-acc-bg-5);
-                border-right:  1px solid var(--color-acc-bg-3);
-                border-bottom: 1px solid var(--color-acc-bg-3);
+                border-right:  1px solid var(--color-acc-bg-1);
+                border-bottom: 1px solid var(--color-acc-bg-1);
             }
             .caption {
                 position: absolute;

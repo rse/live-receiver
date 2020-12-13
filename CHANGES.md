@@ -6,6 +6,7 @@ Changes
     - IMPROVEMENT: use a pointer cursor on all remaining clickable areas
     - IMPROVEMENT: disable recording/snapshot buttons unless content was really received
     - IMPROVEMENT: improve icons on settings dialog
+    - IMPROVEMENT: improve coloring of progress bar on update dialog
     - UPDATE: upgrade to Electron 11.1.0 and LESS-CSS 3.13.0
 
 - 1.9.1
