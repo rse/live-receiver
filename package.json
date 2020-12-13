@@ -12,7 +12,7 @@
         "url":                           "http://engelschall.com/"
     },
     "devDependencies": {
-        "electron":                      "11.0.5",
+        "electron":                      "11.1.0",
         "electron-builder":              "22.9.1",
         "nodemon":                       "2.0.6",
         "shelljs":                       "0.8.4",
@@ -47,7 +47,7 @@
         "jimp":                          "0.16.1",
         "hls.js":                        "0.14.17",
         "http-vue-loader":               "1.4.2",
-        "less":                          "3.12.2",
+        "less":                          "3.13.0",
         "@fortawesome/fontawesome-free": "5.15.1",
         "typopro-web":                   "4.2.4",
         "animejs":                       "3.2.1",
