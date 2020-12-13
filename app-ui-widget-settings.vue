@@ -16,7 +16,7 @@
         </div>
 
         <!-- Your Portrait -->
-        <i class="icon fas fa-portrait"></i>
+        <i class="icon fas fa-user"></i>
         <div class="label">
             <div>
                 Your Portrait: <span class="footnote">*</span>
@@ -34,7 +34,7 @@
         ></portrait>
 
         <!-- Your Name -->
-        <i class="icon fas fa-file-signature"></i>
+        <i class="icon fas fa-fingerprint"></i>
         <div class="label">
             <div>Your Name: <span class="footnote">*</span></div>
         </div>
@@ -49,7 +49,7 @@
         />
 
         <!-- Data Privacy -->
-        <i class="icon fas fa-user-shield"></i>
+        <i class="icon fas fa-shield-alt"></i>
         <div class="label">
             <div>
                 Your Privacy Level: <span class="footnote">*</span>
@@ -115,10 +115,10 @@
         -->
 
         <!-- Stream Recording -->
-        <i class="icon fas fa-user-shield"></i>
+        <i class="icon fas fa-video"></i>
         <div class="label">
             <div>
-                Your Stream Recordings:
+                Stream Recordings:
             </div>
         </div>
         <div class="selbox-container">
