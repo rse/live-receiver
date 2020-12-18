@@ -22,7 +22,7 @@
         "eslint-plugin-promise":         "4.2.1",
         "eslint-plugin-import":          "2.22.1",
         "eslint-plugin-node":            "11.1.0",
-        "eslint-plugin-vue":             "7.2.0",
+        "eslint-plugin-vue":             "7.3.0",
         "cross-env":                     "7.0.3",
         "cross-zip":                     "4.0.0",
         "npm-install-fetch":             "1.2.6",
@@ -33,7 +33,7 @@
         "vpg":                           "0.9.3"
     },
     "dependencies": {
-        "electron-log":                  "4.3.0",
+        "electron-log":                  "4.3.1",
         "jsonfile":                      "6.1.0",
         "syspath":                       "1.0.3",
         "execa":                         "5.0.0",
@@ -47,7 +47,7 @@
         "jimp":                          "0.16.1",
         "hls.js":                        "0.14.17",
         "http-vue-loader":               "1.4.2",
-        "less":                          "3.13.0",
+        "less":                          "4.0.0",
         "@fortawesome/fontawesome-free": "5.15.1",
         "typopro-web":                   "4.2.4",
         "animejs":                       "3.2.1",
