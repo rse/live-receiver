@@ -38,6 +38,7 @@ globals:
     VTooltip:       true
     less:           true
     Vue:            true
+    VueI18n:        true
     Mousetrap:      true
     AudioNodeSuite: true
     jimp:           true
@@ -65,6 +66,7 @@ rules:
     no-void:                             off
     lines-between-class-members:         off
     quote-props:                         off
+    object-curly-newline:                off
 
     "vue/html-indent":                   off
     "vue/v-bind-style":                  [ "error", "longform" ]
