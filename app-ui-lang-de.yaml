@@ -335,3 +335,16 @@ update:
     close-button:                   Schließe Dialog
     close-tooltip:                  Drücke, um den Dialog zu schließen.
 
+videostream:
+
+    state-started-title:            Video-Stream Gestartet
+    state-started-subtitle:         (erwarte Stream-Daten zu empfangen)
+    state-stalled-title:            Video-Stream Stockend
+    state-stalled-subtitle:         (erwarte Stream-Daten erneut zu empfangen)
+    state-stopped-title:            Video-Stream Gestoppt
+    state-stopped-subtitle:         (erwarte internes Herunterfahren)
+    state-error-title:              Video-Stream Fehlgeschlagen
+    state-error-subtitle:           (erwarte interne Wiederherstellung)
+    state-closure-title:            Video-Stream Verschluß Aktiviert
+    state-closure-subtitle:         (manuelle Deaktivierung notwendig)
+

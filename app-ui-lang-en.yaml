@@ -331,3 +331,16 @@ update:
     close-button:                   Close Dialog
     close-tooltip:                  Press to close the dialog.
 
+videostream:
+
+    state-started-title:            Video-Stream Started
+    state-started-subtitle:         (awaiting to receive stream data)
+    state-stalled-title:            Video-Stream Stalled
+    state-stalled-subtitle:         (awaiting to receive stream data again)
+    state-stopped-title:            Video-Stream Stopped
+    state-stopped-subtitle:         (awaiting internal shutdown)
+    state-error-title:              Video-Stream Failed
+    state-error-subtitle:           (awaiting internal recovery)
+    state-closure-title:            Video-Stream Closure Activated
+    state-closure-subtitle:         (manual deactivation required)
+

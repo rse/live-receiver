@@ -26,20 +26,20 @@
                 </div>
                 <div class="text">
                     <div v-show="state === 'started'">
-                        Video-Stream Started<br/>
-                        <div class="sub">(awaiting to receive stream data)</div>
+                        {{ $t("videostream.state-started-title") }}<br/>
+                        <div class="sub">{{ $t("videostream.state-started-subtitle") }}</div>
                     </div>
                     <div v-show="state === 'stalled'">
-                        Video-Stream Stalled<br/>
-                        <div class="sub">(awaiting to receive stream data again)</div>
+                        {{ $t("videostream.state-stalled-title") }}<br/>
+                        <div class="sub">{{ $t("videostream.state-stalled-subtitle") }}</div>
                     </div>
                     <div v-show="state === 'stopped'">
-                        Video-Stream Stopped<br/>
-                        <div class="sub">(awaiting internal shutdown)</div>
+                        {{ $t("videostream.state-stopped-title") }}<br/>
+                        <div class="sub">{{ $t("videostream.state-stopped-subtitle") }}</div>
                     </div>
                     <div v-show="state === 'error'">
-                        Video-Stream Failed<br/>
-                        <div class="sub">(awaiting internal recovery)</div>
+                        {{ $t("videostream.state-error-title") }}<br/>
+                        <div class="sub">{{ $t("videostream.state-error-subtitle") }}</div>
                     </div>
                 </div>
             </div>
@@ -53,8 +53,8 @@
                     <div><i class="icon fas fa-times-circle"></i></div>
                 </div>
                 <div class="text">
-                    Video-Stream Closure Activated<br/>
-                    <div class="sub">(manual deactivation required)</div>
+                    {{ $t("videostream.state-closure-title") }}<br/>
+                    <div class="sub">{{ $t("videostream.state-closure-subtitle") }}</div>
                 </div>
             </div>
         </div>
