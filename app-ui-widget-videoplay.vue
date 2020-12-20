@@ -13,7 +13,7 @@
 
         <!-- info overlay -->
         <div ref="info" class="info-layer">
-            <i class="fas fa-circle"></i> &nbsp; REPLAY
+            <i class="fas fa-circle"></i> &nbsp; {{ $t("videoplay.replay-label") }}
         </div>
 
         <!-- control overlay -->

@@ -344,3 +344,7 @@ videostream:
     state-closure-title:            Video-Stream Closure Activated
     state-closure-subtitle:         (manual deactivation required)
 
+videoplay:
+
+    replay-label:                   REPLAY
+

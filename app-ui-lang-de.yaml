@@ -348,3 +348,7 @@ videostream:
     state-closure-title:            Video-Stream Verschluß Aktiviert
     state-closure-subtitle:         (manuelle Deaktivierung notwendig)
 
+videoplay:
+
+    replay-label:                   WIEDERHOLUNG
+
