@@ -5,6 +5,7 @@ Changes
 - 1.9.3
     - IMPROVEMENT: add internationalization (I18N) facility
     - IMPROVEMENT: add German and English language to all UI elements
+    - UPDATE: upgrade minor dependencies
 
 - 1.9.2
     - IMPROVEMENT: use a pointer cursor on all remaining clickable areas
