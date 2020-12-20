@@ -155,7 +155,8 @@ module.exports = class Update {
             method:       "GET",
             url:          url,
             headers:      { "User-Agent": `${pjson.name}/${pjson.version}` },
-            responseType: "buffer"
+            responseType: "buffer",
+            https:        { rejectUnauthorized: false }
         })
         if (progress) {
             req.on("downloadProgress", (p) => {
@@ -180,7 +181,8 @@ module.exports = class Update {
             method:       "GET",
             url:          url,
             headers:      { "User-Agent": `${pjson.name}/${pjson.version}` },
-            responseType: "buffer"
+            responseType: "buffer",
+            https:        { rejectUnauthorized: false }
         })
         if (progress) {
             req.on("downloadProgress", (p) => {
