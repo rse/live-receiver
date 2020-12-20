@@ -27,7 +27,7 @@ module.exports = class EventStream extends EventEmitter {
             privacy:  "",
             image:    "",
             server:   "",
-            channel: " ",
+            channel:  "",
             token1:   "",
             token2:   "",
             interval: 10 * 60 * 1000,
