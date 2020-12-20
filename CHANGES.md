@@ -2,6 +2,10 @@
 Changes
 =======
 
+- 1.9.3
+    - IMPROVEMENT: add internationalization (I18N) facility
+    - IMPROVEMENT: add German and English language to all UI elements
+
 - 1.9.2
     - IMPROVEMENT: use a pointer cursor on all remaining clickable areas
     - IMPROVEMENT: disable recording/snapshot buttons unless content was really received

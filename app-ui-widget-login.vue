@@ -12,20 +12,18 @@
         <div class="col-2 notice">
         </div>
         <div class="headline">
-            Your LiVE Session
+            {{ $t("login.title") }}
         </div>
 
         <!-- LiVE Relay Server -->
         <i class="icon fas fa-globe"></i>
-        <div class="label">LiVE Relay Server</div>
+        <div class="label">{{ $t("login.relay-server") }}</div>
         <input
             ref="liveRelayServer"
             class="input-field"
             type="text"
-            placeholder="Enter your LiVE relay server FQDN..."
-            v-tooltip.left="{ content: 'Please enter the received <b>LiVE Relay Server</b><br/>' +
-                'Fully Qualified Domain Name (FQDN),<br/>' +
-                'like <tt>live.example.com</tt>' }"
+            v-bind:placeholder="$t('login.relay-server-placeholder')"
+            v-tooltip.left="{ content: $t('login.relay-server-tooltip') }"
             v-model="intLiveRelayServer"
             v-on:keyup.escape="intLiveRelayServer = ''"
             v-on:keyup.enter="$refs.liveAccessToken.focus()"
@@ -33,14 +31,13 @@
 
         <!-- LiVE Access Token -->
         <i class="icon fas fa-key"></i>
-        <div class="label">LiVE Access Token</div>
+        <div class="label">{{ $t("login.access-token") }}</div>
         <input
             ref="liveAccessToken"
             class="input-field"
             type="text"
-            placeholder="Enter your LiVE access token..."
-            v-tooltip.left="{ content: 'Please enter the received <b>LiVE Access Token</b>,<br/>' +
-                'like <tt>example-XXXX-XXXX</tt>' }"
+            v-bind:placeholder="$t('login.access-token-placeholder')"
+            v-tooltip.left="{ content: $t('login.access-token-tooltip') }"
             v-model="intLiveAccessToken"
             v-on:keyup.escape="intLiveAccessToken = ''"
             v-on:keyup.enter="login"
@@ -49,11 +46,11 @@
         <!-- Connect -->
         <div class="col-3 box button login-button"
             v-bind:class="{ disabled: intLiveRelayServer === '' || intLiveAccessToken === '' || !allowConnect }"
-            v-tooltip.left="{ content: 'Please press to connect to your<br/>intended <b>LiVE Session</b>!' }"
+            v-tooltip.left="{ content: $t('login.connect-tooltip') }"
             ref="login"
             v-on:click="login"
             v-on:keyup.enter="login">
-            <b>CONNECT</b> <span class="login-button-icon"><i class="fas fa-arrow-alt-circle-right"></i></span>
+            <b>{{ $t("login.connect") }}</b> <span class="login-button-icon"><i class="fas fa-arrow-alt-circle-right"></i></span>
         </div>
 
         <!-- Optional Error -->
@@ -68,8 +65,8 @@
                     v-model="recording"
                     track-by="id"
                     label="name"
-                    placeholder="Select recording..."
-                    v-tooltip.left="{ content: 'Select a particular recording<br/>to either play or delete.' }"
+                    v-bind:placeholder="$t('login.recordings-placeholder')"
+                    v-tooltip.left="{ content: $t('login.recordings-tooltip') }"
                     v-bind:searchable="false"
                     v-bind:allow-empty="true"
                     v-bind:open-direction="'bottom'"
@@ -78,7 +75,7 @@
             </div>
             <div class="recordings-button-play box button"
                 v-on:click="recordingPlay"
-                v-tooltip.bottom="{ content: 'Press to play<br/>selected recording.' }"
+                v-tooltip.bottom="{ content: $t('login.recordings-play-tooltip') }"
                 v-bind:class="{ disabled: recording === null }">
                 <div class="icon">
                     <i class="fas fa-play-circle"></i>
@@ -86,7 +83,7 @@
             </div>
             <div class="recordings-button-delete box button"
                 v-on:click="recordingDelete"
-                v-tooltip.right="{ content: 'Press to delete<br/>selected recording.' }"
+                v-tooltip.right="{ content: $t('login.recordings-delete-tooltip') }"
                 v-bind:class="{ disabled: recording === null }">
                 <div class="icon">
                     <i class="fas fa-trash-alt"></i>
@@ -98,14 +95,13 @@
         <div class="col-3 button-row">
             <div class="box button settings"
                 v-bind:class="{ active: activeSettings }"
-                v-tooltip.bottom="{ content: 'Please configure your <b>identity</b>, <b>privacy level</b>,<br/>' +
-                    'and local <b>audio devices</b> here.' }"
+                v-tooltip.bottom="{ content: $t('login.settings-tooltip') }"
                 v-on:click="settings">
                 <i class="icon fas fa-user-cog"></i>
-                <div class="title">Settings</div>
+                <div class="title">{{ $t("login.settings-subtitle") }}</div>
             </div>
             <div class="box button logo"
-                v-tooltip.bottom="{ content: 'Find out details of your<br/><b>LiVE Receiver</b> here.' }"
+                v-tooltip.bottom="{ content: $t('login.about-tooltip') }"
                 v-on:click="about">
                 <div ref="logo" class="logo-container">
                     <img v-bind:src="logo1" class="logo logo1" alt="LiVE"/>
@@ -115,10 +111,10 @@
             </div>
             <div class="box button update"
                 v-bind:class="{ active: activeUpdate }"
-                v-tooltip.bottom="{ content: 'Update your <b>LiVE Receiver</b><br/>executable here.' }"
+                v-tooltip.bottom="{ content: $t('login.updates-tooltip') }"
                 v-on:click="update">
                 <i class="icon fas fa-cloud-download-alt"></i>
-                <div class="title">Updates</div>
+                <div class="title">{{ $t("login.updates-subtitle") }}</div>
             </div>
         </div>
 

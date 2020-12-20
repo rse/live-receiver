@@ -137,8 +137,20 @@ ui = {}
     })
     Vue.use(VTooltip)
 
+    /*  create I18N facility  */
+    const language   = await ui.settings("language")
+    const messagesEN = await ui.ipc.invoke("load-yaml", "app-ui-lang-en.yaml")
+    const messagesDE = await ui.ipc.invoke("load-yaml", "app-ui-lang-de.yaml")
+    const i18n = new VueI18n({
+        locale: language,
+        messages: {
+            en: messagesEN,
+            de: messagesDE
+        }
+    })
+
     /*  start DOM rendering with the outmost <win> component  */
-    ui.root = new Vue({ el: "#ui", name: "ui", components: { "win": "url:app-ui-window.vue" } })
+    ui.root = new Vue({ el: "#ui", name: "ui", components: { "win": "url:app-ui-window.vue" }, i18n })
 
     /*  ensure the <win> element is available  */
     while (!(typeof ui.root.$refs === "object" && ui.root.$refs.win !== undefined))

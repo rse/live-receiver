@@ -1,0 +1,337 @@
+##
+##  Live Video Experience (LiVE)
+##  Copyright (c) 2020 Dr. Ralf S. Engelschall <rse@engelschall.com>
+##  Licensed under GPL 3.0 <https://spdx.org/licenses/GPL-3.0-only>
+##
+
+window:
+
+    disconnect-button:              Trennen
+    disconnect-tooltip:             Vom LiVE Relay trennen.
+
+    reconnect-button:               Neuverbinden
+    reconnect-tooltip:              Erneut zum LiVE Relay verbinden, um<br/>
+                                    den Video-Stream zu re-synchronisieren und<br/>
+                                    die Stream-Latenz wieder zu reduzieren.
+
+    meter-button-kbps:              kbps
+    meter-button-duration:          Dauer
+    meter-button-clock:             Uhrzeit
+    meter-tooltip:                  Zeigt die aktuelle Bandbreiten-Nutzung des<br/>
+                                    Video-Stream in kilo-bit per second (kbps), die<br/>
+                                    aktuelle Sitzungsdauer in Stunden/Minuten oder die<br/>
+                                    aktuelle Uhrzeit. Drücken Sie, um die Art der Anzeige zu ändern.
+
+    recording-button:               Aufzeichnung
+    recording-tooltip:              Speichere eine Aufzeichnung (<u>r</u>ecording) der letzten 10 Sekunden des<br/>
+                                    aktuellen Video-Stream im MP4-Format in das persönliche <i>Videos</i>-Verzeichnis.<br/>
+                                    Nur ein Mal alle 30 Sekunden erlaubt. &nbsp;<span class=attention-boxed>CTRL+r</span>
+
+    screenshot-button:              Snappschuß
+    screenshot-tooltip:             Speichere einen Schnappschuß (<u>s</u>creenshot) des aktuellen Video-Stream<br/>
+                                    im PNG-Format in das persönliche <i>Picture</i>-Verzeichnis.<br/>
+                                    Nur ein Mal alle 3 Sekunden erlaubt. &nbsp;<span class=attention-boxed>CTRL+s</span>
+
+    audio-mute-button:              Stummschalten
+    audio-mute-tooltip:             Stummschaltung des Audio-Streams ein- oder auschalten.
+                                    &nbsp;<span class=attention-boxed>CTRL+a</span>
+
+    audio-volume-button:            Lautstärke
+    audio-volume-tooltip:           Ändere die Lautstärke des Audio-Stream<br/>
+                                    (links für weniger, rechts für mehr).
+
+    move-window-button:             Schiebe Fenster
+    move-window-tooltip:            Schiebe Fensterposition auf dem Bildschirm.
+
+    smallest-size-button:           Kleinste Größe
+    smallest-size-tooltip:          Fenster auf die kleinste mögliche Größe ändern.
+
+    native-size-button:             Native Größe
+    native-size-tooltip:            Fenstergröße an die native (unskalierte)<br/>
+                                    Größe des Video-Stream anpassen.
+
+    minimize-button:                Minimieren
+    minimize-tooltip:               Fenster minimieren und auf dem Bildschirm verstecken.
+
+    maximize-button:                Maximieren
+    maximize-tooltip:               Maximieren (oder rückgängig machen der Maximierung)<br/>
+                                    des Fensters auf dem Bildschirm.
+
+    fullscreen-button:              Vollbildschirm
+    fullscreen-tooltip:             Wechseln in den Vollbildschirm-Modus (<u>f</u>ullscreen)<br/>
+                                    oder zurück zum normalen Fenster-Modus. &nbsp;<span class=attention-boxed>CTRL+f</span>
+
+    quit-button:                    Beenden
+    quit-tooltip:                   Beenden (<u>q</u>uit) der Anwendung &nbsp;<span class=attention-boxed>CTRL+q</span>
+
+    fatal-error:                    SCHWERWIEGENDER FEHLER
+
+    audio-record-button-1:          Nachr. Aufzeich.
+    audio-record-button-2:          Stoppen
+    audio-record-button-3:          Abspielen
+    audio-record-button-4:          Stoppen
+    audio-record-tooltip-1:         Drücken, um den Ton des Trainers stummzuschalten<br/>
+                                    und eine eigene Audio-Nachricht aufzuzeichnen,<br/>
+                                    die dann an den Trainer gesandt werden kann.
+    audio-record-tooltip-2:         <span class='attention-boxed'> BITTE NUN SPRECHEN! </span><br/>
+                                    Erneut drücken, um Ihre<br/>
+                                    Aufzeichnung zu beenden.
+    audio-record-tooltip-3:         Drücken, um das Abspielen Ihrer<br/>Audio-Nachricht zu stoppen.
+    audio-record-tooltip-4:         Drücken, um den Ton des Trainers<br/>
+                                    stummzuschalten und Ihre Audio-Nachricht<br/>
+                                    abzuspielen und zu überprüfen.<br/>
+                                    (<b class='attention-boxed'>{seconds}</b> Sekunden Dauer)
+
+    message-answer-abstain:         Enthalten
+    message-propose-tooltip:        Gebe eine texuelle Nachricht (<u>m</u>essage) ein,<br/>
+                                    die an den Trainer gesendet werden soll. &nbsp;<span class=attention-boxed>CTRL+m</span><br/>
+                                    (Nutze <span class=attention-boxed>RETURN</span>, um die Nachricht sofort abzusenden)
+    message-propose-placeholder-1:  Danke für das Abstimmen
+    message-propose-placeholder-2:  Gib einen Abstimmungsvorschlag ein...
+    message-propose-placeholder-3:  Gib eine Nachricht ein...
+    message-judge-tooltip:          Sende eine bool'sche Stimme an den Trainer.
+    message-judge-answer-yes:       Ja
+    message-judge-answer-no:        Nein
+    message-eval-tooltip:           Sende eine numerische Bewertung an den Trainer.
+    message-choice-tooltip:         Sende eine numerische Auswahl an den Trainer.
+    message-quiz-tooltip:           Sende eine Quiz-Antwort an den Trainer.
+
+    clear-message-button:           Nachr. Löschen
+    clear-message-tooltip:          Lösche Audio- und Text-Nachricht.
+
+    send-message-button:            Nachr. Senden
+    send-message-tooltip:           Sende Audio- und Text-Nachricht.
+
+    feedback-thumbsup-button:       Zustimmung
+    feedback-thumbsup-tooltip:      Sende Feedback durch Zeigen von<br/>Zustimmung über ein "Daumen-Hoch" (thumbs-<u>u</u>p).
+                                    &nbsp;<span class=attention-boxed>CTRL+u</span>
+
+    feedback-thumbsdn-button:       Ablehnung
+    feedback-thumbsdn-tooltip:      Sende Feedback durch Zeigen von<br/>Ablehnung über ein "Daumen-Runter" (thumbs-<u>d</u>down).
+                                    &nbsp;<span class=attention-boxed>CTRL+d</span>
+
+    feedback-surprise-button:       Überraschung
+    feedback-surprise-tooltip:      Sende Feedback durch Zeigen von<br/>Überraschung über ein "<u>o</u>ohh".
+                                    &nbsp;<span class=attention-boxed>CTRL+o</span>
+
+    feedback-smile-button:          Lächeln
+    feedback-smile-tooltip:         Sende Feedback durch Zeigen<br/>von Lächeln (<u>g</u>rin).
+                                    &nbsp;<span class=attention-boxed>CTRL+g</span>
+
+    feedback-frown-button:          Stirnrunzeln
+    feedback-frown-tooltip:         Sende Feedback durch<br/>Zeigen von Stirnrunzeln.
+
+    feedback-sadness-button:        Traurigkeit
+    feedback-sadness-tooltip:       Sende Feedback durch<br/>Zeigen von Traurigkeit.
+
+    challenge-button:               Herausforderung
+    challenge-tooltip-0:            Ich bin <i>inhaltlich</i><br/>
+    challenge-tooltip-1:            unterfordert
+    challenge-tooltip-2:            wenig gefordert
+    challenge-tooltip-3:            gefordert
+    challenge-tooltip-4:            stark gefordert
+    challenge-tooltip-5:            überfordert
+
+    mood-button:                    Stimmung
+    mood-tooltip-0:                 Ich bin <i>mental</i><br/>
+    mood-tooltip-1:                 erschlagen
+    mood-tooltip-2:                 müde
+    mood-tooltip-3:                 wohl
+    mood-tooltip-4:                 frisch
+    mood-tooltip-5:                 begeistert
+
+    missing-settings:               Bitte konfiguriere zuerst {name} in dem <b>Einstellungen</b>-Dialog.
+    missing-settings-portrait:      dein <b>Portraitbild</b>
+    missing-settings-name:          deinen <b>Namen</b>
+    missing-settings-privacy:       deine <b>Datenschutzstufe</b>
+    missing-settings-buffering:     das <b>Video Stream Buffering</b>
+    missing-settings-device:        dein <b>Audio Output Device</b>
+
+login:
+
+    title:                          Deine LiVE Sitzung
+
+    relay-server:                   LiVE Relay-Server
+    relay-server-placeholder:       Geben Sie den LiVE Relay-Server FQDN ein...
+    relay-server-tooltip:           Bitte geben Sie den erhaltenen <b>LiVE Relay-Server</b><br/>
+                                    Fully Qualified Domain Name (FQDN),<br/>
+                                    wie <tt>live.example.com</tt>, ein.
+
+    access-token:                   LiVE Zugriffsschlüssel
+    access-token-placeholder:       Geben Sie den LiVE Zugriffsschlüssel ein...
+    access-token-tooltip:           Bitte geben Sie den erhaltenen <b>LiVE Zugriffschlüssel</b>,<br/>
+                                    wie <tt>example-XXXX-XXXX</tt>, ein.
+
+    connect:                        VERBINDEN
+    connect-tooltip:                Bitte drücken, um sich mit Ihrer gewünschten<br/><b>LiVE Sitzung</b> zu verbinden!
+
+    recordings-placeholder:         Wähle die Aufzeichnung...
+    recordings-tooltip:             Wähle eine bestimmte Aufzeichnung<br/>, um sie entweder abzuspielen oder zu löschen.
+    recordings-play-tooltip:        Drücke, um ausgewählte<br/>Aufzeichnung abzuspielen.
+    recordings-delete-tooltip:      Drücke, um ausgewählte<br/>Aufzeichnung zu köschen.
+
+    settings-subtitle:              Einstellungen
+    settings-tooltip:               Bitte konfigurieren Sie hier Ihre <b>Identität</b>,<br/>
+                                    <b>Datenschutzstufe</b>, und lokalen <b>Audio-Geräte</b>.
+
+    about-tooltip:                  Finden Sie hier Details über<br/>Ihren <b>LiVE Receiver</b> heraus.
+
+    updates-subtitle:               Aktualisierungen
+    updates-tooltip:                Aktualisieren Sie hier Ihr<br/>Programm <b>LiVE Receiver</b>.
+
+settings:
+
+    title:                          Deine LiVE Einstellungen
+
+    portrait-label:                 Dein Portrait
+    portrait-footnote:              >
+                                    * Datenschutzhinweis: Dein Portrait und dein Name werden übertragen,
+                                    wenn du dich zu einer <b>LiVE Sitzung</b> verbindest. Setze unten deine maximale
+                                    Datenschutzstufe, um anzugeben, bis zu (und einschließlich) welcher Stufe
+                                    deine Teilnehmer-Identität der Audienz mitgeteilt wird.
+
+    name-label:                     Dein Name
+    name-tooltip:                   Dein Name. Er wird basierend auf der<br/>Datenschutzstufe unten mitgeteilt.
+
+    privacy-label:                  Deine Datenschutzstufe
+    privacy-public-label:           Öffentlich
+    privacy-public-tooltip:         Deine Teilnehmer-Identität (Portrait und Name) wird an alle<br/>
+                                    Typen von Audienzen mitgeteilt, einschließlich<br/>
+                                    <span class=attention-boxed>öffentliche/offene-Gruppen</span> Arten von Audienzen.
+    privacy-private-label:          Privat
+    privacy-private-tooltip:        Deine Teilnehmer-Identität (Portrait und Name) wird nur mitgeteilt<br/>
+                                    in <span class=attention-boxed>privaten/geschlossene-Gruppen</span> Arten von Audienzen.
+    privacy-anonymous-label:        Anonym
+    privacy-anonymous-tooltip:      Deine Teilnehmer-Identität (Portrait und Name)<br/>
+                                    wird <span class=attention-boxed>niemals</span> mitgeteilt.
+
+    buffering-label:                Video Stream Puffer (ms)
+
+    recordings-label:               Stream-Aufzeichnung
+    recordings-48h-label:           48 Stunden
+    recordings-48h-tooltip:         Deine Streams werden lokal gespeichert, um innerhalb<br/>
+                                    von <span class=attention-boxed>48</span> Stunden erneut abgespielt zu werden.<br/>
+                                    Bitte stelle sicher, daß der freie Speicherplatz es erlaubt<br/>
+                                    mindestens 1 GB/Stunde zu speichern.
+    recordings-24h-label:           24 Stunden
+    recordings-24h-tooltip:         Deine Streams werden lokal gespeichert, um innerhalb<br/>
+                                    von <span class=attention-boxed>24</span> Stunden erneut abgespielt zu werden.<br/>
+                                    Bitte stelle sicher, daß der freie Speicherplatz es erlaubt<br/>
+                                    mindestens 1 GB/Stunde zu speichern.
+    recordings-none-label:          Keine
+    recordings-none-tooltip:        Deine Streams werden nicht lokal gespeichert.<br/>
+                                    Du wirst sie nicht erneut abspielen können.
+
+    language-label:                 Benutzerschnittstellensprache
+    language-en-label:              Englisch (EN)
+    language-en-tooltip:            Benutzerschnittstelle des <b>LiVE Receiver</b> nutzt die Sprache Englisch.
+    language-de-label:              Deutsch (DE)
+    language-de-tooltip:            Benutzerschnittstelle des <b>LiVE Receiver</b> nutzt die Sprache Deutsch.
+
+    audio-input-label:              Audio-Eingabegerät
+    audio-input-tooltip:            Dein lokales Audio-Eingabegerät (Mikrofon).<br/>
+                                    Benutze den Aufzeichnungsknopf auf der rechten<br/>
+                                    Seite, um das Gerät zu testen.
+    audio-input-placeholder:        Wähle das Audio-Eingabegerät...
+    audio-input-tooltip-2:          Drücke, um eine Test-Nachricht aufzuzeichnen.
+
+    audio-output-label:             Audio-Ausgabegerät
+    audio-output-tooltip:           Dein lokales Audio-Ausgabegerät (Lautsprecher).<br/>
+                                    Benutze den Abspielknopf auf der rechten<br/>
+                                    Seite, um das Gerät zu testen.
+    audio-output-placeholder:       Wähle das Audio-Ausgabegerät...
+    audio-output-tooltip-2:         Drücke, um eine zuvor aufgezeichnete<br/>
+                                    Test-Nachricht abzuspielen.
+
+    close-button:                   Schließe Dialog
+    close-tooltip:                  Drücke, um die Einstellungen zu speichern<br/>und den Dialog zu schließen.
+
+portrait:
+
+    canvas-preview-tooltip:         Drücken, um Portrait-Bild zu bearbeiten.
+    canvas-edit-tooltip:            Greifen, um den Bildbereich zu positionieren.<br/>Mouse-Rad rollen, um die Größe des Bildbereichs anzupassen.
+    avatar-male-tooltip:            Drücken, um <span class=attention-boxed>männlichen</span> Avatar<br/>als Portrait-Bild zu wählen.
+    avatar-female-tooltip:          Drücken, um <span class=attention-boxed>weiblichen</span> Avatar<br/>als Portrait-Bild zu wählen.
+    edit-tooltip:                   Drücken, um ein eigenes Portrait-Bild<br/>aus einer lokalen Datei zu laden.
+    edit-button:                    Wähle eigenes<br/>Portrait-Bild
+    fixate-tooltip:                 Drücken, um das Portrait-Bild<br/>zu fixieren.
+    fixate-button:                  Bearbeitetes<br/>Portrait-Bild fixieren
+    choose-title:                   Eigene Portrait-Bild-Datei wählen
+
+about:
+
+    title:                          Informationen über deinen LiVE Receiver
+
+    description-1:                  ist die Teilnehmer-Seite von
+    description-2:                  einer Lösung zum Senden, Weiterleiten und Empfangen von teil-interaktiven, frontalen Schulungen
+                                    als Echtzeit-Full-HD-Video-Ausstrahlungen über MQTTS/RTMPS-Event/Video-Stream Netzwerkkanäle.
+    description-3:                  ist Copyright &copy; 2020 von
+    description-4:                  und lizensiert und verteilt als Open Source Software unter der
+    description-5:                  Es basiert intern auf den folgenden herausragenden, hauptsächlichen Softwarekomponenten:&nbsp;
+
+    close-button:                   Schließe Dialog
+    close-tooltip:                  Drücke, um den Dialog zu schließen.
+
+update:
+
+    title:                          Deine LiVE Receiver Aktualisierung
+
+    type-label:                     Typ
+    version-label:                  Version
+    date-label:                     Datum
+    forthcoming-label:              zukünftig
+    current-label:                  aktuell
+    running-label:                  laufend
+    obsolete-label:                 veraltet
+    deprecated-label:               abgelehnt
+    update-button:                  Aktualisieren!
+    download-button:                Herunterladen!
+    progress-label:                 Fortschritt
+    none-label:                     keiner
+    error-label:                    FEHLER
+
+    description-text-0:             Du verwendest aktuell LiVE Receiver Version {running}.<br/>
+    description-text-1:             Diese <b>laufende</b> Version ist bereits die <b>zukünftige</b> Version.<br/>
+                                    Aktuell wird noch keine Aktualisierung benötigt.<br/>
+    description-text-2:             Diese <b>laufende</b> Version ist noch die <b>aktuelle</b> Version.<br/>
+                                    Aktuell wird noch keine Aktualisierung benötigt.<br/>
+    description-text-3:             Diese <b>laufende</b> Version ist im Zustand <b>{state}</b>.<br/>
+                                    Bitte wechsle zur <b>aktuellen</b> Version <b>{current}</b>!<br/>
+    description-text-4:             Nach deiner Wahl kannst du sogar auf die <b>zukünftige</b> Version
+                                    <b>{forthcoming}</b> wechseln.<br/>
+    description-text-5:             Es stehen noch keine Informationen zur Verfügung über die laufende,
+                                    aktuelle und ggf. zukünftige Version.
+                                    Bitte warte, bis diese Information automatisch einmalig beim Programmstart
+                                    herausgefunden wird oder stoße manuell die Aktualisierungsprüfung einmalig an!
+
+    hint-text-0:                    Hinweis
+    hint-text-1:                    ist automatisch aktualisierbar über diesen Dialog.
+    hint-text-2:                    Bitte drücke einfach auf den obigen "<b>Aktualisieren!</b>"-Knopf,
+                                    um auf eine bestimmte Version zu aktualisieren!
+    hint-text-3:                    ist leider <u>nicht</u> automatisch aktualisierbar
+                                    über diesen Dialog, denn du verwendest <u>keine</u>
+                                    paketierte Version oder die Anwendungsdateien können
+                                    <u>nicht</u> überschrieben werden mit den aktuellen Benutzerrechten.
+    hint-text-4:                    Zur Aktualiserung bitte entweder den LiVE Receiver
+                                    mit erhöhten Benutzerrechten neu starten oder den obigen "<b>Herunterladen!</b>"-Knopf
+                                    nutzen, um die aktualisierte Version einfach in deinem Browser zu öffnen und dann
+                                    das Herunterladen und die Aktualisieren manuell durchzuführen!
+
+    task-download-app-version:      Lade Versionsinformation der Anwendung herunter
+    task-download-app-archive:      Lade Auslieferungsarchiv der Anwendung herunter
+    task-download-app-signature:    Lade Auslieferungssignatur der Anwendung herunter
+    task-verify-app-signature:      Überprüfe Auslieferungssignatur der Anwendung
+    task-extract-app-archive:       Packe Auslieferungsarchiv der Anwendung aus
+    task-update-app-executable:     Aktualisiere ausführbare Datei der Anwendung
+    task-helper-download-archive:   Lade Auslieferungsarchiv des Aktualisierungshelfers
+    task-helper-download-signature: Lade Auslieferungssignatur des Aktualisierungshelfers
+    task-helper-verify-signature:   Überprüfe Auslieferungssignatur des Aktualisierungshelfers
+    task-helper-extract-program:    Packe Programm des Aktualisierungshelfers aus
+    task-helper-execute-program:    Führe Programm des Aktualisierungshelfers aus
+
+    check-button:                   Prüfe auf Aktualisierung
+    check-tooltip:                  Drücke, um auf Aktualisierung zu prüfen.
+
+    close-button:                   Schließe Dialog
+    close-tooltip:                  Drücke, um den Dialog zu schließen.
+

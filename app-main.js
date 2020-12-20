@@ -18,6 +18,7 @@ const dayjs        = require("dayjs")
 const syspath      = require("syspath")
 const UUID         = require("pure-uuid")
 const mkdirp       = require("mkdirp")
+const jsYAML       = require("js-yaml")
 
 /*  internal requirements  */
 const Settings     = require("./app-main-settings")
@@ -155,6 +156,7 @@ const app = electron.app
         app.recordingHours       = settings.get("recording-hours",        0)
         app.audioInputDevice     = settings.get("audio-input-device",     "")
         app.audioOutputDevice    = settings.get("audio-output-device",    "")
+        app.language             = settings.get("language",               "en")
 
         /*  ensure to-be-restored window position is still valid
             (because if external dispays are used, they can be no longer connected)  */
@@ -188,6 +190,7 @@ const app = electron.app
         settings.set("recording-hours",        app.recordingHours)
         settings.set("audio-input-device",     app.audioInputDevice)
         settings.set("audio-output-device",    app.audioOutputDevice)
+        settings.set("language",               app.language)
         settings.save()
 
         /*  provide helper functions for renderer  */
@@ -635,7 +638,7 @@ const app = electron.app
         }
         app.ipc.handle("save-settings", async (event, {
             personPortrait, personName, personPrivacy, liveStreamBuffering,
-            recordingHours, audioInputDevice, audioOutputDevice
+            recordingHours, audioInputDevice, audioOutputDevice, language
         }) => {
             /*  take parameters  */
             app.personPortrait       = personPortrait
@@ -645,6 +648,7 @@ const app = electron.app
             app.recordingHours       = recordingHours
             app.audioInputDevice     = audioInputDevice
             app.audioOutputDevice    = audioOutputDevice
+            app.language             = language
             settings.set("person-portrait",        app.personPortrait)
             settings.set("person-name",            app.personName)
             settings.set("person-privacy",         app.personPrivacy)
@@ -652,6 +656,7 @@ const app = electron.app
             settings.set("recording-hours",        app.recordingHours)
             settings.set("audio-input-device",     app.audioInputDevice)
             settings.set("audio-output-device",    app.audioOutputDevice)
+            settings.set("language",               app.language)
 
             /*  prune in case the recording hours were changed  */
             recording.prune(app.recordingHours)
@@ -772,6 +777,14 @@ const app = electron.app
         app.ipc.handle("stealth-mode", (event, enabled) => {
             if (app.es !== null)
                 app.es.stealth(enabled)
+        })
+
+        /*  provide helper functions for YAML loading  */
+        app.ipc.handle("load-yaml", async (event, file) => {
+            const filename = path.resolve(path.join(app.getAppPath(), file))
+            const yaml = await fs.promises.readFile(filename, { encoding: "utf8" })
+            const obj = jsYAML.safeLoad(yaml)
+            return obj
         })
     })
 })().catch((err) => {

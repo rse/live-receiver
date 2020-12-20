@@ -80,7 +80,7 @@ module.exports = class Update {
     async check (progress) {
         /*  determine available versions  */
         if (progress)
-            progress("downloading application version information", 0.0)
+            progress("download-app-version", 0.0)
         const req = got({
             method:       "GET",
             url:          this.options.urlVersion,
@@ -93,7 +93,7 @@ module.exports = class Update {
                 let completed = p.total > 0 ? p.transferred / p.total : 0
                 if (isNaN(completed))
                     completed = 0
-                progress("downloading application version information", completed)
+                progress("download-app-version", completed)
             })
         }
         const response = await req
@@ -104,7 +104,7 @@ module.exports = class Update {
             (_, version, date, type) => { this.versions.push({ version, date, type }) }
         )
         if (progress)
-            progress("downloading application version information", 1.0)
+            progress("download-app-version", 1.0)
 
         /*  determine running version  */
         this.versionRunning = this.versions.find((v) => v.version === pjson.version)
@@ -150,7 +150,7 @@ module.exports = class Update {
             .replace(/%V/g, version)
             .replace(/%S/g, sys)
         if (progress)
-            progress("downloading application distribution archive", 0.0)
+            progress("download-app-archive", 0.0)
         let req = got({
             method:       "GET",
             url:          url,
@@ -162,7 +162,7 @@ module.exports = class Update {
                 let completed = p.total > 0 ? p.transferred / p.total : 0
                 if (isNaN(completed))
                     completed = 0
-                progress("downloading application distribution archive", completed)
+                progress("download-app-archive", completed)
             })
         }
         let response = await req
@@ -170,12 +170,12 @@ module.exports = class Update {
         const tmpfile = tmp.fileSync()
         await fs.promises.writeFile(tmpfile.name, payload, { encoding: null })
         if (progress)
-            progress("downloading application distribution archive", 1.0)
+            progress("download-app-archive", 1.0)
 
         /*  download signature  */
         url = url.replace(/\.zip$/, ".sig")
         if (progress)
-            progress("downloading application distribution signature", 0.0)
+            progress("download-app-signature", 0.0)
         req = got({
             method:       "GET",
             url:          url,
@@ -187,27 +187,27 @@ module.exports = class Update {
                 let completed = p.total > 0 ? p.transferred / p.total : 0
                 if (isNaN(completed))
                     completed = 0
-                progress("downloading application distribution signature", completed)
+                progress("download-app-signature", completed)
             })
         }
         response = await req
         const signature = response.body.toString()
         if (progress)
-            progress("downloading application distribution signature", 1.0)
+            progress("download-app-signature", 1.0)
 
         /*  read public key and verify signature
             (throws an exception if not valid)  */
         if (progress)
-            progress("verifying application distribution signature", 0.0)
+            progress("verify-app-signature", 0.0)
         const publicKey = await fs.promises.readFile(
             path.join(__dirname, "npm-package.pk"), { encoding: "utf8" })
         await DSIG.verify(payload, signature, publicKey)
         if (progress)
-            progress("verifying application distribution signature", 1.0)
+            progress("verify-app-signature", 1.0)
 
         /*  extract application distribution ZIP archive  */
         if (progress)
-            progress("extracting application distribution archive", 0.0)
+            progress("extract-app-archive", 0.0)
         const tmpdir = tmp.dirSync()
         const zip = new AdmZip(tmpfile.name)
         const dirCreated = {}
@@ -216,7 +216,7 @@ module.exports = class Update {
         for (let i = 0; i < entries.length; i++) {
             const entry = entries[i]
             if (progress)
-                progress("extracting application distribution archive", i / entries.length)
+                progress("extract-app-archive", i / entries.length)
 
             /*  determine result file path on filesystem  */
             const filePath = path.join(tmpdir.name, entry.entryName)
@@ -255,12 +255,12 @@ module.exports = class Update {
             }
         }
         if (progress)
-            progress("extracting application distribution archive", 1.0)
+            progress("extract-app-archive", 1.0)
         tmpfile.removeCallback()
 
         /*  start background process to update application executable  */
         if (progress)
-            progress("updating application executable", 0.0)
+            progress("update-app-executable", 0.0)
 
         /*  final sanity check  */
         let from
@@ -284,7 +284,16 @@ module.exports = class Update {
             target:   this.app,
             [os.platform() === "darwin" ? "open" : "execute"]: this.app,
             cleanup:  [ tmpdir.name ],
-            progress: progress
+            progress: (step, percent) => {
+                const mapping = {
+                    "downloading update helper archive":   "helper-download-archive",
+                    "downloading update helper signature": "helper-download-signature",
+                    "verifying update helper signature":   "helper-verify-signature",
+                    "extracting update helper program":    "helper-extract-program",
+                    "executing update helper program":     "helper-execute-program"
+                }
+                return progress(mapping[step], percent)
+            }
         })
         await updateHelper.update()
     }

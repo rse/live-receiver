@@ -10,7 +10,7 @@
     <div class="about">
         <div class="col-2-3">
             <div class="title">
-                Your LiVE Receiver Information
+                {{ $t("about.title") }}
             </div>
         </div>
         <div class="col-1">
@@ -22,20 +22,18 @@
         </div>
         <div class="col-2-3">
             <a href="https://github.com/rse/live-receiver" v-on:click="openURL">LiVE Receiver</a>
-            is the trainee-side of
-            <a href="https://video-experience.live" v-on:click="openURL">Live Video Experience
-            (LiVE, video-experience.live)</a>, a solution for sending, relaying and
-            receiving semi-interactive up-front trainings as real-time Full-HD video broadcasts over MQTTS/RTMPS event/video
-            stream network channels.
+            {{ $t("about.description-1") }}
+            <a href="https://video-experience.live" v-on:click="openURL">Live Video Experience (LiVE, video-experience.live)</a>,
+            {{ $t("about.description-2") }}
 
             <p/>
             <a href="https://github.com/rse/live-receiver" v-on:click="openURL">LiVE Receiver</a>
             <a v-bind:href="'https://github.com/rse/live-receiver/releases/tag/' + pkg.version" v-on:click="openURL">{{ pkg.version }}</a>
-            is Copyright &copy; 2020 by
+            <span v-html="$t('about.description-3')"></span>
             <a href="https://engelschall.com" v-on:click="openURL">Dr. Ralf S. Engelschall</a>
-            and licensed and distributed as Open Source software under the
-            <a href="https://spdx.org/licenses/GPL-3.0-only" v-on:click="openURL">General Public License (GPL), version 3.0</a>.
-            It internally is based on the following awesome major software components:
+            {{ $t("about.description-4") }}
+            <a href="https://spdx.org/licenses/GPL-3.0-only" v-on:click="openURL">General Public License (GPL) 3.0</a>.
+            <span v-html="$t('about.description-5')"></span>
 
             <p/>
             <div class="versions">
@@ -86,10 +84,12 @@
             </div>
 
             <p/>
-            <div class="box button close" v-on:click="$emit('close')">
+            <div class="box button close"
+                v-on:click="$emit('close')"
+                v-tooltip.bottom="{ content: $t('about.close-tooltip') }">
                 <i class="fas fa-times-circle"></i>
                 &nbsp;
-                Close Dialog
+                {{ $t("about.close-button") }}
             </div>
         </div>
     </div>

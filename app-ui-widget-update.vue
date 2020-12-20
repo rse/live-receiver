@@ -9,16 +9,16 @@
 <template>
     <div class="update">
         <div class="title">
-            Your LiVE Receiver Updates
+            {{ $t("update.title") }}
         </div>
         <div class="versions">
             <div class="versions-row headline">
-                <div class="col-1 type">Type</div>
-                <div class="col-2 version">Version</div>
-                <div class="col-3 date">Date</div>
+                <div class="col-1 type">{{ $t("update.type-label") }}</div>
+                <div class="col-2 version">{{ $t("update.version-label") }}</div>
+                <div class="col-3 date">{{ $t("update.date-label") }}</div>
             </div>
             <div v-if="versions.forthcoming.version" class="versions-row">
-                <div class="col-1 type">Forthcoming:</div>
+                <div class="col-1 type">{{ $t("update.forthcoming-label") }}:</div>
                 <div class="col-2 version">
                     <a v-bind:href="'https://github.com/rse/live-receiver/releases/tag/' + versions.forthcoming.version"
                         v-on:click="openURL">
@@ -32,7 +32,7 @@
                     v-on:click="updateToVersion(versions.forthcoming.version)">
                     <i class="fas fa-cloud-download-alt"></i>
                     &nbsp;
-                    Update to version!
+                    {{ $t("update.update-button") }}
                 </div>
                 <div class="col-4 action box button"
                     v-if="!updateable"
@@ -41,12 +41,12 @@
                         v-on:click="openURL">
                         <i class="fas fa-external-link-alt"></i>
                         &nbsp;
-                        Download version!
+                        {{ $t("update.download-button") }}
                     </a>
                 </div>
             </div>
             <div v-if="versions.current.version" class="versions-row">
-                <div class="col-1 type">Current:</div>
+                <div class="col-1 type">{{ $t("update.current-label") }}:</div>
                 <div class="col-2 version">
                     <a v-bind:href="'https://github.com/rse/live-receiver/releases/tag/' + versions.current.version"
                         v-on:click="openURL">
@@ -60,7 +60,7 @@
                     v-on:click="updateToVersion(versions.current.version)">
                     <i class="fas fa-cloud-download-alt"></i>
                     &nbsp;
-                    Update to version!
+                    {{ $t("update.update-button") }}
                 </div>
                 <div class="col-4 action box button"
                     v-if="!updateable"
@@ -69,17 +69,17 @@
                         v-on:click="openURL">
                         <i class="fas fa-external-link-alt"></i>
                         &nbsp;
-                        Download version!
+                        {{ $t("update.download-button") }}
                     </a>
                 </div>
             </div>
             <div v-if="!versions.current.version" class="versions-row">
-                <div class="col-1 type">Current:</div>
+                <div class="col-1 type">{{ $t("update.current-label") }}:</div>
                 <div class="col-2 version">N.A.</div>
                 <div class="col-3 date">N.A.</div>
             </div>
             <div v-if="versions.running.version" class="versions-row">
-                <div class="col-1 type">Running:</div>
+                <div class="col-1 type">{{ $t("update.running-label") }}:</div>
                 <div class="col-2 version">
                     <a v-bind:href="'https://github.com/rse/live-receiver/releases/tag/' + versions.running.version"
                         v-on:click="openURL">
@@ -89,91 +89,84 @@
                 <div class="col-3 date">{{ versions.running.date }}</div>
             </div>
             <div v-if="!versions.running.version" class="versions-row">
-                <div class="col-1 type">Running:</div>
+                <div class="col-1 type">{{ $t("update.running-label") }}:</div>
                 <div class="col-2 version">N.A.</div>
                 <div class="col-3 date">N.A.</div>
             </div>
         </div>
         <p/>
         <div class="desc" v-if="versions.running.type">
-            You are currently running
-            <a href="https://github.com/rse/live-receiver" v-on:click="openURL">LiVE Receiver</a> version
-            <a v-bind:href="'https://github.com/rse/live-receiver/releases/tag/' + versions.running.version">
-            <b>{{ versions.running.version ? versions.running.version : "N.A." }}</b></a>.<br/>
-            <span v-if="versions.forthcoming.version === versions.running.version">
-                This <b>running</b> version is already the <b>forthcoming</b> version.<br/>
-                Currently, there is still no update necessary.<br/>
+            <span
+                v-html="$t('update.description-text-0', {
+                    running: versions.running.version
+                })">
             </span>
-            <span v-if="versions.current.version === versions.running.version">
-                This <b>running</b> version is still the <b>current</b> version.<br/>
-                Currently, there is still no update necessary.<br/>
+            <span v-if="versions.forthcoming.version === versions.running.version"
+                v-html="$t('update.description-text-1')">
             </span>
-            <span v-if="versions.current.version !== versions.running.version">
-                This <b>running</b> version is in state <b>{{ versions.running.type ? versions.running.type : "N.A." }}</b>.<br/>
-                Please switch to the <b>current</b> version
-                <a v-bind:href="'https://github.com/rse/live-receiver/releases/tag/' + versions.current.version">
-                <b>{{ versions.current.version }}</b></a>!<br/>
+            <span v-if="versions.current.version === versions.running.version"
+                v-html="$t('update.description-text-2')">
             </span>
-            <span v-if="versions.forthcoming.version && versions.forthcoming.version !== versions.running.version">
-                At your option, you can even switch to the <b>forthcoming</b> version
-                <a v-bind:href="'https://github.com/rse/live-receiver/releases/tag/' + versions.forthcoming.version">
-                <b>{{ versions.forthcoming.version }}</b></a>.<br/>
+            <span v-if="versions.current.version !== versions.running.version"
+                v-html="$t('update.description-text-3', {
+                    state: $t('update.' + versions.running.type + '-label'),
+                    current: versions.current.version
+                })">
+            </span>
+            <span v-if="versions.forthcoming.version && versions.forthcoming.version !== versions.running.version"
+                v-html="$t('update.description-text-4', {
+                    forthcoming: versions.forthcoming.version
+                })">
             </span>
         </div>
         <div class="desc" v-if="!versions.running.type">
-            There is still no information available about the
-            running, current and optionally forthcoming version.
-            Please wait for the information to be gathered automatically
-            once at program start or manually trigger an update check!
+            {{ $t("update.description-text-5") }}
         </div>
         <p/>
         <div class="hint">
             <span v-if="updateable">
-                <b>Hint:</b> Your
+                <b>{{ $t("update.hint-text-0") }}:</b>
                 <a href="https://github.com/rse/live-receiver" v-on:click="openURL">LiVE Receiver</a>
-                is automatically updateable from this dialog.
-                <span v-if="versions.current.version !== versions.running.version">
-                    Just press the "<b>Update to version!</b>" button above
-                    for updating to the particular version, please!
+                <span v-html="$t('update.hint-text-1')"></span>
+                <span v-if="versions.current.version !== versions.running.version"
+                    v-html="$t('update.hint-text-2')">
                 </span>
             </span>
             <span v-if="!updateable">
-                <b>Hint</b>: Your
+                <b>{{ $t("update.hint-text-0") }}:</b>
                 <a href="https://github.com/rse/live-receiver" v-on:click="openURL">LiVE Receiver</a>
-                unfortunately is <u>not</u> automatically updateable from this dialog, because you are <u>not</u>
-                running a packaged version or the application files can
-                <u>not</u> be overwritten with the current user permissions.
-                <span v-if="versions.current.version !== versions.running.version">
-                    For updating, either re-start
-                    <a href="https://github.com/rse/live-receiver" v-on:click="openURL">LiVE Receiver</a>
-                    with elevated user privileges or press the "<b>Download version!</b>" button
-                    above to just open the updated version in your Browser and then perform the
-                    download and update manually, please!
+                <span v-html="$t('update.hint-text-3')"></span>
+                <span v-if="versions.current.version !== versions.running.version"
+                    v-html="$t('update.hint-text-4')">
                 </span>
             </span>
         </div>
         <p/>
         <div class="buttons">
-            <div class="box button check" v-bind:class="{ disabled: progress !== null }"
+            <div class="box button check"
+                v-bind:class="{ disabled: progress !== null }"
+                v-tooltip.bottom-center="{ content: $t('update.check-tooltip') }"
                 v-on:click="updateCheck">
                 <i class="fas fa-sync-alt"></i>
                 &nbsp;
-                Check for Updates
+                {{ $t("update.check-button") }}
             </div>
-            <div class="box button check" v-bind:class="{ disabled: progress !== null }"
+            <div class="box button check"
+                v-tooltip.bottom-center="{ content: $t('update.close-tooltip') }"
+                v-bind:class="{ disabled: progress !== null }"
                 v-on:click="updateClose">
                 <i class="fas fa-times-circle"></i>
                 &nbsp;
-                Close Dialog
+                {{ $t("update.close-button") }}
             </div>
         </div>
         <p/>
         <div class="progress" v-if="progress !== null">
-            <b>Progress:</b>
+            <b>{{ $t("update.progress-label") }}:</b>
             <div class="spinner">
                 <i class="fas fa-spinner fa-spin"></i>
             </div>
-            {{ progress.task }}
+            {{ $t('update.task-' + progress.task) }}
             <div class="completion">
                 <div class="total"></div>
                 <div class="completed" v-bind:style="{ width: (progress.completed * 100) + '%' }"></div>
@@ -181,14 +174,14 @@
             </div>
         </div>
         <div class="progress" v-if="progress === null">
-            <b>Progress:</b>
-            none
+            <b>{{ $t("update.progress-label") }}:</b>
+            {{ $t("update.none-label") }}
             <div class="completion">
                 <div class="total disabled"></div>
             </div>
         </div>
         <div class="error" v-if="error !== null">
-            <b>ERROR:</b>
+            <b>{{ $t("update.error-label") }}:</b>
             {{ error }}
         </div>
     </div>

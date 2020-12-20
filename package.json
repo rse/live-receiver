@@ -43,6 +43,8 @@
         "vue":                           "2.6.12",
         "vue-multiselect":               "2.1.6",
         "v-tooltip":                     "2.0.3",
+        "vue-i18n":                      "8.22.2",
+        "js-yaml":                       "3.14.1",
         "cropperjs":                     "1.5.9",
         "jimp":                          "0.16.1",
         "hls.js":                        "0.14.17",
@@ -164,7 +166,7 @@
         "setup":                         "npm install --only-production --global-style",
         "lint":                          "eslint --config eslint.yaml --ext js,vue *.js *.vue",
         "start":                         "electron app-main.js",
-        "start-dev":                     "cross-env DEBUG=1 nodemon --exec \"npm start\" --watch . --ext html,css,js,vue",
+        "start-dev":                     "cross-env DEBUG=1 nodemon --exec \"npm start\" --watch . --ext html,yaml,css,js,vue",
         "package":                       "node npm-package.js"
     }
 }

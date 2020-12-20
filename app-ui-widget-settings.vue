@@ -12,20 +12,16 @@
         <div class="col-2 notice">
         </div>
         <div class="title">
-            Your LiVE Settings
+            {{ $t("settings.title") }}
         </div>
 
         <!-- Your Portrait -->
         <i class="icon fas fa-user"></i>
         <div class="label">
             <div>
-                Your Portrait: <span class="footnote">*</span>
+                {{ $t("settings.portrait-label") }}: <span class="footnote">*</span>
             </div>
-            <div class="footnote notice">
-                * Privacy Notice: Your portrait and name are transmitted
-                when you connect to a <b>LiVE Session</b>. Set your maximum
-                privacy level below to indicate up to (and including) which level
-                your attendee identity is disclosed to the audience.
+            <div class="footnote notice" v-html="$t('settings.portrait-footnote')">
             </div>
         </div>
         <portrait
@@ -36,13 +32,13 @@
         <!-- Your Name -->
         <i class="icon fas fa-fingerprint"></i>
         <div class="label">
-            <div>Your Name: <span class="footnote">*</span></div>
+            <div>{{ $t("settings.name-label") }}: <span class="footnote">*</span></div>
         </div>
         <input
             ref="personName"
             type="text"
             placeholder="Enter your personal name..."
-            v-tooltip.left="{ content: 'Your personal name. It is disclosed<br/>according to the privacy level below.' }"
+            v-tooltip.left="{ content: $t('settings.name-tooltip') }"
             v-model="intPersonName"
             v-on:keyup.escape="intPersonName = ''"
             v-on:keyup.enter="$refs.liveRelayServer.focus()"
@@ -52,37 +48,39 @@
         <i class="icon fas fa-shield-alt"></i>
         <div class="label">
             <div>
-                Your Privacy Level: <span class="footnote">*</span>
+                {{ $t("settings.privacy-label") }}: <span class="footnote">*</span>
             </div>
         </div>
         <div class="selbox-container">
             <div class="selbox"
-                v-tooltip.top="{ content: 'Your attendee identity (portrait and name) is disclosed<br/>in all types of audiences, including<br/><span class=attention-boxed>public/open-group</span> kind of audiences.' }"
+                v-tooltip.top="{ content: $t('settings.privacy-public-tooltip') }"
                 v-bind:class="{ active: intPersonPrivacy === 'public' }"
                 v-on:click="intPersonPrivacy = 'public'">
-                Public
+                {{ $t("settings.privacy-public-label") }}
             </div>
             <div class="selbox"
-                v-tooltip.top="{ content: 'Your attendee identity (portrait and name) is disclosed<br/>in <span class=attention-boxed>private/closed-group</span> kind of audiences only.' }"
+                v-tooltip.top="{ content: $t('settings.privacy-private-tooltip') }"
                 v-bind:class="{ active: intPersonPrivacy === 'private' }"
                 v-on:click="intPersonPrivacy = 'private'">
-                Private
+                {{ $t("settings.privacy-private-label") }}
             </div>
             <div class="selbox"
-                v-tooltip.top="{ content: 'Your attendee identity (portrait and name)<br/>is <span class=attention-boxed>never</span> disclosed at all.' }"
+                v-tooltip.top="{ content: $t('settings.privacy-anonymous-tooltip') }"
                 v-bind:class="{ active: intPersonPrivacy === 'anonymous' }"
                 v-on:click="intPersonPrivacy = 'anonymous'">
-                Anonymous
+                {{ $t("settings.privacy-anonymous-label") }}
             </div>
         </div>
 
         <!-- Video Stream Buffering -->
         <!--
         <i class="icon fas fa-clock"></i>
-        <div class="label">Video Stream Buffering (ms)</div>
+        <div class="label">
+            {{ $t("settings.buffering-label") }}
+        </div>
         <div class="selbox-container">
             <div class="selbox"
-               v-bind:class="{ active: intLiveStreamBuffering === 500 }"
+                v-bind:class="{ active: intLiveStreamBuffering === 500 }"
                 v-on:click="intLiveStreamBuffering = 500">
                 500
             </div>
@@ -117,52 +115,69 @@
         <!-- Stream Recording -->
         <i class="icon fas fa-video"></i>
         <div class="label">
-            <div>
-                Stream Recordings:
-            </div>
+            {{ $t("settings.recordings-label") }}:
         </div>
         <div class="selbox-container">
             <div class="selbox"
-                v-tooltip.top="{ content: 'Your streams will be stored locally<br/>in order to be replayed within <span class=attention-boxed>48</span> hours.<br/>' +
-                    'Please ensure that your free disk space<br/>allows storing about 1 GB/hour.' }"
+                v-tooltip.top="{ content: $t('settings.recordings-48h-tooltip') }"
                 v-bind:class="{ active: intRecordingHours === 48 }"
                 v-on:click="intRecordingHours = 48">
-                48 Hours
+                {{ $t("settings.recordings-48h-label") }}
             </div>
             <div class="selbox"
-                v-tooltip.top="{ content: 'Your streams will be stored locally<br/>in order to be replayed within <span class=attention-boxed>24</span> hours.<br/>' +
-                    'Please ensure that your free disk space<br/>allows storing about 1 GB/hour.' }"
+                v-tooltip.top="{ content: $t('settings.recordings-24h-tooltip') }"
                 v-bind:class="{ active: intRecordingHours === 24 }"
                 v-on:click="intRecordingHours = 24">
-                24 Hours
+                {{ $t("settings.recordings-24h-label") }}
             </div>
             <div class="selbox"
-                v-tooltip.top="{ content: 'Your streams will not be stored locally.<br/>You will not be able to replay them.' }"
+                v-tooltip.top="{ content: $t('settings.recordings-none-tooltip') }"
                 v-bind:class="{ active: intRecordingHours === 0 }"
                 v-on:click="intRecordingHours = 0">
-                None
+                {{ $t("settings.recordings-none-label") }}
+            </div>
+        </div>
+
+        <!-- Language -->
+        <i class="icon fas fa-globe"></i>
+        <div class="label">
+            {{ $t("settings.language-label") }}:
+        </div>
+        <div class="selbox-container">
+            <div class="selbox"
+                v-tooltip.top="{ content: $t('settings.language-en-tooltip') }"
+                v-bind:class="{ active: intLanguage === 'en' }"
+                v-on:click="intLanguage = 'en'">
+                {{ $t("settings.language-en-label") }}
+            </div>
+            <div class="selbox"
+                v-tooltip.top="{ content: $t('settings.language-de-tooltip') }"
+                v-bind:class="{ active: intLanguage === 'de' }"
+                v-on:click="intLanguage = 'de'">
+                {{ $t("settings.language-de-label") }}
             </div>
         </div>
 
         <!-- Audio Input Device -->
         <i class="icon fas fa-microphone-alt"></i>
-        <div class="label">Audio Input Device:</div>
+        <div class="label">
+            {{ $t("settings.audio-input-label") }}:
+        </div>
         <div class="selbox-container">
             <v-multiselect
                 v-bind:options="audioInputDevices"
                 v-model="intAudioInputDevice"
                 track-by="id"
                 label="name"
-                placeholder="Select audio input device..."
-                v-tooltip.left="{ content: 'Your local audio input device (microphone).<br/>' +
-                    'Use the record button to the right for testing the device.' }"
+                v-bind:placeholder="$t('settings.audio-input-placeholder')"
+                v-tooltip.left="{ content: $t('settings.audio-input-tooltip') }"
                 v-bind:searchable="false"
                 v-bind:allow-empty="true"
                 v-bind:open-direction="'bottom'"
             ></v-multiselect>
             <div class="selbox"
                 v-on:click="audioInputTest"
-                v-tooltip.right="{ content: 'Press to record a test message.' }"
+                v-tooltip.right="{ content: $t('settings.audio-input-tooltip-2') }"
                 v-bind:class="{ disabled: intAudioInputDevice === null, active: audioInputTestActive }">
                 <span v-show="!audioInputTestActive" class="icon"><i class="fas fa-microphone-alt"></i></span>
                 <span v-show="audioInputTestActive"  class="icon"><i class="fas fa-microphone-alt-slash"></i></span>
@@ -171,23 +186,24 @@
 
         <!-- Audio Output Device -->
         <i class="icon fas fa-volume-up"></i>
-        <div class="label">Audio Output Device:</div>
+        <div class="label">
+            {{ $t("settings.audio-output-label") }}:
+        </div>
         <div class="selbox-container">
             <v-multiselect
                 v-bind:options="audioOutputDevices"
                 v-model="intAudioOutputDevice"
                 track-by="id"
                 label="name"
-                placeholder="Select audio output device..."
-                v-tooltip.left="{ content: 'Your local audio output device (speaker).<br/>' +
-                    'Use the play button to the right for testing the device.' }"
+                v-bind:placeholder="$t('settings.audio-output-placeholder')"
+                v-tooltip.left="{ content: $t('settings.audio-output-tooltip') }"
                 v-bind:searchable="false"
                 v-bind:allow-empty="true"
                 v-bind:open-direction="'bottom'"
             ></v-multiselect>
             <div class="selbox"
                 v-on:click="audioOutputTest"
-                v-tooltip.right="{ content: 'Press to play a previously<br/>recorded test message.' }"
+                v-tooltip.right="{ content: $t('settings.audio-output-tooltip-2') }"
                 v-bind:class="{ disabled: intAudioOutputDevice === null || audioBlob === null, active: audioOutputTestActive }">
                 <span v-show="!audioOutputTestActive" class="icon"><i class="fas fa-play-circle"></i></span>
                 <span v-show="audioOutputTestActive" class="icon"><i class="fas fa-stop-circle"></i></span>
@@ -198,15 +214,11 @@
         <div class="col-3 box button button-save"
             v-bind:class="{ disabled: !allowSave }"
             ref="save"
-            v-tooltip.bottom="{ content: 'Press to save your settings<br/>and close the dialog.' }"
+            v-tooltip.bottom="{ content: $t('settings.close-tooltip') }"
             v-on:click="save">
             <i class="fas fa-times-circle"></i>
             &nbsp;
-            Close Dialog
-        </div>
-
-        <!-- Logo & GDPR Notice -->
-        <div class="col-2 notice">
+            {{ $t("settings.close-button") }}
         </div>
     </div>
 </template>
@@ -222,7 +234,7 @@
     padding: 20px;
     border-radius: 5px;
     display: grid;
-    grid-template-columns: 30px 200px 300px;
+    grid-template-columns: 30px 210px 300px;
     row-gap: 6px;
     font-size: 12pt;
 
@@ -358,6 +370,9 @@
     .footnote {
         font-size: 8pt;
         color: var(--color-std-fg-1);
+        &.notice {
+            padding-right: 10px;
+        }
     }
 
     /*  select-box row  */
@@ -415,7 +430,8 @@ module.exports = {
         liveStreamBuffering:  { type: Number, default: 2000 },
         recordingHours:       { type: Number, default: 0 },
         audioInputDevice:     { type: String, default: "" },
-        audioOutputDevice:    { type: String, default: "" }
+        audioOutputDevice:    { type: String, default: "" },
+        language:             { type: String, default: "" }
     },
 
     /*  component variable properties  */
@@ -428,6 +444,7 @@ module.exports = {
             intRecordingHours:       this.recordingHours,
             intAudioInputDevice:     null,
             intAudioOutputDevice:    null,
+            intLanguage:             this.language,
             audioInputDevices:       [],
             audioOutputDevices:      [],
             audioInputTestActive:    false,
@@ -451,7 +468,11 @@ module.exports = {
         intLiveStreamBuffering:  function (v) { this.$emit("update:live-stream-buffering", v) },
         intRecordingHours:       function (v) { this.$emit("update:recording-hours", v) },
         intAudioInputDevice:     function (v) { this.$emit("update:audio-input-device",  this.deviceObj2Id(v)) },
-        intAudioOutputDevice:    function (v) { this.$emit("update:audio-output-device", this.deviceObj2Id(v)) }
+        intAudioOutputDevice:    function (v) { this.$emit("update:audio-output-device", this.deviceObj2Id(v)) },
+        intLanguage:             function (v) {
+            this.$emit("update:language", v)
+            this.$i18n.locale = v
+        }
     },
 
     /*  component sub-components  */
@@ -611,6 +632,11 @@ module.exports = {
     created () {
         /*  update audio devices (initially)  */
         this.deviceUpdate()
+
+        /*  support global settings change for language  */
+        Mousetrap.bind("ctrl+t", async () => {
+            this.intLanguage = this.intLanguage === "en" ? "de" : "en"
+        })
     },
 
     /*  component DOM mounting hook  */

@@ -1,0 +1,333 @@
+##
+##  Live Video Experience (LiVE)
+##  Copyright (c) 2020 Dr. Ralf S. Engelschall <rse@engelschall.com>
+##  Licensed under GPL 3.0 <https://spdx.org/licenses/GPL-3.0-only>
+##
+
+window:
+
+    disconnect-button:              Disconnect
+    disconnect-tooltip:             Disconnect from the LiVE Relay.
+
+    reconnect-button:               Reconnect
+    reconnect-tooltip:              Reconnect to the LiVE Relay in order<br/>
+                                    to re-synchronize the video stream and<br/>
+                                    reduce the stream latency again.
+
+    meter-button-kbps:              kbps
+    meter-button-duration:          Duration
+    meter-button-clock:             Clock
+    meter-tooltip:                  Shows the current bandwith usage of the<br/>
+                                    video stream in kilo-bit per second (kbps), the<br/>
+                                    current session duration in hours/minutes or the<br/>
+                                    current clock time. Press to toggle the kind of display.
+
+    recording-button:               Recording
+    recording-tooltip:              Save a <u>r</u>ecording of the last 10 seconds of the current video<br/>
+                                    stream in MP4 format to your personal <i>Videos</i> folder.<br/>
+                                    Allowed once every 30 seconds only. &nbsp;<span class=attention-boxed>CTRL+r</span>
+
+    screenshot-button:              Screenshot
+    screenshot-tooltip:             Save a <u>s</u>creenshot of the current video stream<br/>
+                                    in PNG format to your personal <i>Picture</i> folder.<br/>
+                                    Allowed once every 3s only. &nbsp;<span class=attention-boxed>CTRL+s</span>
+
+    audio-mute-button:              Audio Mute
+    audio-mute-tooltip:             Mute or unmute the <u>a</u>udio stream.
+                                    &nbsp;<span class=attention-boxed>CTRL+a</span>
+
+    audio-volume-button:            Audio Volume
+    audio-volume-tooltip:           Change volume of the audio stream<br/>
+                                    (left for less, right for more).
+
+    move-window-button:             Move Window
+    move-window-tooltip:            Move window position on screen.
+
+    smallest-size-button:           Smallest Size
+    smallest-size-tooltip:          Resize window to smallest possible size.
+
+    native-size-button:             Native Size
+    native-size-tooltip:            Resize window to fit native (unscaled)<br/>
+                                    size of video stream.
+
+    minimize-button:                Minimize
+    minimize-tooltip:               Minimize and hide window on screen.
+
+    maximize-button:                Maximize
+    maximize-tooltip:               Maximize (or revert maximization of)<br/>
+                                    window on screen.
+
+    fullscreen-button:              Fullscreen
+    fullscreen-tooltip:             Switch to <u>f</u>ullscreen (or back to normal view)<br/>
+                                    mode of window. &nbsp;<span class=attention-boxed>CTRL+f</span>
+
+    quit-button:                    Quit
+    quit-tooltip:                   <u>Q</u>uit application &nbsp;<span class=attention-boxed>CTRL+q</span>
+
+    fatal-error:                    FATAL ERROR
+
+    audio-record-button-1:          Record Message
+    audio-record-button-2:          Stop Recording
+    audio-record-button-3:          Play Message
+    audio-record-button-4:          Stop Playing
+    audio-record-tooltip-1:         Press to temporarily mute trainer audio and record<br/>
+                                    your audio message, which then can be sent to the trainer.
+    audio-record-tooltip-2:         <span class='attention-boxed'> NOW PLEASE SPEAK! </span><br/>
+                                    Press again to stop<br/>
+                                    your recording.
+    audio-record-tooltip-3:         Press to stop playing<br/>your audio message.
+    audio-record-tooltip-4:         Press to temporarily mute trainer audio and<br/>
+                                    play and check your recorded audio message.<br/>
+                                    (<b class='attention-boxed'>{seconds}</b> seconds duration)
+
+    message-answer-abstain:         Abstain
+    message-propose-tooltip:        Type a textual <u>m</u>essage to be<br/>sent to the trainer.
+                                    &nbsp;<span class=attention-boxed>CTRL+m</span><br/>
+                                    (Use <span class=attention-boxed>RETURN</span> to immediately send it)
+    message-propose-placeholder-1:  Thanks for voting
+    message-propose-placeholder-2:  Type a vote...
+    message-propose-placeholder-3:  Type a message...
+    message-judge-tooltip:          Send a boolean voting to the trainer.
+    message-judge-answer-yes:       Yes
+    message-judge-answer-no:        No
+    message-eval-tooltip:           Send a numeric evaluation to the trainer.
+    message-choice-tooltip:         Send a numeric choice to the trainer.
+    message-quiz-tooltip:           Send a quiz answer to the trainer.
+
+    clear-message-button:           Clear Messages
+    clear-message-tooltip:          Clear audio and text messages.
+
+    send-message-button:            Send Messages
+    send-message-tooltip:           Send audio and text messages.
+
+    feedback-thumbsup-button:       Show Consent
+    feedback-thumbsup-tooltip:      Send feedback by showing<br/>consent with a thumbs-<u>u</u>p.
+                                    &nbsp;<span class=attention-boxed>CTRL+u</span>
+
+    feedback-thumbsdn-button:       Show Refusal
+    feedback-thumbsdn-tooltip:      Send feedback by showing<br/>refusal with a thumbs-<u>d</u>down.
+                                    &nbsp;<span class=attention-boxed>CTRL+d</span>
+
+    feedback-surprise-button:       Show Surprise
+    feedback-surprise-tooltip:      Send feedback by showing<br/>surprise (<u>o</u>ohh).
+                                    &nbsp;<span class=attention-boxed>CTRL+o</span>
+
+    feedback-smile-button:          Show Smile
+    feedback-smile-tooltip:         Send feedback by showing<br/>smile (<u>g</u>rin).
+                                    &nbsp;<span class=attention-boxed>CTRL+g</span>
+
+    feedback-frown-button:          Show Frown
+    feedback-frown-tooltip:         Send feedback by<br/>showing frown.
+
+    feedback-sadness-button:        Show Sadness
+    feedback-sadness-tooltip:       Send feedback by<br/>showing sadness.
+
+    challenge-button:               My Challenge
+    challenge-tooltip-0:            I am <i>content-wise</i><br/>
+    challenge-tooltip-1:            sub-challenged
+    challenge-tooltip-2:            less-challenged
+    challenge-tooltip-3:            challenged
+    challenge-tooltip-4:            much-challenged
+    challenge-tooltip-5:            over-challenged
+
+    mood-button:                    My Mood
+    mood-tooltip-0:                 I am <i>mentally</i><br/>
+    mood-tooltip-1:                 knocked-off
+    mood-tooltip-2:                 tired
+    mood-tooltip-3:                 good
+    mood-tooltip-4:                 refreshed
+    mood-tooltip-5:                 excited
+
+    missing-settings:               Please configure {name} in the <b>Settings</b> dialog first.
+    missing-settings-portrait:      your <b>Person Portrait</b>
+    missing-settings-name:          your <b>Person Name</b>
+    missing-settings-privacy:       your <b>Person Privacy</b>
+    missing-settings-buffering:     your <b>Video Stream Buffering</b>
+    missing-settings-device:        your <b>Audio Output Device</b>
+
+login:
+
+    title:                          Your LiVE Session
+
+    relay-server:                   LiVE Relay Server
+    relay-server-placeholder:       Enter your LiVE Relay Server FQDN...
+    relay-server-tooltip:           Please enter the received <b>LiVE Relay Server</b><br/>
+                                    Fully Qualified Domain Name (FQDN),<br/>
+                                    like <tt>live.example.com</tt>.
+
+    access-token:                   LiVE Access Token
+    access-token-placeholder:       Enter your LiVE access token...
+    access-token-tooltip:           Please enter the received <b>LiVE Access Token</b>,<br/>
+                                    like <tt>example-XXXX-XXXX</tt>.
+
+    connect:                        CONNECT
+    connect-tooltip:                Please press to connect to your<br/>desired <b>LiVE Session</b>!
+
+    recordings-placeholder:         Select the recording...
+    recordings-tooltip:             Select a particular recording<br/>to either play or delete.
+    recordings-play-tooltip:        Press to play<br/>selected recording.
+    recordings-delete-tooltip:      Press to delete<br/>selected recording.
+
+    settings-subtitle:              Settings
+    settings-tooltip:               Please configure your <b>identity</b>, <b>privacy level</b>,<br/>
+                                    and local <b>audio devices</b> here.
+
+    about-tooltip:                  Find out details of your<br/><b>LiVE Receiver</b> here.
+
+    updates-subtitle:               Updates
+    updates-tooltip:                Update your program<br/><b>LiVE Receiver</b> here.
+
+settings:
+
+    title:                          Your LiVE Settings
+
+    portrait-label:                 Your Portrait
+    portrait-footnote:              >
+                                    Privacy Notice: Your portrait and name are transmitted
+                                    when you connect to a <b>LiVE Session</b>. Set your maximum
+                                    privacy level below to indicate up to (and including) which level
+                                    your attendee identity is disclosed to the audience.
+
+    name-label:                     Your Name
+    name-tooltip:                   Your personal name. It is disclosed<br/>according to the privacy level below.
+
+    privacy-label:                  Your Privacy Level
+    privacy-public-label:           Public
+    privacy-public-tooltip:         Your attendee identity (portrait and name) is disclosed<br/>
+                                    in all types of audiences, including<br/>
+                                    <span class=attention-boxed>public/open-group</span> kind of audiences.
+    privacy-private-label:          Private
+    privacy-private-tooltip:        Your attendee identity (portrait and name) is disclosed<br/>
+                                    in <span class=attention-boxed>private/closed-group</span> kind of audiences only.
+    privacy-anonymous-label:        Anonymous
+    privacy-anonymous-tooltip:      Your attendee identity (portrait and name)<br/>
+                                    is <span class=attention-boxed>never</span> disclosed at all.
+
+    buffering-label:                Video Stream Buffering (ms)
+
+    recordings-label:               Stream Recordings
+    recordings-48h-label:           48 Hours
+    recordings-48h-tooltip:         Your streams will be stored locally<br/>
+                                    in order to be replayed within <span class=attention-boxed>48</span> hours.<br/>
+                                    Please ensure that your free disk space<br/>
+                                    allows storing about 1 GB/hour.
+    recordings-24h-label:           24 Hours
+    recordings-24h-tooltip:         Your streams will be stored locally<br/>
+                                    in order to be replayed within <span class=attention-boxed>24</span> hours.<br/>
+                                    Please ensure that your free disk space<br/>
+                                    allows storing about 1 GB/hour.
+    recordings-none-label:          None
+    recordings-none-tooltip:        Your streams will not be stored locally.<br/>
+                                    You will not be able to replay them.
+
+    language-label:                 User Interface Language
+    language-en-label:              English (EN)
+    language-en-tooltip:            <b>LiVE Receiver</b> user interface is using the English language.
+    language-de-label:              German (DE)
+    language-de-tooltip:            <b>LiVE Receiver</b> user interface is using the German language.
+
+    audio-input-label:              Audio Input Device
+    audio-input-tooltip:            Your local audio input device (microphone).<br/>
+                                    Use the record button to the right for testing the device.
+    audio-input-placeholder:        Select audio input device...
+    audio-input-tooltip-2:          Press to record a test message.
+
+    audio-output-label:             Audio Output Device
+    audio-output-tooltip:           Your local audio output device (speaker).<br/>
+                                    Use the play button to the right for testing the device.
+    audio-output-placeholder:       Select audio output device...
+    audio-output-tooltip-2:         Press to play a previously<br/>
+                                    recorded test message.
+
+    close-button:                   Close Dialog
+    close-tooltip:                  Press to save your settings<br/>and close the dialog.
+
+portrait:
+
+    canvas-preview-tooltip:         Press to edit the portrait picture.
+    canvas-edit-tooltip:            Grab to position image area.<br/>Scroll mouse-wheel to resize image area.
+    avatar-male-tooltip:            Press to choose a <span class=attention-boxed>male</span> avatar<br/>as your portrait picture.
+    avatar-female-tooltip:          Press to choose a <span class=attention-boxed>female</span> avatar<br/>as your portrait picture.
+    edit-tooltip:                   Press to load your portrait<br/>picture from a local file.
+    edit-button:                    Choose custom<br/>portrait image
+    fixate-tooltip:                 Press to fixate your<br/>portrait picture.
+    fixate-button:                  Fixate edited<br/>portrait image
+    choose-title:                   Choose custom portrait image file
+
+about:
+
+    title:                          Your LiVE Receiver Information
+
+    description-1:                  is the attendee-side of
+    description-2:                  a solution for sending, relaying and receiving semi-interactive up-front trainings
+                                    as real-time Full-HD video broadcasts over MQTTS/RTMPS event/video stream network channels.
+    description-3:                  is Copyright &copy; 2020 by
+    description-4:                  and licensed and distributed as Open Source software under the
+    description-5:                  It internally is based on the following awesome major software components:&nbsp;
+
+    close-button:                   Close Dialog
+    close-tooltip:                  Press to close the dialog.
+
+update:
+
+    title:                          Your LiVE Receiver Update
+
+    type-label:                     Type
+    version-label:                  Version
+    date-label:                     Date
+    forthcoming-label:              forthcoming
+    current-label:                  current
+    running-label:                  running
+    obsolete-label:                 obsolete
+    deprecated-label:               deprecated
+    update-button:                  Update!
+    download-button:                Download!
+    progress-label:                 Progress
+    none-label:                     none
+    error-label:                    ERROR
+
+    description-text-0:             You are currently running LiVE Receiver version {running}.<br/>
+    description-text-1:             This <b>running</b> version is already the <b>forthcoming</b> version.<br/>
+                                    Currently, there is still no update necessary.<br/>
+    description-text-2:             This <b>running</b> version is still the <b>current</b> version.<br/>
+                                    Currently, there is still no update necessary.<br/>
+    description-text-3:             This <b>running</b> version is in state <b>{state}</b>.<br/>
+                                    Please switch to the <b>current</b> version <b>{current}</b>!<br/>
+    description-text-4:             At your option, you can even switch to the <b>forthcoming</b> version
+                                    <b>{forthcoming}</b>.<br/>
+    description-text-5:             There is still no information available about the
+                                    running, current and optionally forthcoming version.
+                                    Please wait for the information to be gathered automatically
+                                    once at program start or manually trigger an update check!
+
+    hint-text-0:                    Hint
+    hint-text-1:                    is automatically updateable from this dialog.
+    hint-text-2:                    Just press the "<b>Update!</b>" button above
+                                    for updating to the particular version, please!
+    hint-text-3:                    unfortunately is <u>not</u> automatically updateable
+                                    from this dialog, because you are <u>not</u>
+                                    running a packaged version or the application files can
+                                    <u>not</u> be overwritten with the current user permissions.
+    hint-text-4:                    For updating, either re-start LiVE Receiver
+                                    with elevated user privileges or press the "<b>Download!</b>" button
+                                    above to just open the updated version in your Browser and then perform the
+                                    download and update manually, please!
+
+    task-download-app-version:      downloading application version information
+    task-download-app-archive:      downloading application distribution archive
+    task-download-app-signature:    downloading application distribution signature
+    task-verify-app-signature:      verifying application distribution signature
+    task-extract-app-archive:       extracting application distribution archive
+    task-update-app-executable:     updating application executable
+    task-helper-download-archive:   downloading update helper archive
+    task-helper-download-signature: downloading update helper signature
+    task-helper-verify-signature:   verifying update helper signature
+    task-helper-extract-program:    extracting update helper program
+    task-helper-execute-program:    executing update helper program
+
+    check-button:                   Check for Update
+    check-tooltip:                  Press to check for an update.
+
+    close-button:                   Close Dialog
+    close-tooltip:                  Press to close the dialog.
+

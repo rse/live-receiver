@@ -14,20 +14,18 @@
                 <div class="group-items">
                     <!-- disconnect -->
                     <div class="box button logout" v-on:click="logout"
-                        v-tooltip.bottom-center="{ content: 'Disconnect from the LiVE Relay.' }"
+                        v-tooltip.bottom-center="{ content: $t('window.disconnect-tooltip') }"
                         v-bind:class="{ disabled: inLogin || !allowDisconnect }">
                         <i class="icon fas fa-arrow-alt-circle-left"></i>
-                        <span class="title">Disconnect</span>
+                        <span class="title">{{ $t("window.disconnect-button") }}</span>
                     </div>
 
                     <!-- reconnect -->
                     <div class="box button reconnect" v-on:click="relogin"
-                        v-tooltip.bottom-center="{ content: 'Reconnect to the LiVE Relay in order<br/>' +
-                            'to re-synchronize the video stream and<br/>' +
-                            'reduce the stream latency again.' }"
+                        v-tooltip.bottom-center="{ content: $t('window.reconnect-tooltip') }"
                         v-bind:class="{ disabled: inLogin || !allowDisconnect || inVideoPlay }">
                         <i class="icon fas fa-sync-alt"></i>
-                        <span class="title">Reconnect</span>
+                        <span class="title">{{ $t("window.reconnect-button") }}</span>
                     </div>
                 </div>
                 <div class="group-bar"
@@ -39,10 +37,7 @@
                 <div class="group-items">
                     <!-- meter -->
                     <div class="box meter" v-on:click="meterToggle"
-                        v-tooltip.bottom-center="{ content: 'Shows the current bandwith usage of the<br/>' +
-                            'video stream in kilo-bit per second (kbps), the<br/>' +
-                            'current session duration in hours/minutes or the<br/>' +
-                            'current time. Press to toggle the display type.' }"
+                        v-tooltip.bottom-center="{ content: $t('window.meter-tooltip') }"
                         v-bind:class="{ disabled: inLogin || inVideoPlay, active: !inLogin && !inVideoPlay }">
                         <span class="word">{{ (inLogin || inVideoPlay) ? "---" : meterText }}</span>
                         <span class="title">{{ meterTypeNames[meterType] }}</span>
@@ -56,22 +51,18 @@
                 <div class="group-items">
                     <!-- recording -->
                     <div class="box button recording" v-on:click="recording"
-                        v-tooltip.bottom-center="{ content: 'Save the last <u>r</u>ecorded 10s of the current video stream<br/>' +
-                            'in MP4 format to your personal <i>Videos</i> folder.<br/>' +
-                            'Allowed once every 30s only. &nbsp;<span class=attention-boxed>CTRL+r</span>' }"
+                        v-tooltip.bottom-center="{ content: $t('window.recording-tooltip') }"
                         v-bind:class="{ disabled: inLogin || recordingThrottle || inVideoPlay || streamBytes === 0 }">
                         <i class="icon fas fa-video"></i>
-                        <span class="title">Recording</span>
+                        <span class="title">{{ $t("window.recording-button") }}</span>
                     </div>
 
                     <!-- screenshot -->
                     <div class="box button screenshot" v-on:click="screenshot"
-                        v-tooltip.bottom-center="{ content: 'Save a <u>s</u>creenshot of the current video stream<br/>' +
-                            'in PNG format to your personal <i>Picture</i> folder.<br/>' +
-                            'Allowed once every 3s only. &nbsp;<span class=attention-boxed>CTRL+s</span>' }"
+                        v-tooltip.bottom-center="{ content: $t('window.screenshot-tooltip') }"
                         v-bind:class="{ disabled: inLogin || screenshotThrottle || inVideoPlay || streamBytes === 0 }">
                         <i class="icon fas fa-camera"></i>
-                        <span class="title">Screenshot</span>
+                        <span class="title">{{ $t("window.screenshot-button") }}</span>
                     </div>
                 </div>
                 <div class="group-bar"
@@ -83,20 +74,18 @@
                 <div class="group-items">
                     <!-- audio mute -->
                     <div class="box button mute"
-                        v-tooltip.bottom-center="{ content: (volumeMute ? 'Unmute' : 'Mute') +
-                            ' the <u>a</u>udio stream. &nbsp;<span class=attention-boxed>CTRL+a</span>' }"
+                        v-tooltip.bottom-center="{ content: $t('window.audio-mute-tooltip') }"
                         v-on:click="toggleAudio"
                         v-bind:class="{ disabled: inLogin || volume === 0, active: volumeMute }">
                         <span v-show="volumeMute"><i class="icon fas fa-volume-mute"></i></span>
                         <span v-show="!volumeMute && volume < 30"><i class="icon fas fa-volume-down"></i></span>
                         <span v-show="!volumeMute && volume >= 30"><i class="icon fas fa-volume-up"></i></span>
-                        <span class="title">Audio Mute</span>
+                        <span class="title">{{ $t("window.audio-mute-button") }}</span>
                     </div>
 
                     <!-- audio volume -->
                     <div class="box slider volume"
-                        v-tooltip.bottom-center="{ content: 'Change volume of the audio stream<br/>' +
-                            '(left: minimum, right: maximum).' }"
+                        v-tooltip.bottom-center="{ content: $t('window.audio-volume-tooltip') }"
                         v-bind:class="{ disabled: inLogin }">
                         <input ref="volume"
                             v-bind:disabled="inLogin"
@@ -104,7 +93,7 @@
                             type="range"
                             min="0" max="100"
                             v-model.number="volume"/>
-                        <span class="title">Audio Volume</span>
+                        <span class="title">{{ $t("window.audio-volume-button") }}</span>
                     </div>
                 </div>
                 <div class="group-bar"
@@ -116,7 +105,7 @@
                 <div class="group-items">
                     <!-- move window -->
                     <div class="box move"
-                        v-tooltip.bottom-center="{ content: 'Move window position on screen.' }">
+                        v-tooltip.bottom-center="{ content: $t('window.move-window-tooltip') }">
                         <div class="grab-container">
                             <span class="grab grab-1"></span>
                             <span class="grab grab-2"></span>
@@ -124,7 +113,7 @@
                             <span class="grab grab-4"></span>
                             <span class="grab grab-5"></span>
                         </div>
-                        <span class="title">Move Window</span>
+                        <span class="title">{{ $t("window.move-window-button") }}</span>
                         <div class="logo">
                             <img v-bind:src="logo" alt="LiVE"/>
                         </div>
@@ -138,46 +127,42 @@
                 <div class="group-items">
                     <!-- smallest size -->
                     <div class="box button fit" v-on:click="smallestSize"
-                        v-tooltip.bottom-center="{ content: 'Resize window to smallest possible size.' }"
+                        v-tooltip.bottom-center="{ content: $t('window.smallest-size-tooltip') }"
                         v-bind:class="{ disabled: isWinSmallest || fullscreened || maximized }">
                         <i class="icon fas fa-compress"></i>
-                        <span class="title">Smallest Size</span>
+                        <span class="title">{{ $t("window.smallest-size-button") }}</span>
                     </div>
 
                     <!-- source size -->
                     <div class="box button fit" v-on:click="sourceSize"
-                        v-tooltip.bottom-center="{ content: 'Resize window to fit native (unscaled)<br/>' +
-                            'size of video stream.' }"
+                        v-tooltip.bottom-center="{ content: $t('window.native-size-tooltip') }"
                         v-bind:class="{ disabled: inLogin || fullscreened || maximized || streamSize.w === 0 || streamSize.h === 0 }">
                         <i class="icon fas fa-expand"></i>
-                        <span class="title">Native Size</span>
+                        <span class="title">{{ $t("window.native-size-button") }}</span>
                     </div>
 
                     <!-- minimize -->
                     <div class="box button minimize" v-on:click="minimize"
-                        v-tooltip.bottom-center="{ content: 'Minimize and hide window on screen.' }"
+                        v-tooltip.bottom-center="{ content: $t('window.minimize-tooltip') }"
                         v-bind:class="{ disabled: fullscreened || maximized }">
                         <i class="icon fas fa-window-minimize"></i>
-                        <span class="title">Minimize</span>
+                        <span class="title">{{ $t("window.minimize-button") }}</span>
                     </div>
 
                     <!-- maximize -->
                     <div class="box button maximize" v-on:click="maximize"
-                        v-tooltip.bottom-center="{ content: (maximized ? 'Unmaximize' : 'Maximize') +
-                            ' window on screen.' }"
+                        v-tooltip.bottom-center="{ content: $t('window.maximize-tooltip') }"
                         v-bind:class="{ disabled: fullscreened, active: maximized }">
                         <i class="icon fas fa-window-maximize"></i>
-                        <span class="title">Maximize</span>
+                        <span class="title">{{ $t("window.maximize-button") }}</span>
                     </div>
 
                     <!-- fullscreen -->
                     <div class="box button fullscreen" v-on:click="fullscreen"
-                        v-tooltip.bottom-center="{ content: 'Switch to ' +
-                            (fullscreened ? 'normal window' : '<u>f</u>ullscreen') +
-                            ' mode. &nbsp;<span class=attention-boxed>CTRL+f</span>' }"
+                        v-tooltip.bottom-center="{ content: $t('window.fullscreen-tooltip') }"
                         v-bind:class="{ disabled: maximized, active: fullscreened }">
                         <i class="icon fas fa-expand-arrows-alt"></i>
-                        <span class="title">Fullscreen</span>
+                        <span class="title">{{ $t("window.fullscreen-button") }}</span>
                     </div>
                 </div>
                 <div class="group-bar">
@@ -188,9 +173,9 @@
                 <div class="group-items">
                     <!-- quit -->
                     <div class="box button quit" v-on:click="quit"
-                        v-tooltip.bottom-center="{ content: '<u>Q</u>uit application &nbsp;<span class=attention-boxed>CTRL+q</span>' }">
+                        v-tooltip.bottom-center="{ content: $t('window.quit-tooltip') }">
                         <i class="icon fas fa-times"></i>
-                        <span class="title">Quit</span>
+                        <span class="title">{{ $t("window.quit-button") }}</span>
                     </div>
                 </div>
                 <div class="group-bar">
@@ -248,6 +233,7 @@
                     v-bind:recording-hours.sync="recordingHours"
                     v-bind:audio-input-device.sync="audioInputDevice"
                     v-bind:audio-output-device.sync="audioOutputDevice"
+                    v-bind:language.sync="language"
                     v-on:save="settingsClose"
                 />
             </div>
@@ -282,7 +268,7 @@
                     <i class="fas fa-exclamation-triangle"></i>
                 </div>
                 <div class="text">
-                    <b>FATAL ERROR:</b><br/>
+                    <b>{{ $t("window.fatal-error") }}:</b><br/>
                     {{ fatalError }}
                 </div>
             </div>
@@ -310,47 +296,48 @@
                         <span v-show=" audioRecording && audioBlob === null"><i class="icon fas fa-microphone-alt-slash"></i></span>
                         <span v-show="!audioPlaying   && audioBlob !== null"><i class="icon fas fa-play-circle"></i></span>
                         <span v-show=" audioPlaying   && audioBlob !== null"><i class="icon fas fa-stop-circle"></i></span>
-                        <span v-show="!audioRecording && audioBlob === null" class="title">Record Message</span>
-                        <span v-show=" audioRecording && audioBlob === null" class="title">Stop Recording</span>
-                        <span v-show="!audioPlaying   && audioBlob !== null" class="title">Play Message</span>
-                        <span v-show=" audioPlaying   && audioBlob !== null" class="title">Stop Playing</span>
+                        <span v-show="!audioRecording && audioBlob === null" class="title">{{ $t("window.audio-record-button-1") }}</span>
+                        <span v-show=" audioRecording && audioBlob === null" class="title">{{ $t("window.audio-record-button-2") }}</span>
+                        <span v-show="!audioPlaying   && audioBlob !== null" class="title">{{ $t("window.audio-record-button-3") }}</span>
+                        <span v-show=" audioPlaying   && audioBlob !== null" class="title">{{ $t("window.audio-record-button-4") }}</span>
                     </div>
 
                     <!-- enter message -->
                     <div class="box message-text" v-bind:class="{ disabled: inLogin || messageThrottle || inVideoPlay, active: message !== '' }">
                         <span v-show="!votingActive || votingActive && votingType === 'propose'"
-                            v-tooltip.bottom-center="{ content: 'Type a textual <u>m</u>essage to be<br/>sent to the trainer.' +
-                                ' &nbsp;<span class=attention-boxed>CTRL+m</span><br/>' +
-                                ' (Enter <span class=attention-boxed>RETURN</span> to immediately send it.)' }">
+                            v-tooltip.top-center="{ content: $t('window.message-propose-tooltip') }">
                             <input
                                 v-bind:disabled="inLogin || messageThrottle || (votingActive && votingDone) || inVideoPlay"
                                 ref="message"
                                 type="text"
-                                v-bind:placeholder="(votingActive && votingDone) ? 'Thanks for voting' :
-                                    (votingActive ? 'Type vote...' : 'Type message...')"
+                                v-bind:placeholder="(votingActive && votingDone) ? $t('window.message-propose-placeholder-1') :
+                                    (votingActive ? $t('window.message-propose-placeholder-2') : $t('window.message-propose-placeholder-3') )"
                                 v-model="message"
                                 v-on:keyup.enter="sendMessage"
                                 v-on:keyup.escape="clearMessage(false)"
                             />
                         </span>
                         <div v-show="votingActive && votingType === 'judge'"
-                            v-tooltip.bottom-center="{ content: 'Send a boolean voting to the trainer.' }"
+                            v-tooltip.top-center="{ content: $t('window.message-judge-tooltip') }"
                             v-bind:class="{ 'choice-row': true, disabled: votingDone }">
                             <div v-bind:class="{ 'choice-box': true, active: votingChoice === 1 }"
                                 v-on:click="sendChoice(1, 'yes')">
-                                <span class="choice-icon"><i class="fas fa-thumbs-up"></i></span>Yes
+                                <span class="choice-icon"><i class="fas fa-thumbs-up"></i></span>
+                                {{ $t("window.message-judge-answer-yes") }}
                             </div>
                             <div v-bind:class="{ 'choice-box': true, active: votingChoice === 2 }"
                                 v-on:click="sendChoice(2, 'no')">
-                                <span class="choice-icon"><i class="fas fa-thumbs-down"></i></span>No
+                                <span class="choice-icon"><i class="fas fa-thumbs-down"></i></span>
+                                {{ $t("window.message-judge-answer-no") }}
                             </div>
                             <div v-bind:class="{ 'choice-box': true, 'choice-cmd': true, active: votingChoice === 0 }"
                                 v-on:click="sendChoice(0, 'abstain')">
-                                <span class="choice-icon"><i class="fas fa-ban"></i></span>abstain
+                                <span class="choice-icon"><i class="fas fa-ban"></i></span>
+                                {{ $t("window.message-answer-abstain") }}
                             </div>
                         </div>
                         <div v-show="votingActive && votingType === 'evaluate'"
-                            v-tooltip.bottom-center="{ content: 'Send a numeric evaluation to the trainer.' }"
+                            v-tooltip.top-center="{ content: $t('window.message-eval-tooltip') }"
                             v-bind:class="{ 'choice-row': true, disabled: votingDone }">
                             <div v-bind:class="{ 'choice-box': true, active: votingChoice === 1 }"
                                 v-on:click="sendChoice(1, '-2')">
@@ -374,11 +361,12 @@
                             </div>
                             <div v-bind:class="{ 'choice-box': true, 'choice-cmd': true, active: votingChoice === 0 }"
                                 v-on:click="sendChoice(0, 'abstain')">
-                                <span class="choice-icon"><i class="fas fa-ban"></i></span>abstain
+                                <span class="choice-icon"><i class="fas fa-ban"></i></span>
+                                {{ $t("window.message-answer-abstain") }}
                             </div>
                         </div>
                         <div v-show="votingActive && votingType === 'choose'"
-                            v-tooltip.bottom-center="{ content: 'Send a numeric choice to the trainer.' }"
+                            v-tooltip.top-center="{ content: $t('window.message-choice-tooltip') }"
                             v-bind:class="{ 'choice-row': true, disabled: votingDone }">
                             <div v-bind:class="{ 'choice-box': true, active: votingChoice === 1 }"
                                  v-on:click="sendChoice(1, '1')">1</div>
@@ -400,11 +388,12 @@
                                  v-on:click="sendChoice(9, '9')">9</div>
                             <div v-bind:class="{ 'choice-box': true, 'choice-cmd': true, active: votingChoice === 0 }"
                                 v-on:click="sendChoice(0, 'abstain')">
-                                <span class="choice-icon"><i class="fas fa-ban"></i></span>abstain
+                                <span class="choice-icon"><i class="fas fa-ban"></i></span>
+                                {{ $t("window.message-answer-abstain") }}
                             </div>
                         </div>
                         <div v-show="votingActive && votingType === 'quiz'"
-                            v-tooltip.bottom-center="{ content: 'Send a quiz answer to the trainer.' }"
+                            v-tooltip.top-center="{ content: $t('window.message-quiz-tooltip') }"
                             v-bind:class="{ 'choice-row': true, disabled: votingDone }">
                             <div v-bind:class="{ 'choice-box': true, active: votingChoice === 1 }"
                                  v-on:click="sendChoice(1, '1')">1</div>
@@ -426,25 +415,26 @@
                                  v-on:click="sendChoice(9, '9')">9</div>
                             <div v-bind:class="{ 'choice-box': true, 'choice-cmd': true, active: votingChoice === 0 }"
                                 v-on:click="sendChoice(0, 'abstain')">
-                                <span class="choice-icon"><i class="fas fa-ban"></i></span>abstain
+                                <span class="choice-icon"><i class="fas fa-ban"></i></span>
+                                {{ $t("window.message-answer-abstain") }}
                             </div>
                         </div>
                     </div>
 
                     <!-- clear message -->
                     <div class="box button message-clear" v-on:click="clearMessage(true)"
-                        v-tooltip.bottom-center="{ content: 'Clear audio and text messages.' }"
+                        v-tooltip.top-center="{ content: $t('window.clear-message-tooltip') }"
                         v-bind:class="{ disabled: inLogin || messageThrottle || (audioBlob === null && message === '') || inVideoPlay }">
                         <i class="icon fas fa-trash-alt"></i>
-                        <span class="title">Clear Messages</span>
+                        <span class="title">{{ $t("window.clear-message-button") }}</span>
                     </div>
 
                     <!-- send message -->
                     <div class="box button message-send" v-on:click="sendMessage"
-                        v-tooltip.bottom-center="{ content: 'Send audio and text messages.' }"
+                        v-tooltip.top-center="{ content: $t('window.send-message-tooltip') }"
                         v-bind:class="{ disabled: inLogin || messageThrottle || (message === '' && audioBlob === null) || inVideoPlay }">
                         <i class="icon fas fa-share"></i>
-                        <span class="title">Send Messages</span>
+                        <span class="title">{{ $t("window.send-message-button") }}</span>
                     </div>
                 </div>
             </div>
@@ -456,54 +446,50 @@
                 <div class="group-items">
                     <!-- send thumbs-up -->
                     <div class="box button message-send" v-on:click="feedback('thumbsup')"
-                        v-tooltip.bottom-center="{ content: 'Send feedback by showing<br/>consent with a thumbs-<u>u</u>p.' +
-                            ' &nbsp; <span class=attention-boxed>CTRL+u</span>' }"
+                        v-tooltip.top-center="{ content: $t('window.feedback-thumbsup-tooltip') }"
                         v-bind:class="{ disabled: inLogin || feedbackDisabled || inVideoPlay }">
                         <i class="icon fas fa-thumbs-up"></i>
-                        <span class="title">Show Consent</span>
+                        <span class="title">{{ $t("window.feedback-thumbsup-button") }}</span>
                     </div>
 
                     <!-- send thumbs-down -->
                     <div class="box button message-send" v-on:click="feedback('thumbsdn')"
-                        v-tooltip.bottom-center="{ content: 'Send feedback by showing<br/>refusal with a thumbs-<u>d</u>own.' +
-                            ' &nbsp;<span class=attention-boxed>CTRL+d</span>' }"
+                        v-tooltip.top-center="{ content: $t('window.feedback-thumbsdn-tooltip') }"
                         v-bind:class="{ disabled: inLogin || feedbackDisabled || inVideoPlay }">
                         <i class="icon fas fa-thumbs-down"></i>
-                        <span class="title">Show Refusal</span>
+                        <span class="title">{{ $t("window.feedback-thumbsdn-button") }}</span>
                     </div>
 
                     <!-- send surprise -->
                     <div class="box button message-send" v-on:click="feedback('surprise')"
-                        v-tooltip.bottom-center="{ content: 'Send feedback by showing<br/>surprise (<u>o</u>ohh).' +
-                            ' &nbsp;<span class=attention-boxed>CTRL+o</span>' }"
+                        v-tooltip.top-center="{ content: $t('window.feedback-surprise-tooltip') }"
                         v-bind:class="{ disabled: inLogin || feedbackDisabled || inVideoPlay }">
                         <i class="icon fas fa-surprise"></i>
-                        <span class="title">Show Surprise</span>
+                        <span class="title">{{ $t("window.feedback-surprise-button") }}</span>
                     </div>
 
                     <!-- send smile -->
                     <div class="box button message-send" v-on:click="feedback('smile')"
-                        v-tooltip.bottom-center="{ content: 'Send feedback by<br/>showing smile/<u>g</u>rin.' +
-                            ' &nbsp;<span class=attention-boxed>CTRL+g</span>' }"
+                        v-tooltip.top-center="{ content: $t('window.feedback-smile-tooltip') }"
                         v-bind:class="{ disabled: inLogin || feedbackDisabled || inVideoPlay }">
                         <i class="icon fas fa-grin-wink"></i>
-                        <span class="title">Show Smile</span>
+                        <span class="title">{{ $t("window.feedback-smile-button") }}</span>
                     </div>
 
                     <!-- send frown -->
                     <div class="box button message-send" v-on:click="feedback('frown')"
-                        v-tooltip.bottom-center="{ content: 'Send feedback by<br/>showing frown.' }"
+                        v-tooltip.top-center="{ content: $t('window.feedback-frown-tooltip') }"
                         v-bind:class="{ disabled: inLogin || feedbackDisabled || inVideoPlay }">
                         <i class="icon fas fa-angry"></i>
-                        <span class="title">Show Frown</span>
+                        <span class="title">{{ $t("window.feedback-frown-button") }}</span>
                     </div>
 
                     <!-- send sadness -->
                     <div class="box button message-send" v-on:click="feedback('sadness')"
-                        v-tooltip.bottom-center="{ content: 'Send feedback by<br/>showing sadness.' }"
+                        v-tooltip.top-center="{ content: $t('window.feedback-sadness-tooltip') }"
                         v-bind:class="{ disabled: inLogin || feedbackDisabled || inVideoPlay }">
                         <i class="icon fas fa-sad-tear"></i>
-                        <span class="title">Show Sadness</span>
+                        <span class="title">{{ $t("window.feedback-sadness-button") }}</span>
                     </div>
                 </div>
             </div>
@@ -522,7 +508,7 @@
                             type="range"
                             min="1" max="5" step="1"
                             v-model.number="challenge"/>
-                        <span class="title">My Challenge</span>
+                        <span class="title">{{ $t("window.challenge-button") }}</span>
                     </div>
 
                     <!-- mood -->
@@ -534,7 +520,7 @@
                             type="range"
                             min="1" max="5" step="1"
                             v-model.number="mood"/>
-                        <span class="title">My Mood</span>
+                        <span class="title">{{ $t("window.mood-button") }}</span>
                     </div>
                 </div>
             </div>
@@ -545,7 +531,7 @@
                 <div class="group-items">
                     <!-- move window -->
                     <div class="box move"
-                        v-tooltip.bottom-center="{ content: 'Move window position on screen.' }">
+                        v-tooltip.top-center="{ content: $t('window.move-window-tooltip') }">
                         <div class="grab-container">
                             <span class="grab grab-1"></span>
                             <span class="grab grab-2"></span>
@@ -553,7 +539,7 @@
                             <span class="grab grab-4"></span>
                             <span class="grab grab-5"></span>
                         </div>
-                        <span class="title">Move Window</span>
+                        <span class="title">{{ $t("window.move-window-button") }}</span>
                     </div>
                 </div>
             </div>
@@ -1159,6 +1145,7 @@ module.exports = {
         recordingHours:        0,
         audioInputDevice:      "",
         audioOutputDevice:     "",
+        language:              "",
         logo:                  ui.logo1,
         audioBlob:             null,
         audioBlobChunks:       [],
@@ -1173,7 +1160,6 @@ module.exports = {
         mood:                  3,
         challenge:             3,
         meterType:             0,
-        meterTypeNames:        [ "kbps", "Duration", "Clock" ],
         bandwidthBytes:        0,
         bandwidthText:         "",
         durationStart:         0,
@@ -1209,45 +1195,50 @@ module.exports = {
             else if (this.meterType === 1) return this.durationText
             else if (this.meterType === 2) return this.timeText
         },
+        meterTypeNames () {
+            return [
+                this.$t("window.meter-button-kbps"),
+                this.$t("window.meter-button-duration"),
+                this.$t("window.meter-button-clock")
+            ]
+        },
         recordText () {
             let html
             if (this.audioBlob === null) {
-                if (!this.audioRecording && this.audioBlob !== null)
-                    html = "Press to temporarily mute trainer audio and<br/>record your audio message to be send to the trainer again."
-                else if (!this.audioRecording && this.audioBlob === null)
-                    html = "Press to temporarily mute trainer audio and<br/>record your audio message to be send to the trainer."
-                else if (this.audioRecording)
-                    html = "<span class='attention-boxed'> NOW PLEASE SPEAK! </span><br/>Press again to stop your recording."
+                if (!this.audioRecording)
+                    html = this.$t("window.audio-record-tooltip-1")
+                else
+                    html = this.$t("window.audio-record-tooltip-2")
             }
             else {
                 if (this.audioPlaying)
-                    html = "Press to stop playing<br/>your audio message."
+                    html = this.$t("window.audio-record-tooltip-3")
                 else
-                    html = "Press to temporarily mute trainer audio and<br/>play and check your recorded audio message.<br/>" +
-                        `(duration: <b class='attention-boxed'>${this.audioDuration.toFixed(1)}</b> seconds)`
+                    html = this.$t("window.audio-record-tooltip-4",
+                        { seconds: this.audioDuration.toFixed(1) })
             }
             return html
         },
         challengeText () {
-            let html = "I am <i>content-wise</i><br/><b>"
+            let html = this.$t("window.challenge-tooltip-0") + "<b>"
             switch (parseInt(this.challenge)) {
-                case 1: html += "sub-challenged";  break
-                case 2: html += "less-challenged"; break
-                case 3: html += "challenged";      break
-                case 4: html += "much-challenged"; break
-                case 5: html += "over-challenged"; break
+                case 1: html += this.$t("window.challenge-tooltip-1"); break
+                case 2: html += this.$t("window.challenge-tooltip-2"); break
+                case 3: html += this.$t("window.challenge-tooltip-3"); break
+                case 4: html += this.$t("window.challenge-tooltip-4"); break
+                case 5: html += this.$t("window.challenge-tooltip-5"); break
             }
             html += "</b>!"
             return html
         },
         moodText () {
-            let html = "I am <i>mentally</i><br/><b>"
+            let html = this.$t("window.mood-tooltip-0") + "<b>"
             switch (parseInt(this.mood)) {
-                case 1: html += "knocked-off";   break
-                case 2: html += "tired";         break
-                case 3: html += "good";          break
-                case 4: html += "refreshed";     break
-                case 5: html += "excited";       break
+                case 1: html += this.$t("window.mood-tooltip-1"); break
+                case 2: html += this.$t("window.mood-tooltip-2"); break
+                case 3: html += this.$t("window.mood-tooltip-3"); break
+                case 4: html += this.$t("window.mood-tooltip-4"); break
+                case 5: html += this.$t("window.mood-tooltip-5"); break
             }
             html += "</b>!"
             return html
@@ -1275,6 +1266,7 @@ module.exports = {
         liveStreamBuffering:  function (v) { ui.settings("live-stream-buffering", v) },
         recordingHours:       function (v) { ui.settings("recording-hours", v) },
         audioInputDevice:     function (v) { ui.settings("audio-input-device", v) },
+        language:             function (v) { ui.settings("language", v) },
         audioOutputDevice:    function (v) {
             ui.settings("audio-output-device", v)
             if (this.$refs.videostream) {
@@ -1374,7 +1366,8 @@ module.exports = {
                 liveStreamBuffering:  this.liveStreamBuffering,
                 recordingHours:       this.recordingHours,
                 audioInputDevice:     this.audioInputDevice,
-                audioOutputDevice:    this.audioOutputDevice
+                audioOutputDevice:    this.audioOutputDevice,
+                language:             this.language
             })
         },
 
@@ -1407,16 +1400,13 @@ module.exports = {
             if (!this.inLogin)
                 return
             const missingSettings = (name) => {
-                this.$refs.login.$emit("error",
-                    `Please configure your <b>${name}</b> ` +
-                    "in the <b>Settings</b> dialog first."
-                )
+                this.$refs.login.$emit("error", this.$t("window.missing-settings", { name: this.$t(name) }))
             }
-            if (this.personPortrait      === "") { missingSettings("Person Portrait");        return }
-            if (this.personName          === "") { missingSettings("Person Name");            return }
-            if (this.personPrivacy       === "") { missingSettings("Person Privacy");         return }
-            if (this.liveStreamBuffering === 0)  { missingSettings("Video Stream Buffering"); return }
-            if (this.audioOutputDevice   === "") { missingSettings("Audio Output Device");    return }
+            if (this.personPortrait      === "") { missingSettings("window.missing-settings-portrait");  return }
+            if (this.personName          === "") { missingSettings("window.missing-settings-name");      return }
+            if (this.personPrivacy       === "") { missingSettings("window.missing-settings-privacy");   return }
+            if (this.liveStreamBuffering === 0)  { missingSettings("window.missing-settings-buffering"); return }
+            if (this.audioOutputDevice   === "") { missingSettings("window.missing-settings-device");    return }
             this.$emit("login", {
                 liveRelayServer:      this.liveRelayServer,
                 liveAccessToken:      this.liveAccessToken
@@ -1714,6 +1704,7 @@ module.exports = {
         this.recordingHours       = await ui.settings("recording-hours")
         this.audioInputDevice     = await ui.settings("audio-input-device")
         this.audioOutputDevice    = await ui.settings("audio-output-device")
+        this.language             = await ui.settings("language")
 
         /* indicate loading  */
         this.loaded = true

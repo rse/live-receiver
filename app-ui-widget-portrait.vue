@@ -11,10 +11,9 @@
         <div class="portrait-row">
             <div class="portrait-col portrait">
                 <!-- portrait -->
-                <div
-                    v-tooltip.left="{ content: 'Press to edit the portrait picture.' }"
-                    v-bind:class="{ border: true, editing: editing }">
-                    <div v-show="!editing" class="preview-wrap">
+                <div v-bind:class="{ border: true, editing: editing }">
+                    <div v-show="!editing" class="preview-wrap"
+                        v-tooltip.left="{ content: $t('portrait.canvas-preview-tooltip') }">
                         <!-- preview -->
                         <img
                             ref="preview"
@@ -24,7 +23,8 @@
                             alt="Portrait"
                         />
                     </div>
-                    <div v-show="editing" class="cropper-wrap">
+                    <div v-show="editing" class="cropper-wrap"
+                        v-tooltip.left="{ content: $t('portrait.canvas-edit-tooltip') }">
                         <!-- editor -->
                         <img ref="cropper"
                             class="cropper"
@@ -41,18 +41,16 @@
                         <img ref="avatar-man"
                             class="avatar avatar-man"
                             v-bind:src="avatarMan"
-                            v-tooltip.left="{ content: 'Press to choose a <span class=attention-boxed>male</span> avatar<br/>as your portrait picture.' }"
+                            v-tooltip.left="{ content: $t('portrait.avatar-male-tooltip') }"
                             v-on:click="chooseAvatar('man')"
-                            alt="Avatar Man"
                         />
                     </div>
                     <div class="portrait-col">
                         <img ref="avatar-woman"
                             class="avatar avatar-woman"
                             v-bind:src="avatarWoman"
-                            v-tooltip.right="{ content: 'Press to choose a <span class=attention-boxed>female</span> avatar<br/>as your portrait picture.' }"
+                            v-tooltip.right="{ content: $t('portrait.avatar-female-tooltip') }"
                             v-on:click="chooseAvatar('woman')"
-                            alt="Avatar Man"
                         />
                     </div>
                 </div>
@@ -61,18 +59,16 @@
                     <button v-show="!editing"
                         class="choose"
                         type="button"
-                        v-tooltip.top="{ content: 'Press to load your portrait<br/>picture from a local file.' }"
-                        v-on:click="chooseFile">
-                        Choose Custom<br/>
-                        Portrait Image
+                        v-tooltip.top="{ content: $t('portrait.edit-tooltip') }"
+                        v-on:click="chooseFile"
+                        v-html="$t('portrait.edit-button')">
                     </button>
                     <button v-show="editing"
                         class="fixate"
                         type="button"
-                        v-tooltip.top="{ content: 'Press to fixate your<br/>portrait picture.' }"
-                        v-on:click="fixateImage">
-                        Fixate Edited<br/>
-                        Portrait Image
+                        v-tooltip.top="{ content: $t('portrait.fixate-tooltip') }"
+                        v-on:click="fixateImage"
+                        v-html="$t('portrait.fixate-button')">
                     </button>
                 </div>
             </div>
@@ -236,7 +232,7 @@ module.exports = {
         /*  choose a custom portrait image  */
         chooseFile () {
             ui.bridge.showOpenDialog({
-                title:       "Choose Custom Portrait Image File",
+                title:       this.$t("portrait.choose-title"),
                 properties:  [ "openFile" ],
                 filters:     [ { name: "Image", extensions: [ "png", "jpg", "gif", "svg" ] } ],
                 defaultPath: this.imageFile
