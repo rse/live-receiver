@@ -84,6 +84,7 @@ module.exports = class VideoStream extends EventEmitter {
             "-rtmp_live",     "live",
             "-rtmp_buffer",   "2000",     /*  2.0s  */ /* FIXME: this.options.buffering INTENTIONALLY UNUSED! */
             "-fflags",        "nobuffer",
+            "-tls_verify",    "0",
             "-i",             url,
 
             /*  output options  */
