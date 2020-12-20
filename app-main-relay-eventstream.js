@@ -5,14 +5,15 @@
 */
 
 /*  standard requirements  */
-const EventEmitter = require("events")
+const EventEmitter  = require("events")
 
 /*  external requirements  */
-const MQTTjs       = require("mqtt")
-const UUID         = require("pure-uuid")
+const MQTTjs        = require("mqtt")
+const UUID          = require("pure-uuid")
 
 /*  internal requirements  */
-const pkg          = require("./package.json")
+const { reachable } = require("./app-main-relay-util.js")
+const pkg           = require("./package.json")
 
 /*  the exported API class  */
 module.exports = class EventStream extends EventEmitter {
@@ -37,6 +38,11 @@ module.exports = class EventStream extends EventEmitter {
         this.timer     = null
         this.inStealth = false
         this.url       = `mqtts://${this.options.token1}:${this.options.token2}@${this.options.server}`
+    }
+
+    /*  check reachability  */
+    async reachable () {
+        return reachable(this.options.server, 8883, 4 * 1000)
     }
 
     /*  pre-authenticate at the LiVE relay service

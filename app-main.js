@@ -483,6 +483,19 @@ const app = electron.app
             client: app.clientId,
             agent:  `${pkg.name}/${pkg.version}`
         }
+        const liveReachability = async () => {
+            app.log.info("main: LiVE-Relay: checking reachability")
+
+            /*  check reachability of LiVE Relay EventStream and VideoStream  */
+            const es = new EventStream({ ...credentials })
+            const vs = new VideoStream({ ...credentials })
+            const result = await Promise.all([ es.reachable(), vs.reachable() ])
+            if (result[0].error)
+                return result[0]
+            if (result[1].error)
+                return result[1]
+            return { success: true }
+        }
         const liveAuth = async () => {
             app.log.info("main: LiVE-Relay: authenticate")
 
@@ -685,7 +698,10 @@ const app = electron.app
             credentials.buffering  = app.liveStreamBuffering
 
             /*  establish communication  */
-            let result = await liveAuth()
+            let result = await liveReachability()
+            if (result.error)
+                return result
+            result = await liveAuth()
             if (result.error)
                 return result
             result = await liveConnect()

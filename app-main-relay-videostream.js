@@ -17,6 +17,9 @@ const UUID         = require("pure-uuid")
 const MP4Box       = require("mp4box")
 const MP4Frag      = require("mp4frag")
 
+/*  internal requirements  */
+const { reachable }   = require("./app-main-relay-util.js")
+
 /*  determine path to embedded ffmpeg(1) executable  */
 let ffmpeg
 if (os.platform() === "win32")
@@ -57,6 +60,9 @@ module.exports = class VideoStream extends EventEmitter {
         this.processing = false
         this.mp4box     = null
         this.mp4frag    = null
+    }
+    async reachable () {
+        return reachable(this.options.server, 443, 4 * 1000)
     }
     async start () {
         this.processing = true
