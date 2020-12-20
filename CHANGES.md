@@ -5,6 +5,7 @@ Changes
 - 1.9.3
     - IMPROVEMENT: add internationalization (I18N) facility
     - IMPROVEMENT: add German and English language to all UI elements
+    - BUGFIX: ensure the TLS connections work despite ZScaler and other intermediate proxies
     - UPDATE: upgrade minor dependencies
 
 - 1.9.2
