@@ -12,7 +12,7 @@
         "url":                           "http://engelschall.com/"
     },
     "devDependencies": {
-        "electron":                      "11.1.0",
+        "electron":                      "11.1.1",
         "electron-builder":              "22.9.1",
         "nodemon":                       "2.0.6",
         "shelljs":                       "0.8.4",

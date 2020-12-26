@@ -7,6 +7,7 @@ Changes
     - IMPROVEMENT: add internationalization (I18N) facility
     - IMPROVEMENT: add German and English language to all UI elements
     - BUGFIX: ensure the TLS connections work despite ZScaler and other intermediate proxies
+    - UPDATE: upgrade to Electron 11.1.1
     - UPDATE: upgrade minor dependencies
 
 - 1.9.2
