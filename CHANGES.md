@@ -2,7 +2,7 @@
 Changes
 =======
 
-- 1.10.0
+- 1.9.3
     - IMPROVEMENT: explicitly check LiVE Relay reachability before trying to connect with FFmpeg
     - IMPROVEMENT: add internationalization (I18N) facility
     - IMPROVEMENT: add German and English language to all UI elements
