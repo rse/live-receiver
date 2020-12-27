@@ -2,11 +2,11 @@
 Changes
 =======
 
-- 1.9.3
+- 1.10.0
     - IMPROVEMENT: explicitly check LiVE Relay reachability before trying to connect with FFmpeg
     - IMPROVEMENT: add internationalization (I18N) facility
     - IMPROVEMENT: add German and English language to all UI elements
-    - BUGFIX: check that TLS connections work despite ZScaler and other intermediate proxies
+    - IMPROVEMENT: check that TLS connections work despite ZScaler and other intermediate proxies
     - UPDATE: upgrade to Electron 11.1.1
     - UPDATE: upgrade minor dependencies
 
