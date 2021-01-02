@@ -2,6 +2,9 @@
 Changes
 =======
 
+- 1.9.4
+    - UPDATE: upgrade minor dependencies
+
 - 1.9.3
     - IMPROVEMENT: explicitly check LiVE Relay reachability before trying to connect with FFmpeg
     - IMPROVEMENT: add internationalization (I18N) facility
