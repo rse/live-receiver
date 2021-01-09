@@ -799,7 +799,7 @@ const app = electron.app
         app.ipc.handle("load-yaml", async (event, file) => {
             const filename = path.resolve(path.join(app.getAppPath(), file))
             const yaml = await fs.promises.readFile(filename, { encoding: "utf8" })
-            const obj = jsYAML.safeLoad(yaml)
+            const obj = jsYAML.load(yaml)
             return obj
         })
     })
