@@ -1,7 +1,7 @@
 {
     "name":                              "LiVE-Receiver",
     "homepage":                          "https://video-experience.live",
-    "version":                           "1.9.3",
+    "version":                           "1.9.4",
     "description":                       "Live Video Experience (LiVE) Receiver",
     "keywords":                          [ "live", "video", "experience", "receiver" ],
     "license":                           "GPL-3.0-only",
