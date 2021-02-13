@@ -41,6 +41,6 @@ Copyright & License
 -------------------
 
 Live Video Experience (LiVE)<br/>
-Copyright &copy; 2020 [Dr. Ralf S. Engelschall](mailto:rse@engelschall.com)<br/>
+Copyright &copy; 2020-2021 [Dr. Ralf S. Engelschall](mailto:rse@engelschall.com)<br/>
 Licensed under [GPL 3.0](https://spdx.org/licenses/GPL-3.0-only)
 
