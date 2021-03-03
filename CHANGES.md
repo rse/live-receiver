@@ -3,7 +3,7 @@ Changes
 =======
 
 - 1.9.5
-    - UPDATE: upgrade to Electron 11.3.0
+    - UPDATE: upgrade to Electron 12.0.0
     - UPDATE: upgrade minor dependencies
 
 - 1.9.4
