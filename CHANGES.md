@@ -3,7 +3,8 @@ Changes
 =======
 
 - 1.9.5
-    - UPDATE: upgrade to Electron 12.0.1
+    - UPDATE: upgrade to Electron 12.0.2
+    - UPDATE: upgrade to FFmpeg 4.3.2
     - UPDATE: upgrade minor dependencies
 
 - 1.9.4
