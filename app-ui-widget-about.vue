@@ -58,7 +58,7 @@
                     </tr>
                     <tr>
                         <td class="product"><a href="https://ffmpeg.org/" v-on:click="openURL">FFmpeg</a></td>
-                        <td class="version">4.3.2</td>
+                        <td class="version">{{ ffmpeg }}</td>
                         <td class="product"><a href="https://typopro.org" v-on:click="openURL">TypoPRO</a></td>
                         <td class="version">{{ pkg.dependencies["typopro-web"] }}</td>
                     </tr>
@@ -189,7 +189,8 @@ module.exports = {
         return {
             logo:     ui.logo1,
             pkg:      ui.pkg,
-            versions: process.versions
+            versions: process.versions,
+            ffmpeg:   ui.ffmpeg
         }
     },
 

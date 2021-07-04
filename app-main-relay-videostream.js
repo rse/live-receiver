@@ -20,20 +20,6 @@ const MP4Frag      = require("mp4frag")
 /*  internal requirements  */
 const { reachable }   = require("./app-main-relay-util.js")
 
-/*  determine path to embedded ffmpeg(1) executable  */
-let ffmpeg
-if (os.platform() === "win32")
-    ffmpeg = path.resolve(path.join(app.getAppPath(), "app-main-relay-videostream.d", "ffmpeg.exe")
-        .replace("app.asar", "app.asar.unpacked"))
-else if (os.platform() === "darwin")
-    ffmpeg = path.resolve(path.join(app.getAppPath(), "app-main-relay-videostream.d", "ffmpeg")
-        .replace("app.asar", "app.asar.unpacked"))
-else if (os.platform() === "linux")
-    ffmpeg = path.resolve(path.join(app.getAppPath(), "app-main-relay-videostream.d", "ffmpeg")
-        .replace("app.asar", "app.asar.unpacked"))
-else
-    throw new Error(`operating system platform ${os.platform()} not supported`)
-
 /*  the exported API  */
 module.exports = class VideoStream extends EventEmitter {
     constructor (options = {}) {
@@ -42,7 +28,7 @@ module.exports = class VideoStream extends EventEmitter {
         /*  determine default option values  */
         const id = (new UUID(1)).format("std")
         this.options = Object.assign({}, {
-            ffmpeg:     ffmpeg,
+            ffmpeg:     "ffmpeg",
             client:     id,
             server:     "",
             channel:    "",

@@ -3,8 +3,8 @@ Changes
 =======
 
 - 1.10.0
-    - UPDATE: upgrade to Electron 12.0.2
-    - UPDATE: upgrade to FFmpeg 4.3.2
+    - UPDATE: upgrade to Electron 13.1.5
+    - UPDATE: upgrade to FFmpeg 4.4.0 (througn new @rse/ffmpeg distribution)
     - UPDATE: upgrade minor dependencies
 
 - 1.9.4

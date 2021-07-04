@@ -19,6 +19,7 @@ const syspath      = require("syspath")
 const UUID         = require("pure-uuid")
 const mkdirp       = require("mkdirp")
 const jsYAML       = require("js-yaml")
+const FFmpeg       = require("@rse/ffmpeg")
 
 /*  internal requirements  */
 const Settings     = require("./app-main-settings")
@@ -438,6 +439,11 @@ const app = electron.app
             await app.vs.record(filename)
         })
 
+        /*  provide FFmpeg version information  */
+        app.ipc.handle("ffmpeg-version", (event, ...args) => {
+            return FFmpeg.info.version
+        })
+
         /*  establish recording mechanism  */
         const { dataDir } = syspath({ appName: "LiVE-Receiver" })
         const basedir = path.join(dataDir, "recordings")
@@ -488,7 +494,7 @@ const app = electron.app
 
             /*  check reachability of LiVE Relay EventStream and VideoStream  */
             const es = new EventStream({ ...credentials })
-            const vs = new VideoStream({ ...credentials })
+            const vs = new VideoStream({ ...credentials, ffmpeg: FFmpeg.binary })
             const result = await Promise.all([ es.reachable(), vs.reachable() ])
             if (result[0].error)
                 return result[0]
@@ -569,6 +575,7 @@ const app = electron.app
             /*  connect to LiVE Relay VideoStream  */
             const vs = new VideoStream({
                 ...credentials,
+                ffmpeg: FFmpeg.binary,
                 log: (level, message) => { app.log[level](message) }
             })
             let numLast = -1

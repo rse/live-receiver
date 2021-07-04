@@ -67,6 +67,7 @@ ui = {}
     ui.dayjs        = require("dayjs")
     ui.imageDataURI = require("image-data-uri")
     ui.pkg          = require("./package.json")
+    ui.ffmpeg       = await ui.ipc.invoke("ffmpeg-version")
 
     /*  determine audio/video devices  */
     ui.devices = []
