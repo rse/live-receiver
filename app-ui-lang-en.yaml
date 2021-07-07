@@ -81,18 +81,18 @@ window:
                                     (<b class='attention-boxed'>{seconds}</b> seconds duration)
 
     message-answer-abstain:         Abstain
-    message-propose-tooltip:        Type a textual <u>m</u>essage to be<br/>sent to the trainer.
+    message-propose-tooltip:        Type a textual <u>m</u>essage to be<br/>sent to the trainer and the audience.
                                     &nbsp;<span class=attention-boxed>CTRL+m</span><br/>
                                     (Use <span class=attention-boxed>RETURN</span> to immediately send it)
     message-propose-placeholder-1:  Thanks for voting
     message-propose-placeholder-2:  Type a vote...
     message-propose-placeholder-3:  Type a message...
-    message-judge-tooltip:          Send a boolean voting to the trainer.
+    message-judge-tooltip:          Send a boolean voting to the trainer anonymously.
     message-judge-answer-yes:       Yes
     message-judge-answer-no:        No
-    message-eval-tooltip:           Send a numeric evaluation to the trainer.
-    message-choice-tooltip:         Send a numeric choice to the trainer.
-    message-quiz-tooltip:           Send a quiz answer to the trainer.
+    message-eval-tooltip:           Send a numeric evaluation to the trainer anonymously.
+    message-choice-tooltip:         Send a numeric choice to the trainer anonymously.
+    message-quiz-tooltip:           Send a quiz answer to the trainer anonymously.
 
     clear-message-button:           Clear Messages
     clear-message-tooltip:          Clear audio and text messages.

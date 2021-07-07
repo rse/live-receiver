@@ -6,6 +6,7 @@ Changes
     - UPDATE: upgrade to Electron 13.1.6
     - UPDATE: upgrade to FFmpeg 4.4.0 (througn new @rse/ffmpeg distribution)
     - UPDATE: upgrade minor dependencies
+    - CLEANUP: be more precise what the text messages and votings mean
 
 - 1.9.4
     - UPDATE: upgrade to Electron 11.2.3

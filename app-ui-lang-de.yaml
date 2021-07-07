@@ -83,18 +83,18 @@ window:
                                     (<b class='attention-boxed'>{seconds}</b> Sekunden Dauer)
 
     message-answer-abstain:         Enthalten
-    message-propose-tooltip:        Gebe eine texuelle Nachricht (<u>m</u>essage) ein,<br/>
-                                    die an den Trainer gesendet werden soll. &nbsp;<span class=attention-boxed>CTRL+m</span><br/>
+    message-propose-tooltip:        Gib eine texuelle Nachricht (<u>m</u>essage) ein,<br/>
+                                    die an den Trainer und die Teilnehmer gesendet werden soll. &nbsp;<span class=attention-boxed>CTRL+m</span><br/>
                                     (Nutze <span class=attention-boxed>RETURN</span>, um die Nachricht sofort abzusenden)
     message-propose-placeholder-1:  Danke für das Abstimmen
     message-propose-placeholder-2:  Gib einen Abstimmungsvorschlag ein...
     message-propose-placeholder-3:  Gib eine Nachricht ein...
-    message-judge-tooltip:          Sende eine bool'sche Stimme an den Trainer.
+    message-judge-tooltip:          Sende anonym eine bool'sche Stimme an den Trainer.
     message-judge-answer-yes:       Ja
     message-judge-answer-no:        Nein
-    message-eval-tooltip:           Sende eine numerische Bewertung an den Trainer.
-    message-choice-tooltip:         Sende eine numerische Auswahl an den Trainer.
-    message-quiz-tooltip:           Sende eine Quiz-Antwort an den Trainer.
+    message-eval-tooltip:           Sende anonym eine numerische Bewertung an den Trainer.
+    message-choice-tooltip:         Sende anonym eine numerische Auswahl an den Trainer.
+    message-quiz-tooltip:           Sende anonym eine Quiz-Antwort an den Trainer.
 
     clear-message-button:           Nachr. Löschen
     clear-message-tooltip:          Lösche Audio- und Text-Nachricht.
