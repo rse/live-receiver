@@ -245,6 +245,7 @@ const app = electron.app
             resizable:       true,
             webPreferences: {
                 devTools:                   (typeof process.env.DEBUG !== "undefined"),
+                nativeWindowOpen:           false,
                 nodeIntegration:            true,
                 nodeIntegrationInWorker:    true,
                 contextIsolation:           false,
