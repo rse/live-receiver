@@ -344,6 +344,8 @@ const app = electron.app
         })
         app.ipc.handle("minimize", (event) => {
             if (minimized) {
+                /*  notice: there is no "unminimize()" method, so we have to restore
+                    the previous state and give the window the focus again instead  */
                 app.win.restore()
                 app.win.focus()
             }
@@ -353,6 +355,17 @@ const app = electron.app
 
         /*  handle window maximize functionality  */
         let maximized = false
+        const maximizeFixate = () => {
+            /*  in Electron and our tracking got out of sync...  */
+            if (!maximized && app.win.isMaximized()) {
+                maximized = true
+                app.win.webContents.send("maximized", true)
+            }
+            else if (maximized && !app.win.isMaximized()) {
+                maximized = false
+                app.win.webContents.send("maximized", false)
+            }
+        }
         app.win.on("maximize", () => {
             maximized = true
             app.win.webContents.send("maximized", true)
@@ -362,10 +375,27 @@ const app = electron.app
             app.win.webContents.send("maximized", false)
         })
         app.ipc.handle("maximize", (event) => {
+            maximizeFixate()
             if (maximized)
                 app.win.unmaximize()
-            else
-                app.win.maximize()
+            else {
+                const display = electron.screen.getDisplayNearestPoint({ x: app.x, y: app.y })
+                const dim = display.workAreaSize
+                if (app.w === dim.width && app.h === dim.height) {
+                    /*  Electron seems to have a bug: it does not correctly restore the size and position
+                        on subsequent "unmaximize()" if the size (by accident) before "maximize()" is
+                        already the maximum size (this can happen if one moves but not resizes the window
+                        after a "maximize()" where Electron does not even raise an "unmaximize" event but
+                        "isMaximized()" tell it implicitly unmaximized. Hence, we perform an implicit
+                        resize before the "maximize()" call to workaroun the issue!  */
+                    app.w -= 50                                    /*  NOTICE 1: 1-10 pixels is not enough  */
+                    app.h -= 50
+                    app.win.setSize(app.w, app.h)
+                    setTimeout(() => { app.win.maximize() }, 1500) /*  NOTICE 2: resizing needs some time  */
+                }
+                else
+                    app.win.maximize()
+            }
         })
 
         /*  handle window fullscreen functionality  */
@@ -379,7 +409,10 @@ const app = electron.app
             app.win.webContents.send("fullscreened", false)
         })
         app.ipc.handle("fullscreen", (event) => {
-            app.win.setFullScreen(!fullscreened)
+            if (fullscreened)
+                app.win.setFullScreen(false)
+            else
+                app.win.setFullScreen(true)
         })
 
         /*  track application window changes  */
@@ -395,24 +428,19 @@ const app = electron.app
             settings.set("window-height", app.h)
         }
         app.win.on("resize", throttle(1000, () => {
-            minimized    = app.win.isMinimized()
-            maximized    = app.win.isMaximized()
-            fullscreened = app.win.isFullScreen()
-            app.win.webContents.send("maximized",    maximized)
-            app.win.webContents.send("fullscreened", fullscreened)
+            maximizeFixate()
             updateBounds()
         }))
         app.win.on("move", throttle(1000, () => {
+            maximizeFixate()
             updateBounds()
         }))
 
         /*  handle window resizing functionality  */
+        app.ipc.handle("set-resizable", (event, resizable) => {
+            app.win.setResizable(resizable)
+        })
         app.ipc.handle("set-size", (event, size) => {
-            minimized    = false
-            maximized    = false
-            fullscreened = false
-            app.win.webContents.send("maximized",    false)
-            app.win.webContents.send("fullscreened", false)
             app.w = size.w
             app.h = size.h
             app.win.setSize(app.w, app.h)

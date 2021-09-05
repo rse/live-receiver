@@ -104,7 +104,7 @@
             <div class="group group-below grow">
                 <div class="group-items">
                     <!-- move window -->
-                    <div class="box move"
+                    <div class="box move" v-bind:class="{ moveAllowed: !fullscreened }"
                         v-tooltip.bottom-center="{ content: $t('window.move-window-tooltip') }">
                         <div class="grab-container">
                             <span class="grab grab-1"></span>
@@ -119,7 +119,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="group-bar">
+                <div class="group-bar"
+                     v-bind:class="{ disabled: fullscreened }">
                 </div>
             </div>
 
@@ -526,11 +527,12 @@
             </div>
 
             <div class="group">
-                <div class="group-bar">
+                <div class="group-bar"
+                     v-bind:class="{ disabled: fullscreened }">
                 </div>
                 <div class="group-items">
                     <!-- move window -->
-                    <div class="box move"
+                    <div class="box move" v-bind:class="{ moveAllowed: !fullscreened }"
                         v-tooltip.top-center="{ content: $t('window.move-window-tooltip') }">
                         <div class="grab-container">
                             <span class="grab grab-1"></span>
@@ -916,6 +918,8 @@
                 border-bottom: 1px solid var(--color-std-bg-5);
             }
         }
+    }
+    .move.moveAllowed {
         -webkit-app-region: drag;
         &:hover {
             cursor: pointer;
@@ -1468,13 +1472,11 @@ module.exports = {
         maximize (event) {
             if (this.fullscreened)
                 return
-            this.maximized = !this.maximized
             this.$emit("maximize")
         },
         fullscreen (event) {
             if (this.maximized)
                 return
-            this.fullscreened = !this.fullscreened
             this.$emit("fullscreen")
         },
         smallestSize () {
@@ -1494,9 +1496,13 @@ module.exports = {
             h += 2 * 20
             this.$emit("set-size", { w, h })
         },
-        handleResize () {
+        handleResize (ev) {
             if (this.$refs.content === undefined) {
-                setTimeout(this.handleResize, 10)
+                setTimeout(() => this.handleResize(ev), 10)
+                return
+            }
+            if (ev !== null && this.fullscreened) {
+                ev.preventDefault()
                 return
             }
             const vw = this.$refs.content.clientWidth  - 2 * 10
@@ -1863,9 +1869,9 @@ module.exports = {
         this.$on("fullscreened", (value) => {
             this.fullscreened = value
         })
-        window.addEventListener("resize", () => this.handleResize())
+        window.addEventListener("resize", (ev) => this.handleResize(ev))
         this.$nextTick(() => {
-            this.handleResize()
+            this.handleResize(null)
         })
 
         /*  voting support  */
