@@ -1501,10 +1501,6 @@ module.exports = {
                 setTimeout(() => this.handleResize(ev), 10)
                 return
             }
-            if (ev !== null && this.fullscreened) {
-                ev.preventDefault()
-                return
-            }
             const vw = this.$refs.content.clientWidth  - 2 * 10
             const vh = this.$refs.content.clientHeight - 2 * 10
             const vr = vw / vh

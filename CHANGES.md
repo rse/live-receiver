@@ -2,6 +2,9 @@
 Changes
 =======
 
+- 1.10.1
+    - BUGFIX: fix resizing on entering fullscreen again
+
 - 1.10.0
     - UPDATE: upgrade to Electron 13.3.0
     - UPDATE: upgrade to FFmpeg 4.4.0 (througn new @rse/ffmpeg distribution)
