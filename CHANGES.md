@@ -2,6 +2,10 @@
 Changes
 =======
 
+- 1.11.0
+    - UPDATE: upgrade to Electron 14.0.0
+    - BUGFIX: fix 3d perspective rendering of overlay icons
+
 - 1.10.1
     - BUGFIX: fix resizing on entering fullscreen again
 

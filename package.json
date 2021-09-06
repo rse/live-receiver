@@ -12,7 +12,7 @@
         "url":                           "http://engelschall.com/"
     },
     "devDependencies": {
-        "electron":                      "13.3.0",
+        "electron":                      "14.0.0",
         "electron-builder":              "22.11.7",
         "nodemon":                       "2.0.12",
         "shelljs":                       "0.8.4",
@@ -73,7 +73,7 @@
         "hostid":                        "1.1.0",
         "rimraf":                        "3.0.2"
     },
-    "upd":                               [ "!electron", "!mp4box", "!hls.js" ],
+    "upd":                               [ "!mp4box", "!hls.js" ],
     "main":                              "./app-main.js",
     "build": {
         "appId":                         "com.engelschall.apps.live.receiver",

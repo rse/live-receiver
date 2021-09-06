@@ -111,7 +111,6 @@
         align-items: center;
         .overlay-canvas {
             text-align: center;
-            perspective: 0px;
             .icon {
                 transform-origin: 50% 50%;
                 transform-style:  preserve-3d;
@@ -142,7 +141,6 @@
         background-color: #000000;
         .closure-canvas {
             text-align: center;
-            perspective: 0px;
             .icon {
                 transform-origin: 50% 50%;
                 transform-style:  preserve-3d;

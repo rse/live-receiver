@@ -265,7 +265,6 @@
             .logo-container {
                 position: absolute;
                 left: 18px;
-                perspective: 0px;
                 width: 60px;
                 margin-top: 10px;
                 margin-left: 0px;
