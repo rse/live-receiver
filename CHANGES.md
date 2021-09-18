@@ -2,6 +2,10 @@
 Changes
 =======
 
+- 1.11.1
+    - UPDATE: upgrade to Electron 14.0.1
+    - UPDATE: upgrade minor dependencies
+
 - 1.11.0
     - UPDATE: upgrade to Electron 14.0.0
     - BUGFIX: fix 3d perspective rendering of overlay icons
