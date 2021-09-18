@@ -629,7 +629,7 @@
             width: 100%;
             text-align: center;
             left: 0;
-            top: 2px;
+            top: 3px;
             color: var(--color-std-fg-3);
         }
         .name {
