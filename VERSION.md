@@ -4,7 +4,8 @@ Version History
 
 | VERSION | DATE       | STATE       |
 | ------- | ---------- | ----------- |
-| 1.11.0  | 2021-09-12 | current     |
+| 1.12.0  | 2021-09-19 | current     |
+| 1.11.0  | 2021-09-12 | obsolete    |
 | 1.10.1  | 2021-09-06 | obsolete    |
 | 1.10.0  | 2021-09-06 | deprecated  |
 | 1.9.4   | 2021-02-13 | obsolete    |
