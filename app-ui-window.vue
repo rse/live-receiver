@@ -154,7 +154,7 @@
                     <div class="box button maximize" v-on:click="maximize"
                         v-tooltip.bottom-center="{ content: $t('window.maximize-tooltip') }"
                         v-bind:class="{ disabled: fullscreened, active: maximized }">
-                        <i class="icon fas fa-window-maximize"></i>
+                        <i class="icon far fa-window-maximize"></i>
                         <span class="title">{{ $t("window.maximize-button") }}</span>
                     </div>
 
@@ -175,7 +175,7 @@
                     <!-- quit -->
                     <div class="box button quit" v-on:click="quit"
                         v-tooltip.bottom-center="{ content: $t('window.quit-tooltip') }">
-                        <i class="icon fas fa-times"></i>
+                        <i class="icon fas fa-times-circle"></i>
                         <span class="title">{{ $t("window.quit-button") }}</span>
                     </div>
                 </div>
