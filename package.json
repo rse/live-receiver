@@ -58,7 +58,7 @@
         "audio-node-suite":              "0.9.7",
         "@rse/soundfx":                  "1.1.1",
         "throttle-debounce":             "3.0.1",
-        "mp4box":                        "0.4.8",
+        "mp4box":                        "0.4.9",
         "mp4frag":                       "kevinGodell/mp4frag#0d17be2",
         "m3u8-parser":                   "4.7.0",
         "pure-uuid":                     "1.6.2",
@@ -73,7 +73,7 @@
         "hostid":                        "1.1.0",
         "rimraf":                        "3.0.2"
     },
-    "upd":                               [ "!mp4box", "!hls.js" ],
+    "upd":                               [ "!hls.js" ],
     "main":                              "./app-main.js",
     "build": {
         "appId":                         "com.engelschall.apps.live.receiver",
