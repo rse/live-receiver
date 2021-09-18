@@ -4,6 +4,7 @@ Changes
 
 - 1.12.0
     - UPDATE: upgrade to Electron 14.0.1
+    - UPDATE: upgrade to MP4Box 0.4.9 (with patches)
     - UPDATE: upgrade minor dependencies
     - IMPROVEMENT: for UX reasons, auto-fixate a still edited portrait on settings dialog exit
 
