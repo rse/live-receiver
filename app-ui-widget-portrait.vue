@@ -278,6 +278,14 @@ module.exports = {
         }
     },
 
+    /*  component creation hook  */
+    created () {
+        this.$on("fixate", () => {
+            if (this.editing)
+                this.fixateImage()
+        })
+    },
+
     /*  component DOM mounting hook  */
     mounted () {
         /*  take over portrait image or provide default avatar  */

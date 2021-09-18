@@ -5,6 +5,7 @@ Changes
 - 1.11.1
     - UPDATE: upgrade to Electron 14.0.1
     - UPDATE: upgrade minor dependencies
+    - IMPROVEMENT: for UX reasons, auto-fixate a still edited portrait on settings dialog exit
 
 - 1.11.0
     - UPDATE: upgrade to Electron 14.0.0

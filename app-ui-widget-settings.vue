@@ -492,7 +492,10 @@ module.exports = {
                 this.allowSave = true
             }, 1 * 1000)
 
-            /*  raise login event  */
+            /*  auto-fixate the image  */
+            this.$refs.personPortrait.$emit("fixate")
+
+            /*  raise save event  */
             this.$emit("save")
         },
 
