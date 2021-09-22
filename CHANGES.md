@@ -5,6 +5,7 @@ Changes
 - 1.12.1
     - BUGFIX: removed memory leak related to "execa" usage
     - BUGFIX: removed memory leak related to "mp4box.js" usage
+    - UPDATE: upgrade minor dependencies
 
 - 1.12.0
     - UPDATE: upgrade to Electron 14.0.1
