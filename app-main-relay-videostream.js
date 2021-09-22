@@ -92,7 +92,7 @@ module.exports = class VideoStream extends EventEmitter {
             "pipe:1"
         ]
         this.options.log("info", `videostream: starting FFmpeg process: ${this.options.ffmpeg} ${options.join(" ")}`)
-        this.proc = execa(this.options.ffmpeg, options)
+        this.proc = execa(this.options.ffmpeg, options, { buffer: false, maxBuffer: 10_000_000 })
 
         /*  timeout handler  */
         const onTimeout = async () => {
@@ -133,7 +133,7 @@ module.exports = class VideoStream extends EventEmitter {
 
         /*  establish segmentation of the bytestream into MP4 boxes
             (reason: the <video> element later accepts only valid and complete MP4 segments)  */
-        this.mp4box = MP4Box.createFile()
+        this.mp4box = MP4Box.createFile(false)
         this.mp4box.onReady = (info) => {
             let segment = 0
             if (!this.processing) {
@@ -141,13 +141,14 @@ module.exports = class VideoStream extends EventEmitter {
                     clearTimeout(this.timer)
                 this.timer = setTimeout(onTimeout, this.options.timeout)
             }
-            this.mp4box.onSegment = (id, user, buffer) => {
+            this.mp4box.onSegment = (id, user, buffer, sampleNum, isLast) => {
                 if (!this.processing) {
                     if (this.timer !== null)
                         clearTimeout(this.timer)
                     this.timer = setTimeout(onTimeout, this.options.timeout)
                 }
                 this.emit("segment", segment++, id, user, buffer)
+                this.mp4box.releaseUsedSamples(id, sampleNum)
             }
             for (const track of info.tracks) {
                 let mimeCodec
@@ -274,7 +275,8 @@ module.exports = class VideoStream extends EventEmitter {
         ]
         this.options.log("info", `videostream: starting FFmpeg process: ${this.options.ffmpeg} ${options.join(" ")}`)
         const proc = execa(this.options.ffmpeg, options, {
-            stdio: [ "pipe", "inherit", "inherit" ]
+            stdio: [ "pipe", "inherit", "inherit" ],
+            buffer: false, maxBuffer: 10_000_000
         })
         proc.stdin.on("error", (err) => {
             this.emit("error", `videostream: recording: FFmpeg process: ERROR: ${err}`)
