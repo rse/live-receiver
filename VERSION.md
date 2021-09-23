@@ -4,16 +4,17 @@ Version History
 
 | VERSION | DATE       | STATE       |
 | ------- | ---------- | ----------- |
-| 1.12.0  | 2021-09-19 | current     |
+| 1.12.1  | 2021-09-23 | current     |
+| 1.12.0  | 2021-09-19 | obsolete    |
 | 1.11.0  | 2021-09-12 | obsolete    |
-| 1.10.1  | 2021-09-06 | obsolete    |
+| 1.10.1  | 2021-09-06 | deprecated  |
 | 1.10.0  | 2021-09-06 | deprecated  |
 | 1.9.4   | 2021-02-13 | obsolete    |
 | 1.9.3   | 2020-12-27 | deprecated  |
 | 1.9.2   | 2020-12-13 | deprecated  |
 | 1.9.1   | 2020-12-12 | deprecated  |
 | 1.9.0   | 2020-11-30 | deprecated  |
-| 1.8.8   | 2020-11-30 | obsolete    |
+| 1.8.8   | 2020-11-30 | deprecated  |
 | 1.8.7   | 2020-11-30 | deprecated  |
 | 1.8.6   | 2020-11-29 | deprecated  |
 | 1.8.5   | 2020-11-27 | deprecated  |
@@ -22,14 +23,14 @@ Version History
 | 1.8.2   | 2020-11-27 | deprecated  |
 | 1.8.1   | 2020-11-26 | deprecated  |
 | 1.8.0   | 2020-11-26 | deprecated  |
-| 1.7.4   | 2020-11-26 | obsolete    |
+| 1.7.4   | 2020-11-26 | deprecated  |
 | 1.7.3   | 2020-11-21 | deprecated  |
 | 1.7.2   | 2020-11-21 | deprecated  |
 | 1.7.1   | 2020-11-20 | deprecated  |
 | 1.7.0   | 2020-11-19 | deprecated  |
 | 1.6.1   | 2020-11-15 | deprecated  |
 | 1.6.0   | 2020-11-15 | deprecated  |
-| 1.5.4   | 2020-11-09 | obsolete    |
+| 1.5.4   | 2020-11-09 | deprecated  |
 | 1.5.3   | 2020-11-09 | deprecated  |
 | 1.5.2   | 2020-11-08 | deprecated  |
 | 1.5.1   | 2020-11-07 | deprecated  |
