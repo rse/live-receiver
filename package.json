@@ -1,7 +1,7 @@
 {
     "name":                              "LiVE-Receiver",
     "homepage":                          "https://video-experience.live",
-    "version":                           "1.12.1",
+    "version":                           "1.13.0",
     "description":                       "Live Video Experience (LiVE) Receiver",
     "keywords":                          [ "live", "video", "experience", "receiver" ],
     "license":                           "GPL-3.0-only",
@@ -12,9 +12,9 @@
         "url":                           "http://engelschall.com/"
     },
     "devDependencies": {
-        "electron":                      "14.0.1",
+        "electron":                      "15.0.0",
         "electron-builder":              "22.11.7",
-        "nodemon":                       "2.0.12",
+        "nodemon":                       "2.0.13",
         "shelljs":                       "0.8.4",
         "glob":                          "7.2.0",
         "eslint":                        "7.32.0",
