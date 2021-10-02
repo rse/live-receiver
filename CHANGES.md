@@ -2,6 +2,10 @@
 Changes
 =======
 
+- 1.13.1
+    - UPDATE: upgrade to Electron 15.1.0
+    - UPDATE: upgrade minor dependencies
+
 - 1.13.0
     - UPDATE: upgrade to Electron 15.0.0
     - UPDATE: upgrade minor dependencies
