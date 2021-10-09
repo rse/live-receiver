@@ -13,7 +13,7 @@
     },
     "devDependencies": {
         "electron":                      "15.1.2",
-        "electron-builder":              "22.11.7",
+        "electron-builder":              "22.13.1",
         "nodemon":                       "2.0.13",
         "shelljs":                       "0.8.4",
         "glob":                          "7.2.0",
