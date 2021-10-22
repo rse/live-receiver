@@ -5,12 +5,9 @@
 */
 
 /*  standard requirements  */
-const os           = require("os")
-const path         = require("path")
 const EventEmitter = require("events")
 
 /*  external requirements  */
-const { app }      = require("electron")
 const execa        = require("execa")
 const which        = require("which")
 const UUID         = require("pure-uuid")

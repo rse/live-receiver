@@ -13,7 +13,7 @@ extends:
     - plugin:vue/essential
 
 parserOptions:
-    ecmaVersion: 10
+    ecmaVersion: 12
     sourceType:  module
     ecmaFeatures:
         jsx:     false
