@@ -2,6 +2,12 @@
 Changes
 =======
 
+- 1.14.0
+    - UPDATE: upgrade to Electron 16.0.1
+    - UPDATE: upgrade to Electron Builder 22.14.7
+    - UPDATE: upgrade to FFmpeg 4.4.1
+    - UPDATE: upgrade minor dependencies
+
 - 1.13.3
     - UPDATE: upgrade to Electron 15.3.0
     - UPDATE: upgrade minor dependencies
