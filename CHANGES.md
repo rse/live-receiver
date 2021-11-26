@@ -2,6 +2,11 @@
 Changes
 =======
 
+- 1.14.1
+    - UPDATE: upgrade to Electron 16.0.2
+    - UPDATE: downgrade to Electron Builder 22.14.5 (to be not too bleeding edge)
+    - UPDATE: upgrade minor dependencies
+
 - 1.14.0
     - UPDATE: upgrade to Electron 16.0.1
     - UPDATE: upgrade to Electron Builder 22.14.7
