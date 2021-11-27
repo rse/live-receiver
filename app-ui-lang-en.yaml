@@ -105,7 +105,7 @@ window:
                                     &nbsp;<span class=attention-boxed>CTRL+u</span>
 
     feedback-thumbsdn-button:       Show Refusal
-    feedback-thumbsdn-tooltip:      Send feedback by showing<br/>refusal with a thumbs-<u>d</u>down.
+    feedback-thumbsdn-tooltip:      Send feedback by showing<br/>refusal with a thumbs-<u>d</u>own.
                                     &nbsp;<span class=attention-boxed>CTRL+d</span>
 
     feedback-surprise-button:       Show Surprise

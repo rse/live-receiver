@@ -107,7 +107,7 @@ window:
                                     &nbsp;<span class=attention-boxed>CTRL+u</span>
 
     feedback-thumbsdn-button:       Ablehnung
-    feedback-thumbsdn-tooltip:      Sende Feedback durch Zeigen von<br/>Ablehnung über ein "Daumen-Runter" (thumbs-<u>d</u>down).
+    feedback-thumbsdn-tooltip:      Sende Feedback durch Zeigen von<br/>Ablehnung über ein "Daumen-Runter" (thumbs-<u>d</u>own).
                                     &nbsp;<span class=attention-boxed>CTRL+d</span>
 
     feedback-surprise-button:       Überraschung

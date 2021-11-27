@@ -2,6 +2,9 @@
 Changes
 =======
 
+- 1.14.2
+    - BUGFIX: fix tooltip text of thumbs-down button
+
 - 1.14.1
     - UPDATE: upgrade to Electron 16.0.2
     - UPDATE: downgrade to Electron Builder 22.14.5 (to be not too bleeding edge)
