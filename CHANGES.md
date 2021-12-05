@@ -2,6 +2,10 @@
 Changes
 =======
 
+- 1.14.3
+    - UPDATE: upgrade to Electron 16.0.4
+    - UPDATE: upgrade minor dependencies
+
 - 1.14.2
     - BUGFIX: fix tooltip text of thumbs-down button
     - CLEANUP: reduce size of major button icons to appear less "fat"
