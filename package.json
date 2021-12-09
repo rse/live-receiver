@@ -91,6 +91,7 @@
         "mac": {
             "category":                  "com.engelschall.apps",
             "identity":                  null,
+            "target":                    [ { "target": "dir" } ],
             "icon":                      "app-res-icon.png",
             "files": [                   "!*.ai",
                                          "!node_modules/electron-builder/**",
@@ -111,7 +112,7 @@
                                          "!node_modules/npm/**" ]
         },
         "win": {
-            "target":                    [ { "target": "portable", "arch": [ "x64" ] } ],
+            "target":                    [ { "target": "portable" } ],
             "icon":                      "app-res-icon.png",
             "files": [                   "!*.ai",
                                          "!node_modules/electron-builder/**",
@@ -133,7 +134,7 @@
         },
         "linux": {
             "category":                  "AudioVideo",
-            "target":                    [ { "target": "AppImage", "arch": [ "x64" ] } ],
+            "target":                    [ { "target": "AppImage" } ],
             "executableName":            "LiVE-Receiver",
             "icon":                      "app-res-icon.png",
             "files": [                   "!*.ai",

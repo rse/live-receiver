@@ -53,11 +53,11 @@ const PromptPW  = require("prompt-password")
     if (os.platform() === "win32") {
         /*  run Electron-Builder to package the application  */
         console.log("++ packaging App as an Electron distribution for Windows platform")
-        execa.sync(electronbuilder, [],
+        execa.sync(electronbuilder, [ "--win", `--${os.arch()}` ],
             { stdin: "inherit", stdout: "inherit", stderr: "inherit" })
 
         /*  pack application into a distribution archive
-            (notice: under macOS the ZIP does NOT automatically use a top-level directory)  */
+            (notice: under Windows the ZIP does NOT automatically use a top-level directory)  */
         console.log("++ packing App into ZIP distribution archive")
         zip.zipSync(
             path.join(__dirname, "dist/LiVE-Receiver.exe"),
@@ -67,7 +67,7 @@ const PromptPW  = require("prompt-password")
     else if (os.platform() === "darwin") {
         /*  run Electron-Builder to package the application  */
         console.log("++ packaging App as an Electron distribution for macOS platform")
-        execa.sync(electronbuilder, [ "--dir" ],
+        execa.sync(electronbuilder, [ "--mac", `--${os.arch()}` ],
             { stdin: "inherit", stdout: "inherit", stderr: "inherit" })
 
         /*  pack application into a distribution archive
@@ -82,7 +82,7 @@ const PromptPW  = require("prompt-password")
     else if (os.platform() === "linux") {
         /*  run Electron-Builder to package the application  */
         console.log("++ packaging App as an Electron distribution for Linux platform")
-        execa.sync(electronbuilder, [],
+        execa.sync(electronbuilder, [ "--linux", `--${os.arch()}` ],
             { stdin: "inherit", stdout: "inherit", stderr: "inherit" })
 
         /*  pack application into a distribution archive  */
