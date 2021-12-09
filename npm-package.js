@@ -50,10 +50,14 @@ const PromptPW  = require("prompt-password")
 
     /*   package according to platform...  */
     const electronbuilder = path.resolve(path.join("node_modules", ".bin", "electron-builder"))
+    const arch1 = os.arch()
+    let arch2 = arch1
+    if (arch2 === "arm64")
+        arch2 = "a64"
     if (os.platform() === "win32") {
         /*  run Electron-Builder to package the application  */
         console.log("++ packaging App as an Electron distribution for Windows platform")
-        execa.sync(electronbuilder, [ "--win", `--${os.arch()}` ],
+        execa.sync(electronbuilder, [ "--win", `--${arch1}` ],
             { stdin: "inherit", stdout: "inherit", stderr: "inherit" })
 
         /*  pack application into a distribution archive
@@ -61,8 +65,8 @@ const PromptPW  = require("prompt-password")
         console.log("++ packing App into ZIP distribution archive")
         zip.zipSync(
             path.join(__dirname, "dist/LiVE-Receiver.exe"),
-            path.join(__dirname, "dist/LiVE-Receiver-win-x64.zip"))
-        await sign("dist/LiVE-Receiver-win-x64.zip")
+            path.join(__dirname, `dist/LiVE-Receiver-win-${arch2}.zip`))
+        await sign(`dist/LiVE-Receiver-win-${arch2}.zip`)
     }
     else if (os.platform() === "darwin") {
         /*  run Electron-Builder to package the application  */
@@ -76,8 +80,8 @@ const PromptPW  = require("prompt-password")
         shell.mv("dist/mac/LiVE-Receiver.app", "dist/LiVE-Receiver.app")
         zip.zipSync(
             path.join(__dirname, "dist/LiVE-Receiver.app"),
-            path.join(__dirname, "dist/LiVE-Receiver-mac-x64.zip"))
-        await sign("dist/LiVE-Receiver-mac-x64.zip")
+            path.join(__dirname, `dist/LiVE-Receiver-mac-${arch2}.zip`))
+        await sign(`dist/LiVE-Receiver-mac-${arch2}.zip`)
     }
     else if (os.platform() === "linux") {
         /*  run Electron-Builder to package the application  */
@@ -90,8 +94,8 @@ const PromptPW  = require("prompt-password")
         shell.mv("dist/LiVE-Receiver-*.AppImage", "dist/LiVE-Receiver")
         zip.zipSync(
             path.join(__dirname, "dist/LiVE-Receiver"),
-            path.join(__dirname, "dist/LiVE-Receiver-lnx-x64.zip"))
-        await sign("dist/LiVE-Receiver-lnx-x64.zip")
+            path.join(__dirname, `dist/LiVE-Receiver-lnx-${arch2}.zip`))
+        await sign(`dist/LiVE-Receiver-lnx-${arch2}.zip`)
     }
 })().catch((err) => {
     console.log(`** package: ERROR: ${err}`)
