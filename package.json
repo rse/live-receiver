@@ -34,7 +34,7 @@
     },
     "dependencies": {
         "electron-log":                  "4.4.1",
-        "@rse/ffmpeg":                   "1.0.3",
+        "@rse/ffmpeg":                   "1.0.4",
         "jsonfile":                      "6.1.0",
         "syspath":                       "1.0.4",
         "execa":                         "5.1.1",
