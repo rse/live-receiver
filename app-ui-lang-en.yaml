@@ -1,6 +1,6 @@
 ##
 ##  Live Video Experience (LiVE)
-##  Copyright (c) 2020-2021 Dr. Ralf S. Engelschall <rse@engelschall.com>
+##  Copyright (c) 2020-2022 Dr. Ralf S. Engelschall <rse@engelschall.com>
 ##  Licensed under GPL 3.0 <https://spdx.org/licenses/GPL-3.0-only>
 ##
 
@@ -261,7 +261,7 @@ about:
     description-1:                  is the attendee-side of
     description-2:                  a solution for sending, relaying and receiving semi-interactive up-front trainings
                                     as real-time Full-HD video broadcasts over MQTTS/RTMPS event/video stream network channels.
-    description-3:                  is Copyright &copy; 2020-2021 by
+    description-3:                  is Copyright &copy; 2020-2022 by
     description-4:                  and licensed and distributed as Open Source software under the
     description-5:                  It internally is based on the following awesome major software components:&nbsp;
 
