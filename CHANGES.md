@@ -2,6 +2,13 @@
 Changes
 =======
 
+- 1.15.0
+    - UPDATE: upgrade to Electron 17.1.2
+    - UPDATE: upgrade to Electron Builder 22.14.13
+    - UPDATE: upgrade to MP4Box.js 0.5.2
+    - UPDATE: upgrade to Font Awesome 6.1.0
+    - UPDATE: upgrade minor dependencies
+
 - 1.14.3
     - UPDATE: upgrade to Electron 16.0.8
     - UPDATE: upgrade minor dependencies

@@ -162,7 +162,7 @@
                     <div class="box button fullscreen" v-on:click="fullscreen"
                         v-tooltip.bottom-center="{ content: $t('window.fullscreen-tooltip') }"
                         v-bind:class="{ disabled: maximized, active: fullscreened }">
-                        <i class="icon fas fa-expand-arrows-alt"></i>
+                        <i class="icon fas fa-maximize"></i>
                         <span class="title">{{ $t("window.fullscreen-button") }}</span>
                     </div>
                 </div>
