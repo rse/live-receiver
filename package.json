@@ -161,7 +161,7 @@
         }
     },
     "scripts": {
-        "postinstall":                   "patch-package --patch-dir package.d && electron-builder install-app-deps && modclean -p . -r -P -n default:safe",
+        "postinstall":                   "patch-package --patch-dir package.d && electron-builder install-app-deps && modclean -p . -r -P --no-dotfiles -n default:safe",
         "setup":                         "npm install --only-production --global-style",
         "lint":                          "eslint --config eslint.yaml --ext js,vue *.js *.vue",
         "start":                         "electron app-main.js",
