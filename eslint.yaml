@@ -67,6 +67,7 @@ rules:
     lines-between-class-members:         off
     quote-props:                         off
     object-curly-newline:                off
+    object-shorthand:                    off
 
     "vue/html-indent":                   off
     "vue/v-bind-style":                  [ "error", "longform" ]
@@ -84,4 +85,6 @@ rules:
     "vue/component-tags-order":          off
     "vue/custom-event-name-casing":      off
     "vue/component-definition-name-casing": off
+    "vue/first-attribute-linebreak":     off
+    "vue/multi-word-component-names":    off
 
