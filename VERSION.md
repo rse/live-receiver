@@ -4,6 +4,7 @@ Version History
 
 | VERSION | DATE       | STATE       |
 | ------- | ---------- | ----------- |
+| 1.16.0  | 2022-04-29 | forthcoming |
 | 1.15.1  | 2022-04-29 | current     |
 | 1.15.0  | 2022-01-29 | obsolete    |
 | 1.14.3  | 2022-01-29 | obsolete    |
