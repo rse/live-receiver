@@ -2,6 +2,9 @@
 Changes
 =======
 
+- 1.16.1
+    - UPDATE: upgrade to Electron 18.2.3
+
 - 1.16.0
     - UPDATE: upgrade to Electron 18.2.0
     - UPDATE: upgrade to FFmpeg 5.0
