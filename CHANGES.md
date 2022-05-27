@@ -3,7 +3,7 @@ Changes
 =======
 
 - 1.16.1
-    - UPDATE: upgrade to Electron 18.2.3
+    - UPDATE: upgrade to Electron 18.3.1
 
 - 1.16.0
     - UPDATE: upgrade to Electron 18.2.0
